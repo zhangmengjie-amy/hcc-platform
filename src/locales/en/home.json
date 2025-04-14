@@ -1,0 +1,60 @@
+{
+  "header": {
+    "home": "Home",
+    "mutation": "Mutation",
+    "expression": "Expression",
+    "immune": "Immune",
+    "clinical": "Clinical"
+  },
+  "banner": {
+    "title": "HCC Data Platform",
+    "subTitle": "Comprehensive Analysis of Hepatocellular Carcinoma",
+    "description": "A cutting-edge platform for analyzing multimodal heterogeneity in hepatocellular carcinoma cohort data. Integrating mutation profiles, expression patterns, immune signatures, and clinical outcomes to advance liver cancer research and treatment strategies."
+  },
+  "search": {
+    "placeholder": "Search for mutated gene names/clinical information"
+  },
+  "totalPatients": "Total Patients",
+  "samplesAnalyzed": "Samples Analyzed",
+  "identifiedMutations": "Identified Mutations",
+  "publishedPapers": "Published Papers",
+  "researchOverview": {
+    "title": "Research Overview",
+    "list": {
+      "advancedAnalysis": {
+        "title": "Advanced Analysis",
+        "description": "Comprehensive genomic profiling using state-of-the-art sequencing technologies"
+      },
+      "dataIntegration" : {
+        "title": "Data Integration",
+        "description": "Multi-dimensional data analysis combining clinical and molecular information"
+      },
+      "mutationMapping" : {
+        "title": "Mutation Mapping",
+        "description": "Detailed mapping of genetic alterations and their clinical implications"
+      }
+    }
+  },
+  "commonGeneMutationsDistribution": {
+    "title" : "Common Gene Mutations Distribution"
+  },
+  "latestResearchHighlights": {
+    "title": "Latest Research Highlights"
+  },
+  "footer" : {
+    "aboutHccPlatform": {
+      "title": "About Hcc Platform",
+      "description": "Advanced research platform for hepatocellular carcinoma multimodal heterogeneity analysis"
+    },
+    "quickLinks": {
+      "title": "Quick Links"
+    },
+    "resources": {
+      "title": "Resources"
+    },
+    "contact": {
+      "title": "Contact"
+    },
+    "copyright": "HCC Data Platform. All rights reserved."
+  }
+}

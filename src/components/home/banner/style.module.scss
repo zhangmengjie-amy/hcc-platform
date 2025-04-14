@@ -1,0 +1,22 @@
+.banner {
+  position: relative;
+  max-height: 45vh;
+
+  .bannerImage {
+    max-height: 45vh;
+    overflow: hidden;
+
+    img {
+      opacity: .5;
+      width: 100%;
+    }
+  }
+
+  .bannerText {
+    width: 100%;
+    padding: 0 10%;
+    position: absolute;
+    text-align: center;
+    top: 20%;
+  }
+}
