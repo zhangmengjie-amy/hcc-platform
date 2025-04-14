@@ -76,7 +76,13 @@ const HCCHeader = () => {
         },
     ];
     const getPathName = () => {
-        return pathname.split('/')[1] === "mutation" ? "/mutation" : pathname
+        if (pathname.split('/')[1] === "mutation") {
+            return "/mutation"
+        }
+        if (pathname === "/") {
+            return "/home"
+        }
+        return pathname
     }
 
     return (
@@ -87,6 +93,7 @@ const HCCHeader = () => {
                       triggerSubMenuAction={"click"}
                       items={items}
                       theme={"dark"}
+                      defaultSelectedKeys={"/home"}
                       selectedKeys={getPathName()}
                       style={{
                           marginLeft: "20px",

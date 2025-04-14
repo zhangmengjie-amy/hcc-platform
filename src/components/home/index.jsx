@@ -5,6 +5,7 @@ import HomeContent from "@/components/home/content";
 import HomeBanner from "@/components/home/banner";
 
 const Home = () => {
+
     return (
         <Layout style={{backgroundColor: "#fff"}}>
             <HomeBanner></HomeBanner>
