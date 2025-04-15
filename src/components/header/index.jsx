@@ -8,7 +8,6 @@ import {useRouter, usePathname} from 'next/navigation';
 import styles from "./style.module.scss";
 import {useLanguage} from '@/contexts/LanguageContext'
 import {useTranslation} from 'react-i18next';
-import {getCookies, setCookie} from 'cookies-next';
 
 const {Header} = Layout;
 const {Title} = Typography;
