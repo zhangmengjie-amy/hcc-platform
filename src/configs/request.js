@@ -1,4 +1,3 @@
-// utils/dataFetch.ts
 import { get } from "@/utils/request";
 
 export const getWordMap = async () => {

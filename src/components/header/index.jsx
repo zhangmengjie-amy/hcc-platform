@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, {useEffect} from 'react';
 import i18n from 'i18next';
 import {Layout, Menu, Flex, Typography} from 'antd';
 import Image from 'next/image';
@@ -12,19 +12,19 @@ import {useTranslation} from 'react-i18next';
 const {Header} = Layout;
 const {Title} = Typography;
 
-
 const HCCHeader = () => {
+
     const {t} = useTranslation();
-    const {language, setLanguage} = useLanguage();
+    const {language, setLanguage} = useLanguage(i18n?.language);
     const router = useRouter();
     const pathname = usePathname();
     const handleLanguage = () => {
-        const newLanguage = language === "zh" ? "en" : "zh";
+        const newLanguage = i18n?.language === "zh" ? "en" : "zh";
         setLanguage(newLanguage);
     }
 
     const showLanguage = () => {
-        return i18n?.language === "zh" ? "中" : "en"
+        return language === "zh" ? "中" : "en"
     }
     const items = [
         {

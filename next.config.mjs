@@ -30,7 +30,6 @@ const nextConfig = {
         localeDetection: false
     },
     reactStrictMode: false,
-    // trailingSlash: true,
     rewrites: async () => {
         return [
             {

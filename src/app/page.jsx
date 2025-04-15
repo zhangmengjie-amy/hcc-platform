@@ -1,11 +1,8 @@
-'use client'; // 启用客户端渲染
+"use client";
 import Home from "@/components/home";
-const Page = () => {
+
+export default function Page() {
     return (
         <Home></Home>
     );
-};
-
-export default Page;
-
-
+}
