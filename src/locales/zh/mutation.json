@@ -3,5 +3,21 @@
     "driverLandscape" : "驱动景观",
     "phylogeneticRelationship" : "系统发育关系",
     "evolutionaryTrajectory": "进化轨迹"
+  },
+  "type": {
+    "frameShiftIndel": "Frame Shift Indel",
+    "missense": "Missense",
+    "inFrameIndel": "In Frame Indel",
+    "stopCodon": "Stop Codon",
+    "spliceSite": "Splice Site",
+    "transtationStartSite": "Transtation Start Site"
+  },
+  "sample": {
+    "gender": "性别",
+    "age": "年龄",
+    "race": "种族",
+    "HCV": "丙肝",
+    "HBV": "乙肝",
+    "stage": "阶段"
   }
 }

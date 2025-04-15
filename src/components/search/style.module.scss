@@ -1,0 +1,25 @@
+.searchContent {
+  min-height: 100vh;
+
+  background-color: rgb(235, 242, 255);
+
+  .searchCard {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
+    background-color: #fff;
+  }
+
+  .chart {
+    background-color: #fff;
+    .colFlex {
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
+      height: 400px;
+    }
+
+  }
+
+}

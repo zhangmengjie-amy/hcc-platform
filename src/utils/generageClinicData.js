@@ -14,19 +14,21 @@ const generageClinicData = () => {
       gene,
       mutationType: mutationTypes[Math.floor(Math.random() * mutationTypes.length)]
     }));
-    const mutationCountBySample = mutationTypes.map(type => ({
+    const mutationCountBySample = mutationTypes.map((type, index) => ({
       type,
-      total: Math.floor(Math.random() * 50) + 1 // 1-50之间的随机数
+      count: Math.floor(Math.random() * 3) // 0-3之间的随机数
     }));
 
     samples.push({
       sample: `sample${i}`,
-      age: Math.floor(Math.random() * 100) + 1, // 1-100随机年龄
-      gender: genders[Math.floor(Math.random() * genders.length)],
       stage: stages[Math.floor(Math.random() * stages.length)],
       HBV: hbvHcvStatuses[Math.floor(Math.random() * hbvHcvStatuses.length)],
       HCV: hbvHcvStatuses[Math.floor(Math.random() * hbvHcvStatuses.length)],
       race: races[Math.floor(Math.random() * races.length)],
+      age: Math.floor(Math.random() * 51) + 50, // 50-100随机年龄
+      gender: genders[Math.floor(Math.random() * genders.length)],
+      mutationCountList: mutationCountBySample,
+      mutation: detailData
     });
   }
 

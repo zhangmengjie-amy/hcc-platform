@@ -49,10 +49,14 @@
       //        0 2px 4px rgba(0, 0, 0, 0.05),
       //        0 4px 8px rgba(0, 0, 0, 0.05),
       //        0 8px 16px rgba(0, 0, 0, 0.05);
+      background: #fff;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
-      background: white;
       padding: 20px 0;
       border-radius: 12px;
+      &:hover {
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+      }
     }
   }
   .researchOverviewList {
@@ -60,11 +64,15 @@
     .colFlex {
       overflow: hidden;
       margin: 10px;
-      background-color: rgb(235, 242, 255);
+      background: linear-gradient(to bottom, rgb(235, 242, 255), #ffffff);
       box-shadow:
               0 8px 16px rgba(0, 0, 0, 0.05);
       padding: 25px 20px;
       border-radius: 12px;
+      &:hover {
+        background: linear-gradient(to top, rgb(235, 242, 255), #ffffff);
+        cursor: pointer;
+      }
     }
   }
   .distributionList {

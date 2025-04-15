@@ -1,11 +1,13 @@
 "use client";
-import React from 'react';
-import {Layout, Flex, Typography, Input, Card, Carousel} from 'antd';
+import React, {useState} from 'react';
+import {Layout, Flex, Typography, Input, Card, Carousel, Button} from 'antd';
 import {Col, Row} from 'antd';
 import Image from 'next/image';
 import * as echarts from "echarts";
 import ReactECharts from 'echarts-for-react';
 import {useTranslation} from "react-i18next";
+import {useRouter, usePathname} from 'next/navigation';
+import CountUp from 'react-countup';
 
 const {Content} = Layout;
 const {Title, Paragraph} = Typography;
@@ -14,21 +16,23 @@ import styles from "./style.module.scss";
 const {Search} = Input;
 const HomeContent = () => {
     const {t} = useTranslation();
+    const router = useRouter();
+    const [searchValue, setSearchValue] = useState("");
     const dataStaticList = [{
         icon: "/images/total-patients.svg",
-        title: '1,234',
+        title: 12345,
         text: t("home:totalPatients")
     }, {
         icon: "/images/samples-analyzed.svg",
-        title: '1,234',
+        title: 12345,
         text: t("home:samplesAnalyzed")
     }, {
         icon: "/images/identified-mutations.svg",
-        title: '1,234',
+        title: 12345,
         text: t("home:identifiedMutations")
     }, {
         icon: "/images/published-papers.svg",
-        title: '1,234',
+        title: 12345,
         text: t("home:publishedPapers")
     }];
     const researchOverviewList = [{
@@ -104,6 +108,10 @@ const HomeContent = () => {
             tooltip: {
                 trigger: 'axis'
             },
+            label: {
+                show: true,
+                formatter: params => `${params.name}: ${params.percent.toFixed(0)}%`
+            },
             series: [
                 {
                     name: 'GENE',
@@ -146,7 +154,7 @@ const HomeContent = () => {
         height: 512
     }]
     const onSearch = () => {
-        console.log('1111')
+        router.push("/search?text=TP53");
     }
     return (
         <Content className={styles.hccContent}
@@ -178,11 +186,15 @@ const HomeContent = () => {
                                                style={{
                                                    color: "rgb(20, 40, 80)",
                                                    marginTop: "15px"
-                                               }}>{item.title}</Title>
+                                               }}>
+                                            <CountUp start={0} end={item.title} separator=","/>
+                                        </Title>
                                         <Paragraph ellipsis={{
                                             rows: 1,
                                             expandable: false
-                                        }} style={{marginBottom: 0, color: "rgb(20, 40, 80)"}}>{item.text}</Paragraph>
+                                        }} style={{marginBottom: 0, color: "rgb(20, 40, 80)"}}>
+                                            {item.text}
+                                        </Paragraph>
                                     </Flex>
                                 </Col>
                             })

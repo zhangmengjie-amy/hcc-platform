@@ -4,8 +4,13 @@ import {Row, Col} from 'antd';
 import {getGene} from "@/configs/request";
 import generageClinicData from '@/utils/generageClinicData';
 import ReactECharts from 'echarts-for-react';
+import {useTranslation} from "react-i18next";
+import {Layout, Flex, Typography, Input, Card, Carousel, Button} from 'antd';
+import styles from "./style.module.scss";
 
+const {Paragraph} = Typography;
 const DriverLandscape = () => {
+    const {t} = useTranslation();
     const [topChartOption, setTopChartOption] = useState({});
     const [bottomChartOption, setBottomChartOption] = useState({});
     const [leftChartOption, setLeftChartOption] = useState({});
@@ -13,26 +18,28 @@ const DriverLandscape = () => {
     const geneData = useRef(null);
     const clinicData = useRef(null);
     useEffect(() => {
-
-        const commonSeries = [{
-            name: 'Missense',
-            color: "rgb(114, 158, 206)",
-            data: [240, 380, 50, 20, 20, 15, 10, 40, 35, 25, 20, 20, 20, 20, 15, 20, 10, 5, 8, 8, 7, 5, 5, 5, 5, 5, 5, 5, 5, 4, 0, 0, 0, 2, 0, 0, 6, 0, 0, 5, 0, 0, 3, 3, 0, 0, 0, 1, 0, 1, 0, 2, 0, 1, 0, 0, 0, 0, 2, 1, 0, 0]
+        const clinicSeries = ["gender", "age", "race", "HCV", "HBV", "stage"];
+        const mutationTypeColorConfig = [{
+            type: 'missense',
+            color: "rgb(114, 158, 206)"
         },
             {
-                name: 'Stop Codon',
-                color: "rgb(255, 158, 74)",
-                data: [40, 0, 20, 5, 0, 20, 20, 0, 2, 0, 2, 2, 2, 2, 0, 0, 0, 2, 2, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 3, 5, 0, 3, 1, 0, 6, 0, 0, 5, 0, 0, 0, 0, 0, 3, 0, 0, 1, 1, 2, 0, 0, 0, 2, 2, 1, 0, 0, 0, 1, 0, 1]
+                type: 'stopCodon',
+                color: "rgb(255, 158, 74)"
             },
             {
-                name: 'Splice Site',
-                color: "rgb(103, 191, 92)",
-                data: [60, 0, 0, 5, 5, 0, 5, 0, 0, 5, 2, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 6, 0, 0, 5, 0, 2, 0, 0, 3, 0, 1, 1, 0, 1, 0, 2, 0, 0, 1, 2, 0, 0, 0, 1, 0]
+                type: 'spliceSite',
+                color: "rgb(103, 191, 92)"
             },
             {
-                name: 'Frame Shift Indel',
-                color: "rgb(237, 102, 93)",
-                data: [50, 5, 30, 50, 50, 30, 20, 5, 5, 10, 10, 5, 5, 5, 5, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 5, 2, 3, 6, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 3, 0, 1, 0, 2, 1, 1, 0, 0, 0, 0, 2, 0, 0, 1, 1]
+                type: 'frameShiftIndel',
+                color: "rgb(237, 102, 93)"
+            }, {
+                type: 'transtationStartSite',
+                color: "rgb(173, 139, 201)"
+            }, {
+                type: 'inFrameIndel',
+                color: "rgb(168, 120, 110)"
             }]
         const fetchData = async () => {
             geneData.current = await getGene();
@@ -41,36 +48,38 @@ const DriverLandscape = () => {
 
 
         fetchData().then(() => {
-
+            console.log(geneData.current);
+            console.log(clinicData.current);
             const buildTopChartOption = () => {
-                const generateData = () => {
-                    const data = [];
-                    for (let i = 0; i < 450; i++) {
-                        data.push((Math.random()).toFixed(0));
+                const topChartSeries = mutationTypeColorConfig.map((configItem, index) => {
+                    return {
+                        name: t(`mutation:type.${configItem.type}`),
+                        type: 'bar',
+                        stack: true,
+                        color: configItem.color,
+                        data: clinicData.current.slice(0, 450).map((clinicItem) => {
+                            const typeItem = clinicItem.mutationCountList.find((countItem) => countItem.type == configItem.type)
+                            if (configItem.type === "inFrameIndel" || configItem.type == "transtationStartSite") { // TODO
+                                return 0
+                            }
+                            return typeItem.count
+                        })
                     }
-                    return data;
-                };
-
-
-                const topChartSeries = commonSeries.map((item, index) => ({
-                    name: item.name,
-                    type: 'bar',
-                    stack: true,
-                    data: generateData(),
-                }));
-
+                });
                 const _topChartOption = {
                     grid: {
                         left: 25,
                         right: "16.667%",
-                        top: 5,
+                        top: 10,
                         bottom: 10,
                         containLabel: false
                     },
                     tooltip: {
                         show: true,
-                        trigger: "item",
-                        position: "bottom"
+                        trigger: "axis",
+                        position: function (point, params, dom, rect, size) {
+                            return [point[0], point[1] + 30]; // 向下偏移20px
+                        }
                     },
                     legend: {
                         show: false
@@ -79,15 +88,13 @@ const DriverLandscape = () => {
                         type: 'category',
                         show: false,
                         boundaryGap: false,
-                        data: Array.from({length: 500}, (_, i) => i + 1),
+                        data: clinicData.current.map((item) => item.sample),
                         splitLine: {
                             show: false,
                         },
                     },
                     yAxis: {
                         type: 'value',
-                        min: 0,
-                        max: 5,
                         splitLine: {
                             show: false,
                         },
@@ -95,46 +102,62 @@ const DriverLandscape = () => {
                         axisTick: {show: true},   // 隐藏刻度
                         axisLabel: {
                             color: "#000",
-                            fontSize: 10
+                            fontSize: 8
                         },
                     },
                     series: topChartSeries,
-                    color: commonSeries.map((item) => item.color) // 定制颜色
                 }
                 return _topChartOption
             }
             const buildBottomChartOption = () => {
-                const seriesList = [{
-                    name: "Stage",
-                    colors: ['rgb(255,255,240)', 'rgb(253,174,107)'],
-                }, {
-                    name: "HBV",
-                    colors: ['rgb(255,255,224)', 'rgb(110,123,139)']
-                }, {
-                    name: "HCV",
-                    colors: ['rgb(255,255,224)', 'rgb(110,123,139)']
-                }, {
-                    name: "Race",
-                    colors: ['rgb(255,247,243)', 'rgb(247,104,161)']
-                }, {
-                    name: "Age",
-                    colors: ['rgb(224,243,291)', 'rgb(168,221,181)', 'rgb(67,162,202)']
-                }, {
-                    name: "Gender",
-                    colors: ['rgb(255,228,225)', 'rgb(108,166,205)']
-                }]
-                const dotsPerRow = 500;
+                const seriesList = {
+                    stage: {
+                        early: 'rgb(255,255,240)',
+                        late: 'rgb(253,174,107)'
+                    },
+                    HBV: {
+                        negative: 'rgb(255,255,224)',
+                        positive: 'rgb(110,123,139)'
+                    },
+                    HCV: {
+                        negative: 'rgb(255,255,224)',
+                        positive: 'rgb(110,123,139)'
+                    },
+                    race: {
+                        ASIAN: 'rgb(255,247,243)',
+                        CAUCASIAN: 'rgb(247,104,161)'
+                    },
+                    age: ['rgb(224,243,291)', 'rgb(168,221,181)', 'rgb(67,162,202)'],
+                    gender:
+                        {
+                            female: 'rgb(255,228,225)',
+                            male:
+                                'rgb(108,166,205)'
+                        }
+                }
                 const symbolSize = [1, 10];
                 const seriesData = [];
-                seriesList.forEach((item, yIndex) => {
-                    for (let x = 0; x < dotsPerRow; x++) {
+                clinicSeries.forEach((item, yIndex) => {
+                    clinicData.current.forEach((series, xIndex) => {
+                        let color = seriesList[item][series[item]] ?? '#fff';
+                        if (item === 'age') {
+                            if (series[item] < 58) {
+                                color = seriesList[item][0]
+                            } else if (series[item] < 88) {
+                                color = seriesList[item][1]
+                            } else {
+                                color = seriesList[item][2]
+                            }
+                        }
                         seriesData.push({
-                            value: [x, yIndex],
+                            value: [xIndex, yIndex],
+                            category: item,
+                            categoryValue: series[item],
                             itemStyle: {
-                                color: item.colors[item.colors.length === 3 ? (Math.random() < 0.2 ? 0 : (Math.random() < 0.6 ? 1 : 2)) : (Math.random() < 0.5 ? 0 : 1)]
+                                color
                             }
                         });
-                    }
+                    })
                 });
                 const bottomChartOption = {
                     grid: {
@@ -144,17 +167,16 @@ const DriverLandscape = () => {
                         bottom: 10,
                         containLabel: false
                     },
-                    tooltip: {
+                    yAxis: {
+                        type: 'category',
                         show: true,
-                        trigger: "item",
-                    },
-                    xAxis: {
-                        show: false,
-                        max: dotsPerRow - 1,
+                        position: "right",
+                        data: clinicSeries.map((item) => t(`mutation:sample.${item}`)),
                         splitLine: {
                             show: false,
                         },
                         axisLabel: {
+                            show: true,
                             color: '#000',
                             fontSize: 8,
                             verticalAlign: "middle"
@@ -162,14 +184,14 @@ const DriverLandscape = () => {
                         axisLine: {show: false},  // 隐藏轴线
                         axisTick: {show: false},   // 隐藏刻度
                     },
-                    yAxis: {
+                    xAxis: {
                         type: 'category',
                         position: 'right',
-                        data: seriesList.map((item) => item.name),
-                        inverse: true,
+                        data: clinicData.current.map((item) => item.sample),
                         axisLine: {show: false},
                         axisTick: {show: false},
                         axisLabel: {
+                            show: false,
                             color: '#000',
                             fontSize: 8,
                             verticalAlign: "middle"
@@ -177,6 +199,23 @@ const DriverLandscape = () => {
                         splitLine: {
                             show: false,
                         },
+                    },
+                    tooltip: {
+                        show: true,
+                        trigger: "axis",
+                        formatter: function (params) {
+                            // params 是数组，包含当前坐标位置所有系列的数据
+                            let result = `<div style="font-weight:bold">${params[0].axisValue}</div>`;
+                            params.reverse().forEach(item => {
+                                result += `
+          <div><span style="display: inline-block; background-color:${item.color};width: 10px;height: 10px"></span><span>
+            ${t(`mutation:sample.${item.data.category}`)}: ${item.data.categoryValue}
+          </span></div>
+        `;
+                            });
+                            return result;
+                        }
+
                     },
                     series: [{
                         type: 'scatter',
@@ -189,10 +228,10 @@ const DriverLandscape = () => {
             }
 
             const getColor = (i) => {
-                if (i < 25) return commonSeries[0].color;
-                else if (i < 50) return commonSeries[1].color;
-                else if (i < 100) return commonSeries[2].color;
-                else if (i < 110) return commonSeries[3].color;
+                if (i < 25) return mutationTypeColorConfig[0].color;
+                else if (i < 50) return mutationTypeColorConfig[1].color;
+                else if (i < 100) return mutationTypeColorConfig[2].color;
+                else if (i < 110) return mutationTypeColorConfig[3].color;
                 else return "#fff"
             }
 
@@ -202,7 +241,7 @@ const DriverLandscape = () => {
                 const data = [];
 
                 // 生成HSL色轮颜色 (62色)
-                const colorPool = commonSeries.map((item) => item.color)
+                const colorPool = mutationTypeColorConfig.map((item) => item.color)
 
                 // 生成每一行数据
                 for (let row = 0; row < totalRows; row++) {
@@ -223,9 +262,9 @@ const DriverLandscape = () => {
                     } else {
                         // 其他行：3个散点区域
                         const segmentParams = [
-                            {start: 6, width: 50 + row * 1.5, density: 0.1},
-                            {start: 100, width: 50 + row * 2, density: 0.2},
-                            {start: 230, width: 60 + row * 3, density: 0.3}
+                            {start: 6, width: 30 + row * 1.5, density: 0.08},
+                            {start: 140, width: 40 + row * 2, density: 0.06},
+                            {start: 300, width: 60 + row * 3, density: 0.06}
                         ];
 
                         segmentParams.forEach((param, segIdx) => {
@@ -249,11 +288,10 @@ const DriverLandscape = () => {
                             }
                         });
                     }
-
                     data.push({
                         type: 'scatter',
                         symbol: 'rect',
-                        symbolSize: [4, 5],
+                        symbolSize: [2, 6],
                         data: rowData,
                     });
                 }
@@ -274,7 +312,7 @@ const DriverLandscape = () => {
                     yAxis: {
                         inverse: true,
                         type: 'category',
-                        data: ['29%', '28%', '9%', '9%', '9%', '7%', '7%', '5%', '4%', '4%', '4%', '4%', '4%', '4%', '3%', '3%', '3%', '3%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '2%', '1%', '2%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%', '1%'],
+                        data: geneData.current.mutation.percentage.map((value) => `${(value * 100).toFixed(0)}%`),
                         axisLabel: {
                             color: "#000",
                             interval: 0,
@@ -288,7 +326,9 @@ const DriverLandscape = () => {
                             show: false,
                         },
                     },
-
+                    tooltip: {
+                        show: false,
+                    },
                     series: rows
                 };
                 return leftChartOption
@@ -305,6 +345,7 @@ const DriverLandscape = () => {
                     tooltip: {
                         show: true,
                         trigger: "axis",
+                        extraCssText: 'min-width: 230px;'
                     },
                     xAxis: {
                         type: 'value',
@@ -322,7 +363,7 @@ const DriverLandscape = () => {
                     yAxis: {
                         inverse: true,
                         type: 'category',
-                        data: ['TP53', 'CTNNB1', 'APOB', 'ARID1A', 'ALB', 'ARID2', 'AXIN1', 'COL11A1', 'RPS6KA3', 'NFE2L2', 'KMT2D', 'RB1', 'TSC2', 'DOCK2', 'ACVR2A', 'KEAP1', 'SETD2', 'SRCAP', 'APC', 'BAP1', 'PIK3CA', 'NCOR1', 'CDKN2A', 'TNRC6B', 'HNF1A', 'SF3B1', 'VAV3', 'BRD7', 'PTEN', 'KMT2B', 'PBRM1', 'TF', 'NEFH', 'IL6ST', 'TSC1', 'DYRK1A', 'EEF1A1', 'ATRX', 'ARID1B', 'CDKN1A', 'HNF4A', 'PTPN3', 'CYP2E1', 'RPL22', 'KCNN3', 'ERRFI1', 'HNRNPA2B1', 'SLC30A1', 'FRG1', 'TLE1', 'GSE1', 'KDM6A', 'ADH1B', 'IDH1', 'SELPLG', 'HP', 'CRIP3', 'KRAS', 'ZFP36LE', 'CELF1', 'PHF10', 'RAPGEF2'],
+                        data: geneData.current?.geneList,
                         axisLabel: {
                             color: "#000",
                             interval: 0,
@@ -336,9 +377,12 @@ const DriverLandscape = () => {
                             show: false,
                         },
                     },
-                    series: commonSeries.map((item) => {
+                    series: geneData.current?.mutation?.detail.map((item) => {
+                        const series = mutationTypeColorConfig.find((_series) => _series.type == item.type);
                         return {
                             ...item,
+                            color: series.color,
+                            name: t(`mutation:type.${item.type}`),
                             type: 'bar',
                             stack: true,
                         }
@@ -364,13 +408,13 @@ const DriverLandscape = () => {
             <Row style={{width: '100%'}}>
                 <Col xs={20} md={20}>
                     <ReactECharts option={leftChartOption}
-                                  style={{width: '100%', height: "480px"}}>
+                                  style={{width: '100%', height: "490px"}}>
 
                     </ReactECharts>
                 </Col>
                 <Col xs={4} md={4}>
                     <ReactECharts option={rightChartOption}
-                                  style={{width: '100%', height: "490px"}}>
+                                  style={{width: '100%', height: "500px"}}>
 
                     </ReactECharts>
                 </Col>
@@ -380,6 +424,118 @@ const DriverLandscape = () => {
                     <ReactECharts option={bottomChartOption}
                                   style={{height: "80px", width: '100%'}}>
                     </ReactECharts>
+                </Col>
+            </Row>
+            <Row style={{width: '100%'}} algin={"center"} justify={"center"}>
+                <Col sm={6} md={6}>
+                    <Paragraph style={{textAlign: "center", margin: 0}}>Alterations</Paragraph>
+                    <Row>
+                        <Col sm={11} md={11}>
+
+                            <Paragraph className={styles.legendName}>
+                                <span className={styles.colorBlock}
+                                      style={{backgroundColor: "rgb(237, 102, 93)"}}></span>{t("mutation:type.frameShiftIndel")}
+                            </Paragraph>
+                            <Paragraph className={styles.legendName}>
+                                <span className={styles.colorBlock}
+                                      style={{backgroundColor: "rgb(114, 158, 206)"}}></span>{t("mutation:type.missense")}
+                            </Paragraph>
+                            <Paragraph className={styles.legendName}>
+                                <span className={styles.colorBlock}
+                                      style={{backgroundColor: "rgb(168, 120, 110)"}}></span>{t("mutation:type.inFrameIndel")}
+                            </Paragraph>
+                        </Col>
+                        <Col sm={13} md={13}>
+                            <Paragraph className={styles.legendName}>
+                                <span className={styles.colorBlock}
+                                      style={{backgroundColor: "rgb(255, 158, 74)"}}></span>{t("mutation:type.stopCodon")}
+                            </Paragraph>
+                            <Paragraph className={styles.legendName}>
+                                <span className={styles.colorBlock}
+                                      style={{backgroundColor: "rgb(103, 191, 92)"}}></span>{t("mutation:type.spliceSite")}
+                            </Paragraph>
+                            <Paragraph className={styles.legendName}>
+                                <span className={styles.colorBlock}
+                                      style={{backgroundColor: "rgb(173, 139, 201)"}}></span>{t("mutation:type.transtationStartSite")}
+                            </Paragraph>
+
+                        </Col>
+                    </Row>
+                </Col>
+                <Col sm={2} md={2}>
+                    <Paragraph style={{margin: 0}}>Stage</Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(255,255,240)'}}></span>Early
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(253,174,107)'}}></span>Late
+                    </Paragraph>
+                </Col>
+                <Col sm={2} md={2}>
+                    <Paragraph style={{margin: 0}}>HBV</Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(255,255,224)'}}></span>HBV-
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(110,123,139)'}}></span>HBV+
+                    </Paragraph>
+                </Col>
+                <Col sm={2} md={2}>
+                    <Paragraph style={{margin: 0}}>HCV</Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(255,255,224)'}}></span>HCV-
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(110,123,139)'}}></span>HCV+
+                    </Paragraph>
+                </Col>
+                <Col sm={2} md={2}>
+                    <Paragraph style={{margin: 0}}>Race</Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(255,247,243)'}}></span>ASIAN
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(247,104,161)'}}></span>CAUCASIAN
+                    </Paragraph>
+                </Col>
+                <Col sm={2} md={2}>
+                    <Paragraph style={{margin: 0}}>Age</Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(224,243,291)'}}>
+
+                        </span>
+                        &lt;=58
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(168,221,181)'}}>
+
+                        </span>58-88
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}>
+                        <span className={styles.colorBlock}
+                              style={{backgroundColor: 'rgb(67,162,202)'}}>
+                        </span>
+                        &gt;=88
+                    </Paragraph>
+                </Col>
+                <Col sm={2} md={2}>
+                    <Paragraph style={{margin: 0}}>Gender</Paragraph>
+                    <Paragraph className={styles.legendName}><span className={styles.colorBlock}
+                                                                   style={{backgroundColor: 'rgb(255,228,225)'}}></span>Female
+                    </Paragraph>
+                    <Paragraph className={styles.legendName}><span className={styles.colorBlock}
+                                                                   style={{backgroundColor: 'rgb(108,166,205)'}}></span>Male
+                    </Paragraph>
                 </Col>
             </Row>
         </Row>

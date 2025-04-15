@@ -14,26 +14,27 @@ import {useTranslation} from "react-i18next";
 const Layout = ({children}) => {
     const {t} = useTranslation();
     const items = [{
-        icon: <DesktopOutlined />,
+        icon: <DesktopOutlined/>,
         label: <Link href="/mutation/driver-landscape">{t("mutation:menu.driverLandscape")}</Link>,
         key: "/mutation/driver-landscape",
     }, {
-        icon: <FileOutlined />,
+        icon: <FileOutlined/>,
         label: <Link href="/mutation/phylogenetic-relationship">{t("mutation:menu.phylogeneticRelationship")}</Link>,
         key: "/mutation/phylogenetic-relationship",
     }, {
-        icon: <PieChartOutlined />,
+        icon: <PieChartOutlined/>,
         label: <Link href="/mutation/evolutionary-trajectory">{t("mutation:menu.evolutionaryTrajectory")}</Link>,
         key: "/mutation/evolutionary-trajectory",
     }]
     return (
         <Row className={styles.HCCMutation}>
-            <Col className={styles.left} xs={4} md={4}>
+            <div style={{width: "240px"}}>
                 <LeftSide title={"Mutation"} items={items}></LeftSide>
-            </Col>
-            <Col xs={20} md={20} lg={20}>
+            </div>
+
+            <div style={{width: "calc(100% - 240px)"}}>
                 {children}
-            </Col>
+            </div>
         </Row>
     );
 }

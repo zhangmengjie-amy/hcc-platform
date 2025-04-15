@@ -3,5 +3,21 @@
     "driverLandscape" : "Driver Landscape",
     "phylogeneticRelationship" : "Phylogenetic Relationship",
     "evolutionaryTrajectory": "Evolutionary Trajectory"
+  },
+  "type": {
+    "frameShiftIndel": "Frame Shift Indel",
+    "missense": "Missense",
+    "inFrameIndel": "In Frame Indel",
+    "stopCodon": "Stop Codon",
+    "spliceSite": "Splice Site",
+    "transtationStartSite": "Transtation Start Site"
+  },
+  "sample": {
+    "gender": "Gender",
+    "age": "Age",
+    "race": "Race",
+    "HCV": "HCV",
+    "HBV": "HBV",
+    "stage": "Stage"
   }
 }
