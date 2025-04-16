@@ -1,8 +1,8 @@
 {
   "menu": {
-    "driverLandscape" : "驱动景观",
-    "phylogeneticRelationship" : "系统发育关系",
-    "evolutionaryTrajectory": "进化轨迹"
+    "driverLandscape" : "肝癌样本突变瀑布图",
+    "phylogeneticRelationship" : "患者进化树",
+    "evolutionaryTrajectory": "肝癌进化自然史示意图"
   },
   "type": {
     "frameShiftIndel": "Frame Shift Indel",
