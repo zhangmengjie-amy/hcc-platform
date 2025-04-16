@@ -150,8 +150,8 @@ const HomeContent = () => {
         image: "/images/gene.png",
         title: 'Clinical Outcomes',
         text: 'Analyzing treatment responses and survival patterns.',
-        width: 512,
-        height: 512
+        width: 406,
+        height: 405
     }]
     const onSearch = () => {
         router.push("/search?text=TP53");

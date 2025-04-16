@@ -48,8 +48,6 @@ const DriverLandscape = () => {
 
 
         fetchData().then(() => {
-            console.log(geneData.current);
-            console.log(clinicData.current);
             const buildTopChartOption = () => {
                 const topChartSeries = mutationTypeColorConfig.map((configItem, index) => {
                     return {
