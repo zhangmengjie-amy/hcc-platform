@@ -212,6 +212,10 @@ const HomeContent = () => {
                                                height={40}>
                                         </Image>
                                         <Title level={4}
+                                               ellipsis={{
+                                                   rows: 1,
+                                                   expandable: false
+                                               }}
                                                style={{
                                                    color: "rgb(20, 40, 80)",
                                                    marginTop: "15px"
@@ -264,7 +268,10 @@ const HomeContent = () => {
                                                     />
                                                 }
                                             >
-                                                <Title level={5}>
+                                                <Title level={5} ellipsis={{
+                                                    rows: 1,
+                                                    expandable: false
+                                                }}>
                                                     {item.title}
                                                 </Title>
                                                 <Paragraph className={styles.description} ellipsis={{
@@ -273,7 +280,7 @@ const HomeContent = () => {
                                                 }} style={{
                                                     textAlign: "left",
                                                     marginBottom: 0,
-                                                    color: "rgb(20, 40, 80)"
+                                                    color: "rgb(20, 40, 80)",
                                                 }}>{item.text}</Paragraph>
                                                 <Title level={5} ellipsis={{
                                                     rows: 1,
