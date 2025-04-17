@@ -393,7 +393,7 @@ const DriverLandscape = () => {
             setRightChartOption(buildRightChartOption());
             setLeftChartOption(buildLeftChartOption())
         });
-    }, []);
+    }, [t]);
 
     return (
         <Row style={{width: "100%"}}>
