@@ -1,21 +1,20 @@
-"use client";
 import React from 'react';
 import {AntdRegistry} from '@ant-design/nextjs-registry';
 import {LanguageProvider} from '@/contexts/LanguageContext';
 import HCCFooter from "@/components/footer";
 import HCCHeader from "@/components/header";
+import {cookies} from 'next/headers';
 import {Affix} from 'antd';
 import "./globals.css";
 
 export default function RootLayout({children}) {
+    const serverCookie = cookies().get('i18next')?.value;
     return (
-        <html lang="en">
+        <html>
         <body>
-        <LanguageProvider>
+        <LanguageProvider lng={serverCookie}>
             <AntdRegistry>
-                <Affix offsetTop={1}>
-                    <HCCHeader></HCCHeader>
-                </Affix>
+                <HCCHeader></HCCHeader>
                 {children}
                 <HCCFooter></HCCFooter>
             </AntdRegistry>

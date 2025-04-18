@@ -1,6 +1,7 @@
 "use client";
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useEffect, useContext, useState} from 'react';
 import i18n from '@/utils/i18n'; // Path to your i18n setup
+import {useCookies} from "react-cookie";
 
 const LanguageContext = createContext({
     language: 'en', setLanguage: () => {
@@ -9,9 +10,11 @@ const LanguageContext = createContext({
 
 export const useLanguage = () => useContext(LanguageContext);
 
-
-export const LanguageProvider = ({children}) => {
-    const [language, setLanguage] = useState('en'); // Default language
+export const LanguageProvider = ({children, lng}) => {
+    const [language, setLanguage] = useState("en"); // Default language
+    useEffect(() => {
+        i18n?.changeLanguage(lng);
+    }, [lng]);
 
     const handleLanguageChange = (newLanguage) => {
         setLanguage(newLanguage);

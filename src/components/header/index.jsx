@@ -1,31 +1,21 @@
 "use client";
-import React, {useEffect} from 'react';
+import React from 'react';
 import i18n from 'i18next';
-import {Layout, Menu, Flex, Typography} from 'antd';
+import {Layout, Affix, Menu, Flex, Typography} from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter, usePathname} from 'next/navigation';
 import styles from "./style.module.scss";
-import {useLanguage} from '@/contexts/LanguageContext'
 import {useTranslation} from 'react-i18next';
+import Language from "@/components/lng"
 
 const {Header} = Layout;
 const {Title} = Typography;
 
 const HCCHeader = () => {
-
     const {t} = useTranslation();
-    const {language, setLanguage} = useLanguage(i18n?.language);
     const router = useRouter();
     const pathname = usePathname();
-    const handleLanguage = () => {
-        const newLanguage = i18n?.language === "zh" ? "en" : "zh";
-        setLanguage(newLanguage);
-    }
-
-    const showLanguage = () => {
-        return language === "zh" ? "中" : "en"
-    }
     const items = [
         {
             label: <Link href="/home">{t('home:header.home')}</Link>,
@@ -85,33 +75,28 @@ const HCCHeader = () => {
     }
 
     return (
-        <Header className={styles.hccHeader} style={{backgroundColor: "rgb(20, 40, 80)"}}>
-            <Flex align={"center"}>
-                <Title level={2} style={{marginBottom: 0, color: "#fff"}}>HCC</Title>
-                <Menu className={styles.hccMenu} mode="horizontal"
-                      triggerSubMenuAction={"click"}
-                      items={items}
-                      theme={"dark"}
-                      defaultSelectedKeys={"/home"}
-                      selectedKeys={getPathName()}
-                      style={{
-                          marginLeft: "20px",
-                          backgroundColor: "transparent",
-                          flex: 1,
-                          minWidth: 0
-                      }}
-                />
-                <span style={{marginBottom: 0, color: "#fff"}}>{showLanguage()}</span>
-                <Image
-                    onClick={handleLanguage}
-                    className={styles.globe}
-                    src="/images/globe.svg"
-                    alt="globe"
-                    width={25}
-                    height={25}
-                />
-            </Flex>
-        </Header>
+        <Affix offsetTop={1}>
+            <Header className={styles.hccHeader} style={{backgroundColor: "rgb(20, 40, 80)"}}>
+                <Flex align={"center"}>
+                    <Title level={2} style={{marginBottom: 0, color: "#fff"}}>HCC</Title>
+                    <Menu className={styles.hccMenu} mode="horizontal"
+                          triggerSubMenuAction={"click"}
+                          items={items}
+                          theme={"dark"}
+                          defaultSelectedKeys={"/home"}
+                          selectedKeys={getPathName()}
+                          style={{
+                              marginLeft: "20px",
+                              backgroundColor: "transparent",
+                              flex: 1,
+                              minWidth: 0
+                          }}
+                    />
+                    <Language></Language>
+                </Flex>
+            </Header>
+        </Affix>
+
     );
 }
 export default HCCHeader;

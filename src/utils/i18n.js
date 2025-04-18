@@ -1,12 +1,11 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import {initReactI18next} from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from "i18next-resources-to-backend";
 const lng = 'en';
 const fallbackLng = 'en';
 const languages = ["en", 'zh'];
-const defaultNS = ['common','home','mutation'];
-const cookieName = 'i18next';
+const defaultNS = ['common', 'home', 'mutation'];
 
 i18n
     .use(initReactI18next)
@@ -20,7 +19,7 @@ i18n
         defaultNS,
         fallbackNS: defaultNS,
         detection: {
-            order: ["path", "htmlTag", "cookie", "navigator"],
+            order: ["cookie", "navigator"],
         },
         preload: languages
     });
