@@ -1,7 +1,7 @@
 {
   "menu": {
-    "driverLandscape" : "Driver Landscape",
-    "phylogeneticRelationship" : "Phylogenetic Relationship",
+    "driverLandscape": "Driver Landscape",
+    "phylogeneticRelationship": "Phylogenetic Relationship",
     "evolutionaryTrajectory": "Evolutionary Trajectory"
   },
   "type": {
@@ -10,14 +10,54 @@
     "inFrameIndel": "In Frame Indel",
     "stopCodon": "Stop Codon",
     "spliceSite": "Splice Site",
-    "transtationStartSite": "Transtation Start Site"
+    "transtationStartSite": "Transtation Start Site",
+    "Frame_Shift_Del": "Frame Shift Indel",
+    "In_Frame_Del": "In Frame Indel",
+    "Nonstop_Mutation": "Nonstop Mutation",
+    "Splice_Site": "Splice Site",
+    "Translation_Start_Site": "Translation Start Site",
+    "Missense_Mutation": "Missense"
   },
+  "select-count": "Selection",
+  "selection-placeholder": "No Gene Selection",
   "sample": {
     "gender": "Gender",
+    "Female": "Female",
+    "Male": "Male",
     "age": "Age",
+    "age-lessthan58": "<58",
+    "age-between58and68": "58-68",
+    "age-morethan68": ">58",
     "race": "Race",
-    "HCV": "HCV",
-    "HBV": "HBV",
-    "stage": "Stage"
+    "Asian": "ASIAN",
+    "Caucasian": "CAUCASIAN",
+    "Cambodia": "Cambodia",
+    "Chinese": "Chinese",
+    "Filipino": "Filipino",
+    "Indian": "Indian",
+    "Indonesian": "Indonesian",
+    "Malay": "Malay",
+    "Sikh": "Sikh",
+    "Thai": "Thai",
+    "Vietnamese": "Vietnamese",
+    "hcv": "HCV",
+    "hcv-positive": "Positive",
+    "hcv-negative": "Negative",
+    "hbv": "HBV",
+    "hbv-positive": "Positive",
+    "hbv-negative": "Negative",
+    "stage": "Stage",
+    "stage-early": "Early",
+    "stage-late": "Late"
+  },
+  "driver": {
+    "driver": "Driver",
+    "not-driver": "Not Driver",
+    "check-all-driver": "Check All Driver"
+  },
+  "filter": {
+    "gene": "Filter By Gene",
+    "clinic": "Filter By clinic",
+    "driver": "Filter By Driver"
   }
 }

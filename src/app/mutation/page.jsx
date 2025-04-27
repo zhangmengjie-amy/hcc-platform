@@ -1,7 +1,7 @@
-import DriverLandscape from "@/components/mutation/driverLandscape";
+import Mutation from "@/components/mutation";
 
 export default function Page() {
     return (
-        <DriverLandscape></DriverLandscape>
+        <Mutation></Mutation>
     );
 }

@@ -26,11 +26,11 @@
     "react-countup": "^6.5.3",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.4.1",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-window": "^1.8.11",
     "sass": "^1.86.3",
     "sharp": "^0.34.1"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.28"
   }
 }

@@ -9,8 +9,6 @@ import styles from "./style.module.scss";
 import {useTranslation} from 'react-i18next';
 import Language from "@/components/lng"
 
-const {Header} = Layout;
-const {Title} = Typography;
 
 const HCCHeader = () => {
     const {t} = useTranslation();
@@ -27,7 +25,7 @@ const HCCHeader = () => {
                 height={15}/>,
         },
         {
-            label: <Link href="/mutation/driver-landscape">{t('home:header.mutation')}</Link>,
+            label: <Link href="/mutation">{t('home:header.mutation')}</Link>,
             key: '/mutation',
             icon: <Image
                 src="/images/mutation.svg"
@@ -64,27 +62,18 @@ const HCCHeader = () => {
                 height={18}/>,
         },
     ];
-    const getPathName = () => {
-        if (pathname.split('/')[1] === "mutation") {
-            return "/mutation"
-        }
-        if (pathname === "/") {
-            return "/home"
-        }
-        return pathname
-    }
 
     return (
         <Affix offsetTop={1}>
-            <Header className={styles.hccHeader} style={{backgroundColor: "rgb(20, 40, 80)"}}>
+            <Layout.Header className={styles.hccHeader} style={{backgroundColor: "rgb(20, 40, 80)"}}>
                 <Flex align={"center"}>
-                    <Title level={2} style={{marginBottom: 0, color: "#fff"}}>HCC</Title>
+                    <Typography.Title level={2} style={{marginBottom: 0, color: "#fff"}}>HCC</Typography.Title>
                     <Menu className={styles.hccMenu} mode="horizontal"
                           triggerSubMenuAction={"click"}
                           items={items}
                           theme={"dark"}
                           defaultSelectedKeys={"/home"}
-                          selectedKeys={getPathName()}
+                          selectedKeys={pathname == "/" ? "/home" : pathname}
                           style={{
                               marginLeft: "20px",
                               backgroundColor: "transparent",
@@ -94,7 +83,7 @@ const HCCHeader = () => {
                     />
                     <Language></Language>
                 </Flex>
-            </Header>
+            </Layout.Header>
         </Affix>
 
     );
