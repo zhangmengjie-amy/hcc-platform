@@ -6,7 +6,7 @@ import Image from 'next/image';
 import * as echarts from "echarts";
 import ReactECharts from 'echarts-for-react';
 import {useTranslation} from "react-i18next";
-import {useRouter, usePathname} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import CountUp from 'react-countup';
 
 const {Content} = Layout;
@@ -17,7 +17,6 @@ const {Search} = Input;
 const HomeContent = () => {
     const {t} = useTranslation();
     const router = useRouter();
-    const [searchValue, setSearchValue] = useState("");
     const dataStaticList = [{
         icon: "/images/total-patients.svg",
         title: 12345,
@@ -157,7 +156,7 @@ const HomeContent = () => {
         router.push("/search?text=TP53");
     }
     return (
-        <Content className={styles.hccContent}
+        <Layout.Content className={styles.hccContent}
                  style={{background: "linear-gradient(to top, rgb(235, 242, 255), #ffffff)"}}>
             <Row justify={"center"}>
                 <Col xs={22} sm={22} md={22} lg={22}>
@@ -189,12 +188,12 @@ const HomeContent = () => {
                                                }}>
                                             <CountUp start={0} end={item.title} separator=","/>
                                         </Title>
-                                        <Paragraph ellipsis={{
+                                        <Typography.Paragraph ellipsis={{
                                             rows: 1,
                                             expandable: false
                                         }} style={{marginBottom: 0, color: "rgb(20, 40, 80)"}}>
                                             {item.text}
-                                        </Paragraph>
+                                        </Typography.Paragraph>
                                     </Flex>
                                 </Col>
                             })
@@ -300,7 +299,7 @@ const HomeContent = () => {
                     </Carousel>
                 </Col>
             </Row>
-        </Content>
+        </Layout.Content>
     );
 }
 export default HomeContent;

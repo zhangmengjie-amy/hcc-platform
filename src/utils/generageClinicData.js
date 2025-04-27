@@ -22,8 +22,8 @@ const generageClinicData = () => {
     samples.push({
       sample: `sample${i}`,
       stage: stages[Math.floor(Math.random() * stages.length)],
-      HBV: hbvHcvStatuses[Math.floor(Math.random() * hbvHcvStatuses.length)],
-      HCV: hbvHcvStatuses[Math.floor(Math.random() * hbvHcvStatuses.length)],
+      hbv: hbvHcvStatuses[Math.floor(Math.random() * hbvHcvStatuses.length)],
+      hcv: hbvHcvStatuses[Math.floor(Math.random() * hbvHcvStatuses.length)],
       race: races[Math.floor(Math.random() * races.length)],
       age: Math.floor(Math.random() * 51) + 50, // 50-100随机年龄
       gender: genders[Math.floor(Math.random() * genders.length)],

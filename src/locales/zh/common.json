@@ -1,4 +1,8 @@
 {
   "hcc": "肝癌",
-  "learnMore": "查看更多"
+  "learnMore": "查看更多",
+  "changeLanguage": "切换语言",
+  "reload": "重置",
+  "reset-selection": "重置筛选",
+  "search": "搜索"
 }

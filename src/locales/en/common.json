@@ -1,4 +1,8 @@
 {
   "hcc": "HCC",
-  "learnMore": "View More"
+  "learnMore": "View More",
+  "changeLanguage": "Change Language",
+  "reload": "reload",
+  "reset-selection": "Reset Selection",
+  "search": "Search"
 }

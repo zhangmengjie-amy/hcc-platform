@@ -1,0 +1,86 @@
+.mutationSplitter {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  :global(.ant-splitter-bar) {
+    margin: 0 20px;
+  }
+  :global(.ant-splitter-bar-collapse-bar) {
+    opacity: 1 !important;
+  }
+  :global(.ant-select-selection-overflow-item-rest) {
+    :global(.ant-tag) {
+      background-color: #f0f0f0 !important;
+      border-color: #f0f0f0 !important;
+      color: #000 !important;
+    }
+  }
+  :global(.ant-select-selector) {
+    border: none !important;
+  }
+  :global(.ant-tag) {
+    padding: 0 3px;
+    margin-right: 2px;
+  }
+  .checkAllDriver {
+    width: 100%;
+    border-top: 2px solid #d9edf7;
+    padding-top: 5px;
+    font-weight: 500;
+  }
+  .searchPanel {
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #d9edf7;
+
+    .searchCollapse {
+      margin: 15px;
+      overflow: hidden;
+
+      :global(input):hover {
+        outline: none;
+        border-color: rgb(29, 86, 126)
+      }
+
+      :global(input):focus {
+        outline: none;
+        border-color: rgb(29, 86, 126)
+      }
+
+      :global(.ant-collapse-expand-icon) {
+        margin-inline-start: 0 !important;
+      }
+
+      :global(.ant-collapse-header) {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+      }
+
+      :global(.ant-card-head) {
+        padding: 0 10px;
+        min-height: 50px;
+      }
+
+      :global(.ant-card-body) {
+        padding: 10px 15px;
+      }
+
+      :global(.ant-collapse-header) {
+        border-radius: 0 !important;
+        background-color: rgb(29, 86, 126);
+        color: #fff !important;
+      }
+
+      :global(.ant-collapse-content-box) {
+        padding: 0 !important;
+      }
+    }
+
+    :global(.ant-collapse-header) {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+
