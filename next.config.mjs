@@ -12,16 +12,24 @@ const nextConfig = {
     sassOptions: {
         includePaths: [path.join(__dirname, "styles")],
     },
-    transpilePackages: [
-        'antd',
-        '@ant-design',
-    ],
-    transpilePackages: ['antd'], // 显式转换特定包
+    transpilePackages: ['antd', 'd3', 'phylotree', '@ant-design'], // 显式转换特定包
     swcMinify: true,
+    experimental: {
+        esmExternals: 'loose'
+    },
     compiler: {
         styledComponents: true,
         reactRemoveProperties: true,
         removeConsole: process.env.NODE_ENV === 'production',
+    },
+    webpack: (config) => {
+        // 添加 fs 模块的忽略
+        config.resolve.fallback = {
+            fs: false,
+            // 其他需要忽略的模块
+        };
+
+        return config;
     },
     i18n: {
         locales: ['en', 'zh'], // 支持的语言

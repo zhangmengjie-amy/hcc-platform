@@ -10,7 +10,7 @@ const {Title, Paragraph} = Typography;
 const HCCFooter = () => {
     const {t} = useTranslation();
     return (
-        <Footer className={styles.HCCFooter} style={{backgroundColor: "rgb(20, 40, 80)", color: "#fff"}}>
+        <Footer className={styles.HCCFooter}>
             <Row>
                 <Col sm={12} md={6} lg={6} style={{padding: "0 20px"}}>
                     <Title style={{color: "#fff"}} level={5}>{t("home:footer.aboutHccPlatform.title")}</Title>

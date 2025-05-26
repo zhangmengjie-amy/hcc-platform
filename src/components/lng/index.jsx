@@ -20,7 +20,7 @@ const Language = () => {
         return i18n?.language === "zh" ? "中" : "en"
     }
     return (
-        <Tooltip placement="bottom" title={t("common:changeLanguage")} color={"blue"}>
+        <Tooltip placement="bottom" title={t("common:changeLanguage")}>
             <Button color="default" variant="text" style={{color: "#fff"}}><span
                 style={{marginBottom: 0, color: "#fff"}}>{showLanguage()}</span>
                 <Image
