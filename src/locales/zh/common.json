@@ -4,5 +4,11 @@
   "changeLanguage": "切换语言",
   "reload": "重置",
   "reset-selection": "重置筛选",
-  "search": "搜索"
+  "search": "搜索",
+  "apply": "应用",
+  "exportPdf": "导出PDF",
+  "generatePdf": "正在生成PDF...",
+  "pdfExportSuccess": "PDF导出成功！",
+  "pdfExportFailed": "PDF导出失败!",
+  "pdfServiceUnavailable": "Export service unavailable!"
 }

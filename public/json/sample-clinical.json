@@ -1,0 +1,3874 @@
+[
+    {
+        "sampleId": "ITH_01_T1",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T10",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T11",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T2",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T3",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T4",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T5",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T6",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T7",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T8",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_01_T9",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 44,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_05_T1",
+        "gender": "Male",
+        "race": "Cambodia",
+        "age": 59,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_05_T2",
+        "gender": "Male",
+        "race": "Cambodia",
+        "age": 59,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_06_T1",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage Ib"
+    },
+    {
+        "sampleId": "ITH_06_T2",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage Ib"
+    },
+    {
+        "sampleId": "ITH_06_T3",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage Ib"
+    },
+    {
+        "sampleId": "ITH_06_T4",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage Ib"
+    },
+    {
+        "sampleId": "ITH_06_T5",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage Ib"
+    },
+    {
+        "sampleId": "ITH_07_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 30,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_07_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 30,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_07_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 30,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_07_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 30,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_07_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 30,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_08_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_08_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_08_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_08_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_09_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_09_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_09_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_09_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_09_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_09_T6",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_100_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 52,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_100_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 52,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_100_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 52,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_100_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 52,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_100_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 52,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_101_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_101_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_101_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_101_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_101_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_102_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 36,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_102_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 36,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_102_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 36,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_102_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 36,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_102_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 36,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_103_T1",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_103_T2",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_103_T3",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_103_T4",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_104_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_104_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_104_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_104_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 58,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_105_T1",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_105_T2",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_105_T3",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_105_T4",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_105_T5",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_106_MF1T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_106_MF1T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_106_MF1T3",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_106_MF1T4",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_106_MF2T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_106_MF2T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 62,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF1T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF1T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF1T3",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF1T4",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF1T5",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF2T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_107_MF2T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_108_MF1T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_108_MF1T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_108_MF1T3",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_109_MF1T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_109_MF1T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_109_MF1T3",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_109_MF1T4",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_109_MF1T5",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_110_MF1T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_110_MF1T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_110_MF1T3",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_110_MF1T4",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_110_MF1T5",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_111_T1",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_111_T2",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_111_T3",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_111_T4",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_111_T5",
+        "gender": "Male",
+        "race": "Filipino",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM  Stage II"
+    },
+    {
+        "sampleId": "ITH_112_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_112_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_112_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_112_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_112_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_114_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_114_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_114_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_115_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_115_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_117_T1",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 62,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_117_T3",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 62,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_118_T1",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 57,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_118_T2",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 57,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_119_T1",
+        "gender": "Male",
+        "race": "Sikh",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_120_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_120_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_121_T1",
+        "gender": "Male",
+        "race": "Others",
+        "age": 77,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_121_T2",
+        "gender": "Male",
+        "race": "Others",
+        "age": 77,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_121_T3",
+        "gender": "Male",
+        "race": "Others",
+        "age": 77,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_122_T1",
+        "gender": "Male",
+        "race": "Others",
+        "age": 56,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_122_T2",
+        "gender": "Male",
+        "race": "Others",
+        "age": 56,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_122_T3",
+        "gender": "Male",
+        "race": "Others",
+        "age": 56,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_122_T4",
+        "gender": "Male",
+        "race": "Others",
+        "age": 56,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_123_T1",
+        "gender": "Female",
+        "race": "Others",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_123_T2",
+        "gender": "Female",
+        "race": "Others",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_124_T1",
+        "gender": "Male",
+        "race": "Others",
+        "age": 59,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_124_T2",
+        "gender": "Male",
+        "race": "Others",
+        "age": 59,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_124_T3",
+        "gender": "Male",
+        "race": "Others",
+        "age": 59,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_125_T1",
+        "gender": "Male",
+        "race": "Others",
+        "age": 55,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_125_T2",
+        "gender": "Male",
+        "race": "Others",
+        "age": 55,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_125_T3",
+        "gender": "Male",
+        "race": "Others",
+        "age": 55,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_125_T4",
+        "gender": "Male",
+        "race": "Others",
+        "age": 55,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_126_MF1T1",
+        "gender": "Male",
+        "race": "Others",
+        "age": 43,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_126_MF1T2",
+        "gender": "Male",
+        "race": "Others",
+        "age": 43,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_126_MF1T3",
+        "gender": "Male",
+        "race": "Others",
+        "age": 43,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_126_MF1T4",
+        "gender": "Male",
+        "race": "Others",
+        "age": 43,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_126_MF2_T1",
+        "gender": "Male",
+        "race": "Others",
+        "age": 43,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_127_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 52,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_127_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 52,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_127_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 52,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_128_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_128_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_128_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_128_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_128_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_129_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 72,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_129_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 72,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_13_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 81,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_13_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 81,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_13_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 81,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_13_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 81,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_13_T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 81,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_13_T6",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 81,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_130_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_130_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_130_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_131_T1",
+        "gender": "Male",
+        "race": "Vietnamese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_131_T2",
+        "gender": "Male",
+        "race": "Vietnamese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_131_T3",
+        "gender": "Male",
+        "race": "Vietnamese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_131_T4",
+        "gender": "Male",
+        "race": "Vietnamese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_131_T5",
+        "gender": "Male",
+        "race": "Vietnamese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_131_T6",
+        "gender": "Male",
+        "race": "Vietnamese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_132_T1",
+        "gender": "Female",
+        "race": "Others",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_132_T2",
+        "gender": "Female",
+        "race": "Others",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_132_T3",
+        "gender": "Female",
+        "race": "Others",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_133_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_133_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_134_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_134_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_134_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_134_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_135_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_135_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_135_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_135_T4;T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_136_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_136_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_136_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_136_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_136_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_137_T1;T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_138_T1",
+        "gender": "Female",
+        "race": "Others",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_138_T2",
+        "gender": "Female",
+        "race": "Others",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_15_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_15_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_16_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_16_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_16_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_16_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_17_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_17_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_17_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 78,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_18_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 50,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_18_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 50,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_18_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 50,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_18_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 50,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_20_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_20_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_21_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_21_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_21_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_22_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_22_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_22_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 53,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_23_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_23_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_24_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_24_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_24_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_24_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_24_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_25_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 82,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_25_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 82,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_25_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 82,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_26_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 77,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_26_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 77,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_26_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 77,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_27_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_27_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_27_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_27_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_29_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_29_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_29_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_31_T1",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_31_T2",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_31_T3",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_31_T4",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_31_T5",
+        "gender": "Male",
+        "race": "Indonesian",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_32_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_32_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_32_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_32_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_32_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_33_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_33_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_34_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 88,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_34_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 88,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_34_T6",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 88,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_34_T8",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 88,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_35_T1",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 80,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_35_T2",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 80,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_35_T3",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 80,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_36_T1",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_36_T2",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_36_T3",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_36_T4",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_37_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_37_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_37_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_37_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_37_T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_39_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_39_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_39_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_40_T1",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_40_T2",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_40_T3",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_40_T4",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_40_T5",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_41_T1",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_41_T2",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_41_T3",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_41_T4",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_41_T5",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_42_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_42_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_42_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_42_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_43_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_43_T10",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_43_T13",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_43_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_43_T7",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_44_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_44_T11",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_44_T18",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_44_T6",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_45_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_45_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_45_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_45_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_45_T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_48_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_48_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_48_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_48_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_49_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_49_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 51,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_50_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_50_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_50_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_50_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_50_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 79,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_51_T1",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_51_T2",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_51_T3",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_51_T4",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_51_T5",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_52_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_52_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_52_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_52_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_52_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_53_MF1T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_53_MF2T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_53_MF2T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 67,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_54_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_54_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_55_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_55_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_55_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_55_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_55_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 70,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_56_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_56_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_57_MF1T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_57_MF2T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_57_MF2T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_58_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_58_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_58_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_59_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_59_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_59_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_59_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_60_T1",
+        "gender": "Male",
+        "race": "Other",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_60_T2",
+        "gender": "Male",
+        "race": "Other",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_60_T3",
+        "gender": "Male",
+        "race": "Other",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_60_T4",
+        "gender": "Male",
+        "race": "Other",
+        "age": 61,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIB"
+    },
+    {
+        "sampleId": "ITH_61_T1",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_61_T2",
+        "gender": "Female",
+        "race": "Malay",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_62_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_62_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_63_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_63_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_63_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_63_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_63_T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_64_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_64_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_64_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_64_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_65_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_65_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_65_T3_repeat",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_65_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_66_T1",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 55,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_66_T2",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 55,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_66_T3",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 55,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_66_T4",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 55,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_66_T5",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 55,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_67_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_67_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_67_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_67_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_67_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_68_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 62,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_68_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 62,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_69_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_69_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_69_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_69_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_69_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_70_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_70_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_70_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_70_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_71_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_71_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IA"
+    },
+    {
+        "sampleId": "ITH_72_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_72_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_72_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_72_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_72_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 60,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_73_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_73_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_73_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_73_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 47,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_74_MF1_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_74_MF1_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_74_MF1_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_74_MF1_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_74_MF1_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_74_MF2_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_74_MF2_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 64,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage III A"
+    },
+    {
+        "sampleId": "ITH_75_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_75_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_75_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_75_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_75_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 80,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_76_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_76_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_76_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_76_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_76_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 68,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_77_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_77_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_77_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_77_T4",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_77_T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_78_T1",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_78_T2",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_79_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_79_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_79_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_80_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_80_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_80_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_80_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_80_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_81_T1",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_81_T2",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_81_T3",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 71,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_82_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_82_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_82_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_82_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_82_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 71,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_83_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_83_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_83_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_83_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_83_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_84_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_84_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_84_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_84_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_84_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_85_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_85_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_85_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 65,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_86_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_86_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_86_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_86_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_86_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_87_T1",
+        "gender": "Male",
+        "race": "Other",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_87_T2",
+        "gender": "Male",
+        "race": "Other",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_87_T3",
+        "gender": "Male",
+        "race": "Other",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_87_T4",
+        "gender": "Male",
+        "race": "Other",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_87_T5",
+        "gender": "Male",
+        "race": "Other",
+        "age": 65,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_88_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_88_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_88_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 63,
+        "viralStatus": "C",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_89_T1",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 23,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_89_T2",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 23,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_89_T3",
+        "gender": "Male",
+        "race": "Indian",
+        "age": 23,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_90_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_90_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_90_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_90_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_90_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 66,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_91_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_91_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_91_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_91_T4",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_91_T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 73,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_92_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_92_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_92_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_92_T4;T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 54,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_93_T1",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_93_T2",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_93_T3",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_93_T4;T5",
+        "gender": "Female",
+        "race": "Chinese",
+        "age": 74,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_94_T1",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_94_T2",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_94_T3",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_94_T4;T5",
+        "gender": "Male",
+        "race": "Chinese",
+        "age": 75,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage II"
+    },
+    {
+        "sampleId": "ITH_95_T1",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_95_T2",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_95_T3;T4",
+        "gender": "Male",
+        "race": "Malay",
+        "age": 69,
+        "viralStatus": "0",
+        "tnmStageV8": "TNM Stage IIIA"
+    },
+    {
+        "sampleId": "ITH_96_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_96_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_96_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_96_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_96_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 57,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_97_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_97_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_97_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_97_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_97_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_98_T1",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_98_T2",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_98_T3",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_98_T4",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_98_T5",
+        "gender": "Male",
+        "race": "Thai",
+        "age": 61,
+        "viralStatus": "B/C",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_99_T1",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_99_T2",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    },
+    {
+        "sampleId": "ITH_99_T3",
+        "gender": "Female",
+        "race": "Thai",
+        "age": 76,
+        "viralStatus": "B",
+        "tnmStageV8": "TNM Stage IB"
+    }
+]

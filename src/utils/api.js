@@ -1,10 +1,14 @@
 // utils/request.ts
 import axios from 'axios';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // 创建 Axios 实例
 const request = axios.create({
-  baseURL: '/', // 设置 baseURL 为项目的根目录
-  timeout: 5000, // 请求超时设置
+  baseURL: apiUrl, // 设置 baseURL 为项目的根目录
+  timeout: 20000, // 请求超时设置
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
 
 // 封装 GET 请求
@@ -14,18 +18,16 @@ export const get = async (url) => {
     return response.data; // 返回数据
   } catch (error) {
     console.error(`Error fetching data from GET request: ${url}`, error);
-    throw error;
   }
 };
 
 // 封装 POST 请求
 export const post = async (url, data) => {
   try {
-    const response = await request.post(url, data);
+    const response = await request.post(url, JSON.stringify(data));
     return response.data;
   } catch (error) {
     console.error(`Error fetching data from POST request: ${url}`, error);
-    throw error;
   }
 };
 
@@ -36,7 +38,6 @@ export const put = async (url, data) => {
     return response.data;
   } catch (error) {
     console.error(`Error fetching data from PUT request: ${url}`, error);
-    throw error;
   }
 };
 
@@ -47,6 +48,6 @@ export const del = async (url) => {
     return response.data;
   } catch (error) {
     console.error(`Error fetching data from DELETE request: ${url}`, error);
-    throw error;
+
   }
 };

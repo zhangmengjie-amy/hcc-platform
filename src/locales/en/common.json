@@ -4,5 +4,11 @@
   "changeLanguage": "Change Language",
   "reload": "reload",
   "reset-selection": "Reset Selection",
-  "search": "Search"
+  "search": "Search",
+  "apply": "Apply",
+  "exportPdf": "Export PDF",
+  "generatePdf": "Generating PDF...",
+  "pdfExportSuccess": "PDF export successful!",
+  "pdfExportFailed": "PDF export failed!",
+  "pdfServiceUnavailable": "Export service unavailable!"
 }

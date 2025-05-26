@@ -1,761 +1,252 @@
-[
-  {
-    "gene": "TP53",
-    "Missense_Mutation": 130,
-    "Frame_Shift_Del": 2,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 28,
-    "Translation_Start_Site": 0,
-    "total_count": 160,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "CTNNB1",
-    "Missense_Mutation": 145,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 145,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "KMT2B",
-    "Missense_Mutation": 38,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 5,
-    "Translation_Start_Site": 0,
-    "total_count": 43,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "KMT2D",
-    "Missense_Mutation": 34,
-    "Frame_Shift_Del": 4,
-    "In_Frame_Del": 3,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 41,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "KEAP1",
-    "Missense_Mutation": 36,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 4,
-    "Translation_Start_Site": 0,
-    "total_count": 40,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "APOB",
-    "Missense_Mutation": 27,
-    "Frame_Shift_Del": 5,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 5,
-    "Translation_Start_Site": 0,
-    "total_count": 37,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "ARID1A",
-    "Missense_Mutation": 13,
-    "Frame_Shift_Del": 20,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 3,
-    "Translation_Start_Site": 0,
-    "total_count": 36,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "COL11A1",
-    "Missense_Mutation": 24,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 4,
-    "Translation_Start_Site": 0,
-    "total_count": 28,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "SETD2",
-    "Missense_Mutation": 22,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 22,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "ACVR2A",
-    "Missense_Mutation": 22,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 22,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "AXIN1",
-    "Missense_Mutation": 5,
-    "Frame_Shift_Del": 8,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 5,
-    "Translation_Start_Site": 0,
-    "total_count": 18,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "TSC2",
-    "Missense_Mutation": 9,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 8,
-    "Translation_Start_Site": 0,
-    "total_count": 18,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "TF",
-    "Missense_Mutation": 10,
-    "Frame_Shift_Del": 8,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 18,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "PIK3CA",
-    "Missense_Mutation": 9,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 5,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 4,
-    "Translation_Start_Site": 0,
-    "total_count": 18,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "HNRNPA2B1",
-    "Missense_Mutation": 9,
-    "Frame_Shift_Del": 3,
-    "In_Frame_Del": 5,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 17,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "PTEN",
-    "Missense_Mutation": 9,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 6,
-    "Translation_Start_Site": 0,
-    "total_count": 15,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "CDKN2A",
-    "Missense_Mutation": 0,
-    "Frame_Shift_Del": 9,
-    "In_Frame_Del": 3,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 3,
-    "Translation_Start_Site": 0,
-    "total_count": 15,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "TSC1",
-    "Missense_Mutation": 12,
-    "Frame_Shift_Del": 3,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 15,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "DOCK2",
-    "Missense_Mutation": 9,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 5,
-    "Translation_Start_Site": 0,
-    "total_count": 14,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "ARID1B",
-    "Missense_Mutation": 7,
-    "Frame_Shift_Del": 3,
-    "In_Frame_Del": 3,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 13,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "APC",
-    "Missense_Mutation": 7,
-    "Frame_Shift_Del": 5,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 1,
-    "Translation_Start_Site": 0,
-    "total_count": 13,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "SRCAP",
-    "Missense_Mutation": 4,
-    "Frame_Shift_Del": 3,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 5,
-    "Translation_Start_Site": 0,
-    "total_count": 12,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "SF3B1",
-    "Missense_Mutation": 9,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 2,
-    "Translation_Start_Site": 0,
-    "total_count": 11,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "RAPGEF2",
-    "Missense_Mutation": 10,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 10,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "NCOR1",
-    "Missense_Mutation": 4,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 3,
-    "Translation_Start_Site": 0,
-    "total_count": 8,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "RPS6KA3",
-    "Missense_Mutation": 5,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 2,
-    "Translation_Start_Site": 0,
-    "total_count": 8,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "RPL22",
-    "Missense_Mutation": 4,
-    "Frame_Shift_Del": 2,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 2,
-    "Translation_Start_Site": 0,
-    "total_count": 8,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "VAV3",
-    "Missense_Mutation": 7,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 7,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "BRD7",
-    "Missense_Mutation": 0,
-    "Frame_Shift_Del": 3,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 4,
-    "Translation_Start_Site": 0,
-    "total_count": 7,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "SLC30A1",
-    "Missense_Mutation": 7,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 7,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "KDM6A",
-    "Missense_Mutation": 4,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 2,
-    "Translation_Start_Site": 0,
-    "total_count": 6,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "PBRM1",
-    "Missense_Mutation": 2,
-    "Frame_Shift_Del": 2,
-    "In_Frame_Del": 2,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 6,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "KCNN3",
-    "Missense_Mutation": 5,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 5,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "ERRFI1",
-    "Missense_Mutation": 1,
-    "Frame_Shift_Del": 4,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 5,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "TLE1",
-    "Missense_Mutation": 1,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 3,
-    "Translation_Start_Site": 0,
-    "total_count": 5,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "ADH1B",
-    "Missense_Mutation": 5,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 5,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "GSE1",
-    "Missense_Mutation": 5,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 5,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "PHF10",
-    "Missense_Mutation": 5,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 5,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "NEFH",
-    "Missense_Mutation": 4,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 4,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "FRG1",
-    "Missense_Mutation": 3,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 1,
-    "Translation_Start_Site": 0,
-    "total_count": 4,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "HNF4A",
-    "Missense_Mutation": 4,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 4,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "PTPN3",
-    "Missense_Mutation": 3,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 3,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "DYRK1A",
-    "Missense_Mutation": 3,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 3,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "CRIP3",
-    "Missense_Mutation": 1,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 2,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "CELF1",
-    "Missense_Mutation": 2,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 2,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "IDH1",
-    "Missense_Mutation": 2,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 2,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "BAP1",
-    "Missense_Mutation": 2,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 2,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "ZFP36L1",
-    "Missense_Mutation": 1,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 1,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "SELPLG",
-    "Missense_Mutation": 1,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 1,
-    "is_driver_gene": 1
-  },
-  {
-    "gene": "TTN",
-    "Missense_Mutation": 168,
-    "Frame_Shift_Del": 5,
-    "In_Frame_Del": 5,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 178,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MUC12",
-    "Missense_Mutation": 154,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 154,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MUC16",
-    "Missense_Mutation": 146,
-    "Frame_Shift_Del": 2,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 3,
-    "Translation_Start_Site": 0,
-    "total_count": 151,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MUC3A",
-    "Missense_Mutation": 141,
-    "Frame_Shift_Del": 4,
-    "In_Frame_Del": 1,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 146,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "HLA-A",
-    "Missense_Mutation": 125,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 3,
-    "Translation_Start_Site": 0,
-    "total_count": 128,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "AHNAK2",
-    "Missense_Mutation": 121,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 2,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 123,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MT-ND5",
-    "Missense_Mutation": 99,
-    "Frame_Shift_Del": 22,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 121,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MUC17",
-    "Missense_Mutation": 107,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 107,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MUC5AC",
-    "Missense_Mutation": 88,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 1,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 1,
-    "Translation_Start_Site": 0,
-    "total_count": 90,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "TAS2R43",
-    "Missense_Mutation": 86,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 86,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "HLA-C",
-    "Missense_Mutation": 62,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 21,
-    "Translation_Start_Site": 0,
-    "total_count": 84,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "LILRB3",
-    "Missense_Mutation": 77,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 77,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "KMT2C",
-    "Missense_Mutation": 55,
-    "Frame_Shift_Del": 2,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 19,
-    "Translation_Start_Site": 0,
-    "total_count": 76,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MT-ND4",
-    "Missense_Mutation": 66,
-    "Frame_Shift_Del": 6,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 2,
-    "Translation_Start_Site": 0,
-    "total_count": 74,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "MT-CYB",
-    "Missense_Mutation": 66,
-    "Frame_Shift_Del": 2,
-    "In_Frame_Del": 1,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 69,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "PCLO",
-    "Missense_Mutation": 63,
-    "Frame_Shift_Del": 6,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 69,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "HRNR",
-    "Missense_Mutation": 62,
-    "Frame_Shift_Del": 4,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 66,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "HMCN1",
-    "Missense_Mutation": 60,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 6,
-    "Translation_Start_Site": 0,
-    "total_count": 66,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "FLG",
-    "Missense_Mutation": 63,
-    "Frame_Shift_Del": 0,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 0,
-    "Translation_Start_Site": 0,
-    "total_count": 63,
-    "is_driver_gene": 0
-  },
-  {
-    "gene": "ABCA13",
-    "Missense_Mutation": 56,
-    "Frame_Shift_Del": 1,
-    "In_Frame_Del": 0,
-    "Nonstop_Mutation": 0,
-    "Splice_Site": 4,
-    "Translation_Start_Site": 0,
-    "total_count": 61,
-    "is_driver_gene": 0
-  }
+{
+  "records": [
+    {
+        "gene": "APC",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ARID1B",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ATRX",
+        "isDriverGene": true
+    },
+    {
+        "gene": "CELF1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "CRIP3",
+        "isDriverGene": true
+    },
+    {
+        "gene": "DOCK2",
+        "isDriverGene": true
+    },
+    {
+        "gene": "DYRK1A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ERRFI1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "FRG1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "GSE1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "HNF1A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "HP",
+        "isDriverGene": true
+    },
+    {
+        "gene": "IDH1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "KCNN3",
+        "isDriverGene": true
+    },
+    {
+        "gene": "KDM6A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "KMT2B",
+        "isDriverGene": true
+    },
+    {
+        "gene": "KMT2D",
+        "isDriverGene": true
+    },
+    {
+        "gene": "NEFH",
+        "isDriverGene": true
+    },
+    {
+        "gene": "PBRM1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "PHF10",
+        "isDriverGene": true
+    },
+    {
+        "gene": "PTPN3",
+        "isDriverGene": true
+    },
+    {
+        "gene": "RAPGEF2",
+        "isDriverGene": true
+    },
+    {
+        "gene": "SETD2",
+        "isDriverGene": true
+    },
+    {
+        "gene": "SLC30A1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "TF",
+        "isDriverGene": true
+    },
+    {
+        "gene": "TLE1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "TNRC6B",
+        "isDriverGene": true
+    },
+    {
+        "gene": "VAV3",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ZFP36L1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ACVR2A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ADH1B",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ALB",
+        "isDriverGene": true
+    },
+    {
+        "gene": "APOB",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ARID1A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "ARID2",
+        "isDriverGene": true
+    },
+    {
+        "gene": "AXIN1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "BAP1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "BRD7",
+        "isDriverGene": true
+    },
+    {
+        "gene": "CDKN1A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "CDKN2A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "COL11A1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "CTNNB1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "CYP2E1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "EEF1A1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "HNF4A",
+        "isDriverGene": true
+    },
+    {
+        "gene": "HNRNPA2B1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "IL6ST",
+        "isDriverGene": true
+    },
+    {
+        "gene": "KEAP1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "KRAS",
+        "isDriverGene": true
+    },
+    {
+        "gene": "NCOR1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "NFE2L2",
+        "isDriverGene": true
+    },
+    {
+        "gene": "PIK3CA",
+        "isDriverGene": true
+    },
+    {
+        "gene": "PTEN",
+        "isDriverGene": true
+    },
+    {
+        "gene": "RB1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "RPL22",
+        "isDriverGene": true
+    },
+    {
+        "gene": "RPS6KA3",
+        "isDriverGene": true
+    },
+    {
+        "gene": "SELPLG",
+        "isDriverGene": true
+    },
+    {
+        "gene": "SF3B1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "SRCAP",
+        "isDriverGene": true
+    },
+    {
+        "gene": "TP53",
+        "isDriverGene": true
+    },
+    {
+        "gene": "TSC1",
+        "isDriverGene": true
+    },
+    {
+        "gene": "TSC2",
+        "isDriverGene": true
+    }
 ]
+}

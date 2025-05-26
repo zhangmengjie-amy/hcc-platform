@@ -1,25 +1,16 @@
 .mutationSplitter {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: auto !important;
   :global(.ant-splitter-bar) {
-    margin: 0 20px;
+    width: 3px;
+    background: rgb(42, 114, 165)
+
   }
-  :global(.ant-splitter-bar-collapse-bar) {
-    opacity: 1 !important;
-  }
-  :global(.ant-select-selection-overflow-item-rest) {
-    :global(.ant-tag) {
-      background-color: #f0f0f0 !important;
-      border-color: #f0f0f0 !important;
-      color: #000 !important;
-    }
-  }
+
   :global(.ant-select-selector) {
     border: none !important;
   }
-  :global(.ant-tag) {
-    padding: 0 3px;
-    margin-right: 2px;
-  }
+
   .checkAllDriver {
     width: 100%;
     border-top: 2px solid #d9edf7;
@@ -30,7 +21,7 @@
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    background-color: #d9edf7;
+    // background-color: #d9edf7;
 
     .searchCollapse {
       margin: 15px;
@@ -43,17 +34,12 @@
 
       :global(input):focus {
         outline: none;
-        border-color: rgb(29, 86, 126)
-      }
-
-      :global(.ant-collapse-expand-icon) {
-        margin-inline-start: 0 !important;
+        border-color: rgb(29, 86, 126);
       }
 
       :global(.ant-collapse-header) {
         display: flex;
         align-items: center;
-        padding: 5px 10px;
       }
 
       :global(.ant-card-head) {
@@ -66,8 +52,6 @@
       }
 
       :global(.ant-collapse-header) {
-        border-radius: 0 !important;
-        background-color: rgb(29, 86, 126);
         color: #fff !important;
       }
 
