@@ -26,6 +26,8 @@ export async function GET(request) {
       timeout: 30000 // 30秒超时
     });
 
+    await page.waitForSelector('.echarts-for-react ');
+
     // 生成PDF
     const fullHeight = await page.evaluate(() => document.body.scrollHeight);
     

@@ -685,7 +685,7 @@ const Mutation = () => {
                         return <Col xs={12} md={12} lg={12} key={item.key}>
                             <Timeline
                                 items={[{
-                                    dot: <Image src={`/images/${item.key}.svg`} width={15} height={15} alt={item.key}></Image>,
+                                    dot: <Image src={`/images/${item.key == "tnmStageV8" ? "tnm-stage-v8" : item.key}.svg`} width={15} height={15} alt={item.key}></Image>,
                                     children: <Checkbox.Group value={clinicList[item.key]} onChange={(value) => { onClinicChange(value, item.key) }} key={index}>
                                         <Row key={item.key}>
                                             <Typography.Title
