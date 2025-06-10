@@ -31,6 +31,16 @@ export const getFullMutations = async () => {
     }
 };
 
+export const getPatientList = async () => {
+    try {
+        const geneData = await fetch(`/json/hcc-patient.json`);
+        return geneData?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
 export const getGeneChart = async (data) => {
     try {
         const geneData = await post('/hcc/v1/mutation/gene-list', data); // 获取 public/json/hcc-gene.json 文件

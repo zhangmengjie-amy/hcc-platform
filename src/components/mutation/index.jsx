@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { getGeneList, getFullMutations, getFullClinical } from "@/configs/request";
-import { CaretRightOutlined, LoadingOutlined, DownloadOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
+import { getGeneList } from "@/configs/request";
+import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
 import { FixedSizeList } from 'react-window';
 import { debounce } from 'lodash';
 import EmptyLoading from "@/components/emptyLoading";
@@ -28,13 +28,12 @@ import {
     Empty,
     Upload,
     Segmented,
-    Skeleton,
+    Slider,
     message
 } from 'antd';
 import DriverLandscape from "@/components/mutation/driverLandscape";
 import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
 import { useTranslation } from "react-i18next";
-import { mutationTypeColorConfig, clinicColorConfig } from "@/configs/mutation";
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 import styles from "./style.module.scss";
@@ -47,12 +46,10 @@ const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
 const EXPORT_PDF = "/images/export.svg";
 const DRIVER_COLORS = ["rgb(210, 235, 227)", "rgb(205, 205, 205)"];
-const DEFAULT_LEFT_PANEL_WIDTH = "25%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
+const DEFAULT_LEFT_PANEL_WIDTH = "20%";
+const DEFAULT_RIGHT_PANEL_WIDTH = "80%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
-const DEFAULT_IS_DRIVER_GENE = true;
-
 
 
 const Mutation = () => {
@@ -62,6 +59,7 @@ const Mutation = () => {
     const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
     const [sampleType, setSampleType] = useState("bySample");
     const [applyLoading, setApplyLoading] = useState(false);
+    const [sliderValue, setSliderValue] = useState([0, 1]);
     const [messageApi, contextHolder] = message.useMessage();
     const [showSearchInput, setShowSearchInput] = useState(false);
     const [params, setParams] = useState({});
@@ -83,7 +81,6 @@ const Mutation = () => {
     const geneRef = useRef(null);
     const listRef = useRef(null);
     const paramsRef = useRef(null);
-    const [result, setResult] = useState(null);
 
     useEffect(() => {
         setFetchLoading(true);
@@ -150,6 +147,10 @@ const Mutation = () => {
             geneList: getGeneListWithIsDeriverGene(driverList)
         };
     }
+    const handleDNAReload = (event) => {
+        event.stopPropagation();
+        setSliderValue([0, 1])
+    }
 
     const handleDriverReload = (event) => {
         event.stopPropagation();
@@ -182,7 +183,6 @@ const Mutation = () => {
 
 
     const handleApply = useCallback(() => {
-        console.log(paramsRef.current)
         setParams(paramsRef.current);
         // dispatch({ type: 'driver_landscape_filter_conditions', payload: {
         //     ...params,
@@ -241,14 +241,14 @@ const Mutation = () => {
     }
 
     const onClinicChange = (value, parent) => {
-        if (value?.length === 0) {
-            messageApi.open({
-                type: 'warning',
-                content: "You have no selected selection, you will get all samples",
-                duration: 2,
-                maxCount: 3
-            });
-        }
+        // if (value?.length === 0) {
+        //     messageApi.open({
+        //         type: 'warning',
+        //         content: "You have no selected selection, you will get all samples",
+        //         duration: 2,
+        //         maxCount: 3
+        //     });
+        // }
 
         setClinicList({
             ...clinicList,
@@ -265,7 +265,6 @@ const Mutation = () => {
             return;
         }
         setDriverList(value);
-        console.log(value, geneList, getSelectedDriverList())
         if (value.length == 1) {
             if (value[0] == "driver") {
                 paramsRef.current = {
@@ -414,7 +413,8 @@ const Mutation = () => {
                     style={{ padding: 0, margin: 0, color: "#fff", fontWeight: "bold" }}>
                     {t("mutation:select-count")} {geneList?.length || 0}
                 </Button>
-                <Tooltip placement="bottom" title={"Import"}>
+
+                {/* <Tooltip placement="bottom" title={"Import"}>
                     <Upload {...uploadProps} onClick={(event) => {
                         handleImport(event)
                     }}>
@@ -429,7 +429,7 @@ const Mutation = () => {
                         </Button>
                     </Upload>
 
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip placement="bottom" title={"Search"}>
                     <Button color="default" onClick={(event) => {
                         handleSearch(event)
@@ -459,6 +459,46 @@ const Mutation = () => {
                 </Tooltip>
             </Space>
         </Flex>
+    }
+
+    const DNACollapseTitle = () => {
+        return <Flex justify={"space-between"} align={"center"}>
+            <Typography.Paragraph
+                ellipsis={{
+                    rows: 1,
+                    expandable: false
+                }}
+                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.DNA_ITH")}</Typography.Paragraph>
+            <Space>
+                <Tooltip placement="bottom" title={t("common:reset-selection")}>
+                    <Button color="default" onClick={(event) => {
+                        handleDNAReload(event)
+                    }} variant="text"
+                        style={{ color: "#fff", padding: 0 }}>
+                        <Image
+                            src={RELOAD_ICON}
+                            alt="reload"
+                            width={16}
+                            height={16}
+                            tooltip={t("common:reload")}
+                        />
+                    </Button>
+                </Tooltip>
+            </Space>
+        </Flex>
+    }
+
+    const DNACollapseContent = () => {
+        return <Slider value={sliderValue} onChange={setSliderValue} tooltip={{
+            placement: 'top',
+        }} style={{ margin: "50px 20px 20px 20px" }} min={0} max={1} step={0.01} styles={{
+            track: {
+                background: 'transparent',
+            },
+            tracks: {
+                background: `linear-gradient(to right, rgb(44, 114, 185) 0%, rgb(250, 200, 88) 50%, rgb(234, 36, 42) 100%)`,
+            },
+        }} range={{ draggableTrack: true }} defaultValue={[0, 1]} />
     }
 
     const loadMoreGene = useCallback(
@@ -621,8 +661,6 @@ const Mutation = () => {
         </Card>
     }
 
-
-
     const clinicCollapseTitle = () => {
         return <Flex justify={"space-between"} align={"center"}>
             <Typography.Paragraph
@@ -648,33 +686,6 @@ const Mutation = () => {
             </Tooltip>
         </Flex>
     }
-
-    const mutationTypeCollapseTitle = () => {
-        return <Flex justify={"space-between"} align={"center"}>
-            <Typography.Paragraph
-                ellipsis={{
-                    rows: 1,
-                    expandable: false
-                }}
-                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{"Filter By Mutation Type"}</Typography.Paragraph>
-
-            <Tooltip placement="bottom" title={t("common:reset-selection")}>
-                <Button color="default" onClick={(event) => {
-                    handleMutationTypeReload(event)
-                }} variant="text"
-                    style={{ color: "#fff", padding: 0 }}>
-                    <Image
-                        src={RELOAD_ICON}
-                        alt="reload"
-                        width={16}
-                        height={16}
-                        tooltip={t("common:reload")}
-                    />
-                </Button>
-            </Tooltip>
-        </Flex>
-    }
-
 
     const clinicCollapseContent = () => {
         return <Card className={styles.clinicCard} style={{ height: 240, overflowY: "scroll", overflowX: "hidden" }}
@@ -719,8 +730,8 @@ const Mutation = () => {
         <>
             {contextHolder}
             <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
-                <Panel className={styles.searchPanel} size={leftPanelSize} min={"30%"} max="50%">
-                    <Affix offsetTop={65}>
+                <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
+                    <Affix offsetTop={64.1}>
                         <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", padding: "10px 0 10px 15px", background: "rgb(210, 235, 227)" }}>
                             <Button color="default" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary" size="large"
                                 style={{ color: "#fff", background: geneList?.length ? "rgb(212, 110, 64)" : "gray" }}>
@@ -738,41 +749,58 @@ const Mutation = () => {
                             </Button>
                         </Flex>
                     </Affix>
-                    <Collapse
-                        defaultActiveKey={"gene"}
-                        className={styles.searchCollapse}
-                        expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
-                        items={[{
-                            key: "gene",
-                            label: geneCollapseTitle(),
-                            children: geneCollapseContent()
-                        }]}>
-                    </Collapse>
-                    <Collapse
-                        defaultActiveKey={"driver"}
-                        className={styles.searchCollapse}
-                        expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
-                        items={[{
-                            key: "driver",
-                            label: driverCollapseTitle(),
-                            children: driverCollapseContent()
+                    {
+                        mutationTypeTab === "phylogeneticRelationship" && <Collapse
+                            defaultActiveKey={"HNA_ITH"}
+                            className={styles.searchCollapse}
+                            expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                            items={[{
+                                key: "HNA_ITH",
+                                label: DNACollapseTitle(),
+                                children: DNACollapseContent()
+                            }]}>
+                        </Collapse>
+                    }
+                    {
+                        mutationTypeTab === "driverLandscape" && <>
+                            <Collapse
+                                defaultActiveKey={"gene"}
+                                className={styles.searchCollapse}
+                                expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                                items={[{
+                                    key: "gene",
+                                    label: geneCollapseTitle(),
+                                    children: geneCollapseContent()
+                                }]}>
+                            </Collapse>
+                            <Collapse
+                                defaultActiveKey={"driver"}
+                                className={styles.searchCollapse}
+                                expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                                items={[{
+                                    key: "driver",
+                                    label: driverCollapseTitle(),
+                                    children: driverCollapseContent()
 
-                        }]}>
-                    </Collapse>
-                    <Collapse
-                        defaultActiveKey={"clinic"}
-                        className={styles.searchCollapse}
-                        expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
-                        items={[{
-                            key: "clinic",
-                            label: clinicCollapseTitle(),
-                            children: clinicCollapseContent()
+                                }]}>
+                            </Collapse>
+                            <Collapse
+                                defaultActiveKey={"clinic"}
+                                className={styles.searchCollapse}
+                                expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                                items={[{
+                                    key: "clinic",
+                                    label: clinicCollapseTitle(),
+                                    children: clinicCollapseContent()
 
-                        }]}>
-                    </Collapse>
+                                }]}>
+                            </Collapse></>
+                    }
+
+
                 </Panel>
-                <Panel size={rightPanelSize} min={"50%"} max="70%">
-                    <Affix offsetTop={65}>
+                <Panel size={rightPanelSize} min={"50%"} max="80%">
+                    <Affix offsetTop={64.1}>
                         <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", height: "60px", paddingRight: 15, background: "rgb(210, 235, 227)" }}>
                             <Flex align='center'>
                                 <Button color="default" variant="text"
@@ -787,7 +815,9 @@ const Mutation = () => {
                                 </Button>
 
                                 <Segmented
-                                    options={[{ label: 'Driver Landscape', value: "driverLandscape", icon: <ApartmentOutlined /> }, { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship', icon: <BranchesOutlined /> }]}
+                                    options={[{ label: 'Driver Landscape', value: "driverLandscape", icon: <ApartmentOutlined /> },
+                                        //  { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship', icon: <BranchesOutlined /> }
+                                        ]}
                                     value={mutationTypeTab}
                                     onChange={value => setMutationTypeTab(value)}
                                 />

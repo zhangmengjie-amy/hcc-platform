@@ -5,14 +5,15 @@ import {
     Skeleton,
     Empty
 } from 'antd';
-const EmptyLoading = ({ hasData, loading, children }) => {
+const EmptyLoading = ({ hasData = false, showEmpty = true, loading, children }) => {
     return (
         <Spin spinning={loading}>
             {
                 loading ? <Skeleton active></Skeleton> : (
                     hasData ? children :
-                        <Empty style={{ width: '100%', padding: "20px" }}>
-                        </Empty>
+                        !showEmpty ? children :
+                            <Empty style={{ width: '100%', padding: "20px" }}>
+                            </Empty>
                 )
             }
         </Spin>

@@ -6,23 +6,23 @@ import ClinicChart from './clinicChart';
 import GeneChart from './geneChart';
 import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
+import EmptyLoading from "@/components/emptyLoading";
 import ChartsLegend from "./chartsLegend";
-import { sample } from 'lodash';
 
 const DriverLandscape = ({ handleApplyLoading, conditions }) => {
     const [sampleMutations, setSampleMutations] = useState(null);
-    const [genesCategories, setGenesCategories] = useState(null);
     const [genesMutations, setGenesMutations] = useState(null);
     const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
     const [sampleCategories, setSampleCategories] = useState(null);
     const [height, setHeight] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [clinicList, setClinicList] = useState(null);
     const [finialGeneList, setFinialGeneList] = useState(null);
     const fullMutationsRef = useRef(null);
-    const fullClinicalRef = useRef(null);
     useEffect(() => {
         if (!conditions?.geneList) return;
         handleApplyLoading?.(true);
+        setLoading(true);
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
 
@@ -32,7 +32,6 @@ const DriverLandscape = ({ handleApplyLoading, conditions }) => {
                 sampleWorker.onmessage = (event) => {
                     const result = event.data;
                     setSampleMutations(result.sampleMutations);
-                    setGenesCategories(result.genesCategories);
                     setGenesMutations(result.genesMutations);
                     setSampleGenesMutations(result.sampleGenesMutations);
                     setFinialGeneList(result.finialGeneList);
@@ -41,6 +40,7 @@ const DriverLandscape = ({ handleApplyLoading, conditions }) => {
                     setHeight(result.finialGeneList.length * 10 + 30);
                 };
                 handleApplyLoading?.(false);
+                setLoading(false);
             });
         } catch (error) {
 

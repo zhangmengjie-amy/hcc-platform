@@ -1,26 +1,15 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ReactECharts from 'echarts-for-react';
-import { useTranslation } from "react-i18next";
 import EmptyLoading from "@/components/emptyLoading";
-import {
-    Spin,
-    Skeleton,
-    Empty
-} from 'antd';
-
-import { mutationTypeColorConfig } from "@/configs/mutation";
-
 
 const GeneChart = ({ genesMutations, finialGeneList, height }) => {
-    const { t } = useTranslation();
 
     const [rightChartOption, setRightChartOption] = useState({});
     const [loading, setLoading] = useState(true);
-    const geneRef = useRef(null);
-
     useEffect(() => {
+    setLoading(true);
         if (!genesMutations || !finialGeneList) return;
         const option = buildRightChartOption();
         setRightChartOption(option);
@@ -75,20 +64,17 @@ const GeneChart = ({ genesMutations, finialGeneList, height }) => {
                     show: false,
                 },
             },
-            barCategoryGap: '0%',
-            barGap: '0%',
             series: genesMutations
         };
         return rightChartOption
     }
 
     return (
-        <EmptyLoading loading={loading} hasData={!!genesMutations?.length}>
-            <ReactECharts option={rightChartOption}
-                style={{ width: '100%', height: height }}>
+        <EmptyLoading loading={loading} showEmpty={true} hasData={!!genesMutations?.length}>
+            <ReactECharts option={rightChartOption} opts={{ renderer: 'svg' }}
+                style={{ width: '100%', height: height, marginTop: "-20px" }}>
             </ReactECharts>
         </EmptyLoading>
-
     );
 }
 export default GeneChart;

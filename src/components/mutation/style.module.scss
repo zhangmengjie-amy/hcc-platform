@@ -1,6 +1,7 @@
 .mutationSplitter {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: auto !important;
+  min-height: 100%;
   :global(.ant-splitter-bar) {
     width: 3px;
     background: rgb(42, 114, 165)
@@ -40,6 +41,7 @@
       :global(.ant-collapse-header) {
         display: flex;
         align-items: center;
+        background-color: rgb(29, 86, 126);
       }
 
       :global(.ant-card-head) {

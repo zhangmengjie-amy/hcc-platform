@@ -18,6 +18,7 @@
     "Splice_Site": "Splice Site",
     "Translation_Start_Site": "Translation Start Site",
     "Missense_Mutation": "Missense",
+    "Multi_Hit": "Multi Hit",
     "UTR": "UTR",
     "Frank": "Frank",
     "COULD_NOT_DETERMINE": "COULD NOT DETERMINE",
@@ -62,12 +63,12 @@
     "hbv-negative": "Negative",
     "positive": "Positive",
     "negative": "Negative",
-    "tnmStageV8": "Stage",
-    "TNM Stage II": "TNM Stage II",
-    "TNM Stage IA": "TNM Stage IA",
-    "TNM Stage IB": "TNM Stage IB",
-    "TNM Stage IIIA": "TNM Stage IIIA",
-    "TNM Stage IIIB": "TNM Stage IIIB"
+    "tnmStageV8": "TNM Stage",
+    "TNM Stage II": "II",
+    "TNM Stage IA": "IA",
+    "TNM Stage IB": "IB",
+    "TNM Stage IIIA": "IIIA",
+    "TNM Stage IIIB": "IIIB"
   },
   "driver": {
     "driver": "Driver",
@@ -77,6 +78,7 @@
   "filter": {
     "gene": "Filter By Gene",
     "clinic": "Filter By clinic",
-    "driver": "Filter By Driver"
+    "driver": "Filter By Driver",
+    "DNA_ITH": "Filter By DNA ITH"
   }
 }

@@ -4,13 +4,9 @@ import React from 'react';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import ReduxProvider from '@/contexts/ReduxProvider';
 import { LanguageProvider } from '@/contexts/LanguageContext';
-import HCCFooter from "@/components/footer";
-import HCCHeader from "@/components/header";
-import { cookies } from 'next/headers';
-import store from '@/store';
 import { ConfigProvider } from 'antd';
 export default function RootLayout({ children }) {
-    const serverCookie = cookies().get('i18next')?.value;
+
     return (
         <html>
             <body>
@@ -29,7 +25,6 @@ export default function RootLayout({ children }) {
                                 footerBg: 'rgb(29, 86, 126)', // 直接修改 Header 背景色
                             },
                             Collapse: {
-                                headerBg: 'rgb(29, 86, 126)', // 直接修改 Header 背景色
                                 headerPadding: "2px 10px"
                             },
                             Checkbox: {
@@ -78,11 +73,8 @@ export default function RootLayout({ children }) {
                             }
                         },
                     }}>
-                        <LanguageProvider lng={serverCookie}>
+                        <LanguageProvider>
                             <ReduxProvider>
-                                {/* <HCCHeader></HCCHeader>
-                                {children}
-                                <HCCFooter></HCCFooter> */}
                                 {children}
                             </ReduxProvider>
                         </LanguageProvider>

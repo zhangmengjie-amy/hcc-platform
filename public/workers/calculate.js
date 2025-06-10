@@ -1,37 +1,37 @@
 
 
-const mutationTypeColorConfig = {
+let mutationTypeColorConfig = {
     Missense_Mutation: "rgb(114, 158, 206)",
     Stop_Codon: "rgb(255, 158, 74)",
     Splice_Site: "rgb(103, 191, 92)",
     TSS: "rgb(173, 139, 201)",
     Frame_Shift_Indel: "rgb(237, 102, 93)",
     In_Frame_Indel: "rgb(168, 120, 110)",
-
+    Multi_Hit: "rgb(255, 0, 255)"
 }
 
 const clinicColorConfig = {
     tnmStageV8: {
-        "TNM Stage IB": 'rgb(63, 125, 88)',
-        "TNM Stage IA": 'rgb(239, 239, 239)',
-        "TNM Stage II": 'rgb(201, 87, 146)',
-        "TNM Stage IIIA": "rgb(235, 91, 0)",
-        "TNM Stage IIIB": "rgb(96, 181, 255)"
+        "TNM Stage IA": 'rgb(255, 245, 240)',
+        "TNM Stage IB": "rgb(252, 187, 161)",
+        "TNM Stage II": 'rgb(251, 106, 74)',
+        "TNM Stage IIIA": "rgb(239, 59, 44)",
+        "TNM Stage IIIB": "rgb(203, 24, 29)"
     },
     age: {
-        "<20": "rgb(248, 250, 252)",
+        "<20": "rgb(242, 250, 248)",
         "20-39": "rgb(211, 238, 152)",
         "40-59": "rgb(160, 214, 131)",
         "60-79": "rgb(114, 191, 120)",
         ">=80": "rgb(83, 125, 93)",
     },
     hbv: {
-        "positive": "rgb(255,255,224)",
-        "negative": "rgb(110,123,139)"
+        positive: "rgb(255,255,224)",
+        negative: "rgb(110,123,139)"
     },
     hcv: {
-        "positive": "rgb(255,255,224)",
-        "negative": "rgb(110,123,139)"
+        positive: "rgb(255,255,224)",
+        negative: "rgb(110,123,139)"
     },
     race: {
         Asian: 'rgb(20, 61, 96)',
@@ -55,62 +55,22 @@ const clinicColorConfig = {
 
 self.onmessage = async ({ data }) => {
     if (data.key === "driverLandscape") {
-        const { data: { originalMutations, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, sampleType: sampleType, ...clinicCondition } } } = data;
-        const filteredMutations = filterSampleByClinicAndConditions(originalMutations, clinicCondition, geneList);
-
+        const { data: { originalMutations, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, sampleType: sampleType, ...clinicList } } } = data;
+        const filteredMutations = filterSampleByConditions(originalMutations, clinicList, geneList);
+        mutationTypeColorConfig = sortMutationTypeColorConfig(filteredMutations);
         const finialGeneList = sortGeneListByPercentage(filteredMutations, geneList);
-
-        // const finialMutations = sortMutations(filteredMutations, [...finialGeneList].reverse());
-
         let finialMutations = [];
         if (sampleType == "bySample") {
             const { samplesIds } = maf2oncoprintdf(filteredMutations, [...finialGeneList].reverse());
             finialMutations = sortSamplesBySampleIds(filteredMutations, samplesIds);
+            let blankMutationSample = finialMutations.filter((mutation) => !mutation.mutations?.length);
+            blankMutationSample = mergePatients(blankMutationSample, finialGeneList);
+            const mutationSample = finialMutations.filter((mutation) => !!mutation.mutations?.length);
+            finialMutations = [...mutationSample, ...blankMutationSample];
         } else {
-            finialMutations = sortSampleByPatients(filteredMutations,  [...finialGeneList].reverse());
+            finialMutations = mergePatients(filteredMutations, finialGeneList);
         }
-
-        const finialClinicList = finialMutations.map((item) => {
-            let ageColor;
-                if (item.age < 20) {
-                    ageColor = clinicColorConfig["age"]["<20"];
-                } else if (item.age < 40) {
-                    ageColor = clinicColorConfig["age"]["20-39"];
-                } else if (item.age < 60) {
-                    ageColor = clinicColorConfig["age"]["40-59"];
-                } else if (item.age < 80) {
-                    ageColor = clinicColorConfig["age"]["60-79"];
-                } else {
-                    ageColor = clinicColorConfig["age"][">=80"];
-                }
-            return {
-                sampleId: item.sampleId,
-                gender: {
-                    value: item.gender,
-                    color: clinicColorConfig.gender[item.gender]
-                },
-                race: {
-                    value: item.race,
-                    color: clinicColorConfig.race[item.race]
-                },
-                age: {
-                    value: item.age,
-                    color: ageColor
-                },
-                hcv: {
-                    value: item.hcv,
-                    color: clinicColorConfig.hcv[item.hcv]
-                },
-                hbv: {
-                    value: item.hbv,
-                    color: clinicColorConfig.hbv[item.hbv]
-                },
-                tnmStageV8: {
-                    value: item.tnmStageV8,
-                    color: clinicColorConfig.tnmStageV8[item.tnmStageV8]
-                },
-            }
-        })
+        const finialClinicList = formatClinicList(finialMutations);
         const sampleMutations = generateSamplesMutations(finialMutations, finialGeneList);
         const sampleCategories = getSampleCategories(finialMutations);
         const genesMutations = generateGenesMutations(finialMutations, finialGeneList);
@@ -119,19 +79,69 @@ self.onmessage = async ({ data }) => {
     }
 };
 
+const formatClinicList = (finialMutations) => {
+    return finialMutations.map((item) => {
+        const ageGroup =
+            item.age < 20 ? "<20" :
+                item.age < 40 ? "20-39" :
+                    item.age < 60 ? "40-59" :
+                        item.age < 80 ? "60-79" : ">=80";
+        const clinicProperties = ['gender', 'race', 'hcv', 'hbv', 'tnmStageV8'];
+
+        const result = {
+            sampleId: item.sampleId,
+            age: {
+                value: item.age,
+                color: clinicColorConfig.age[ageGroup]
+            }
+        };
+
+        clinicProperties.forEach(prop => {
+            result[prop] = {
+                value: item[prop],
+                color: clinicColorConfig[prop][item[prop]]
+            };
+        });
+
+        return result;
+    });
+}
+
+const sortMutationTypeColorConfig = (samples) => {
+    const mutationCounts = Object.keys(mutationTypeColorConfig).map(type => {
+        const allSampleWitCurrentType = samples.flatMap(item =>
+            item.mutations?.filter(mutation => {
+                const { gene, isDriver, ...mutations } = mutation;
+                return type === "Multi_Hit"
+                    ? Object.keys(mutations).length > 1
+                    : Object.keys(mutations).length === 1 && mutations[type];
+            }) || []
+        );
+        return { [type]: allSampleWitCurrentType.length };
+    }).sort((a, b) => Object.values(b)[0] - Object.values(a)[0]);
+
+    return Object.fromEntries(
+        mutationCounts.map(item => [
+            Object.keys(item)[0],
+            mutationTypeColorConfig[Object.keys(item)[0]]
+        ])
+    );
+};
+
+
 const sortSampleByPatients = (samples, geneList) => {
-const groupedSamples = samples.reduce((acc, current) => {
-    const patientId = current.sampleId.split('_').slice(0, 2).join('_');
-    if (!acc[patientId]) {
-        acc[patientId] = [];
-    }
-    acc[patientId].push(current);
-    return acc;
-}, {});
+    const groupedSamples = samples.reduce((acc, current) => {
+        const patientId = current.sampleId.split('_').slice(0, 2).join('_');
+        if (!acc[patientId]) {
+            acc[patientId] = [];
+        }
+        acc[patientId].push(current);
+        return acc;
+    }, {});
 
-let result = [];
+    let result = [];
 
-// 将对象转换为数组，并对每个患者的样本进行排序
+    // 将对象转换为数组，并对每个患者的样本进行排序
     Object.entries(groupedSamples)
         .forEach(([_, patientSamples]) => {
             const { samplesIds } = maf2oncoprintdf(patientSamples, geneList);
@@ -143,35 +153,20 @@ let result = [];
 }
 
 function sortSamplesBySampleIds(originalData, sampleIds) {
-    // 创建一个映射，以便快速查找样本位置
-    const sampleIdToIndex = {};
-    sampleIds.forEach((id, index) => {
-        sampleIdToIndex[id] = index;
-    });
+    const sampleIdSet = new Set(sampleIds);
 
-    // 过滤掉sampleIds中不存在的样本（如果需要保留所有样本，可以去掉这个filter）
-    const filteredData = originalData.filter(sample =>
-        sampleIds.includes(sample.sampleId)
-    );
-
-    // 按照sampleIds的顺序排序
-    return filteredData.sort((a, b) => {
-        return sampleIdToIndex[a.sampleId] - sampleIdToIndex[b.sampleId];
-    });
+    return originalData
+        .filter(sample => sampleIdSet.has(sample.sampleId)) // 过滤
+        .sort((a, b) => sampleIds.indexOf(a.sampleId) - sampleIds.indexOf(b.sampleId)); // 排序
 }
 
-
 function maf2oncoprintdf(mafData, geneList = null, options = {}) {
-    // 默认参数
     const {
-        ordergene = false,
+        ordergene = true,
         coding = true,
-        noSilent = false,
-        mergeVariant = true,
         subtypeOrder = null
     } = options;
 
-    // 1. 预处理数据 - 转换为类似MAF的扁平结构
     let flatMutations = [];
     mafData.forEach(sample => {
         if (sample.mutations) {
@@ -191,51 +186,10 @@ function maf2oncoprintdf(mafData, geneList = null, options = {}) {
             });
         }
     });
-    // 2. 按基因名筛选
-    if (geneList) {
-        const geneNames = geneList.map(g => g.gene);
-        flatMutations = flatMutations.filter(m => geneNames.includes(m.Hugo_Symbol));
-    }
 
-    // 3. 筛选编码突变
-    if (coding) {
-        const codingVariation = [
-            "TSS",
-            "Frame_Shift_Indel",
-            "Stop_Codon",
-            "Splice_Site",
-            "In_Frame_Indel",
-            "Missense_Mutation",
-        ];
-        flatMutations = flatMutations.filter(m => codingVariation.includes(m.Variant_Classification));
-    }
-
-    //   // 4. 去除沉默突变
-    //   if (noSilent) {
-    //     flatMutations = flatMutations.filter(m => m.Variant_Classification !== "Silent");
-    //   }
-
-    //   // 5. 合并相似变异类型
-    //   if (mergeVariant) {
-    //     flatMutations = flatMutations.map(m => {
-    //       const variant = m.Variant_Classification;
-    //       let newVariant = variant;
-
-    //       if (["Frame_Shift_Del", "Frame_Shift_Ins"].includes(variant)) {
-    //         newVariant = "Frame_Shift_Indel";
-    //       } else if (["In_Frame_Ins", "In_Frame_Del"].includes(variant)) {
-    //         newVariant = "In_Frame_Indel";
-    //       }
-
-    //       return {...m, Variant_Classification: newVariant};
-    //     });
-    //   }
-
-    // 6. 获取所有唯一基因和样本
     const genes = [...new Set(flatMutations.map(m => m.Hugo_Symbol))];
     const samples = [...new Set(mafData.map(s => s.sampleId))];
 
-    // 7. 初始化结果矩阵
     const oncodf = {};
     samples.forEach(sample => {
         oncodf[sample] = {};
@@ -244,7 +198,6 @@ function maf2oncoprintdf(mafData, geneList = null, options = {}) {
         });
     });
 
-    // 8. 填充数据
     flatMutations.forEach(mutation => {
         const g = mutation.Hugo_Symbol;
         const s = mutation.Tumor_Sample_Barcode;
@@ -255,54 +208,19 @@ function maf2oncoprintdf(mafData, geneList = null, options = {}) {
         }
     });
 
-    // 9. 基因排序
-    let orderedGenes = genes;
-    if (ordergene && geneList) {
-        orderedGenes = geneList.map(g => g.gene).filter(g => genes.includes(g));
-    } else {
-        // 按突变频率排序
-        orderedGenes.sort((a, b) => {
-            const countA = samples.filter(s => oncodf[s][a] !== "").length;
-            const countB = samples.filter(s => oncodf[s][b] !== "").length;
-            return countB - countA; // 降序
-        });
-    }
+    let orderedGenes = geneList.map(g => g.gene).filter(g => genes.includes(g));
 
-    // 10. 样本排序
     let orderedSamples = [...samples];
-    if (subtypeOrder === null) {
-        // 按突变模式排序
-        orderedSamples.sort((s1, s2) => {
-            // 比较每个基因的突变情况
-            for (const gene of orderedGenes) {
-                const val1 = oncodf[s1][gene];
-                const val2 = oncodf[s2][gene];
-                if (val1 !== val2) {
-                    return val2.localeCompare(val1); // 降序
-                }
+    orderedSamples.sort((s1, s2) => {
+        for (const gene of orderedGenes) {
+            const val1 = oncodf[s1][gene];
+            const val2 = oncodf[s2][gene];
+            if (val1 !== val2) {
+                return val2.localeCompare(val1);
             }
-            return 0;
-        });
-    } else {
-        // 先按亚型排序，再按突变模式排序
-        orderedSamples = orderedSamples.filter(s => s in subtypeOrder);
-
-        orderedSamples.sort((s1, s2) => {
-            // 先按亚型排序
-            const subtypeCompare = subtypeOrder[s1].localeCompare(subtypeOrder[s2]);
-            if (subtypeCompare !== 0) return subtypeCompare;
-
-            // 同亚型内按突变模式排序
-            for (const gene of orderedGenes) {
-                const val1 = oncodf[s1][gene];
-                const val2 = oncodf[s2][gene];
-                if (val1 !== val2) {
-                    return val2.localeCompare(val1); // 降序
-                }
-            }
-            return 0;
-        });
-    }
+        }
+        return 0;
+    });
 
     // 11. 构建最终矩阵
     const resultMatrix = orderedSamples.map(sample => {
@@ -311,16 +229,73 @@ function maf2oncoprintdf(mafData, geneList = null, options = {}) {
 
     return {
         // matrix: resultMatrix,
-        samplesIds: orderedSamples,
-        // genes: orderedGenes,
-        // data: orderedSamples.map(sample => ({
-        //     sampleId: sample,
-        //     mutations: orderedGenes.map(gene => ({
-        //         gene,
-        //         value: oncodf[sample][gene]
-        //     }))
-        // }))
+        samplesIds: orderedSamples
     };
+}
+
+
+function mergePatients(samples, geneList) {
+    const patientsMap = samples.reduce((map, sample) => {
+        const patientId = sample.sampleId.split('_').slice(0, 2).join('_');
+        if (!map.has(patientId)) {
+            map.set(patientId, []);
+        }
+        map.get(patientId).push(sample);
+        return map;
+    }, new Map());
+
+    const mergedPatients = Array.from(patientsMap.entries()).map(([patientId, patientSamples]) => {
+        const geneMutations = patientSamples.reduce((acc, sample) => {
+            if (!sample.mutations) return acc;
+
+            sample.mutations.forEach(mutation => {
+                const { gene, isDriver, ...types } = mutation;
+                if (!acc[gene]) {
+                    acc[gene] = {
+                        gene,
+                        isDriver,
+                        mutationTypes: new Set()
+                    };
+                }
+
+                Object.keys(types).forEach(type => {
+                    if (types[type] === 1) {
+                        acc[gene].mutationTypes.add(type);
+                    }
+                });
+            });
+            return acc;
+        }, {});
+
+        const finalMutations = Object.values(geneMutations).map(({ gene, isDriver, mutationTypes }) => {
+            const types = Array.from(mutationTypes);
+            const mutation = { gene, isDriver };
+
+            if (types.length === 1) {
+                mutation[types[0]] = 1;
+            } else if (types.length > 1) {
+                mutation.Multi_Hit = 1;
+            }
+
+            return mutation;
+        });
+
+        return {
+            ...patientSamples[0],
+            sampleId: patientId,
+            mutations: finalMutations
+        };
+    });
+
+
+    const { samplesIds } = maf2oncoprintdf(mergedPatients, [...geneList].reverse());
+    const sortedMergedPatients = sortSamplesBySampleIds(mergedPatients, samplesIds);
+
+    return sortedMergedPatients.flatMap(patient => {
+        const patientSamples = samples.filter(s => s.sampleId.startsWith(patient.sampleId + "_"));
+        const { samplesIds } = maf2oncoprintdf(patientSamples, [...geneList].reverse());
+        return sortSamplesBySampleIds(patientSamples, samplesIds);
+    });
 }
 
 // 主处理函数
@@ -332,7 +307,7 @@ const sortMutations = (samples, geneList) => {
     // 遍历基因列表
     const totalSampleWithoutNull = samples.filter(sample => sample.mutations);
 
-    geneList.forEach((gene, index) => {
+    geneList.forEach((gene) => {
 
         if (rerangedSamples.length === totalSampleWithoutNull.length) return;
         // 获取与当前基因有关的样本
@@ -353,18 +328,11 @@ const sortMutations = (samples, geneList) => {
                 }
             });
         });
-
-        // mutationTypeGroups[mutationType] = sortMutations(mutationTypeGroups[mutationType], geneList.slice(1, geneList.length - 1))
-
-        // 将分组样本添加到重排后的样本列表中
-
-        let lastRerangedSamples = [];
         Object.keys(mutationTypeGroups).forEach(mutationType => {
             const samplesInGroup = mutationTypeGroups[mutationType];
             samplesInGroup.forEach(sample => {
                 if (!sampleOrder.has(sample.sampleId)) {
                     rerangedSamples.push(sample);
-                    lastRerangedSamples.push(sample);
                     sampleOrder.add(sample.sampleId);
                 }
             });
@@ -384,9 +352,11 @@ const sortGeneListByPercentage = (finialMutations, geneList) => {
             if (!sample.mutations) return false;
             return !!sample.mutations?.some(mutation => mutation.gene == geneItem.gene);
         });
+        let num = (totalMutationsInSamples.length / finialMutations.length * 100).toFixed(2);
+        num = num >= 0 ? num : 0;
         return {
             ...geneItem,
-            percentage: (totalMutationsInSamples.length / finialMutations.length * 100).toFixed(2) + "%",
+            percentage: num + "%",
             totalTimes: totalMutationsInSamples.length
         }
     }).sort((a, b) => a.totalTimes - b.totalTimes)
@@ -394,13 +364,20 @@ const sortGeneListByPercentage = (finialMutations, geneList) => {
 
 
 // 通过临床信息条件过滤样本
-const filterSampleByClinicAndConditions = (originalClinicList, clinicCondition) => {
-    return originalClinicList.filter((clinic) => {
-        return Object.keys(clinicCondition).every((condition) => {
-            if (!clinicCondition[condition].length) return true;
+const filterSampleByConditions = (originalSamples, clinicList, geneList) => {
+    return originalSamples.map((item) => {
+        return {
+            ...item,
+            tnmStageV8: item.tnmStageV8 === "TNM Stage Ib" ? "TNM Stage IB" : (item.tnmStageV8 === "TNM Stage III A" ? "TNM Stage IIIA" : (item.tnmStageV8 === "TNM  Stage II" ? "TNM Stage II" : item.tnmStageV8)),
+            hcv: item.viralStatus == "0" || item.viralStatus == "B" ? "negative" : "positive",
+            hbv: item.viralStatus == "0" || item.viralStatus == "C" ? "negative" : "positive",
+            mutations: !item.mutations ? null : item.mutations?.filter((muttation) => geneList.some((gene) => gene.gene == muttation.gene))
+        }
+    }).filter((clinic) => {
+        return Object.keys(clinicList).every((condition) => {
+            if (!clinicList[condition].length) return true;
             let realValue = clinic[condition];
             if (condition === "age") {
-                const ageValue = clinicCondition[condition];
                 if (clinic["age"] < 20) {
                     realValue = "<20"
                 } else if (clinic["age"] >= 20 && clinic["age"] <= 39) {
@@ -412,52 +389,11 @@ const filterSampleByClinicAndConditions = (originalClinicList, clinicCondition) 
                 } else {
                     realValue = ">=80"
                 }
-            } else if (condition === "hbv" || condition === "hcv") {
-                let result = [];
-                realValue = clinic["viralStatus"];
-                if (clinicCondition["hbv"]?.length == 2 || !clinicCondition["hbv"]?.length) {
-                    if (clinicCondition["hcv"]?.length == 2 || !clinicCondition["hcv"]?.length) {
-                        result = ["0", "B", "B/C", "C"];
-                    } else if (clinicCondition["hcv"]?.includes("positive")) {
-                        result = ["C", "B/C"];
-                    } else {
-                        result = ["0", "B"]
-                    }
-                } else if (clinicCondition["hbv"]?.includes("positive")) {
-                    if (clinicCondition["hcv"]?.length == 2 || !clinicCondition["hcv"]?.length) {
-                        result = ["B", "B/C"]
-
-                    } else if (clinicCondition["hcv"]?.includes("positive")) {
-                        result = ["B/C"]
-                    } else {
-                        result = ["B"];
-                    }
-                } else {
-                    if (clinicCondition["hcv"]?.length == 2 || !clinicCondition["hcv"]?.length) {
-                        result = ["0", "C"];
-                    } else if (clinicCondition["hcv"]?.includes("positive")) {
-                        result = ["C"];
-                    } else {
-                        result = ["0"];
-                    }
-                }
-                return result?.includes(realValue);
             }
-            return clinicCondition[condition]?.includes(realValue);
+            return clinicList[condition]?.includes(realValue);
         })
-    }).map((item) => {
-        return {
-            ...item,
-            hcv: item.viralStatus == "0" || item.viralStatus =="B" ? "negative" : "positive",
-            hbv: item.viralStatus == "0" || item.viralStatus =="C" ? "negative" : "positive",
-        }
     });
 
-}
-
-const filterSampleByConditions = (originalMutations, finialClinicList) => {
-    const finialClinicListSampleIds = new Set(finialClinicList.map(aItem => aItem.sampleId));
-    return originalMutations.filter(item => finialClinicListSampleIds.has(item.sampleId));
 }
 
 function calculateSampleGenesMutations(samples, geneList, clinicList) {
@@ -509,6 +445,7 @@ function calculateSampleGenesMutations(samples, geneList, clinicList) {
 }
 
 function generateSamplesMutations(samples, geneList) {
+    if (!geneList?.length) return [];
     const sampleMutations = Object.keys(mutationTypeColorConfig).map((type, index) => ({
         name: type,
         type: "bar",
@@ -532,29 +469,25 @@ function generateSamplesMutations(samples, geneList) {
 }
 
 function generateGenesMutations(samples, geneList) {
-    const mutationTypes = Object.keys(mutationTypeColorConfig); // 从颜色配置中提取突变类型
-    const series = mutationTypes.map((type) => {
-        return {
-            name: type,
-            type: "bar",
-            stack: true,
-            data: geneList.map((geneItem) => {
-                let count = 0;
-                samples.forEach((sample) => {
-                    if (sample.mutations) {
-                        const mutationSample = sample.mutations.find((mutation) => (mutation.gene == geneItem.gene) && mutation[type]);
-                        if (!!mutationSample) {
-                            count += (mutationSample[type] ?? 0);
-                        }
-                    }
-                })
-                return count
-            }),
-            itemStyle: {
-                color: mutationTypeColorConfig[type]
-            }
-        }
-
-    })
-    return series
+    if (!geneList?.length || !samples?.length) return [];
+    return Object.entries(mutationTypeColorConfig).map(([type, color]) => ({
+        name: type,
+        type: "bar",
+        barWidth: 10,
+        stack: true,
+        data: geneList.map(geneItem => {
+            return samples.reduce((count, sample) => {
+                if (!sample.mutations) return count;
+                const mutation = sample.mutations.find(m => m.gene === geneItem.gene);
+                if (!mutation) return count;
+                const { gene, isDriver, ...mutations } = mutation;
+                const isMultiHit = type === "Multi_Hit";
+                const shouldCount = isMultiHit
+                    ? Object.keys(mutations).length > 1
+                    : Object.keys(mutations).length === 1 && mutations[type];
+                return count + (shouldCount ? 1 : 0);
+            }, 0);
+        }),
+        itemStyle: { color }
+    }));
 }

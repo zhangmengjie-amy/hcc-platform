@@ -64,7 +64,7 @@ const HCCHeader = () => {
     ];
 
     return (
-        <Affix offsetTop={1}>
+        <Affix offsetTop={0.01}>
             <Layout.Header className={styles.hccHeader}>
                 <Flex align={"center"}>
                     <Typography.Title level={2} style={{ marginBottom: 0, color: "#fff" }}>HCC</Typography.Title>

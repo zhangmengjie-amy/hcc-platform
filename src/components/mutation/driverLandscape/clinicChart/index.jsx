@@ -1,21 +1,16 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from "react-i18next";
-import { getFullClinical } from "@/configs/request";
 import EmptyLoading from "@/components/emptyLoading";
-import { clinicConfig, clinicColorConfig } from "@/configs/mutation";
-import {
-    Spin,
-    Skeleton,
-    Space
-} from 'antd';
+import { clinicConfig } from "@/configs/mutation";
 const ClinicChart = ({ clinicList }) => {
     const { t } = useTranslation();
     const [bottomChartOption, setBottomChartOption] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         if (!clinicList) return;
         const option = buildBottomChartOption();
         setBottomChartOption(option);
@@ -117,7 +112,7 @@ const ClinicChart = ({ clinicList }) => {
         return bottomChartOption
     }
     return (
-        <EmptyLoading loading={loading} hasData={!!clinicList?.length}>
+        <EmptyLoading loading={loading} showEmpty={true} hasData={!!clinicList?.length}>
             <ReactECharts option={bottomChartOption} opts={{ renderer: 'svg' }}
                 lazyUpdate={true}
                 style={{ height: "80px", width: '100%' }}>

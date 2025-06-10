@@ -1,7 +1,6 @@
 "use client";
 import React, {createContext, useEffect, useContext, useState} from 'react';
 import i18n from '@/utils/i18n'; // Path to your i18n setup
-import {useCookies} from "react-cookie";
 
 const LanguageContext = createContext({
     language: 'en', setLanguage: () => {

@@ -1,9 +1,7 @@
 import puppeteer from 'puppeteer';
 
 export async function GET(request) {
-  // 获取基础URL
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                 (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:3000');
+  const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_API_URL;
   
   // 获取请求路径
   const { searchParams } = new URL(request.url);

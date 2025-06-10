@@ -1,5 +1,5 @@
 .colorBlock {
-  display: inline-block;
+  display: block;
   width: 10px;
   height: 10px;
   border-radius: 2px;
@@ -9,6 +9,6 @@
 .legendName {
   margin: 0 !important;
   display: flex;
-  font-size: 10px;
+  font-size: 10px !important;
   align-items: center;
 }

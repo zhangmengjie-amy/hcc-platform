@@ -1,43 +1,62 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from "react-i18next";
 import EmptyLoading from "@/components/emptyLoading";
-import { LoadingOutlined, FlagOutlined } from '@ant-design/icons';
-import Image from 'next/image';
-import {
-    Spin,
-    Skeleton,
-    Space,
-    Empty
-} from 'antd';
-import { mutationTypeColorConfig, clinicColorConfig } from "@/configs/mutation";
-
+import { mutationTypeColorConfig } from "@/configs/mutation";
 
 const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, sampleType, height }) => {
-    const { t } = useTranslation();
-
     const [leftChartOption, setLeftChartOption] = useState({});
     const [loading, setLoading] = useState(true);
     const chartRef = useRef(null);
-    const clinicRef = useRef(null);
-    const geneRef = useRef(null);
-    const sampleRef = useRef(null);
+
+const getPatientGroups = () => sampleCategories.reduce((groups, id, i) => {
+    const patientId = id.split('_').slice(0, 2).join('_');
+    if (patientId !== (groups[groups.length - 1]?.patientId)) {
+        if (groups.length) groups[groups.length - 1].end = i - 1;
+        groups.push({
+            patientId,
+            start: i,
+            end: sampleCategories.length - 1,
+            color: groups.length % 2 ? 'rgba(255, 255, 255, 0.9)' : 'rgba(225,240,250,0.7)'
+        });
+    }
+    return groups;
+}, []);
+
     const buildLeftChartOption = () => {
+        setLoading(true);
         if (!sampleGenesMutations) return;
         let series = [];
+
         for (let index = 0; index < sampleGenesMutations?.maxMutationTypeNumber; index++) {
             series.push({
                 type: 'heatmap',
                 yAxisIndex: 1,
                 markArea: {
-                    data: []
+                    silent: true,
+                    itemStyle: {
+                        borderWidth: 0
+                    },
+                    data: sampleType === "byPatient" ? getPatientGroups().map(group => {
+                        return [{
+                            xAxis: group.start,
+                            itemStyle: {
+                                color: group.color
+                            }
+                        }, {
+                            xAxis: group.end,
+                            itemStyle: {
+                                color: group.color
+                            }
+                        }];
+                    }) : []
                 },
-
                 data: sampleGenesMutations?.series.filter((item) => item.custom.seriesIndex === index).map((item) => {
                     return {
                         ...item,
                         itemStyle: {
+                            borderWidth: 0,
                             color: index === 0 ? item.itemStyle.color : "#FF00FF"
                         },
                     }
@@ -78,20 +97,23 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
 
         }
         const leftChartOption = {
-            grid: { top: 20, bottom: 0, left: 40, right: 60, containLabel: false },
+            grid: { top: 1, bottom: 0, left: 40, right: 60, containLabel: false },
             animation: false,
             xAxis: {
+                show: false,
                 type: 'category',
                 data: sampleCategories,
-                show: false,
                 splitArea: {
-                    show: true
-                }
+                    show: false
+                },
+                axisLabel: {
+                    interval: 0,
+                },
             },
             yAxis: [{
                 show: true,
                 splitArea: {
-                    show: true
+                    show: sampleType == "bySample"
                 },
                 type: 'category',
                 position: "left",
@@ -111,7 +133,7 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
                 type: 'category',
                 position: "right",
                 splitArea: {
-                    show: true
+                    show: sampleType == "bySample"
                 },
                 data: finialGeneList.map((item) => item.gene),
                 axisLabel: {
@@ -154,7 +176,6 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
                     return tooltipContent;
                 }
             },
-
             visualMap: {
                 show: false,
             },
@@ -171,63 +192,13 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
         setLoading(false);
     }, [sampleGenesMutations, finialGeneList, sampleCategories, sampleType])
 
-    const onEvents = {
-        'mouseover': (params) => {
-            const { custom: { sampleId, gene } } = params.data;
-
-            const patientId = sampleId?.split('_').slice(0, 2).join('_') + "_";
-            const startSampleIndex = sampleCategories.findIndex((item) => item.includes(patientId))
-            const endSampleIndex = sampleCategories.findLastIndex((item) => item.includes(patientId))
-
-            chartRef.current?.getEchartsInstance().setOption({
-                series: [{
-                    markArea: {
-                        silent: true,
-                        emphasis: {
-                            enabled: true
-                        },
-                        animation: true,
-                        label: {
-                            padding: 5,
-                        },
-                        itemStyle: {
-                            shadowBlur: 5,
-                            shadowColor: 'rgba(0, 0, 0, 0.7)',
-                            color: 'rgba(210, 235, 227, .8)'
-                        },
-                        data: [[
-                            {
-                                name: "Patient Id: " + sampleId?.split('_').slice(0, 2).join('_'),
-                                xAxis: sampleCategories[startSampleIndex],
-                                yAxis: finialGeneList[0].gene
-                            },
-                            {
-                                xAxis: sampleCategories[endSampleIndex],
-                                yAxis: finialGeneList[finialGeneList.length - 1]?.gene
-                            }
-                        ]]
-                    }
-                }]
-            });
-        },
-        'mouseout': () => {
-            chartRef.current?.getEchartsInstance().setOption({
-                series: [{
-                    markArea: {
-                        data: []
-                    }
-                }]
-            });
-        }
-    }
-
     return (
-        <EmptyLoading loading={loading} hasData={!!sampleGenesMutations?.series?.length}>
-            <ReactECharts ref={chartRef} onEvents={sampleType === "byPatient" ? onEvents : null} option={leftChartOption}
-                style={{ width: '100%', height: height }} opts={{ renderer: 'svg' }}>
-            </ReactECharts>
-        </EmptyLoading>
-
+            <EmptyLoading loading={loading} showEmpty={false} hasData={!!sampleGenesMutations?.series?.length}>
+                <ReactECharts ref={chartRef}
+                    option={leftChartOption}
+                    style={{ width: '100%', height: height }} opts={{ renderer: 'svg' }}>
+                </ReactECharts>
+            </EmptyLoading>
     );
 }
 export default SampleChart;

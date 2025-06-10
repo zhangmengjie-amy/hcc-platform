@@ -1,10 +1,11 @@
 export const mutationTypeColorConfig = {
-    TSS: "rgb(173, 139, 201)",
-    Frame_Shift_Indel: "rgb(237, 102, 93)",
+    Missense_Mutation: "rgb(114, 158, 206)",
     Stop_Codon: "rgb(255, 158, 74)",
     Splice_Site: "rgb(103, 191, 92)",
+    TSS: "rgb(173, 139, 201)",
+    Frame_Shift_Indel: "rgb(237, 102, 93)",
     In_Frame_Indel: "rgb(168, 120, 110)",
-    Missense_Mutation: "rgb(114, 158, 206)",
+    Multi_Hit: "rgb(255, 0, 255)"
 }
 
 export const clinicConfig = [
@@ -88,26 +89,26 @@ export const clinicConfig = [
 
 export const clinicColorConfig = {
     tnmStageV8: {
-        "TNM Stage IB": 'rgb(63, 125, 88)',
-        "TNM Stage IA": 'rgb(239, 239, 239)',
-        "TNM Stage II": 'rgb(201, 87, 146)',
-        "TNM Stage IIIA": "rgb(235, 91, 0)",
-        "TNM Stage IIIB": "rgb(96, 181, 255)"
+        "TNM Stage IA": 'rgb(255, 245, 240)',
+        "TNM Stage IB": "rgb(252, 187, 161)",
+        "TNM Stage II": 'rgb(251, 106, 74)',
+        "TNM Stage IIIA": "rgb(239, 59, 44)",
+        "TNM Stage IIIB": "rgb(203, 24, 29)"
     },
     age: {
-        "<20": "rgb(248, 250, 252)",
+        "<20": "rgb(242, 250, 248)",
         "20-39": "rgb(211, 238, 152)",
         "40-59": "rgb(160, 214, 131)",
         "60-79": "rgb(114, 191, 120)",
         ">=80": "rgb(83, 125, 93)",
     },
     hbv: {
-        "positive": "rgb(255,255,224)",
-        "negative": "rgb(110,123,139)"
+        positive: "rgb(255,255,224)",
+        negative: "rgb(110,123,139)"
     },
     hcv: {
-        "positive": "rgb(255,255,224)",
-        "negative": "rgb(110,123,139)"
+        positive: "rgb(255,255,224)",
+        negative: "rgb(110,123,139)"
     },
     race: {
         Asian: 'rgb(20, 61, 96)',

@@ -1,22 +1,15 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from "react-i18next";
 import EmptyLoading from "@/components/emptyLoading";
-import { mutationTypeColorConfig, clinicConfig, clinicColorConfig, gerGene, } from "@/configs/mutation";
-import {
-    Spin,
-    Skeleton,
-    Empty
-} from 'antd';
-
 const MutationChart = ({ sampleMutations, sampleCategories }) => {
-    const { t } = useTranslation();
 
     const [topChartOption, setTopChartOption] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         if (!sampleCategories || !sampleMutations) return;
         const option = buildTopChartOption();
         setTopChartOption(option);
@@ -28,15 +21,15 @@ const MutationChart = ({ sampleMutations, sampleCategories }) => {
             grid: {
                 left: 40,
                 right: 60,
-                top: 5,
-                bottom: 5,
+                top: 8,
+                bottom: 0,
                 containLabel: false
             },
             animation: false,
             tooltip: {
                 show: true,
                 trigger: "axis",
-                position: function (point, params, dom, rect, size) {
+                position: function (point) {
                     return [point[0] - 20, point[1] + 20];
                 }
             },
@@ -62,20 +55,18 @@ const MutationChart = ({ sampleMutations, sampleCategories }) => {
                 axisLabel: {
                     color: "#000",
                     fontSize: 8,
-                    interval: 0,
+                    verticalAlign: 'bottom',
                     formatter: function (value, index) {
                         return index % 2 === 0 ? value : ''; // 每隔一个显示一个
                     },
                 },
             },
-            barCategoryGap: '0%',
-            barGap: '0%',
             series: sampleMutations,
         }
         return _topChartOption
     }
     return (
-        <EmptyLoading loading={loading} hasData={!!sampleMutations?.length}>
+        <EmptyLoading loading={loading} showEmpty={true} hasData={!!sampleCategories?.length}>
             <ReactECharts style={{ height: "60px", width: "100%" }} opts={{ renderer: 'svg' }}
                 option={topChartOption}>
 
