@@ -1,7 +1,8 @@
 import puppeteer from 'puppeteer';
 
 export async function GET(request) {
-  const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_API_URL;
+const host = request.headers.get('host');
+  const baseUrl = `http://${host}`;
   
   // 获取请求路径
   const { searchParams } = new URL(request.url);
@@ -33,8 +34,8 @@ export async function GET(request) {
       width: '210mm',
       height: `${Math.floor(fullHeight * 0.264583)}mm`,
       printBackground: true,
-      pageRanges: '1'
-    }, );
+      pageRanges: '1',
+    });
 
     await browser.close();
 

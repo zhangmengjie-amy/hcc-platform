@@ -1,47 +1,526 @@
 "use client";
-import {
-    Row,
-    Col,
-} from 'antd';
-import RainbowChart from "@/components/mutation/phylogeneticRelationship/rainbow";
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { getITHList, getPatientList } from "@/configs/request";
+import ReactECharts from 'echarts-for-react';
+import { Modal } from 'antd';
+import Image from 'next/image';
+import { Flex, Typography, Button } from 'antd';
+import styles from "./style.module.scss";
+import TreeChart from "@/components/mutation/phylogeneticRelationship/TreeChart"
+import TreeList from '@/components/mutation/phylogeneticRelationship/TreeList';
+import EmptyLoading from "@/components/emptyLoading";
+
+const VISIBLE_TREE_LENGTH = 6;
+const TREE_WIDTH = 120;
+const TREE_CONTAINER_WIDTH = VISIBLE_TREE_LENGTH * TREE_WIDTH;
+const PIE_CHART_WIDTH = 600;
+const BAR_CHART_WIDTH = PIE_CHART_WIDTH / 2;
+const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.3;
+const BAR_AXIS = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1'];
+const BAR_CATEGORIES = ['0~0.1', '0.1~0.2', '0.2~0.3', '0.3~0.4', '0.4~0.5', '0.5~0.6', '0.6~0.7', '0.7~0.8', '0.8~0.9', '0.9~1.0'];
+
+const baseColors = [
+    { r: 94, g: 79, b: 162 },    // #5E4FA2
+    { r: 170, g: 55, b: 236 },    // #AA37EC
+    { r: 132, g: 116, b: 197 },   // #8474C5
+    { r: 47, g: 155, b: 200 },   // #2F9BC8
+    { r: 102, g: 194, b: 165 },  // #66C2A5
+    { r: 171, g: 221, b: 164 },  // #ABDDA4
+    { r: 252, g: 212, b: 103 },  // #FCD467
+    { r: 253, g: 174, b: 97 },   // #FDAE61
+    { r: 244, g: 109, b: 67 },   // #F46D43
+    { r: 158, g: 1, b: 66 }      // #9E0142
+];
+
+const LEGEND = [{
+    name: "<=0.1",
+    color: "#5E4FA2"
+}, {
+    name: "0.1-0.2",
+    color: "#AA37EC"
+}, {
+    name: "0.2-0.3",
+    color: "#8474C5"
+}, {
+    name: "0.3-0.4",
+    color: "#2F9BC8"
+}, {
+    name: "0.4-0.5",
+    color: "#ABDDA4"
+}, {
+    name: "0.5-0.6",
+    color: "#FCD467"
+}, {
+    name: "0.6-0.7",
+    color: "#FDAE61"
+}, {
+    name: "0.7-0.8",
+    color: "#FDAE61"
+}, {
+    name: "0.8-0.9",
+    color: "#F46D43"
+}, {
+    name: ">0.9",
+    color: "#9E0142"
+}]
+const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => {
+    const [pieChartOption, setPieChartOption] = useState();
+    const [columnOption, setColumnOption] = useState();
+    const [loading, setLoading] = useState(true);
+    const [rangeList, setRangeList] = useState([]);
+    const barChartRef = useRef(null);
+    const pieChartRef = useRef(null);
+    const [activeBar, setActiveBar] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+    const patientListRef = useRef(null);
+    const currentPatientRef = useRef(null);
+    const rangePatientListRef = useRef(null);
+
+    useEffect(() => {
+        setLoading(true)
+        const fetchData = async () => {
+            let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
+
+            let _patientList = ITHList.map((item) => {
+                const currentPatient = patientList.find((patient) => patient.patientId == item.publicationId);
+                return {
+                    ...currentPatient,
+                    currentValue: item.ith?.toFixed(2)
+                }
+            })
+            _patientList = _patientList.sort((a, b) => a.currentValue - b.currentValue);
+            patientListRef.current = _patientList;
+            patientListRef.current = buildAllPatientsData();
+            rangePatientListRef.current = getPatientListByRange();
+            setRangeList(rangePatientListRef.current);
+            buildPieChart();
+            buildBarChart();
+        }
+        fetchData();
+        setLoading(false);
+    }, []);
+
+    const getPatientListByRange = () => {
+        return patientListRef.current?.filter((item) => {
+            return item.ITH >= range[0] && item.ITH <= range[1];
+        })
+    }
+
+    const getPatientListByActiveBar = () => {
+        const [min, max] = activeBar.split("~");
+        return rangePatientListRef.current.filter((item) => {
+            return item.ITH > min && item.ITH <= max
+        })
+    }
 
 
-export default function PhylogeneticRelationship() {
-    const newick = "((((ITH_100_T5:5663.75,(ITH_100_T1:5490.75,ITH_100_T2:4371.25):848.25):122.25,ITH_100_T3:4945.25):760.75,ITH_100_T4:3604.333333):0,N:11706.66667);";
-    const patientList = [{
-        id: "ITH_09",
-        newick: "(((((ITH_09_T2:15550.75,ITH_09_T1:6595.25):88.625,ITH_09_T3:5548.375):569.125,ITH_09_T4:6623):924.5,(ITH_09_T5:8448.8,ITH_09_T6:7196.2):2007.5):0,N:9951.5);",
+    useEffect(() => {
+        if (!range?.length) return;
+        rangePatientListRef.current = getPatientListByRange();
+        const barEchartsInstance = barChartRef.current?.getEchartsInstance();
+        barEchartsInstance?.setOption({
+            series: [{
+                data: getBarSeriesData(),
+            }]
+        });
+        if (activeBar && activeBar !== "all") {
+            rangePatientListRef.current = getPatientListByActiveBar()
+        }
+        barEchartsInstance?.setOption({
+            title: {
+                text: `Total: ${rangePatientListRef.current?.length ?? 0}`,
+            }
+        });
+        const pieEchartsInstance = pieChartRef.current?.getEchartsInstance();
+        pieEchartsInstance?.setOption({
+            series: [{
+                data: buildPieSeriesData()
+            }]
+        });
+        setRangeList(rangePatientListRef.current);
+    }, [range, activeBar])
 
-    },
-    {
-        id: "ITH_100",
-        newick: "((((ITH_100_T5:5663.75,(ITH_100_T1:5490.75,ITH_100_T2:4371.25):848.25):122.25,ITH_100_T3:4945.25):760.75,ITH_100_T4:3604.333333):0,N:11706.66667);",
+    function generateGradientColors(totalSteps) {
+        const colors = [];
+        const segments = baseColors.length - 1;
+        const stepsPerSegment = Math.floor(totalSteps / segments);
 
-    },
-    {
-        id: "ITH_101",
-        newick: "(((((ITH_101_T3:4021.125,ITH_101_T2:4176.875):60.625,ITH_101_T4:4251.375):422.125,ITH_101_T5:4387):978,ITH_101_T1:5237):0,N:14703);",
+        for (let i = 0; i < segments; i++) {
+            const start = baseColors[i];
+            const end = baseColors[i + 1];
 
-    },
-    {
-        id: "ITH_107",
-        newick: "((((ITH_107_MF1T2:5952.5,((ITH_107_MF1T4:5550.833333,ITH_107_MF1T5:5567.166667):341,ITH_107_MF1T3:5752):271):828.75,ITH_107_MF1T1:7057.25):14550.25,(ITH_107_MF2T1:8134.5,ITH_107_MF2T2:6258.5):16625.9):0,N:536.1);",
+            // 当前分段的步数（最后一个分段补齐剩余步数）
+            const steps = (i === segments - 1)
+                ? totalSteps - (stepsPerSegment * (segments - 1))
+                : stepsPerSegment;
 
-    },
-    {
-        id: "ITH_115",
-        newick: "((ITH_115_T2:7898,ITH_115_T1:5146):0,N:9441);",
+            for (let j = 0; j < steps; j++) {
+                const ratio = j / steps;
+                const r = Math.round(start.r + (end.r - start.r) * ratio);
+                const g = Math.round(start.g + (end.g - start.g) * ratio);
+                const b = Math.round(start.b + (end.b - start.b) * ratio);
+                colors.push(`rgb(${r},${g},${b})`);
+            }
+        }
+        return colors;
+    }
 
-    },
-    {
-        id: "ITH_06",
-        newick: "(((((((((((((((((((Escherichia_coli_EDL933:0.00000,Escherichia_coli_O157_H7:0.00000)96:0.00044,((Escherichia_coli_O6:0.00000,Escherichia_coli_K12:0.00022)76:0.00022,(Shigella_flexneri_2a_2457T:0.00000,Shigella_flexneri_2a_301:0.00000)100:0.00266)75:0.00000)100:0.00813,((Salmonella_enterica:0.00000,Salmonella_typhi:0.00000)100:0.00146,Salmonella_typhimurium:0.00075)100:0.00702)100:0.03131,((Yersinia_pestis_Medievalis:0.00000,(Yersinia_pestis_KIM:0.00000,Yersinia_pestis_CO92:0.00000)31:0.00000)100:0.03398,Photorhabdus_luminescens:0.05076)61:0.01182)98:0.02183,((Blochmannia_floridanus:0.32481,Wigglesworthia_brevipalpis:0.35452)100:0.08332,(Buchnera_aphidicola_Bp:0.27492,(Buchnera_aphidicola_APS:0.09535,Buchnera_aphidicola_Sg:0.10235)100:0.10140)100:0.06497)100:0.15030)100:0.02808,((Pasteurella_multocida:0.03441,Haemophilus_influenzae:0.03754)94:0.01571,Haemophilus_ducreyi:0.05333)100:0.07365)100:0.03759,((((Vibrio_vulnificus_YJ016:0.00021,Vibrio_vulnificus_CMCP6:0.00291)100:0.01212,Vibrio_parahaemolyticus:0.01985)100:0.01536,Vibrio_cholerae:0.02995)100:0.02661,Photobacterium_profundum:0.06131)100:0.05597)81:0.03492,Shewanella_oneidensis:0.10577)100:0.12234,((Pseudomonas_putida:0.02741,Pseudomonas_syringae:0.03162)100:0.02904,Pseudomonas_aeruginosa:0.03202)100:0.14456)98:0.04492,((Xylella_fastidiosa_700964:0.01324,Xylella_fastidiosa_9a5c:0.00802)100:0.10192,(Xanthomonas_axonopodis:0.01069,Xanthomonas_campestris:0.00934)100:0.05037)100:0.24151)49:0.02475,Coxiella_burnetii:0.33185)54:0.03328,((((Neisseria_meningitidis_A:0.00400,Neisseria_meningitidis_B:0.00134)100:0.12615,Chromobacterium_violaceum:0.09623)100:0.07131,((Bordetella_pertussis:0.00127,(Bordetella_parapertussis:0.00199,Bordetella_bronchiseptica:0.00022)67:0.00006)100:0.14218,Ralstonia_solanacearum:0.11464)100:0.08478)75:0.03840,Nitrosomonas_europaea:0.22059)100:0.08761)100:0.16913,((((((Agrobacterium_tumefaciens_Cereon:0.00000,Agrobacterium_tumefaciens_WashU:0.00000)100:0.05735,Rhizobium_meliloti:0.05114)100:0.05575,((Brucella_suis:0.00102,Brucella_melitensis:0.00184)100:0.08660,Rhizobium_loti:0.09308)51:0.02384)100:0.08637,(Rhodopseudomonas_palustris:0.04182,Bradyrhizobium_japonicum:0.06346)100:0.14122)100:0.05767,Caulobacter_crescentus:0.23943)100:0.11257,(Wolbachia_sp._wMel:0.51596,(Rickettsia_prowazekii:0.04245,Rickettsia_conorii:0.02487)100:0.38019)100:0.12058)100:0.12365)100:0.06301,((((Helicobacter_pylori_J99:0.00897,Helicobacter_pylori_26695:0.00637)100:0.19055,Helicobacter_hepaticus:0.12643)100:0.05330,Wolinella_succinogenes:0.11644)100:0.09105,Campylobacter_jejuni:0.20399)100:0.41390)82:0.04428,((Desulfovibrio_vulgaris:0.38320,(Geobacter_sulfurreducens:0.22491,Bdellovibrio_bacteriovorus:0.45934)43:0.04870)69:0.04100,(Acidobacterium_capsulatum:0.24572,Solibacter_usitatus:0.29086)100:0.20514)64:0.04214)98:0.05551,((Fusobacterium_nucleatum:0.45615,(Aquifex_aeolicus:0.40986,Thermotoga_maritima:0.34182)100:0.07696)35:0.03606,(((Thermus_thermophilus:0.26583,Deinococcus_radiodurans:0.29763)100:0.24776,Dehalococcoides_ethenogenes:0.53988)35:0.04370,((((Nostoc_sp._PCC_7120:0.12014,Synechocystis_sp._PCC6803:0.15652)98:0.04331,Synechococcus_elongatus:0.13147)100:0.05040,(((Synechococcus_sp._WH8102:0.06780,Prochlorococcus_marinus_MIT9313:0.05434)100:0.04879,Prochlorococcus_marinus_SS120:0.10211)74:0.04238,Prochlorococcus_marinus_CCMP1378:0.16170)100:0.20442)100:0.07646,Gloeobacter_violaceus:0.23764)100:0.24501)39:0.04332)51:0.02720)74:0.03471,((((Gemmata_obscuriglobus:0.36751,Rhodopirellula_baltica:0.38017)100:0.24062,((Leptospira_interrogans_L1-130:0.00000,Leptospira_interrogans_56601:0.00027)100:0.47573,((Treponema_pallidum:0.25544,Treponema_denticola:0.16072)100:0.19057,Borrelia_burgdorferi:0.42323)100:0.20278)95:0.07248)42:0.04615,(((Tropheryma_whipplei_TW08/27:0.00009,Tropheryma_whipplei_Twist:0.00081)100:0.44723,Bifidobacterium_longum:0.29283)100:0.14429,(((((Corynebacterium_glutamicum_13032:0.00022,Corynebacterium_glutamicum:0.00000)100:0.03415,Corynebacterium_efficiens:0.02559)100:0.03682,Corynebacterium_diphtheriae:0.06479)100:0.13907,(((Mycobacterium_bovis:0.00067,(Mycobacterium_tuberculosis_CDC1551:0.00000,Mycobacterium_tuberculosis_H37Rv:0.00000)98:0.00022)100:0.03027,Mycobacterium_leprae:0.05135)97:0.01514,Mycobacterium_paratuberculosis:0.02091)100:0.11523)100:0.09883,(Streptomyces_avermitilis:0.02680,Streptomyces_coelicolor:0.02678)100:0.16707)91:0.06110)100:0.26800)23:0.03480,((Fibrobacter_succinogenes:0.51984,(Chlorobium_tepidum:0.37204,(Porphyromonas_gingivalis:0.11304,Bacteroides_thetaiotaomicron:0.13145)100:0.34694)100:0.09237)62:0.04841,(((Chlamydophila_pneumoniae_TW183:0.00000,(Chlamydia_pneumoniae_J138:0.00000,(Chlamydia_pneumoniae_CWL029:0.00000,Chlamydia_pneumoniae_AR39:0.00000)37:0.00000)44:0.00000)100:0.10482,Chlamydophila_caviae:0.05903)98:0.04170,(Chlamydia_muridarum:0.01938,Chlamydia_trachomatis:0.02643)100:0.06809)100:0.60169)32:0.04443)67:0.04284)66:0.02646,((Thermoanaerobacter_tengcongensis:0.17512,((Clostridium_tetani:0.10918,Clostridium_perfringens:0.11535)78:0.03238,Clostridium_acetobutylicum:0.11396)100:0.15056)100:0.11788,(((((Mycoplasma_mobile:0.27702,Mycoplasma_pulmonis:0.28761)100:0.28466,((((Mycoplasma_pneumoniae:0.10966,Mycoplasma_genitalium:0.11268)100:0.31768,Mycoplasma_gallisepticum:0.24373)100:0.14180,Mycoplasma_penetrans:0.34890)94:0.06674,Ureaplasma_parvum:0.33874)100:0.19177)100:0.07341,Mycoplasma_mycoides:0.37680)100:0.12541,Phytoplasma_Onion_yellows:0.47843)100:0.09099,(((((Listeria_monocytogenes_F2365:0.00063,Listeria_monocytogenes_EGD:0.00144)90:0.00235,Listeria_innocua:0.00248)100:0.13517,((Oceanobacillus_iheyensis:0.13838,Bacillus_halodurans:0.09280)91:0.02676,(((Bacillus_cereus_ATCC_14579:0.00342,Bacillus_cereus_ATCC_10987:0.00123)100:0.00573,Bacillus_anthracis:0.00331)100:0.08924,Bacillus_subtilis:0.07876)96:0.01984)100:0.03907)69:0.02816,((Staphylococcus_aureus_MW2:0.00000,(Staphylococcus_aureus_N315:0.00022,Staphylococcus_aureus_Mu50:0.00022)61:0.00022)100:0.02479,Staphylococcus_epidermidis:0.03246)100:0.17366)64:0.02828,(((((((Streptococcus_agalactiae_III:0.00110,Streptococcus_agalactiae_V:0.00155)100:0.01637,(Streptococcus_pyogenes_M1:0.00134,(Streptococcus_pyogenes_MGAS8232:0.00045,(Streptococcus_pyogenes_MGAS315:0.00000,Streptococcus_pyogenes_SSI-1:0.00022)100:0.00110)87:0.00066)100:0.02250)100:0.01360,Streptococcus_mutans:0.04319)99:0.01920,(Streptococcus_pneumoniae_R6:0.00119,Streptococcus_pneumoniae_TIGR4:0.00124)100:0.03607)100:0.04983,Lactococcus_lactis:0.11214)100:0.08901,Enterococcus_faecalis:0.07946)100:0.03958,(Lactobacillus_johnsonii:0.20999,Lactobacillus_plantarum:0.14371)100:0.06763)100:0.08989)100:0.08905)92:0.09540)54:0.04315)Bacteria:1.34959,(((((Thalassiosira_pseudonana:0.33483,(Cryptosporidium_hominis:0.25048,Plasmodium_falciparum:0.28267)100:0.14359)42:0.03495,(((Oryza_sativa:0.07623,Arabidopsis_thaliana:0.09366)100:0.15770,Cyanidioschyzon_merolae:0.38319)96:0.08133,(Dictyostelium_discoideum:0.34685,(((Eremothecium_gossypii:0.07298,Saccharomyces_cerevisiae:0.07619)100:0.21170,Schizosaccharomyces_pombe:0.24665)100:0.15370,(((Anopheles_gambiae:0.10724,Drosophila_melanogaster:0.10233)100:0.09870,((Takifugu_rubripes:0.03142,Danio_rerio:0.05230)100:0.04335,(((Rattus_norvegicus:0.03107,Mus_musculus:0.01651)91:0.00398,(Homo_sapiens:0.00957,Pan_troglodytes:0.03864)100:0.01549)99:0.01629,Gallus_gallus:0.04596)100:0.01859)100:0.09688)95:0.03693,(Caenorhabditis_elegans:0.01843,Caenorhabditis_briggsae:0.01896)100:0.24324)100:0.09911)85:0.04004)41:0.02708)44:0.02636)87:0.06455,Leishmania_major:0.45664)100:0.10129,Giardia_lamblia:0.55482)100:0.57543,((Nanoarchaeum_equitans:0.81078,(((Sulfolobus_tokodaii:0.17389,Sulfolobus_solfataricus:0.18962)100:0.33720,Aeropyrum_pernix:0.43380)94:0.09462,Pyrobaculum_aerophilum:0.55514)100:0.12018)100:0.15444,((Thermoplasma_volcanium:0.10412,Thermoplasma_acidophilum:0.09785)100:0.66151,((((Methanobacterium_thermautotrophicum:0.36583,Methanopyrus_kandleri:0.35331)99:0.07446,(Methanococcus_maripaludis:0.28592,Methanococcus_jannaschii:0.13226)100:0.23828)100:0.06284,((Pyrococcus_horikoshii:0.02786,Pyrococcus_abyssi:0.02179)100:0.02239,Pyrococcus_furiosus:0.02366)100:0.36220)51:0.04469,(Archaeoglobus_fulgidus:0.34660,(Halobacterium_sp._NRC-1:0.61597,(Methanosarcina_acetivorans:0.02602,Methanosarcina_mazei:0.03087)100:0.30588)100:0.12801)100:0.10395)62:0.06815)99:0.11833)100:0.43325):0.88776);",
+    const buildPieChart = () => {
+        const _pieChartOption = {
+            grid: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                containLabel: false
+            },
+            responsive: true,
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    const color = params.color;
+                    return `
+                    <div style="padding:5px">
+                        <span style="display:inline-block;
+                                    width:12px;
+                                    height:12px;
+                                    background:${color};
+                                    margin-right:8px;
+                                    border-radius:2px">
+                        </span><span >${params.name}</span> <span style="font-weight:bold">${params?.data?.ITH}<span>
+                    </div>
+                `;
+                }
+            },
+            series: [
+                {
+                    emphasis: {
+                        scale: 0,
+                    },
+                    name: '',
+                    type: 'pie',
+                    radius: ['60%', '100%'], // 外径已设为100%
+                    startAngle: 180,
+                    endAngle: 0,
+                    data: buildPieSeriesData(),
+                    label: {
+                        show: false,
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    itemStyle: {
+                        borderRadius: 8, // 增大圆角
+                        borderColor: '#fff',
+                        borderWidth: 0
+                    }
+                }
+            ],
+        };
 
-    },
-    ]
+        setPieChartOption(_pieChartOption);
+    }
+
+    const getBarData = () => {
+        return BAR_CATEGORIES.map((item) => {
+            const [minValue, maxValue] = item.split("~");
+            const filteredPatients = getAreaPatientData(minValue, maxValue)
+            return filteredPatients?.length ?? 0
+        });
+    }
+
+    const getBarSeriesData = () => {
+        const barData = getBarData();
+        return generateGradientColors(barData.length
+        ).map((color, index) => ({
+            name: BAR_CATEGORIES[index],
+            value: barData[index],
+            itemStyle: { color, borderRadius: [5, 5, 0, 0], borderWidth: BAR_CATEGORIES[index] === activeBar ? 3 : 0, borderColor: "rgb(29, 86, 126)" },
+        }))
+    }
+
+    const buildBarChart = () => {
+        const _columnOption = {
+            grid: {
+                top: 20,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                containLabel: true
+            },
+            title: {
+                text: `Total: ${rangePatientListRef.current?.length ?? 0}`,
+                left: 'center',
+                top: "0",
+                textStyle: {
+                    fontSize: "14px",
+                    color: "#000"
+                }
+            },
+            responsive: true,
+            tooltip: {
+                trigger: 'item',
+            },
+            xAxis: {
+                show: true,
+                type: 'category',
+                data: BAR_AXIS,
+                axisLabel: {
+                    interval: 0,
+                    fontSize: 8,
+                    color: "#666",
+                    align: "right",
+                    padding: [0, 8, 0, 0] // 左内边距10px
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#CCCCCC' // 浅灰色轴线
+                    }
+                },
+                axisTick: { show: false },
+            },
+            yAxis: {
+                axisLabel: {
+                    width: 0,
+                    show: false,
+                },
+                show: false,
+                type: 'value'
+            },
+            series: [
+                {
+                    data: getBarSeriesData(),
+                    type: 'bar',
+                    barWidth: '100%',  // 柱子宽度设为100%
+                    barGap: '0%',
+                }
+            ]
+        };
+
+        setColumnOption(_columnOption);
+    }
+
+    function calculateFanLayout(numElements = 1) {
+        const centerPosition = { rotate: 0, translate: "0px, -20px" };
+        if (numElements === 1) {
+            return [{ rotate: 0, translate: "300px, -20px" }];
+        }
+        else if (numElements === 2) {
+            return [{ rotate: -30, translate: "100px, 80px" },
+            { rotate: 30, translate: "-100px, 80px" },]
+        } else if (numElements === 3) {
+            return [{ rotate: -40, translate: "0px, 90px" }, centerPosition, { rotate: 40, translate: "0px, 90px" }]
+        } else if (numElements === 4) {
+            return [{ rotate: -55, translate: "-135px, 60px" },
+            { rotate: -20, translate: "-30px, -20px" },
+            { rotate: 20, translate: "30px, -20px" },
+            { rotate: 55, translate: "135px, 60px" },]
+        } else if (numElements === 5) {
+            return [{ rotate: -55, translate: "-135px, 60px" },
+            { rotate: -30, translate: "-30px, 0px" },
+                centerPosition,
+            { rotate: 30, translate: "30px, 0px" },
+            { rotate: 55, translate: "135px, 60px" },]
+        } else {
+            return [
+                { rotate: -80, translate: "-300px, -20px" },
+                { rotate: -50, translate: "-160px, -10px" },
+                { rotate: -15, translate: "-50px, -20px" },
+                { rotate: 15, translate: "50px, -20px" },
+                { rotate: 50, translate: "160px, -10px" },
+                { rotate: 80, translate: "300px, -20px" }
+            ]
+        }
+    }
+
+    function getSamplesFromNewick(newick) {
+        const regex = /([^(),:]+):\d+(\.\d+)?/g;
+        const samples = [];
+        let match;
+        while ((match = regex.exec(newick)) !== null) {
+            samples.push(match[1]);
+        }
+        return samples.length;
+    }
+
+    const getVisibleTreeList = () => {
+        if (!rangePatientListRef.current?.length) return;
+        const patientLength = rangePatientListRef.current.length;
+        let result = [];
+
+        if (patientLength >= VISIBLE_TREE_LENGTH) {
+            const patientsWithSamples = rangePatientListRef.current.map(item => ({
+                ...item,
+                sampleLength: getSamplesFromNewick(item.newick)
+            }));
+
+            // 计算如何尽量均匀分成 6 份
+            const baseChunkSize = Math.floor(patientLength / VISIBLE_TREE_LENGTH);
+            const remainder = patientLength % VISIBLE_TREE_LENGTH;
+
+            let start = 0;
+            for (let i = 0; i < VISIBLE_TREE_LENGTH; i++) {
+                // 前 `remainder` 个 chunk 多 1 个元素
+                const end = start + baseChunkSize + (i < remainder ? 1 : 0);
+                const chunk = patientsWithSamples.slice(start, end);
+                start = end;
+
+                // 取当前 chunk 中 sampleLength 最大的元素
+                if (chunk.length > 0) {
+                    const maxInChunk = chunk.reduce((max, current) =>
+                        (current.sampleLength > max.sampleLength ? current : max), chunk[0]);
+                    result.push(maxInChunk);
+                }
+                // 如果 chunk 为空（理论上不会发生，因为 patientLength >= 6）
+                else {
+                    // 可以取前一个 chunk 的最后一个元素，或者随机补一个
+                    // 这里简单处理：取前一个元素（仅当 i > 0）
+                    if (i > 0 && result.length > 0) {
+                        result.push(result[result.length - 1]);
+                    } else {
+                        // 如果第一个 chunk 就为空（理论上不可能），取第一个元素
+                        result.push(patientsWithSamples[0]);
+                    }
+                }
+            }
+        } else {
+            result = rangePatientListRef.current;
+        }
+
+        return result.sort((a, b) => a.ITH - b.ITH);
+    };
+
+    const getVisibleTreeListWithStyle = useMemo(() => {
+        const result = getVisibleTreeList();
+        return result?.map((item, index) => {
+            console.log(item)
+            return {
+                ...item,
+                image: `/images/${item?.patientId}.svg`,
+                transform: `rotate(${calculateFanLayout(result?.length)[index].rotate}deg) translate(${calculateFanLayout(result?.length)[index].translate})`
+            }
+        })
+    }, [rangePatientListRef.current])
+
+    const buildAllPatientsData = () => {
+        const colors = generateGradientColors(100);
+        return patientListRef.current?.map((item) => {
+            return {
+                ITH: item.currentValue,
+                newick: item.newick,
+                samples: item.samples,
+                name: item.patientId,
+                patientId: item.patientId,
+                itemStyle: { color: colors[Math.round(item.currentValue * 100) - 1] },
+            }
+        })
+    }
+
+    const buildPieSeriesData = () => {
+        return rangePatientListRef.current.map((item) => {
+            return {
+                ...item,
+                value: 1,
+            }
+        })
+    }
+
+    const getAreaPatientData = (minValue, maxValue) => {
+        return rangePatientListRef.current?.filter((patient) => patient.ITH > minValue && patient.ITH <= maxValue);
+    }
+
+    const onBarEvents = useMemo(() => ({
+        "click": function (params) {
+            const [rangeMin, rangeMax] = range;
+            rangePatientListRef.current = rangePatientListRef.current = patientListRef.current.filter((item) => {
+                return item.ITH > rangeMin && item.ITH <= rangeMax
+            })
+            if (activeBar !== params.name) {
+                const [min, max] = params.name.split("~");
+                rangePatientListRef.current = rangePatientListRef.current.filter((item) => {
+                    return item.ITH > min && item.ITH <= max
+                })
+                setActiveBar(params.name);
+            } else {
+                setActiveBar("all");
+            }
+        },
+    }), [activeBar]);
+
+    const viewTree = (data) => {
+        currentPatientRef.current = data;
+        setModalOpen(true);
+    }
+
+    const onPieEvents = useMemo(() => ({
+        "click": function (params) {
+            viewTree(params.data)
+        },
+    }), []);
+
+    const renderModalTitle = useMemo(() => {
+        return <Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
+            {currentPatientRef.current?.patientId}
+        </Typography.Paragraph>
+            <Flex align='center'>
+                <span style={{ marginLeft: "30px" }}>ITH: </span> <span style={{ display: "inline-block", width: "16px", height: "16px", marginLeft: "10px", backgroundColor: currentPatientRef.current?.itemStyle?.color }}></span><span style={{ marginLeft: "5px" }}>{currentPatientRef.current?.ITH}</span>
+            </Flex>
+        </Flex>
+    })
+
     return (
-       <RainbowChart></RainbowChart>
-      
+        <>
+            <EmptyLoading loading={loading} showEmpty={true} hasData={!!pieChartOption}>
 
+                <div style={{ position: "relative", marginTop: treeType == "overview" ? "150px" : "-70px", transform: `scale(${treeType == "overview" ? 1 : 0.7})`, transition: "all ease .3s" }}>
+                    <ReactECharts ref={pieChartRef} option={pieChartOption} opts={{ renderer: 'svg' }}
+                        lazyUpdate={true}
+                        onEvents={onPieEvents}
+                        style={{ height: PIE_CHART_WIDTH, width: PIE_CHART_WIDTH, margin: "0 auto" }}>
+                    </ReactECharts>
+                    <ReactECharts ref={barChartRef} option={columnOption} opts={{ renderer: 'svg' }}
+                        lazyUpdate={true}
+                        onEvents={onBarEvents}
+                        style={{ height: BAR_CHART_HEIGHT, width: BAR_CHART_WIDTH, position: "absolute", left: "50%", marginLeft: -BAR_CHART_WIDTH / 2, bottom: "285px" }}>
+                    </ReactECharts>
+                    {
+                        treeType == "overview" && <Flex style={{ width: TREE_CONTAINER_WIDTH, margin: "0 auto", justifyContent: "space-between", position: "absolute", top: "-120px", left: "50%", marginLeft: "-360px" }}>
+                            {
+                                getVisibleTreeListWithStyle?.map((item, index) => {
+                                    return <Flex onClick={() => { viewTree(item) }} className={rangeList?.length > 6 && index != getVisibleTreeListWithStyle.length - 1 ? styles.ellipse : null} key={item.patientId} vertical align="center" style={{ width: "120px", height: "120px", transform: item.transform }}>
+                                        <Typography.Paragraph style={{ margin: 0, textAlign: "center" }}>
+                                            {item.patientId}
+                                        </Typography.Paragraph>
+                                        {/* {
+                              patientListRef.current && <iframe width={"180"} height={"180"} src={`/html/tree01.html?newick=${patientListRef.current?.[0]?.newick}`} frameborder="0"></iframe>
+                            } */}
+                                        <Image src={item.image} width="100" height="100" alt='tree'></Image>
+                                    </Flex>
+                                })
+                            }
+
+                        </Flex>
+                    }
+
+                    <Flex align='center' justify="center" style={{ position: "absolute", width: "100%", bottom: 240, margin: "0 auto" }}>
+                        <Flex>
+                            {
+                                LEGEND.map((item) => {
+                                    return <Flex key={item.name} align='center'>
+                                        <span style={{ marginLeft: 8, backgroundColor: item.color, borderRadius: 3, width: 12, height: 12, display: "inline-block" }}></span><span style={{ marginLeft: 3, color: "#666" }}>{item.name}</span>
+                                    </Flex>
+                                })
+                            }
+                        </Flex>
+                    </Flex>
+                </div>
+                {
+                    treeType === "detail" && <TreeList list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
+                }
+            </EmptyLoading>
+            {
+                <TreeChart treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+            }</>
     );
-};
+}
+export default PhylogeneticRelationship;

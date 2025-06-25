@@ -53,21 +53,21 @@ const DriverLandscape = ({ handleApplyLoading, conditions }) => {
     return (
         <Row style={{ width: "100%", padding: "15px" }}>
             <Row style={{ width: "100%" }}>
-                <Col xs={21} md={21}>
-                    <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories}></MutationChart>
+                <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+                    <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>
                 </Col>
             </Row>
 
             <Row style={{ width: '100%' }}>
-                <Col xs={21} md={21}>
+                <Col xs={21} sm={21} md={21} lg={21} xl={21}>
                     <SampleChart sampleType={conditions.sampleType} sampleGenesMutations={sampleGenesMutations} finialGeneList={finialGeneList} sampleCategories={sampleCategories} height={height}></SampleChart>
                 </Col>
-                <Col xs={3} md={3}>
+                <Col xs={3} sm={3} md={3} lg={3} xl={3}>
                     <GeneChart genesMutations={genesMutations} finialGeneList={finialGeneList} height={height}></GeneChart>
                 </Col>
             </Row>
             <Row style={{ width: '100%' }}>
-                <Col xs={21} md={21}>
+                <Col xs={21} sm={21} md={21} lg={21} xl={21}>
                     <ClinicChart clinicList={clinicList}></ClinicChart>
                 </Col>
             </Row>

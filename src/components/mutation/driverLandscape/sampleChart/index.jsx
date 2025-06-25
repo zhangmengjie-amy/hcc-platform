@@ -193,10 +193,10 @@ const getPatientGroups = () => sampleCategories.reduce((groups, id, i) => {
     }, [sampleGenesMutations, finialGeneList, sampleCategories, sampleType])
 
     return (
-            <EmptyLoading loading={loading} showEmpty={false} hasData={!!sampleGenesMutations?.series?.length}>
+            <EmptyLoading loading={loading} showEmpty={!finialGeneList?.length} hasData={!!sampleGenesMutations?.series?.length}>
                 <ReactECharts ref={chartRef}
                     option={leftChartOption}
-                    style={{ width: '100%', height: height }} opts={{ renderer: 'svg' }}>
+                    style={{ width: "100%", height: height }} opts={{ renderer: 'svg' }}>
                 </ReactECharts>
             </EmptyLoading>
     );

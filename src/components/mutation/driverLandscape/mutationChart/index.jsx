@@ -3,18 +3,17 @@ import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from "react-i18next";
 import EmptyLoading from "@/components/emptyLoading";
-const MutationChart = ({ sampleMutations, sampleCategories }) => {
+const MutationChart = ({ sampleMutations, sampleCategories, finialGeneList }) => {
 
     const [topChartOption, setTopChartOption] = useState({});
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         setLoading(true);
-        if (!sampleCategories || !sampleMutations) return;
+        if (!sampleCategories || !sampleMutations || !finialGeneList) return;
         const option = buildTopChartOption();
         setTopChartOption(option);
-        setLoading(false)
-    }, [sampleMutations, sampleCategories])
+        setLoading(false);
+    }, [sampleMutations, sampleCategories, finialGeneList])
 
     const buildTopChartOption = () => {
         const _topChartOption = {
@@ -66,7 +65,7 @@ const MutationChart = ({ sampleMutations, sampleCategories }) => {
         return _topChartOption
     }
     return (
-        <EmptyLoading loading={loading} showEmpty={true} hasData={!!sampleCategories?.length}>
+        <EmptyLoading loading={loading} showEmpty={!finialGeneList?.length} hasData={!!finialGeneList?.length}>
             <ReactECharts style={{ height: "60px", width: "100%" }} opts={{ renderer: 'svg' }}
                 option={topChartOption}>
 

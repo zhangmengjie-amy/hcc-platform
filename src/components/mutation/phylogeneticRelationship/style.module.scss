@@ -1,0 +1,32 @@
+.fullModal {
+  overflow: hidden;
+  :global(.ant-modal) {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  :global(.ant-modal-content) {
+    display: flex;
+    flex-direction: column;
+    height: calc(80vh);
+  }
+  :global(.ant-modal-body) {
+    width: 90%;
+    margin: 0 auto;
+    height: calc(100% - 100px);
+    overflow: hidden;
+  }
+}
+.ellipse {
+  position: relative;
+  &:after {
+    display: block;
+    content: "...";
+    position: absolute;
+    right: -60px;
+    bottom: 20%;
+    font-size: 26px;
+    transform: rotate(15deg);
+  }
+}

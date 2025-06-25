@@ -1,0 +1,65 @@
+/* 树干（所有 .link 路径）的颜色和粗细 */
+.fullModal {
+  overflow: hidden;
+  :global(.ant-modal) {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  :global(.ant-modal-content) {
+    display: flex;
+    flex-direction: column;
+    height: calc(80vh);
+  }
+  :global(.ant-modal-body) {
+    width: 90%;
+    margin: 0 auto;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+.vertlink, .horzlink {
+  fill: none;
+  stroke: rgb(127, 127, 127);
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+.vertlink.highlight {
+  stroke: orange;
+  stroke-width: 3px;
+  z-index: 99999
+}
+.horzlink.highlight {
+  stroke: orange;
+  stroke-width: 3px;
+  z-index: 99999
+}
+/* 叶节点圆圈 & 文本 */
+.node.leaf circle {
+  cursor: pointer;
+  // r: 7;
+  // fill: rgb(212, 110, 64);
+  // stroke: steelblue;
+  // stroke-width: 1.2px;
+}
+.node.leaf text {
+  font-size: 16px;
+  alignment-baseline: middle;
+}
+
+/* scale-bar */
+.scaleBar line {
+  stroke: #000;
+  stroke-width: 1px;
+}
+.scaleBar text {
+  fill: #000;
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+circle.highlightNode {
+  fill: orangered;
+}

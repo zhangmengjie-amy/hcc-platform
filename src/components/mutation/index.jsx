@@ -25,7 +25,6 @@ import {
     Typography,
     Select,
     Timeline,
-    Empty,
     Upload,
     Segmented,
     Slider,
@@ -41,20 +40,19 @@ import { clinicConfig } from '@/configs/mutation';
 const { Panel } = Splitter;
 const RELOAD_ICON = "/images/reload.svg";
 const SEARCH_SRC = "/images/search.svg";
-const IMPORT_SRC = "/images/import.svg";
 const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const EXPORT_PDF = "/images/export.svg";
+const IMPORT_SRC = "/images/import.svg";
 const DRIVER_COLORS = ["rgb(210, 235, 227)", "rgb(205, 205, 205)"];
-const DEFAULT_LEFT_PANEL_WIDTH = "20%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "80%";
+const DEFAULT_LEFT_PANEL_WIDTH = "25%";
+const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
 
 
 const Mutation = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const [treeType, setTreeType] = useState("overview");
     const [driverList, setDriverList] = useState(["driver", "not-driver"]);
     const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
     const [sampleType, setSampleType] = useState("bySample");
@@ -414,7 +412,7 @@ const Mutation = () => {
                     {t("mutation:select-count")} {geneList?.length || 0}
                 </Button>
 
-                {/* <Tooltip placement="bottom" title={"Import"}>
+                <Tooltip placement="bottom" title={"Import"}>
                     <Upload {...uploadProps} onClick={(event) => {
                         handleImport(event)
                     }}>
@@ -428,8 +426,7 @@ const Mutation = () => {
                             />
                         </Button>
                     </Upload>
-
-                </Tooltip> */}
+                </Tooltip>
                 <Tooltip placement="bottom" title={"Search"}>
                     <Button color="default" onClick={(event) => {
                         handleSearch(event)
@@ -491,12 +488,17 @@ const Mutation = () => {
     const DNACollapseContent = () => {
         return <Slider value={sliderValue} onChange={setSliderValue} tooltip={{
             placement: 'top',
+            open: true,
+            getPopupContainer: (triggerNode) => triggerNode,
+            align: {
+                offset: [0, -10],
+            },
         }} style={{ margin: "50px 20px 20px 20px" }} min={0} max={1} step={0.01} styles={{
             track: {
                 background: 'transparent',
             },
             tracks: {
-                background: `linear-gradient(to right, rgb(44, 114, 185) 0%, rgb(250, 200, 88) 50%, rgb(234, 36, 42) 100%)`,
+                background: "rgb(42, 114, 165)",
             },
         }} range={{ draggableTrack: true }} defaultValue={[0, 1]} />
     }
@@ -732,7 +734,7 @@ const Mutation = () => {
             <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
                 <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
                     <Affix offsetTop={64.1}>
-                        <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", padding: "10px 0 10px 15px", background: "rgb(210, 235, 227)" }}>
+                        <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", paddingLeft: "20px", height: "50px", background: "rgb(210, 235, 227)" }}>
                             <Button color="default" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary" size="large"
                                 style={{ color: "#fff", background: geneList?.length ? "rgb(212, 110, 64)" : "gray" }}>
                                 {t("common:apply")}
@@ -762,7 +764,7 @@ const Mutation = () => {
                         </Collapse>
                     }
                     {
-                        mutationTypeTab === "driverLandscape" && <>
+                        <>
                             <Collapse
                                 defaultActiveKey={"gene"}
                                 className={styles.searchCollapse}
@@ -801,7 +803,7 @@ const Mutation = () => {
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
                     <Affix offsetTop={64.1}>
-                        <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", height: "60px", paddingRight: 15, background: "rgb(210, 235, 227)" }}>
+                        <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", height: "50px", paddingRight: 15, background: "rgb(210, 235, 227)" }}>
                             <Flex align='center'>
                                 <Button color="default" variant="text"
                                     style={{ color: "#fff", padding: 0, marginRight: 5 }}
@@ -816,13 +818,19 @@ const Mutation = () => {
 
                                 <Segmented
                                     options={[{ label: 'Driver Landscape', value: "driverLandscape", icon: <ApartmentOutlined /> },
-                                        //  { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship', icon: <BranchesOutlined /> }
-                                        ]}
+                                    { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship', icon: <BranchesOutlined /> }
+                                    ]}
                                     value={mutationTypeTab}
                                     onChange={value => setMutationTypeTab(value)}
                                 />
                             </Flex>
-
+                            {
+                                mutationTypeTab === "phylogeneticRelationship" && <Segmented
+                                    onChange={setTreeType}
+                                    options={[{ value: "overview", label: "Overview" }, { value: "detail", label: "Detail" }]}
+                                    value={treeType}
+                                />
+                            }
                             {
                                 mutationTypeTab === "driverLandscape" && <Segmented
                                     onChange={onSampleTypeChange}
@@ -830,14 +838,14 @@ const Mutation = () => {
                                     value={sampleType}
                                 />
                             }
-                            <ExportPdfButton url={`pdf-export/driver-landscape/${encodeURIComponent(JSON.stringify(params))}`}></ExportPdfButton>
+                            <ExportPdfButton url={mutationTypeTab === "driverLandscape" ? `pdf-export/driver-landscape/${encodeURIComponent(JSON.stringify(params))}` : `pdf-export/phylogenetic-relationship/${encodeURIComponent(JSON.stringify(sliderValue))}`}></ExportPdfButton>
                         </Flex>
                     </Affix>
                     {
                         mutationTypeTab === "driverLandscape" && <DriverLandscape handleApplyLoading={handleApplyLoading} conditions={params}></DriverLandscape>
                     }
                     {
-                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship></PhylogeneticRelationship>
+                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship range={sliderValue} treeType={treeType}></PhylogeneticRelationship>
                     }
                 </Panel>
             </Splitter>

@@ -8,7 +8,7 @@ import { ConfigProvider } from 'antd';
 export default function RootLayout({ children }) {
 
     return (
-        <html>
+        <html lang="en" translate="no">
             <body>
                 <AntdRegistry>
                     <ConfigProvider theme={{
@@ -44,12 +44,16 @@ export default function RootLayout({ children }) {
                             Button: {
                                 colorBgContainer: "rgb(212, 110, 64)",
                                 colorBgSolidHover: "rgb(212, 110, 64)",
-                                colorText: "#fff",
-                                colorHover: "#fff"
+                                defaultColor: "#fff",
+                                defaultHoverColor: "#fff"
                             },
                             Divider: {
                                 margin: 10,
                                 marginLG: 10
+                            },
+                            Popover: {
+                            colorBgElevated: "rgba(210, 235, 227)",
+                            colorText: "#000"
                             },
                             Segmented: {
                                 // trackBg: "#fff",
@@ -62,18 +66,18 @@ export default function RootLayout({ children }) {
                                 // itemHoverColor: "#fff",
                                 // itemHoverBg: "rgb(42, 114, 165)",
                                 trackBg: "#fff",
-                                trackPadding: 4,
+                                trackPadding: 2,
                                 itemColor: "#000",
                                 itemSelectedBg: "rgb(210, 235, 227)",
                                 itemSelectedColor: "#000",
-                                controlHeight: 40,
+                                controlHeight: 35,
                                 itemActiveBg: "#fff",
                                 itemHoverColor: "#000",
                                 itemHoverBg: "#fff"
                             }
                         },
                     }}>
-                        <LanguageProvider>
+                        <LanguageProvider lng={"en"}>
                             <ReduxProvider>
                                 {children}
                             </ReduxProvider>

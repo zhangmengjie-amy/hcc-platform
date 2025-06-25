@@ -76,11 +76,14 @@ self.onmessage = async ({ data }) => {
         const genesMutations = generateGenesMutations(finialMutations, finialGeneList);
         const sampleGenesMutations = calculateSampleGenesMutations(finialMutations, finialGeneList, finialClinicList);
         self.postMessage({ finialGeneList, sampleCategories, sampleMutations, genesMutations, sampleGenesMutations, ...{ clinicList: finialClinicList } });
+    } else if (data.key === "phylogenetic") {
+        self.postMessage()
     }
 };
 
 const formatClinicList = (finialMutations) => {
     return finialMutations.map((item) => {
+        
         const ageGroup =
             item.age < 20 ? "<20" :
                 item.age < 40 ? "20-39" :
