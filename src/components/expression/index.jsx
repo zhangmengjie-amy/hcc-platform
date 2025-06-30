@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
 import { getPatientSubtypeList } from "@/configs/request";
+import Legends from './legends';
+import { Flex } from 'antd';
 import EChartsReact from "echarts-for-react";
 
 const SUBTYPE_COLOR = {
@@ -12,8 +14,10 @@ const SUBTYPE_COLOR = {
     "C6": "rgb(218, 85, 76)",
 }
 
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6","C3,C4","C3,C5", "C3,C6", "C4,C5","C4,C6", "C5,C6",
+
+const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
     "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6"]
+
 
 const MIXED_PURE = {
     "PURE": "rgb(106, 194, 165)",
@@ -59,12 +63,12 @@ const Expression = () => {
 
         patientList?.forEach((patient) => {
             const subtypes = new Set(patient.samples.sort((a, b) => parseFloat(a.subtype) < parseFloat(b.subtype)).map((item) => item.subtype));
-        
+
             if (subtypes.size > 1) {
-                    console.log(Array.from(subtypes).sort((a, b) => {
-                        console.log(a.match(/\d+/g)[0] > b.match(/\d+/g)[0])
-                        return a.match(/\d+/g)[0] > b.match(/\d+/g)[0]
-                    }));
+                console.log(Array.from(subtypes).sort((a, b) => {
+                    console.log(a.match(/\d+/g)[0] > b.match(/\d+/g)[0])
+                    return a.match(/\d+/g)[0] > b.match(/\d+/g)[0]
+                }));
                 mixedPatientList.push(patient);
             }
         })
@@ -283,7 +287,10 @@ const Expression = () => {
     }
 
     return (
-        <EChartsReact option={option} style={{ height: 500 }} opts={{ renderer: 'svg' }}></EChartsReact>
+        <div style={{ position: "relative", height: "100vh", padding: "20px" }}>
+            <EChartsReact option={option} style={{ width: 500, height: 500, position: "relative" }} opts={{ renderer: 'svg' }}></EChartsReact>
+            <Legends ></Legends>
+        </div>
     )
 }
 
