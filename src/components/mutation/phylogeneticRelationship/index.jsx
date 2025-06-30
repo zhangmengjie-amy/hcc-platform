@@ -80,15 +80,15 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
         setLoading(true)
         const fetchData = async () => {
             let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
-
-            let _patientList = ITHList.map((item) => {
+            if (!ITHList || !patientList) return;
+            let _patientList = ITHList?.map((item) => {
                 const currentPatient = patientList.find((patient) => patient.patientId == item.publicationId);
                 return {
                     ...currentPatient,
                     currentValue: item.ith?.toFixed(2)
                 }
             })
-            _patientList = _patientList.sort((a, b) => a.currentValue - b.currentValue);
+            _patientList = _patientList?.sort((a, b) => a.currentValue - b.currentValue);
             patientListRef.current = _patientList;
             patientListRef.current = buildAllPatientsData();
             rangePatientListRef.current = getPatientListByRange();

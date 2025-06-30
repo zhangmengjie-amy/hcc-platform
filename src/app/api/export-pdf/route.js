@@ -10,8 +10,13 @@ const host = request.headers.get('host');
 
   // 启动浏览器
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    headless: "new",
+    args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',  // 防止 `/dev/shm` 不足
+        '--single-process'  // 某些环境需要
+    ]
   });
 
   try {

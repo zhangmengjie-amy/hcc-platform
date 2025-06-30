@@ -2,9 +2,8 @@ import { get, post } from "@/utils/api";
 
 export const getGeneList = async (current, size, keywords) => {
     try {
-        // const geneData = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`); // 获取 public/json/hcc-gene.json 文件
-        const geneData = await fetch(`/json/hcc-gene.json`);
-        return geneData?.json();
+        const geneData = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`); // 获取 public/json/hcc-gene.json 文件
+        return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;
@@ -20,6 +19,17 @@ export const getFullClinical = async () => {
         throw error;
     }
 };
+
+export const getPatientSubtypeList = async () => {
+    try {
+        const geneData = await fetch(`/json/hcc-patient-subtype.json`);
+        return geneData?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
 
 export const getITHList = async () => {
     try {

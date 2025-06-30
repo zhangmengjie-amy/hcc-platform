@@ -33,7 +33,6 @@ import {
 import DriverLandscape from "@/components/mutation/driverLandscape";
 import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 import styles from "./style.module.scss";
 import { clinicConfig } from '@/configs/mutation';

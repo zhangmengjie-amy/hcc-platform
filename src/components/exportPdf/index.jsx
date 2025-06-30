@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { Button, message } from 'antd';
 import { useTranslation } from "react-i18next";
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
 
 /**

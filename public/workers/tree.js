@@ -65,7 +65,7 @@ function getLeafNames(node) {
       const children = root.branchset || [];
       const Nnode = children.find(d => d.name === 'N');
       const Nleaves = getLeafNames(Nnode);
-Nnode.samples = Nleaves.map((item) => formatLabel(item));;
+        Nnode.samples = Nleaves.map((item) => formatLabel(item));;
       const mainNode = children.find(d => d !== Nnode);
       if (!Nnode || !mainNode) {
         annotateCommon(root, new Set());
@@ -114,7 +114,7 @@ Nnode.samples = Nleaves.map((item) => formatLabel(item));;
     mutations.forEach((item) => {
         _sampleMutations[item.sampleId] = item.mutations.map((mutation) => mutation.gene);
     })
-
+    console.log("treeList", treeList)
     self.postMessage({ treeList, clinic, sampleMutations: _sampleMutations });
 };
 
