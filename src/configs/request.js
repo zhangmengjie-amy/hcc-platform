@@ -20,9 +20,19 @@ export const getFullClinical = async () => {
     }
 };
 
-export const getPatientSubtypeList = async () => {
+export const getExpressionSubtypeList = async () => {
     try {
-        const geneData = await fetch(`/json/hcc-patient-subtype.json`);
+        const geneData = await fetch(`/json/hcc-expression-subtype.json`);
+        return geneData?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
+export const getImmuneSubtypeList = async () => {
+    try {
+        const geneData = await fetch(`/json/hcc-immune-subtype.json`);
         return geneData?.json();
     } catch (error) {
         console.error('Error fetching data:', error);

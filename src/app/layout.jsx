@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
                                 marginLG: 10
                             },
                             Popover: {
-                            colorBgElevated: "rgba(210, 235, 227)",
+                            colorBgElevated: "rgba(210, 235, 227, .9)",
                             colorText: "#000"
                             },
                             Segmented: {

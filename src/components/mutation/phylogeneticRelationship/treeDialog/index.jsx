@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import Tree from "@/components/Tree";
+import Tree from "@/components/tree";
 import Image from 'next/image';
+import NewickTree from "@/components/verticalTree"
 import { Modal, Typography, Flex, Button } from 'antd';
 import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
@@ -55,8 +56,17 @@ const TreeChart = ({ treeData, modalOpen, onclose }) => {
             ]}
             width="70vw"
         >
-            {
-                treeList && <Tree data={treeList} clinic={clinic} sampleMutations={sampleMutations} color={treeData?.itemStyle?.color}></Tree>}
+            {/* {
+                treeList && <Tree data={treeList} clinic={clinic} sampleMutations={sampleMutations} color={treeData?.itemStyle?.color}></Tree>
+            } */}
+
+            <NewickTree
+                width={800}
+                height={500}
+                color={treeData?.itemStyle?.color}
+                data={treeList}
+                sampleMutations={sampleMutations}
+            />
         </Modal>
 
     );

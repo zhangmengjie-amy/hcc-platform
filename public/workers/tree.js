@@ -64,53 +64,71 @@ function parseNewick(newick) {
     return { tree, nameToNode };
 }
 
-// 从某叶节点沿 _parent 回溯到 root，取逆序就是 root→leaf 路径
 function getPathToRoot(node) {
-    const path = [];
-    while (node) {
-        path.push(node);
-        node = node._parent;
-    }
-    return path.reverse();
+const path = [];
+while (node) {
+path.push(node);
+node = node._parent;
+}
+return path.reverse();
 }
 
-// 给定几条路径，找到它们的最长公共前缀（最后一个相同节点即 MRCA）
+// 找到多条路径的 MRCA
 function findMRCA(paths) {
-    if (paths.length === 0) return null;
-    let idx = 0;
-    while (true) {
-        const ref = paths[0][idx];
-        if (!ref) break;
-        for (let p of paths) {
-            if (p[idx] !== ref) {
-                return { node: paths[0][idx - 1], path: paths[0].slice(0, idx) };
-            }
-        }
-        idx++;
-    }
-    return { node: paths[0][idx - 1], path: paths[0].slice(0, idx) };
+if (paths.length === 0) return null;
+let idx = 0;
+while (true) {
+const ref = paths[0][idx];
+if (!ref) break;
+for (let p of paths) {
+if (p[idx] !== ref) {
+return { node: paths[0][idx - 1], path: paths[0].slice(0, idx) };
+}
+}
+idx++;
+}
+return { node: paths[0][idx - 1], path: paths[0].slice(0, idx) };
+}
+
+// 如果 MRCA 本身 length 为 0，往上找第一个 length>0；都没有则找 name="N"
+function resolveAnnotNode(mrcaInfo, nameToNode) {
+if (!mrcaInfo) return null;
+const { path } = mrcaInfo;
+for (let i = path.length - 1; i >= 0; i--) {
+if ((path[i].length || 0) > 0) return path[i];
+}
+return nameToNode["N"] || null;
 }
 
 self.onmessage = ({ data: { newick, mutations } }) => {
-    // 1. 解析树并拿到 leaf name->node 的映射
-    const { tree, nameToNode } = parseNewick(newick);
+// 1. 解析树
+const { tree, nameToNode } = parseNewick(newick);
 
-    // 2. 构建 sample→genes 映射，再反转为 gene→samples
+    // 2. 构建 sample->[{gene,isDriver}]，并记录 gene 的 isDriver 标记
     const sampleToGenes = Object.create(null);
+    const geneToDriverFlag = Object.create(null);
+
     mutations.forEach(({ sampleId, mutations: muts }) => {
         if (!sampleToGenes[sampleId]) sampleToGenes[sampleId] = [];
-        sampleToGenes[sampleId].push(...muts.map(m => m.gene));
+        muts.forEach(m => {
+            sampleToGenes[sampleId].push({ gene: m.gene, isDriver: m.isDriver === 1 });
+            // 只要有一个 isDriver===true，就标记为 driver
+            if (!geneToDriverFlag[m.gene] || m.isDriver === 1) {
+                geneToDriverFlag[m.gene] = m.isDriver === 1;
+            }
+        });
     });
 
+    // 3. 构建 gene->sampleId 列表
     const geneToSamples = Object.create(null);
-    for (let [smp, genes] of Object.entries(sampleToGenes)) {
-        new Set(genes).forEach(g => {
-            if (!geneToSamples[g]) geneToSamples[g] = [];
-            geneToSamples[g].push(smp);
+    for (let [smp, arr] of Object.entries(sampleToGenes)) {
+        new Set(arr.map(x => x.gene)).forEach(gene => {
+            if (!geneToSamples[gene]) geneToSamples[gene] = [];
+            geneToSamples[gene].push(smp);
         });
     }
 
-    // 3. 缓存每个样本的 root→leaf 路径
+    // 4. 缓存每个样本的 root->leaf 路径
     const samplePaths = Object.fromEntries(
         Object.entries(sampleToGenes).map(([smp]) => {
             const node = nameToNode[smp];
@@ -118,21 +136,7 @@ self.onmessage = ({ data: { newick, mutations } }) => {
         })
     );
 
-    function formatLabel(str) {
-        // ^.*?_.*?_  匹配「开头任意+第一个下划线+任意+第二个下划线」
-        return str?.replace(/^.*?_.*?_/, '') ?? '';
-    }
-
-    // 4. resolveAnnotNode：如果 MRCA.length===0，就往上找第一个 length>0；都没有则找 name="N"
-    function resolveAnnotNode(mrcaInfo) {
-        if (!mrcaInfo) return null;
-        const { path } = mrcaInfo;
-        for (let i = path.length - 1; i >= 0; i--) {
-            if ((path[i].length || 0) > 0) return path[i];
-        }
-        return nameToNode["N"] || null;
-    }
-
+    // 5. 标注每个基因到树节点
     for (let [gene, samplesArr] of Object.entries(geneToSamples)) {
         const paths = samplesArr
             .map(s => samplePaths[s])
@@ -141,17 +145,24 @@ self.onmessage = ({ data: { newick, mutations } }) => {
 
         const mrcaInfo = findMRCA(paths);
         let annotNode = mrcaInfo.node;
-        // 如果该节点本身 length 为 0，则再往上找或退到 "N"
         if (!(annotNode.length > 0)) {
-            annotNode = resolveAnnotNode(mrcaInfo);
+            annotNode = resolveAnnotNode(mrcaInfo, nameToNode);
         }
         if (!annotNode) continue;
 
-        // 加 mutations
-        (annotNode.mutations = annotNode.mutations || []).push(gene);
-        // 加 samples 并去重
-        annotNode.samples = annotNode.samples || [];
+        // 初始化 mutations 对象
+        if (!annotNode.mutations) {
+            annotNode.mutations = { driver: [], nonDriver: [] };
+        }
+        const bucket = geneToDriverFlag[gene]
+            ? annotNode.mutations.driver
+            : annotNode.mutations.nonDriver;
+        if (!bucket.includes(gene)) {
+            bucket.push(gene);
+        }
 
+        // 收集并去重样本标签
+        annotNode.samples = annotNode.samples || [];
         samplesArr.forEach(s => {
             const fmt = formatLabel(s);
             if (!annotNode.samples.includes(fmt)) {
@@ -159,7 +170,6 @@ self.onmessage = ({ data: { newick, mutations } }) => {
             }
         });
     }
-
 
     // 6. 构建 clinic 信息
     const first = mutations[0] || {};
@@ -173,6 +183,7 @@ self.onmessage = ({ data: { newick, mutations } }) => {
             patientItem.age < 40 ? "20-39" :
                 patientItem.age < 60 ? "40-59" :
                     patientItem.age < 80 ? "60-79" : ">=80";
+
     const clinic = {
         age: { value: patientItem.age, color: clinicColorConfig.age[ageGroup] }
     };
@@ -183,13 +194,29 @@ self.onmessage = ({ data: { newick, mutations } }) => {
         };
     });
 
-    // 7. 样本→基因列表去重
-    const sampleMutations = Object.fromEntries(
-        Object.entries(sampleToGenes).map(
-            ([s, genes]) => [s, Array.from(new Set(genes))]
-        )
-    );
 
-    // 输出
+    console.log(sampleToGenes)
+    // 7. 构建 sampleMutations 输出（不区分 driver，仅去重）
+const sampleMutations = Object.fromEntries(
+  Object.entries(sampleToGenes).map(([sample, arr]) => {
+    // 提取所有基因
+    const driverGenesInSample = Array.from(new Set(arr.filter((item) => item.isDriver).map(x => x.gene)));
+    const nonDriverGenesInSample = Array.from(new Set(arr.filter((item) => !item.isDriver).map(x => x.gene)));
+    console.log(nonDriverGenesInSample)
+
+    // 可根据需要，存入对象或数组
+    return [
+      sample,
+      {
+        driver: driverGenesInSample,
+        nonDriver: nonDriverGenesInSample
+      }
+    ];
+  })
+);
+
+    console.log("tree", tree)
+
+    // 8. 返回结果
     self.postMessage({ treeList: tree, clinic, sampleMutations });
 };

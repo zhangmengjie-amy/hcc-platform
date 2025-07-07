@@ -204,12 +204,12 @@ const Mutation = () => {
         return geneList?.filter((item) => !!geneRef.current.find((gene) => gene.gene === item)?.isDriverGene)
     }
 
-    const getSelectedNotDriverList = () => {
+    const getSelectedNoneDriverList = () => {
         return geneList?.filter((item) => !geneRef.current.find((gene) => gene.gene === item)?.isDriverGene)
     }
 
     const onCheckAllChange = e => {
-        const _geneList = e.target.checked ? [...getSelectedNotDriverList(), ...getDriverList()] : getSelectedNotDriverList();
+        const _geneList = e.target.checked ? [...getSelectedNoneDriverList(), ...getDriverList()] : getSelectedNoneDriverList();
         setGeneList(_geneList);
         paramsRef.current = {
             ...paramsRef.current,
@@ -271,7 +271,7 @@ const Mutation = () => {
             } else {
                 paramsRef.current = {
                     ...paramsRef.current,
-                    geneList: getGeneListWithIsDeriverGene(getSelectedNotDriverList())
+                    geneList: getGeneListWithIsDeriverGene(getSelectedNoneDriverList())
                 }
             }
         } else {

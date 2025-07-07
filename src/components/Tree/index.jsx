@@ -69,7 +69,7 @@ const Tree = ({ data, color, sampleMutations }) => {
 
         // —— 测量叶子标签最大宽度 —— 
         const measurer = svg.append('text')
-            .attr('visibility', 'hidden')
+            .attr('visibility', 'visible')
             .attr('font-size', 12)
             .attr('x', 0)
             .attr('y', 0);
@@ -79,7 +79,7 @@ const Tree = ({ data, color, sampleMutations }) => {
         }) || 0;
         measurer.remove();
 
-        margin.right = Math.max(margin.right, maxLabelWidth + 12);
+        margin.right = Math.max(margin.right, maxLabelWidth + 20);
         width = dims.width - margin.left - margin.right;
 
         // —— x 轴 —— 
@@ -341,18 +341,18 @@ const Tree = ({ data, color, sampleMutations }) => {
     }, [data, dims]);
 
     const clearHighlights = useCallback(() => {
-    const svg = d3.select(svgRef.current)
-    // 清除所有路径的 highlight
-    svg.selectAll(`path.${styles.highlight}`)
-       .classed(styles.highlight, false)
-    // 清除所有圆点的 highlightNode
-    svg.selectAll(`circle.${styles.highlightNode}`)
-       .classed(styles.highlightNode, false)
-       setTooltipState(prev => ({
-                    ...prev,
-                    visible: false
-                }))
-  }, [])
+        const svg = d3.select(svgRef.current)
+        // 清除所有路径的 highlight
+        svg.selectAll(`path.${styles.highlight}`)
+            .classed(styles.highlight, false)
+        // 清除所有圆点的 highlightNode
+        svg.selectAll(`circle.${styles.highlightNode}`)
+            .classed(styles.highlightNode, false)
+        setTooltipState(prev => ({
+            ...prev,
+            visible: false
+        }))
+    }, [])
 
 
 
@@ -363,7 +363,7 @@ const Tree = ({ data, color, sampleMutations }) => {
             style={{ width: '100%', height: '100%', position: 'relative' }}
         >
             <svg ref={svgRef} onClick={() => {
-                tooltipState?.visible && clearHighlights() 
+                tooltipState?.visible && clearHighlights()
             }} />
 
 
@@ -372,17 +372,22 @@ const Tree = ({ data, color, sampleMutations }) => {
                     style={{
                         width: "350px",
                         overflowY: "auto",
-                        padding: '0',
-                        maxHeight: "90vh", 
+                        padding: '10px',
+                        maxHeight: "90vh",
+                        border: "2px solid #fff",
+                        borderRadius: "8px"
                     }}
                 >
                     <div style={{ marginBottom: '10px', fontSize: '18px' }}>
                         <strong>Current Branch Info</strong>
                     </div>
-                    <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Sample:</span> <span style={{ lineHeight: "24px", fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.samples?.join(", ")}</span></p>
+                    <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Sample:</span> <span style={{ lineHeight: "24px", fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.samples?.join(", ") ?? "None"}</span></p>
                     {/* <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Length:</span> {tooltipState.data.length}</p> */}
-                    <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.length ?? 0} </span></p>
-                    <p style={{ fontSize: "14px", overflowY: "auto", fontWeight: "normal", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{tooltipState?.data?.mutations?.join(', ')}</p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.mutations?.driver?.length ?? 0) + (tooltipState?.data?.mutations?.nonDriver?.length ?? 0)}</span></p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.driver?.length ?? 0} </span></p>
+                    <p style={{ marginBottom: '0', fontSize: "14px", overflowY: "auto", fontWeight: "normal", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0, fontWeight: "bold" }}>{tooltipState?.data?.mutations?.driver?.join(', ')}</p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.nonDriver?.length ?? 0} </span></p>
+                    <p style={{ fontSize: "14px", overflowY: "auto", fontWeight: "normal", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{tooltipState?.data?.mutations?.nonDriver?.join(', ')}</p>
                 </div>
             )} open>
                 <div style={{

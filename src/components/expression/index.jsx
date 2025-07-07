@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
-import { getPatientSubtypeList } from "@/configs/request";
+import { getExpressionSubtypeList } from "@/configs/request";
 import { Flex } from 'antd';
 import EChartsReact from "echarts-for-react";
 
@@ -23,13 +23,13 @@ const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C
 ]
 
 const MIXED_PURE = {
-    "PURE": "rgb(106, 194, 165)",
-    "MIXED": "rgb(158, 153, 197)",
+    "Pure": "rgb(106, 194, 165)",
+    "Mixed": "rgb(158, 153, 197)",
 }
 
 const MIXED_PURE_BG = {
-    "PURE": "rgb(239, 249, 247)",
-    "MIXED": "rgb(247, 240, 247)",
+    "Pure": "rgb(239, 249, 247)",
+    "Mixed": "rgb(247, 240, 247)",
 }
 
 const STAGE_COLOR = {
@@ -43,7 +43,7 @@ const spaceValue = 0.5;
 const Expression = () => {
     const [option, setOption] = useState({});
     useEffect(() => {
-        getPatientSubtypeList().then((results) => {
+        getExpressionSubtypeList().then((results) => {
             const _option = buildOption(results);
             setOption(_option);
         });
@@ -69,12 +69,12 @@ const Expression = () => {
         MIXED_GROUP.forEach((group) => {
             const patient = patientWithGroupSubtype.filter((item) => {
                 return Array.from(new Set(item.samples.map((sample) => sample.subtype))).join(",") == group
-            }).sort((a, b) => b.stage.length - a.stage.length);
+            }).sort((a, b) => a.stage.length - b.stage.length);
             mixedPatientList.push(...patient);
         })
         let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples.map((item) => item.subtype)).size == 1)
         Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples[0].subtype == subtype).sort((a, b) => b.stage.length - a.stage.length);
+            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
             purePatientList.push(...patientWithSameSubtype);
         })
         sortedPatientList = [...purePatientList, ...mixedPatientList];
@@ -181,30 +181,50 @@ const Expression = () => {
         sortedPatient.forEach((patient, index) => {
             const isPure = new Set(patient.samples.map((item) => item.subtype)).size == 1;
 
-            const result = buildChildren(maxSampleLength, patient, isPure ? "PURE" : "MIXED");
+            const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
             if (isPure) {
-                if (initialPureSubtype !== patient.samples[0].subtype) {
-                    pureTotalSpace += 1;
+                if (!initialPureSubtype) {
                     pureChildren.push({
-                        value: spaceValue,
-                        name: "",
+                        value: defaultValue,
+                        name: "Pure",
+                        custom: {
+                            theme: "RNA Mixed or Pure",
+                            PURE_MIXED: "Pure"
+                        },
                         itemStyle: {
                             borderWidth: 0,
-                            color: MIXED_PURE_BG["PURE"],
+                            color: MIXED_PURE_BG["Pure"],
                         },
                         children: [],
                     });
+                } else {
+                    if (initialPureSubtype !== patient.samples[0].subtype) {
+                        pureTotalSpace += 1;
+                        pureChildren.push({
+                            value: spaceValue,
+                            name: "",
+                            itemStyle: {
+                                borderWidth: 0,
+                                color: MIXED_PURE_BG["Pure"],
+                            },
+                            children: [],
+                        });
+                    }
                 }
+
                 initialPureSubtype = patient.samples[0].subtype;
                 pureChildren.push(...result);
                 if (new Set(sortedPatient[index + 1]?.samples.map((item) => item.subtype)).size > 1) {
-                    pureTotalSpace += 1;
                     pureChildren.push({
-                        value: spaceValue,
-                        name: "",
+                        value: defaultValue,
+                        name: "Pure",
+                        custom: {
+                            theme: "RNA Mixed or Pure",
+                            PURE_MIXED: "Pure"
+                        },
                         itemStyle: {
                             borderWidth: 0,
-                            color: MIXED_PURE_BG["PURE"],
+                            color: MIXED_PURE_BG["Pure"],
                         },
                         children: [],
                     });
@@ -219,7 +239,7 @@ const Expression = () => {
                         name: "",
                         itemStyle: {
                             borderWidth: 0,
-                            color: MIXED_PURE_BG["MIXED"],
+                            color: MIXED_PURE_BG["Mixed"],
                         },
                         children: [],
                     });
@@ -228,8 +248,8 @@ const Expression = () => {
                 mixedChildren.push(...result)
             }
         })
-        const realPureLength = pureChildren.filter((item) => !!item.children.length)?.length;
-        const realMixedLength = mixedChildren.filter((item) => !!item.children.length)?.length;
+        const realPureLength = pureChildren.filter((item) => item.value == 1)?.length;
+        const realMixedLength = mixedChildren.filter((item) => item.value == 1)?.length;
         const totalLength = realPureLength + realMixedLength;
         const realPurePercent = (realPureLength / totalLength * 100).toFixed(0);
         const realMixedPercent = (realMixedLength / totalLength * 100).toFixed(0);
@@ -240,7 +260,8 @@ const Expression = () => {
             name: "",
             value: totalPureLength,
             itemStyle: {
-                color: MIXED_PURE_BG["PURE"],
+                borderWidth: 0,
+                color: MIXED_PURE_BG["Pure"],
             },
             label: {
                 formatter: () => {
@@ -258,7 +279,7 @@ const Expression = () => {
             name: "",
             value: totalMixedLength,
             itemStyle: {
-                color: MIXED_PURE_BG["MIXED"]
+                color: MIXED_PURE_BG["Mixed"]
             },
             label: {
                 formatter: () => {
@@ -286,7 +307,8 @@ const Expression = () => {
                 show: true,
             },
             itemStyle: {
-                borderWidth: 1, borderColor: "#ccc",
+                borderWidth: 1.5,
+                borderColor: "#ccc",
                 color: MIXED_PURE_BG["MIXED"]
             },
         }];
@@ -312,9 +334,9 @@ const Expression = () => {
                 formatter: (event) => {
                     if (!event?.data?.name) return null;
                     return `<div>
-                    ${event?.data?.custom?.patientId ? `<div style="color: #000"><span>Patient Id: </span><span style="color: #666">${event?.data?.custom?.patientId}</span></div>` : ""}
-                    ${event?.data?.custom?.sampleLength ? `<div style="color: #000"><span>Sample Length: </span><span style="color: #666">${event?.data?.custom?.sampleLength}</span></div>` : ""} 
-                    ${event?.data?.custom?.sampleId ? `<div style="color: #000"><span>Sample Id: </span><span style="color: #666">${event?.data?.custom?.sampleId}</span></div>` : ""} 
+                    ${event?.data?.custom?.patientId ? `<div style="color: #000"><span>Patient ID: </span><span style="color: #666">${event?.data?.custom?.patientId}</span></div>` : ""}
+                    ${event?.data?.custom?.sampleLength ? `<div style="color: #000"><span>Sample Counts: </span><span style="color: #666">${event?.data?.custom?.sampleLength}</span></div>` : ""} 
+                    ${event?.data?.custom?.sampleId ? `<div style="color: #000"><span>Sample ID: </span><span style="color: #666">${event?.data?.custom?.sampleId}</span></div>` : ""} 
                     <div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${event.color}"></span>${event?.data?.custom?.theme}: <span style="color: #666">${event?.data?.name}</span></div>
                     ${event?.data?.custom?.stage ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${STAGE_COLOR[event?.data?.custom?.stage]}"></span><span>Stage: </span><span style="color: #666">${event?.data?.custom?.stage}</span></div>` : ""}
                     ${event?.data?.custom?.PURE_MIXED ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${MIXED_PURE[event?.data?.custom?.PURE_MIXED]}"></span><span>RNA Mixed or Pure: </span><span style="color: #666">${event?.data?.custom?.PURE_MIXED}</span></div>` : ""} 
@@ -338,17 +360,9 @@ const Expression = () => {
     }
 
     return (
-        <div style={{ position: "relative", height: "100vh", padding: 20, backgroundColor: "rgb(210, 235, 227)" }}>
-            <EChartsReact option={option} style={{ margin: "0 auto", width: 600, height: 600 }} opts={{ renderer: 'svg' }}></EChartsReact>
-            <Flex style={{ padding: "20px", position: "absolute", right: 100, top: 0 }}>
-                <Flex vertical >
-                    <Flex style={{ marginBottom: "10px" }}>Mixed or Pure</Flex>
-                    {
-                        Object.keys(MIXED_PURE).map((item) => {
-                            return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: MIXED_PURE[item] }}></span><span>{item}</span></Flex>
-                        })
-                    }
-                </Flex>
+        <div style={{ position: "relative", height: "100vh", padding: 20, display: "flex", justifyContent: "center", backgroundColor: "rgb(210, 235, 227)" }}>
+            <EChartsReact option={option} style={{ width: 600, height: 600 }} opts={{ renderer: 'svg' }}></EChartsReact>
+            <Flex style={{ padding: "20px"}}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                     <Flex style={{ marginBottom: "10px" }}>Stage</Flex>
                     {

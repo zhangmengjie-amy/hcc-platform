@@ -6,8 +6,8 @@ import { Modal } from 'antd';
 import Image from 'next/image';
 import { Flex, Typography, Button } from 'antd';
 import styles from "./style.module.scss";
-import TreeChart from "@/components/mutation/phylogeneticRelationship/TreeChart"
-import TreeList from '@/components/mutation/phylogeneticRelationship/TreeList';
+import TreeDialog from "@/components/mutation/phylogeneticRelationship/treeDialog"
+import TreeList from '@/components/mutation/phylogeneticRelationship/treeList';
 import EmptyLoading from "@/components/emptyLoading";
 
 const VISIBLE_TREE_LENGTH = 6;
@@ -46,13 +46,13 @@ const LEGEND = [{
     color: "#2F9BC8"
 }, {
     name: "0.4-0.5",
-    color: "#ABDDA4"
+    color: "#66C2A5"
 }, {
     name: "0.5-0.6",
-    color: "#FCD467"
+    color: "#ABDDA4"
 }, {
     name: "0.6-0.7",
-    color: "#FDAE61"
+    color: "#FCD467"
 }, {
     name: "0.7-0.8",
     color: "#FDAE61"
@@ -519,7 +519,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
                 }
             </EmptyLoading>
             {
-                <TreeChart treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+                <TreeDialog treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
             }</>
     );
 }
