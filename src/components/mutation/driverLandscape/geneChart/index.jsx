@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 import ReactECharts from 'echarts-for-react';
-import EmptyLoading from "@/components/emptyLoading";
+import EmptyLoading from "@/components/empty-loading";
 
 const GeneChart = ({ genesMutations, finialGeneList, height }) => {
 

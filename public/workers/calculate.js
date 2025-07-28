@@ -114,7 +114,7 @@ const sortMutationTypeColorConfig = (samples) => {
     const mutationCounts = Object.keys(mutationTypeColorConfig).map(type => {
         const allSampleWitCurrentType = samples.flatMap(item =>
             item.mutations?.filter(mutation => {
-                const { gene, isDriver, ...mutations } = mutation;
+                const { gene, isDriver, genome_change, ...mutations } = mutation;
                 return type === "Multi_Hit"
                     ? Object.keys(mutations).length > 1
                     : Object.keys(mutations).length === 1 && mutations[type];
@@ -252,7 +252,7 @@ function mergePatients(samples, geneList) {
             if (!sample.mutations) return acc;
 
             sample.mutations.forEach(mutation => {
-                const { gene, isDriver, ...types } = mutation;
+                const { gene, isDriver, genome_change, ...types } = mutation;
                 if (!acc[gene]) {
                     acc[gene] = {
                         gene,
@@ -270,7 +270,7 @@ function mergePatients(samples, geneList) {
             return acc;
         }, {});
 
-        const finalMutations = Object.values(geneMutations).map(({ gene, isDriver, mutationTypes }) => {
+        const finalMutations = Object.values(geneMutations).map(({ gene, isDriver, genome_change,  mutationTypes }) => {
             const types = Array.from(mutationTypes);
             const mutation = { gene, isDriver };
 
@@ -407,7 +407,7 @@ function calculateSampleGenesMutations(samples, geneList, clinicList) {
         const geneMutationMap = {};
         if (mutations && mutations.length > 0) {
             mutations.forEach(mutation => {
-                const { gene, isDriver, ...mutationCounts } = mutation;
+                const { gene, isDriver, genome_change, ...mutationCounts } = mutation;
                 geneMutationMap[gene] = geneMutationMap[gene] || {};
                 for (const mutationType in mutationCounts) {
                     geneMutationMap[gene][mutationType] = (geneMutationMap[gene][mutationType] || 0) + mutationCounts[mutationType];
@@ -476,14 +476,14 @@ function generateGenesMutations(samples, geneList) {
     return Object.entries(mutationTypeColorConfig).map(([type, color]) => ({
         name: type,
         type: "bar",
-        barWidth: 10,
+        barWidth: 8,
         stack: true,
         data: geneList.map(geneItem => {
             return samples.reduce((count, sample) => {
                 if (!sample.mutations) return count;
                 const mutation = sample.mutations.find(m => m.gene === geneItem.gene);
                 if (!mutation) return count;
-                const { gene, isDriver, ...mutations } = mutation;
+                const { gene, isDriver, genome_change, ...mutations } = mutation;
                 const isMultiHit = type === "Multi_Hit";
                 const shouldCount = isMultiHit
                     ? Object.keys(mutations).length > 1

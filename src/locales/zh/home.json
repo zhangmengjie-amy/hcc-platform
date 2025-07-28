@@ -1,7 +1,11 @@
 {
   "header": {
     "home": "主页",
+    "single-modal": "单模态",
+    "multi-modal": "多模态",
     "mutation": "突变",
+    "help": "帮助",
+    "about": "关于我们",
     "expression": "表达",
     "immune": "免疫",
     "clinical": "临床"

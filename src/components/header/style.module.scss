@@ -1,14 +1,10 @@
 .hccHeader {
-  position: 'sticky';
-  top: 0;
-  z-index: 1;
-  width: '100%';
-  display: 'flex';
-  align-items: 'center';
+  font-size: "20px";
+  font-weight: bold;
+  background: url(/public/images/chromosome_alleles.png), linear-gradient(to right, #597fba, #2d3a87);
   .hccMenu {
-    font-size: 16px;
+    border: none;
   }
-
   .globe {
     cursor: pointer;
     margin-left: 10px;

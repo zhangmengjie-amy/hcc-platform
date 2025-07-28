@@ -13,67 +13,70 @@ export default function RootLayout({ children }) {
                 <AntdRegistry>
                     <ConfigProvider theme={{
                         token: {
-                            colorDark: "rgb(42, 114, 165)",
-                            colorPrimary: 'rgb(42, 114, 165)',      // 主色
-                            colorLink: '#ff4d4f',         // 链接色
-                            colorPrimaryHover: '#ff7875', // 悬停色
+                            colorPrimary: 'rgb(10, 186, 181)',
+                            colorLink: 'rgb(10, 186, 181)',
                         }, components: {
                             Layout: {
-                                headerBg: 'rgb(29, 86, 126)', // 直接修改 Header 背景色
-                                headerColor: '#fff',  // 修改文字颜色（可选）
-                                headerPadding: "0px 20px",
-                                footerBg: 'rgb(29, 86, 126)', // 直接修改 Header 背景色
+                                headerPadding: "0 50px",
+                                headerHeight: 40,
+                                headerBg: 'linear-gradient(to right, rgb(239, 207, 210),   rgb(129, 216, 208) 50%,rgb(10, 186, 181))', // 直接修改 Header 背景色
+                                 // 直接修改 Header 背景色 // 浅蓝绿 'rgb(129, 216, 208)' // 香槟金 #E0BFB8 // #F5F5F5浅灰 // #E0F7FA薄荷绿 // 蓝绿色 #008B8B
+                            },
+                            Menu: {
+                                itemBg: "transparent",
+                                itemColor: "#fff",
+                                activeBarHeight: "4px",
+                                itemHoverBg: "rgb(237, 108, 116)",
+                                itemSelectedBg: "rgb(237, 108, 116)",
+                                itemSelectedColor: "#fff",
+                                itemHoverColor: "#fff",
+                                itemActiveBg: "rgb(237, 108, 116)",
+                                popupBg: "rgb(239, 207, 210)"
                             },
                             Collapse: {
-                                headerPadding: "2px 10px"
+                                headerPadding: "0px 10px",
+                                headerBg: "rgb(10, 186, 181)"
                             },
                             Checkbox: {
-                                colorPrimary: "rgb(212, 110, 64)",
-                                colorPrimaryHover: "rgb(212, 110, 64, .8)",
+                                colorPrimary: "rgb(237, 108, 116)",
+                                colorPrimaryHover: "rgb(239, 207, 210)",
                                 colorBgContainer: "#fff",
-
                             },
                             Splitter: {
-                                colorFill: "rgb(210, 235, 227)",
-                                colorText: "rgb(42, 114, 165)",
-                                controlItemBgHover: "rgb(210, 235, 227)"
+                                colorFill: "#d9d9d9",
+                                controlItemBgHover: "#d9d9d9",
+                                controlItemBgActive: "#d9d9d9",
+                                controlItemBgActiveHover: "#d9d9d9"
                             },
                             Input: {
-                                hoverBorderColor: "rgb(212, 110, 64)"
+                                hoverBorderColor: "rgb(10, 186, 181)",
                             },
                             Button: {
-                                colorBgContainer: "rgb(212, 110, 64)",
-                                colorBgSolidHover: "rgb(212, 110, 64)",
-                                defaultColor: "#fff",
-                                defaultHoverColor: "#fff"
+                                colorBgContainer: "rgb(237, 108, 116)",
+                                colorBgSolidHover: "rgb(237, 108, 116)",
+                                colorText: "#fff",
+                                defaultHoverColor: "#fff",
+                                defaultActiveColor: "#fff",
+                                defaultHoverBorderColor: "rgb(237, 108, 116)",
+                                defaultActiveBorderColor: "rgb(237, 108, 116)",
                             },
                             Divider: {
                                 margin: 10,
                                 marginLG: 10
                             },
                             Popover: {
-                            colorBgElevated: "rgba(210, 235, 227, .9)",
+                            colorBgElevated: "#F5F5F5",
                             colorText: "#000"
                             },
                             Segmented: {
-                                // trackBg: "#fff",
-                                // trackPadding: 4,
-                                // itemColor: "rgb(29, 86, 126)",
-                                // itemSelectedBg: "rgb(29, 86, 126)",
-                                // itemSelectedColor: "#fff",
-                                // controlHeight: 40,
-                                // itemActiveBg: "rgb(29, 86, 126)",
-                                // itemHoverColor: "#fff",
-                                // itemHoverBg: "rgb(42, 114, 165)",
-                                trackBg: "#fff",
-                                trackPadding: 2,
-                                itemColor: "#000",
-                                itemSelectedBg: "rgb(210, 235, 227)",
-                                itemSelectedColor: "#000",
-                                controlHeight: 35,
-                                itemActiveBg: "#fff",
-                                itemHoverColor: "#000",
-                                itemHoverBg: "#fff"
+                                trackPadding: 0,
+                                trackBg: "rgb(239, 207, 210)",
+                                itemColor: "rgb(182, 55, 106)",
+                                itemSelectedBg: "rgb(237, 108, 116)",
+                                itemSelectedColor: "#fff",
+                                itemActiveBg: "rgb(239, 207, 210)",
+                                itemHoverColor: "rgb(182, 55, 106)",
+                                itemHoverBg: "rgb(239, 207, 210)"
                             }
                         },
                     }}>

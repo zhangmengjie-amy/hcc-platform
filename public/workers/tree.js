@@ -111,7 +111,7 @@ const { tree, nameToNode } = parseNewick(newick);
     mutations.forEach(({ sampleId, mutations: muts }) => {
         if (!sampleToGenes[sampleId]) sampleToGenes[sampleId] = [];
         muts.forEach(m => {
-            sampleToGenes[sampleId].push({ gene: m.gene, isDriver: m.isDriver === 1 });
+            sampleToGenes[sampleId].push({ gene: m.gene, isDriver: m.isDriver == 1 });
             // 只要有一个 isDriver===true，就标记为 driver
             if (!geneToDriverFlag[m.gene] || m.isDriver === 1) {
                 geneToDriverFlag[m.gene] = m.isDriver === 1;

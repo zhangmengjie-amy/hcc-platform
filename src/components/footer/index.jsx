@@ -10,8 +10,8 @@ const {Title, Paragraph} = Typography;
 const HCCFooter = () => {
     const {t} = useTranslation();
     return (
-        <Footer className={styles.HCCFooter}>
-            <Row>
+        <Footer className={styles.HCCFooter} style={{padding: "20px 0px 0px 0px"}}>
+            <Row className={styles.footerContent} style={{padding: "0 50px"}}>
                 <Col sm={12} md={6} lg={6} style={{padding: "0 20px"}}>
                     <Title style={{color: "#fff"}} level={5}>{t("home:footer.aboutHccPlatform.title")}</Title>
                     <Paragraph style={{color: "#fff", fontWeight: "lighter"}}>
@@ -61,14 +61,11 @@ const HCCFooter = () => {
                     </Paragraph>
                 </Col>
             </Row>
-            <Row>
-                <Divider style={{backgroundColor: "rgb(53, 81, 102)"}}/>
-            </Row>
-            <Row>
+            <Row style={{backgroundColor: "rgb(10, 186, 181)", padding: "15px 0"}}>
                 <Col xs={24} sm={24} md={24} lg={24}
                      style={{
                          textAlign: "center",
-                         color: "rgb(154, 168,179)"
+                         color: "#fff"
                      }}>© {new Date().getFullYear()} {t("home:footer.copyright")}</Col>
             </Row>
         </Footer>

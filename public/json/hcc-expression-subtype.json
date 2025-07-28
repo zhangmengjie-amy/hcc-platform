@@ -1,2292 +1,3916 @@
 [
     {
         "publicationId": "ITH_06",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_06_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_06_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_09",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_09_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_09_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_15",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_15_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_15_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_16",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_16_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_16_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_16_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_16_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_17",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_17_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_17_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_18",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_18_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_18_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_18_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_18_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_20",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_20_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_20_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_21",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_21_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_21_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_21_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_22",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_22_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_22_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_22_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_23",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_23_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_23_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_24",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_24_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_24_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_24_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_24_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_24_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_25",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_25_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_25_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_25_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_26",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_26_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_26_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_26_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_27",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_27_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_27_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_27_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_27_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_29",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_29_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_29_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_29_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_31",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_31_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_31_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_31_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_31_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_31_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_32",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_32_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_32_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_32_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_32_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_32_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_33",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_33_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_33_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_34",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_34_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_34_T6",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_34_T8",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_35",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_35_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_35_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_35_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_36",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_36_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_36_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_36_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_36_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_37",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_37_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_37_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_37_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_37_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_39",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_39_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_39_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_39_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_40",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_40_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_40_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_41",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_41_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_41_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_41_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_41_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_41_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_42",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_42_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_42_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_42_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_42_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_43",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_43_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_43_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_43_T7",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_43_T10",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_43_T13",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_44",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_44_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_44_T6",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_44_T11",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_44_T18",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_45",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_45_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_45_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_45_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_48",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_48_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_48_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_48_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_48_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_49",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_49_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_49_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_50",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_50_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_50_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_50_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_50_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_50_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_51",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_51_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_51_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_51_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_51_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_51_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_52",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_52_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_52_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_52_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_52_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_52_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_53",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_53_MF1T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_53_MF2T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_53_MF2T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_54",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_54_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_54_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_55",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_55_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_55_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_55_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_55_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_55_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_72",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_72_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_72_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_72_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_72_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_72_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_57",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_57_MF1T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_57_MF2T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_57_MF2T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_68",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_68_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_68_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_69",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_69_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_69_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_69_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_69_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_69_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_58",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_58_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_58_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_58_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_71",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_71_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_71_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_59",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_59_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_59_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_59_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_59_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_60",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_60_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_60_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_60_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_60_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_130",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_130_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_130_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_130_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_133",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_133_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_61",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_61_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_61_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_62",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_62_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_62_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_97",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_97_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_97_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_97_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_97_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_98",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_98_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_98_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_98_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_98_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_98_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_99",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_99_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_99_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_99_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_100",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_100_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_100_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_100_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_101",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_101_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_101_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_101_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_101_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_101_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_80",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_80_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_80_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_80_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_80_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_80_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_63",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_63_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_63_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_63_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_63_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_63_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_64",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_64_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_64_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_64_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_64_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_65",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_65_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_65_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_65_T3_repeat",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_65_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_66",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_66_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_66_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_66_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_66_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_66_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_67",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_67_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_67_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_67_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_67_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_67_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_81",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_81_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_81_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_81_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_73",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_73_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_73_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_73_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_82",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_82_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_82_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_82_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_82_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_82_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_74",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_74_MF1_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_74_MF1_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_74_MF1_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_74_MF1_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_74_MF1_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_74_MF2_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_74_MF2_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_75",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_75_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_75_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_75_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_75_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_75_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_83",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_83_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_83_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_83_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_83_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_83_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_121",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_121_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_121_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_121_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_122",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_122_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_122_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_122_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_122_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_123",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_123_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_123_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_125",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_125_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_125_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_125_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_125_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_126",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_126_MF1T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_126_MF1T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_126_MF1T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_126_MF1T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_126_MF2_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_128",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_128_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_128_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_128_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_128_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_128_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_127",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_127_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_127_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_127_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_138",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_138_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_138_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_124",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_124_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_124_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_124_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_78",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_78_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_78_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_86",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_86_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_86_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_86_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_86_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_86_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_70",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_70_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_70_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_70_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_70_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_120",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_120_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_120_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_118",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_118_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_118_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_108",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_108_MF1T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_108_MF1T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_107",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_107_MF1T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_107_MF1T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_107_MF1T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_107_MF2T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_107_MF2T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_109",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_109_MF1T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_109_MF1T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_109_MF1T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_109_MF1T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_109_MF1T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_110",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_110_MF1T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_110_MF1T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_110_MF1T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_110_MF1T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_110_MF1T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_84",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_84_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_84_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_84_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_84_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_84_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_96",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_96_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_96_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_96_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_96_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_96_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_102",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_102_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_102_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_102_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_102_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_102_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_103",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_103_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_103_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_103_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_103_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_88",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_88_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_88_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_88_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_89",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_89_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_89_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_89_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_90",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_90_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_90_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_90_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_90_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_91",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_91_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_91_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_91_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_91_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_85",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_85_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_85_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_85_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_76",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_76_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_76_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_76_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_76_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_76_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_77",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_77_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_79",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_79_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_79_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_79_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_111",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_111_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_111_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_111_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_111_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_111_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_119",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_119_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_119_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_112",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_112_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_112_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_112_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_112_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_112_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_117",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_117_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_117_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_115",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_115_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_115_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_114",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_114_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_114_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_114_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_136",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_136_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_136_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_136_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_136_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_136_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "CTNNB1",
                 "subtype": "C2"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_104",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_104_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C5"
             },
             {
                 "id": "ITH_104_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_104_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C6"
             },
             {
                 "id": "ITH_104_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_105",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_105_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G56",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_105_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_105_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "UNANNOTATED",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_105_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_105_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     },
     {
         "publicationId": "ITH_92",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_92_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_92_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_92_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "INTERFERON",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_92_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_92_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_93",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_93_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_93_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_93_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_93_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_93_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_94",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_94_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_94_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_94_T3",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_94_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_94_T5",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_95",
-        "stage": "III",
         "samples": [
             {
                 "id": "ITH_95_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_95_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_95_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             },
             {
                 "id": "ITH_95_T4",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S3",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "POLYSOMY7",
                 "subtype": "C3"
             }
-        ]
+        ],
+        "stage": "III"
     },
     {
         "publicationId": "ITH_135",
-        "stage": "II",
         "samples": [
             {
                 "id": "ITH_135_T1",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_135_T2",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_135_T3",
+                "Lee_2004": "SURVIVAL_UP",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C2"
             },
             {
                 "id": "ITH_135_T4",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             },
             {
                 "id": "ITH_135_T5",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S2",
+                "Boyault_2007": "G3",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C4"
             }
-        ]
+        ],
+        "stage": "II"
     },
     {
         "publicationId": "ITH_137",
-        "stage": "I",
         "samples": [
             {
                 "id": "ITH_137_T1",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             },
             {
                 "id": "ITH_137_T2",
+                "Lee_2004": "SURVIVAL_DN",
+                "Hoshida_2009": "S1",
+                "Boyault_2007": "G12",
+                "Chiang_2008": "PROLIFERATION",
                 "subtype": "C1"
             }
-        ]
+        ],
+        "stage": "I"
     }
 ]

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from "react-i18next";
-import EmptyLoading from "@/components/emptyLoading";
+import EmptyLoading from "@/components/empty-loading";
 import { clinicConfig } from "@/configs/mutation";
 const ClinicChart = ({ clinicList }) => {
     const { t } = useTranslation();
@@ -115,7 +115,7 @@ const ClinicChart = ({ clinicList }) => {
         <EmptyLoading loading={loading} showEmpty={true} hasData={!!clinicList?.length}>
             <ReactECharts option={bottomChartOption} opts={{ renderer: 'svg' }}
                 lazyUpdate={true}
-                style={{ height: "80px", width: '100%' }}>
+                style={{ height: "70px", width: '100%' }}>
             </ReactECharts>
         </EmptyLoading>
 

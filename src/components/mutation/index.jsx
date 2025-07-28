@@ -1,11 +1,13 @@
 "use client";
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { usePDF } from 'react-to-pdf';
 import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
 import { FixedSizeList } from 'react-window';
 import { debounce } from 'lodash';
-import EmptyLoading from "@/components/emptyLoading";
-import ExportPdfButton from '@/components/exportPdf';
+import EmptyLoading from "@/components/empty-loading";
+import ExportPdfButton from '@/components/export-pdf';
+import PdfDocument from '@/components/pdf-document';
 import {
     Card,
     Collapse,
@@ -42,7 +44,7 @@ const SEARCH_SRC = "/images/search.svg";
 const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
 const IMPORT_SRC = "/images/import.svg";
-const DRIVER_COLORS = ["rgb(210, 235, 227)", "rgb(205, 205, 205)"];
+const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
 const DEFAULT_LEFT_PANEL_WIDTH = "25%";
 const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const DEFAULT_PAGE = 1;
@@ -57,6 +59,7 @@ const Mutation = () => {
     const [sampleType, setSampleType] = useState("bySample");
     const [applyLoading, setApplyLoading] = useState(false);
     const [sliderValue, setSliderValue] = useState([0, 1]);
+    const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
     const [messageApi, contextHolder] = message.useMessage();
     const [showSearchInput, setShowSearchInput] = useState(false);
     const [params, setParams] = useState({});
@@ -78,6 +81,7 @@ const Mutation = () => {
     const geneRef = useRef(null);
     const listRef = useRef(null);
     const paramsRef = useRef(null);
+
 
     useEffect(() => {
         setFetchLoading(true);
@@ -404,13 +408,6 @@ const Mutation = () => {
                 }}
                 style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.gene")}</Typography.Paragraph>
             <Space>
-                <Button
-                    color="default" variant="link"
-                    onClick={onPreventMouseDown}
-                    style={{ padding: 0, margin: 0, color: "#fff", fontWeight: "bold" }}>
-                    {t("mutation:select-count")} {geneList?.length || 0}
-                </Button>
-
                 <Tooltip placement="bottom" title={"Import"}>
                     <Upload {...uploadProps} onClick={(event) => {
                         handleImport(event)
@@ -570,11 +567,12 @@ const Mutation = () => {
                     >
                         {virtualRow}
                     </FixedSizeList>
-                    {<Flex style={{ width: "100%", height: "20px" }} align='center' justify='center'><Spin indicator={<LoadingOutlined spin />} spinning={loadMoreLoading} /></Flex>}
+                    {/* {<Flex style={{ width: "100%", height: "20px" }} align='center' justify='center'><Spin indicator={<LoadingOutlined spin />} spinning={loadMoreLoading} /></Flex>} */}
 
                 </Checkbox.Group>
+                           
             </EmptyLoading>
-
+            <div style={{borderTop: "1px solid #f0f0f0", padding: "2px 0"}}>{t("mutation:select-count")}: {geneList?.length || 0}</div>
             <Checkbox className={styles.checkAllDriver} checked={isAllDriverChecked()}
                 indeterminate={existDriverChecked()}
                 onChange={onCheckAllChange} style={{ marginBottom: 6 }}>
@@ -727,15 +725,16 @@ const Mutation = () => {
         </Card>
     }
 
+
     return (
         <>
             {contextHolder}
             <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
                 <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
-                    <Affix offsetTop={64.1}>
-                        <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", paddingLeft: "20px", height: "50px", background: "rgb(210, 235, 227)" }}>
-                            <Button color="default" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary" size="large"
-                                style={{ color: "#fff", background: geneList?.length ? "rgb(212, 110, 64)" : "gray" }}>
+
+                        <Flex justify='space-between' align='center' style={{paddingLeft: "20px", height: "40px" }}>
+                            <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary" 
+                                style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
                                 {t("common:apply")}
                             </Button>
                             <Button color="default" variant="text"
@@ -749,7 +748,6 @@ const Mutation = () => {
                                 />
                             </Button>
                         </Flex>
-                    </Affix>
                     {
                         mutationTypeTab === "phylogeneticRelationship" && <Collapse
                             defaultActiveKey={"HNA_ITH"}
@@ -801,8 +799,7 @@ const Mutation = () => {
 
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
-                    <Affix offsetTop={64.1}>
-                        <Flex justify='space-between' align='center' style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", height: "50px", paddingRight: 15, background: "rgb(210, 235, 227)" }}>
+                        <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 15}}>
                             <Flex align='center'>
                                 <Button color="default" variant="text"
                                     style={{ color: "#fff", padding: 0, marginRight: 5 }}
@@ -816,8 +813,8 @@ const Mutation = () => {
                                 </Button>
 
                                 <Segmented
-                                    options={[{ label: 'Driver Landscape', value: "driverLandscape", icon: <ApartmentOutlined /> },
-                                    { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship', icon: <BranchesOutlined /> }
+                                    options={[{ label: 'Driver Landscape', value: "driverLandscape" },
+                                    { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship' }
                                     ]}
                                     value={mutationTypeTab}
                                     onChange={value => setMutationTypeTab(value)}
@@ -839,7 +836,6 @@ const Mutation = () => {
                             }
                             <ExportPdfButton url={mutationTypeTab === "driverLandscape" ? `pdf-export/driver-landscape/${encodeURIComponent(JSON.stringify(params))}` : `pdf-export/phylogenetic-relationship/${encodeURIComponent(JSON.stringify(sliderValue))}`}></ExportPdfButton>
                         </Flex>
-                    </Affix>
                     {
                         mutationTypeTab === "driverLandscape" && <DriverLandscape handleApplyLoading={handleApplyLoading} conditions={params}></DriverLandscape>
                     }

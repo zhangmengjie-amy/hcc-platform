@@ -1,0 +1,20 @@
+/* 树干（所有 .link 路径）的颜色和粗细 */
+.fullModal {
+  overflow: hidden;
+  :global(.ant-modal) {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  :global(.ant-modal-content) {
+    display: flex;
+    flex-direction: column;
+    height: calc(80vh);
+  }
+  :global(.ant-modal-body) {
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+}

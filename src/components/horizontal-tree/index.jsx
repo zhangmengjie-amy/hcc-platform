@@ -1,9 +1,12 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import * as d3 from 'd3';
 import { Popover } from 'antd';
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
-const Tree = ({ data, color, sampleMutations }) => {
+
+const heatmapCellSize = 20;
+const heatmapPadding = 10;
+const HorizontalTree = ({ data, color, adaptive,  sampleMutations, heatmapFields = [], heatmapData = {}, alignLabel = false }) => {
     const containerRef = useRef(null);
     const svgRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
@@ -44,47 +47,81 @@ const Tree = ({ data, color, sampleMutations }) => {
     useEffect(() => {
         if (!data || dims.width === 0 || dims.height === 0) return;
 
+        const showHeatMap = heatmapFields.length > 0 && heatmapData && Object.keys(heatmapData)?.length;
+        const hmWidth = heatmapFields.length * heatmapCellSize;
+
+
         const svg = d3.select(svgRef.current)
-            .attr('viewBox', `0 0 ${dims.width} ${dims.height}`)
             .style('width', '100%')
-            .style('height', '100%')
+.style('height', adaptive ? '100%' : 'auto')
             .style('position', 'relative')
             .style('overflow', 'visible')
             .on('contextmenu', event => event.preventDefault());
 
         svg.selectAll('*').remove();
 
+
         const padY = 20, tickSize = 5;
         const margin = { top: 30, right: 20, bottom: padY + tickSize + 50, left: 20 };
-        let width = dims.width - margin.left - margin.right;
-        let height = dims.height - margin.top - margin.bottom;
+
 
         const root = d3.hierarchy(data, d => d.branchset);
         root.each(d => d.cum = (d.parent ? d.parent.cum : 0) + (d.data.length || 0));
         const leaves = root.leaves();
-        const dy = leaves.length > 1 ? height / (leaves.length - 1) : height / 2;
+const availableH = dims.height - margin.top - margin.bottom;
+  const treeBodyHeight = adaptive
+    ? availableH
+    : heatmapCellSize * (leaves.length - 1);
+
+  const dy = adaptive
+    ? treeBodyHeight / (leaves.length - 1)
+    : heatmapCellSize;
         leaves.forEach((d, i) => d.y = i * dy);
         root.eachAfter(d => { if (d.children) d.y = d3.mean(d.children, c => c.y); });
+
+const totalSvgHeight = adaptive
+    ? dims.height
+    : margin.top + treeBodyHeight + margin.bottom;
+
+       svg
+    .attr('viewBox', `0 0 ${dims.width} ${totalSvgHeight}`)
+    // 当 adaptive = false 时，给一个固定像素高度；否则留给外层 div 的 100%
+    .style('height', adaptive ? '100%' : `${totalSvgHeight}px`);
+        // 然后把 height 变量赋给 treeBodyHeight
         const xMax = d3.max(root.descendants(), d => d.cum);
 
-        // —— 测量叶子标签最大宽度 —— 
+        // 1) 初始设置 margin.right（不考虑 label，只考虑 heatmap）
+        const baseMarginRight =
+            (showHeatMap ? heatmapPadding + hmWidth : 0);
+
+        // 2) 先算可画宽度、xScale、并给每个叶子算个初始 d.x
+        let width0 = dims.width - margin.left - baseMarginRight;
+        const xScale0 = d3.scaleLinear([0, xMax], [0, width0]);
+        root.each(d => (d.x = xScale0(d.cum)));
+
+        // 3) 测量每个叶子的 label 宽度，计算它需要的「超出宽度」：
+        //    overflow = d.x + labelGap + labelWidth - width0
         const measurer = svg.append('text')
             .attr('visibility', 'visible')
-            .attr('font-size', 12)
-            .attr('x', 0)
-            .attr('y', 0);
-        const maxLabelWidth = d3.max(leaves, d => {
-            measurer.text(formatLabel(d.data.name) || '');
-            return measurer.node().getBBox().width;
+            .attr('font-size', 14);
+
+        const labelGap = 5;
+        const maxOverflow = d3.max(leaves, d => {
+            const name = formatLabel(d.data.name) || '';
+            measurer.text(name);
+            const w = measurer.node().getBBox().width;
+            return Math.max(0, d.x + labelGap + w - width0);
         }) || 0;
+
         measurer.remove();
 
-        margin.right = Math.max(margin.right, maxLabelWidth + 20);
-        width = dims.width - margin.left - margin.right;
+        // 4) 最终的 margin.right = base + maxOverflow
+        margin.right = baseMarginRight + maxOverflow;
 
-        // —— x 轴 —— 
+        // 5) 用新的 margin.right 重新算 width、xScale，一切按新的布局去画
+        const width = dims.width - margin.left - margin.right;
         const xScale = d3.scaleLinear([0, xMax], [0, width]);
-        root.each(d => { d.x = xScale(d.cum); });
+        root.each(d => (d.x = xScale(d.cum)));
 
         // —— zoomable group —— 
         const g = svg.append('g')
@@ -186,27 +223,80 @@ const Tree = ({ data, color, sampleMutations }) => {
                     mutations: branchNode.data.mutations
                 });
             })
-        // .on('pointerout', (event, link) => {
-        //     event.stopPropagation();
-        //     // 取消高亮
-        //     d3.select(event.currentTarget)
-        //         .classed(styles.highlight, false);
-        //     g.selectAll(`path.${styles.horzlink}`).classed(styles.highlight, false);
-        //     g.selectAll(`path.${styles.vertlink}`).classed(styles.highlight, false);
-        //     g.selectAll('circle')
-        //         .classed(styles.highlightNode, false);
-        //     hideCustomTooltipMenu();
-        // });
+            .on('pointerout', (event, link) => {
+                event.stopPropagation();
+                // 取消高亮
+                d3.select(event.currentTarget)
+                    .classed(styles.highlight, false);
+                g.selectAll(`path.${styles.horzlink}`).classed(styles.highlight, false);
+                g.selectAll(`path.${styles.vertlink}`).classed(styles.highlight, false);
+                g.selectAll('circle')
+                    .classed(styles.highlightNode, false);
+                hideCustomTooltipMenu();
+            });
 
 
-        // —— 节点 & 文本 —— 
+
+        const heatmapStartX = showHeatMap
+            ? dims.width - hmWidth - margin.left  // 这里跟画 heatmap 时的 startPos 保持一致
+            : xScale(xMax);                       // 如果没 heatmap，就对齐到最长分支末端
+
+        const labelGapToHeatmap = 5;   // label 与 heatmap 之间留 5px
+        const labelAlignX = heatmapStartX - labelGapToHeatmap;
+
+        // 找出最长分支对应的叶子节点
+        const maxLeaf = leaves.reduce((a, b) => (a.cum > b.cum ? a : b), leaves[0]);
+
+        // ---- 节点 & 文本 ----
         const node = g.selectAll('g.node')
             .data(root.descendants())
             .enter().append('g')
-            .attr('class', d => d.children
-                ? styles.node
-                : `${styles.node} ${styles.leaf}`)
+            .attr('class', d => d.children ? styles.node : `${styles.node} ${styles.leaf}`)
             .attr('transform', d => `translate(${d.x},${d.y})`);
+
+        // 只给叶子加 circle
+        const leavesNodes = node.filter(d => !d.children);
+        leavesNodes
+            .append('circle')
+            .attr('r', 6)
+            .attr('fill', color ?? 'rgb(212,110,64)');
+
+        // 如果需要对齐，就先画虚线
+        if (alignLabel) {
+            leavesNodes
+                .filter(d => formatLabel(d.data.name) != 'N' || d != maxLeaf)
+                .append('line')
+                .attr('x1', 6)    // circle 半径
+                .attr('y1', 0)
+                // 线到文字起点再往左 20px
+                .attr('x2', d => (labelAlignX - d.x) - 20)
+                .attr('y2', 0)
+                .attr('stroke', '#999')
+                .attr('stroke-dasharray', '2,2');
+        }
+
+        // 最后 append text
+        leavesNodes
+            .append('text')
+            .text(d => formatLabel(d.data.name) || '')
+            .attr('dy', '0')
+            .attr('x', d => {
+
+
+                if (alignLabel) {
+                    return labelAlignX - d.x;
+                } else {
+                    return 10;
+                }
+
+
+                // 默认紧跟在 circle 右侧
+
+            })
+            .attr('text-anchor', d => {
+                return alignLabel ? "end" : "start";
+            })
+            .style('font-size', '12px');
 
         // 叶子圆点
         node.filter(d => !d.children)
@@ -291,21 +381,15 @@ const Tree = ({ data, color, sampleMutations }) => {
                 g.selectAll('circle')
                     .classed(styles.highlightNode, nodeDatum => fullPath.includes(nodeDatum));
             })
-        // .on('pointerout', (event) => {
-        //     event.stopPropagation();
-        //     hideCustomTooltipMenu();
-        //     g.selectAll(`path.${styles.horzlink}`).classed(styles.highlight, false);
-        //     g.selectAll(`path.${styles.vertlink}`).classed(styles.highlight, false);
-        //     g.selectAll('circle')
-        //         .classed(styles.highlightNode, false);
-        // });
+            .on('pointerout', (event) => {
+                event.stopPropagation();
+                hideCustomTooltipMenu();
+                g.selectAll(`path.${styles.horzlink}`).classed(styles.highlight, false);
+                g.selectAll(`path.${styles.vertlink}`).classed(styles.highlight, false);
+                g.selectAll('circle')
+                    .classed(styles.highlightNode, false);
+            });
 
-        // 叶子标签
-        node.filter(d => !d.children)
-            .append('text')
-            .attr('dx', 10)
-            .attr('dy', 0)
-            .text(d => formatLabel(d.data.name) || '');
 
         // —— 底部比例尺 —— 
         const step = d3.tickStep(0, xMax, 2);
@@ -330,15 +414,66 @@ const Tree = ({ data, color, sampleMutations }) => {
             // 如果想让文字也显示“实际长度”，可以写 step，
             // 或者写 step * scaleFactor 来对应缩短后的长度
             .text('Scale line: ' + step * scaleFactor);
+        if (showHeatMap) {
+            const startPos = dims.width - hmWidth - margin.left;
+            const gHeat = g
+                .append('g')
+                .attr('transform', `translate(${startPos},0)`)
+                .attr('class', styles.heatmap);
+
+            const xHeat = d3
+                .scaleBand()
+                .domain(heatmapFields)
+                .range([0, hmWidth])
+                .padding(0.05);
+
+            // 底部字段名
+            // 假设你在上面已经计算了 yMaxLeaf（叶子最大 y 值）和 heatmapCellSize
 
 
-        return () => {
-            setTooltipState(prev => ({
-                ...prev,
-                visible: false
-            }))
+            const secondLastLeaf = leaves[leaves.length - 2];
+            const axisY = secondLastLeaf.y + heatmapCellSize / 2 + 6;
+
+            gHeat
+                .append('g')
+                .attr('transform', `translate(0, ${axisY})`)
+                .call(
+                    d3
+                        .axisBottom(xHeat)
+                        .tickSize(0)
+                        .tickPadding(4)
+                )
+                .call(g => g.select('.domain').remove())
+                .selectAll('text')
+                .attr('transform', 'rotate(90)')
+                .attr('text-anchor', 'start')
+                .attr('dy', '0')
+                .attr('dx', '0')
+                .style('font-size', '12px');
+
+
+            // 每个叶子一行
+            leaves
+                .filter(d => formatLabel(d.data.name) !== 'N')
+                .forEach(leaf => {
+                    heatmapFields.forEach(field => {
+                        console.log(heatmapData, leaf.data.name, field)
+                        const v = heatmapData?.[leaf.data.name]?.[field] ?? 0;
+                        gHeat
+                            .append('rect')
+                            .attr('x', xHeat(field))
+                            .attr('y', leaf.y - heatmapCellSize / 2)
+                            .attr('width', xHeat.bandwidth())
+                            .attr('height', heatmapCellSize)
+                            .attr('fill', v.color ?? "#f0f0f0")
+                            .attr('stroke', 'rgb(29, 86, 126)')
+                            .attr('stroke-width', 1)
+                            .append('title')
+                            .text(`${field}: ${v.value ?? "None"}`);
+                    });
+                });
         }
-    }, [data, dims]);
+    }, [data, dims, heatmapFields, heatmapData]);
 
     const clearHighlights = useCallback(() => {
         const svg = d3.select(svgRef.current)
@@ -401,4 +536,4 @@ const Tree = ({ data, color, sampleMutations }) => {
     );
 };
 
-export default Tree;
+export default HorizontalTree;

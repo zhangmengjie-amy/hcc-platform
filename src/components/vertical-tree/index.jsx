@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { Popover } from 'antd';
 import * as d3 from 'd3'
@@ -8,17 +9,18 @@ const circleRadius = 8
 const fontSize = 14
 const labelPadding = 2
 const scaleOffset = 20       // 新增：刻度线相对分支的水平偏移量
-const NewickTree = ({
+const VerticalTree = ({
     sampleMutations,
     data,
     color,
+    genes = ["CTNNB1", "KMT2D", "TP53"]
 
 }) => {
-    const containerRef = useRef(null)
-    const svgRef = useRef(null)
+    const containerRef = useRef(null);
+    const svgRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
     const [tooltipState, setTooltipState] = useState({ visible: false, x: 0, y: 0, data: null });
-    console.log(sampleMutations)
+
     useEffect(() => {
         const ro = new ResizeObserver(entries => {
             for (let entry of entries) {
@@ -172,7 +174,7 @@ const NewickTree = ({
                 if (ancestorsA.has(cur)) { LCA = cur; break }
                 cur = cur.parent
             }
-            // 再从 a 和 b 分别走到 LCA，把沿途所有节点收集到一个 Set
+            // 再从 a 和 b 分别走到 MRCA，把沿途所有节点收集到一个 Set
             const pathNodes = new Set()
             cur = a
             while (cur) {
@@ -272,7 +274,7 @@ const NewickTree = ({
                 const pathNodes = getPathNodes(d, outgroupNode);
 
 
-           
+
 
                 // highlight circles
                 allCircles
@@ -280,11 +282,11 @@ const NewickTree = ({
                         pathNodes.has(nodeDatum) ? '#ff4500' : color
                     );
 
-          
-                    if (d?.data?.name === 'N') return
+
+                if (d?.data?.name === 'N') return
                 // highlight links
-                
-                         allLinks
+
+                allLinks
                     .style('stroke', l => pathNodes.has(l.target) ? '#d46e40' : '#555')
                     .style('stroke-width', l => pathNodes.has(l.target) ? 3 : 1.5);
 
@@ -415,6 +417,58 @@ const NewickTree = ({
         const dx = padX - bbox.x + (((W - 2 * padX) - bbox.width) / 2)
         const dy = padY - bbox.y + (((H - 2 * padY) - bbox.height) / 2)
         g.attr('transform', `translate(${dx},${dy})`)
+        if (genes.length) {
+            // 1) 基因颜色
+            const geneColorMap = {
+                "CTNNB1": "red",
+                "TP53": "yellow",
+                "KMT2D": "pink"
+            };
+            // 2) 五角星 generator
+            const star = d3.symbol().type(d3.symbolStar).size(200);
+
+            // 3) 收集需要标记的分支（parent → child）
+            const geneMarkers = [];
+            root.descendants().forEach(d => {
+                if (!d.parent) return;  // 跳过根节点
+                const drivers = d.data.mutations?.driver || [];
+                // 只保留我们关心的基因
+                const hits = drivers.filter(g => genes.includes(g));
+                hits.forEach((gene, idx) => {
+                    geneMarkers.push({
+                        parent: d.parent,
+                        child: d,
+                        gene,
+                        idx,
+                        total: hits.length
+                    });
+                });
+            });
+
+                // 4) 绘制五角星
+                g.selectAll('path.gene-marker')
+                    .data(geneMarkers)
+                    .enter().append('path')
+                    .attr('class', 'gene-marker')
+                    .attr('d', star)
+                    .attr('fill', d => geneColorMap[d.gene])
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 0.5)
+                    .attr('transform', d => {
+                        const p = d.parent,
+                            c = d.child;
+                        const x0 = p.data.__out ? P.x : p.x,
+                            y0 = p.y,
+                            x1 = c.data.__out ? P.x : c.x,
+                            y1 = c.y;
+                        // 均匀分布在分支上
+                        const t = (d.idx + 1) / (d.total + 1);
+                        const x = x0 + (x1 - x0) * t;
+                        const y = y0 + (y1 - y0) * t;
+                        return `translate(${x},${y})`;
+                    }).append('title')
+                .text(d => d.gene);
+        }
         return () => {
             setTooltipState(prev => ({
                 ...prev,
@@ -438,6 +492,8 @@ const NewickTree = ({
             visible: false
         }))
     }, [color])
+
+    console.log(tooltipState?.data?.mutations?.nonDriver)
 
     return (
         <div ref={containerRef}
@@ -481,4 +537,4 @@ const NewickTree = ({
     )
 }
 
-export default NewickTree
+export default VerticalTree

@@ -160,7 +160,7 @@ const HomeContent = () => {
                  style={{background: "linear-gradient(to top, rgb(235, 242, 255), #ffffff)"}}>
             <Row justify={"center"}>
                 <Col xs={22} sm={22} md={22} lg={22}>
-                    <Row justify="center">
+                                    <Row justify="center">
                         <Col xs={24} sm={12} md={12} lg={12}>
                             <Search
                                 // loading

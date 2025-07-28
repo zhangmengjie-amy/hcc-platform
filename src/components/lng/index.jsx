@@ -22,7 +22,7 @@ const Language = () => {
     return (
         <Tooltip placement="bottom" title={t("common:changeLanguage")}>
             <Button color="default" variant="text" style={{color: "#fff"}}><span
-                style={{marginBottom: 0, color: "#fff"}}>{showLanguage()}</span>
+                style={{marginBottom: 0, color: "#fff", fontWeight: "bold"}}>{showLanguage()}</span>
                 <Image
                     onClick={handleLanguage}
                     src="/images/globe.svg"
@@ -31,7 +31,6 @@ const Language = () => {
                     height={25}
                 /></Button>
         </Tooltip>
-
     );
 }
 export default Language;

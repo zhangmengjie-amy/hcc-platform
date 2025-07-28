@@ -78,11 +78,11 @@ export default function PdfExportButton({
     return (
         <>
             {contextHolder}
-            <Button color="default" onClick={exportToPDF} type="primary" size="large" icon={showIcon && (loading ? <LoadingOutlined /> : <DownloadOutlined />)}
+            <Button color="default" onClick={exportToPDF} type="primary" size="middle" icon={showIcon && (loading ? <LoadingOutlined /> : <DownloadOutlined />)}
 
                 loading={loading}
                 {...buttonProps}
-                style={{ color: "#fff", background: "rgb(212, 110, 64)" }}>
+                style={{ color: "#fff", background: "rgb(237, 108, 116)" }}>
                 {t("common:exportPdf")}
             </Button>
 
