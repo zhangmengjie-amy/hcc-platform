@@ -3,11 +3,9 @@ import React, { useState, useMemo } from 'react';
 import { Layout, Flex, Row, Col, Card, Menu, FloatButton, Button, Input, Typography } from 'antd';
 import styles from "./style.module.scss";
 import Image from 'next/image';
-import CountUp from 'react-countup';
+import Link from 'next/link';
 import classnames from 'classnames';
 import { useTranslation } from "react-i18next";
-import HomeContent from "@/components/home/content";
-import HomeBanner from "@/components/home/banner";
 const { Title, Paragraph } = Typography;
 const Home = () => {
     const { t } = useTranslation();
@@ -78,8 +76,8 @@ const Home = () => {
     }]
 
     const items = [
-        { key: 'mutation', label: 'Mutation', bg: "/images/mutation-bg.png" },
-        { key: 'expression', label: 'Expression', bg: "/images/expression-bg.png" },
+        { key: 'mutation', label: 'Genome', bg: "/images/mutation-bg.png" },
+        { key: 'expression', label: 'Transcriptome', bg: "/images/expression-bg.png" },
         { key: 'immune', label: 'Immune' },
         { key: 'clinical', label: 'Clinical' },
     ];
@@ -127,7 +125,7 @@ const Home = () => {
                                 size="large"
                             // onSearch={onSearch}
                             />
-                            <Button size='large' style={{ marginLeft: "20px" }}>Go To Multi Modal</Button>
+                            {/* <Button size='large' style={{ marginLeft: "20px" }}>Go To Multi Modal</Button> */}
                         </Flex>
 
                         {/* <Image src={"/images/water-fall.jpg"} width={350} height={200} alt="water-fall"></Image>
@@ -147,6 +145,7 @@ const Home = () => {
                 {
                     items.map((item, index) => {
                         return <Col key={index} xs={12} sm={12} md={6} lg={6}>
+                            <Link href={`/${item.key}`} onClick={() => { setSelectedSingleModal(item.key) }}>
                             <Flex vertical align={"center"} className={classnames(styles.colFlex, { [item.key]: true })} style={{
                                 backgroundImage: `url('/images/${item.key}-bg.png')`,
                                 backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundOrigin: "content-box"
@@ -155,7 +154,8 @@ const Home = () => {
                                 >
                                     <span className={styles.capital}>{item.label?.slice(0, 1)}</span><span className={styles.remaining}>{item.label?.slice(1, item.label.length)}</span>
                                 </Title>
-                            </Flex>
+                            </Flex></Link>
+                            
                         </Col>
                     })
                 }

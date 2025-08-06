@@ -113,8 +113,8 @@ const { tree, nameToNode } = parseNewick(newick);
         muts.forEach(m => {
             sampleToGenes[sampleId].push({ gene: m.gene, isDriver: m.isDriver == 1 });
             // 只要有一个 isDriver===true，就标记为 driver
-            if (!geneToDriverFlag[m.gene] || m.isDriver === 1) {
-                geneToDriverFlag[m.gene] = m.isDriver === 1;
+            if (!geneToDriverFlag[m.gene] || m.isDriver == 1) {
+                geneToDriverFlag[m.gene] = m.isDriver == 1;
             }
         });
     });
@@ -194,15 +194,12 @@ const { tree, nameToNode } = parseNewick(newick);
         };
     });
 
-
-    console.log(sampleToGenes)
     // 7. 构建 sampleMutations 输出（不区分 driver，仅去重）
 const sampleMutations = Object.fromEntries(
   Object.entries(sampleToGenes).map(([sample, arr]) => {
     // 提取所有基因
     const driverGenesInSample = Array.from(new Set(arr.filter((item) => item.isDriver).map(x => x.gene)));
     const nonDriverGenesInSample = Array.from(new Set(arr.filter((item) => !item.isDriver).map(x => x.gene)));
-    console.log(nonDriverGenesInSample)
 
     // 可根据需要，存入对象或数组
     return [

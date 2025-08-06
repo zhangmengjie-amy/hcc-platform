@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import i18n from 'i18next';
-import { Layout, Affix, Menu, Flex, Typography } from 'antd';
+import { Layout, Affix, Menu, Flex, Typography, Button } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -83,6 +83,8 @@ const HCCHeader = () => {
                     }}
                 />
                 <Language></Language>
+                <Button><Link href={"/login"}>登录</Link></Button>
+                <></>
             </Flex>
         </Layout.Header>
     );

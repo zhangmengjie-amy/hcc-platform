@@ -5,9 +5,10 @@ import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
 import { FixedSizeList } from 'react-window';
 import { debounce } from 'lodash';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import EmptyLoading from "@/components/empty-loading";
 import ExportPdfButton from '@/components/export-pdf';
-import PdfDocument from '@/components/pdf-document';
 import {
     Card,
     Collapse,
@@ -38,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import Image from 'next/image';
 import styles from "./style.module.scss";
 import { clinicConfig } from '@/configs/mutation';
+import Overall from '@/components/mutation/overall';
 const { Panel } = Splitter;
 const RELOAD_ICON = "/images/reload.svg";
 const SEARCH_SRC = "/images/search.svg";
@@ -55,11 +57,10 @@ const Mutation = () => {
     const { t } = useTranslation();
     const [treeType, setTreeType] = useState("overview");
     const [driverList, setDriverList] = useState(["driver", "not-driver"]);
-    const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
+    const [mutationTypeTab, setMutationTypeTab] = useState("overall");
     const [sampleType, setSampleType] = useState("bySample");
     const [applyLoading, setApplyLoading] = useState(false);
     const [sliderValue, setSliderValue] = useState([0, 1]);
-    const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
     const [messageApi, contextHolder] = message.useMessage();
     const [showSearchInput, setShowSearchInput] = useState(false);
     const [params, setParams] = useState({});
@@ -70,6 +71,8 @@ const Mutation = () => {
     const [fetchLoading, setFetchLoading] = useState(true);
     const [current, setCurrent] = useState(1);
     const [geneList, setGeneList] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const driverLandscapeRef = useRef(null);
 
     const [clinicList, setClinicList] = useState({
         gender: [],
@@ -81,6 +84,13 @@ const Mutation = () => {
     const geneRef = useRef(null);
     const listRef = useRef(null);
     const paramsRef = useRef(null);
+
+    useEffect(() => {
+        if (driverLandscapeRef.current) {
+          const svgElements = driverLandscapeRef.current.querySelectorAll('svg');
+          setSvgRefs(Array.from(svgElements).map(() => React.createRef()));
+        }
+      }, []);
 
 
     useEffect(() => {
@@ -489,14 +499,7 @@ const Mutation = () => {
             align: {
                 offset: [0, -10],
             },
-        }} style={{ margin: "50px 20px 20px 20px" }} min={0} max={1} step={0.01} styles={{
-            track: {
-                background: 'transparent',
-            },
-            tracks: {
-                background: "rgb(42, 114, 165)",
-            },
-        }} range={{ draggableTrack: true }} defaultValue={[0, 1]} />
+        }} style={{ margin: "50px 20px 20px 20px" }} min={0} max={1} step={0.01}  range={{ draggableTrack: true }} defaultValue={[0, 1]} />
     }
 
     const loadMoreGene = useCallback(
@@ -570,9 +573,9 @@ const Mutation = () => {
                     {/* {<Flex style={{ width: "100%", height: "20px" }} align='center' justify='center'><Spin indicator={<LoadingOutlined spin />} spinning={loadMoreLoading} /></Flex>} */}
 
                 </Checkbox.Group>
-                           
+
             </EmptyLoading>
-            <div style={{borderTop: "1px solid #f0f0f0", padding: "2px 0"}}>{t("mutation:select-count")}: {geneList?.length || 0}</div>
+            <div style={{ borderTop: "1px solid #f0f0f0", padding: "2px 0" }}>{t("mutation:select-count")}: {geneList?.length || 0}</div>
             <Checkbox className={styles.checkAllDriver} checked={isAllDriverChecked()}
                 indeterminate={existDriverChecked()}
                 onChange={onCheckAllChange} style={{ marginBottom: 6 }}>
@@ -725,29 +728,64 @@ const Mutation = () => {
         </Card>
     }
 
+    const exportToPDF = async () => {
+        setLoading(true);
+        messageApi.open({
+            key: 'exporting',
+            type: 'loading',
+            content: t("common:generatePdf"),
+            duration: 0
+        });
 
+        try {
+
+
+
+            const canvas = await html2canvas(driverLandscapeRef.current, {
+                scale: 6,
+                useCORS: true,
+            });
+
+
+            const imgData = canvas.toDataURL('image/svg');
+            const pdf = new jsPDF('l', 'mm', 'a4');
+            const imgWidth = pdf.internal.pageSize.getWidth();
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'SVG', 0, 0, imgWidth, imgHeight);
+            pdf.save('driver_landscape.pdf');
+            messageApi.destroy('exporting');
+            messageApi.success(t("common:pdfExportSuccess"));
+
+        } catch (error) {
+            messageApi.destroy('exporting');
+            messageApi.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
     return (
         <>
             {contextHolder}
             <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
                 <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
 
-                        <Flex justify='space-between' align='center' style={{paddingLeft: "20px", height: "40px" }}>
-                            <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary" 
-                                style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
-                                {t("common:apply")}
-                            </Button>
-                            <Button color="default" variant="text"
-                                onClick={leftPanelFullScreen}
-                                style={{ color: "#fff", padding: 0 }}>
-                                <Image
-                                    src={LEFT_SQUARE_SRC}
-                                    alt="import"
-                                    width={30}
-                                    height={30}
-                                />
-                            </Button>
-                        </Flex>
+                    <Flex justify='space-between' align='center' style={{ paddingLeft: "20px", height: "40px" }}>
+                        <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary"
+                            style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
+                            {t("common:apply")}
+                        </Button>
+                        <Button color="default" variant="text"
+                            onClick={leftPanelFullScreen}
+                            style={{ color: "#fff", padding: 0 }}>
+                            <Image
+                                src={LEFT_SQUARE_SRC}
+                                alt="import"
+                                width={30}
+                                height={30}
+                            />
+                        </Button>
+                    </Flex>
                     {
                         mutationTypeTab === "phylogeneticRelationship" && <Collapse
                             defaultActiveKey={"HNA_ITH"}
@@ -760,8 +798,10 @@ const Mutation = () => {
                             }]}>
                         </Collapse>
                     }
-                    {
+                    {  
                         <>
+                        {
+                            mutationTypeTab !== "overall" && <>
                             <Collapse
                                 defaultActiveKey={"gene"}
                                 className={styles.searchCollapse}
@@ -772,7 +812,7 @@ const Mutation = () => {
                                     children: geneCollapseContent()
                                 }]}>
                             </Collapse>
-                            <Collapse
+                             <Collapse
                                 defaultActiveKey={"driver"}
                                 className={styles.searchCollapse}
                                 expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
@@ -782,7 +822,10 @@ const Mutation = () => {
                                     children: driverCollapseContent()
 
                                 }]}>
-                            </Collapse>
+                            </Collapse></> 
+                        }
+                            
+                           
                             <Collapse
                                 defaultActiveKey={"clinic"}
                                 className={styles.searchCollapse}
@@ -799,45 +842,50 @@ const Mutation = () => {
 
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
-                        <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 15}}>
-                            <Flex align='center'>
-                                <Button color="default" variant="text"
-                                    style={{ color: "#fff", padding: 0, marginRight: 5 }}
-                                    onClick={rightPanelFullScreen}>
-                                    <Image
-                                        src={RIGHT_SQUARE_SRC}
-                                        alt="import"
-                                        width={30}
-                                        height={30}
-                                    />
-                                </Button>
+                    <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 15 }}>
+                        <Flex align='center'>
+                            <Button color="default" variant="text"
+                                style={{ color: "#fff", padding: 0, marginRight: 5 }}
+                                onClick={rightPanelFullScreen}>
+                                <Image
+                                    src={RIGHT_SQUARE_SRC}
+                                    alt="import"
+                                    width={30}
+                                    height={30}
+                                />
+                            </Button>
 
-                                <Segmented
-                                    options={[{ label: 'Driver Landscape', value: "driverLandscape" },
-                                    { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship' }
-                                    ]}
-                                    value={mutationTypeTab}
-                                    onChange={value => setMutationTypeTab(value)}
-                                />
-                            </Flex>
-                            {
-                                mutationTypeTab === "phylogeneticRelationship" && <Segmented
-                                    onChange={setTreeType}
-                                    options={[{ value: "overview", label: "Overview" }, { value: "detail", label: "Detail" }]}
-                                    value={treeType}
-                                />
-                            }
-                            {
-                                mutationTypeTab === "driverLandscape" && <Segmented
-                                    onChange={onSampleTypeChange}
-                                    options={[{ value: "bySample", label: "By Sample" }, { value: "byPatient", label: "By Patients" }]}
-                                    value={sampleType}
-                                />
-                            }
-                            <ExportPdfButton url={mutationTypeTab === "driverLandscape" ? `pdf-export/driver-landscape/${encodeURIComponent(JSON.stringify(params))}` : `pdf-export/phylogenetic-relationship/${encodeURIComponent(JSON.stringify(sliderValue))}`}></ExportPdfButton>
+                            <Segmented
+                                options={[{ value: "overall", label: 'OverAll' },{ label: 'Driver Landscape', value: "driverLandscape" },
+                                { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship' }
+                                ]}
+                                value={mutationTypeTab}
+                                onChange={value => setMutationTypeTab(value)}
+                            />
                         </Flex>
+                        
+                        {
+                            mutationTypeTab === "phylogeneticRelationship" && <Segmented
+                                onChange={setTreeType}
+                                options={[{ value: "overview", label: "Overview" }, { value: "detail", label: "Detail" }]}
+                                value={treeType}
+                            />
+                        }
+                        {
+                            mutationTypeTab === "driverLandscape" && <Segmented
+                                onChange={onSampleTypeChange}
+                                options={[{ value: "bySample", label: "By Sample" }, { value: "byPatient", label: "By Patients" }]}
+                                value={sampleType}
+                            />
+                        }
+                        {/* <Button loading={loading} onClick={exportToPDF}>111</Button> */}
+                        <ExportPdfButton document={driverLandscapeRef.current} ></ExportPdfButton>
+                    </Flex>
+                     {
+                        mutationTypeTab === "overall" && <Overall handleApplyLoading={handleApplyLoading} conditions={params}></Overall>
+                    }
                     {
-                        mutationTypeTab === "driverLandscape" && <DriverLandscape handleApplyLoading={handleApplyLoading} conditions={params}></DriverLandscape>
+                        mutationTypeTab === "driverLandscape" && <DriverLandscape ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params}></DriverLandscape>
                     }
                     {
                         mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship range={sliderValue} treeType={treeType}></PhylogeneticRelationship>

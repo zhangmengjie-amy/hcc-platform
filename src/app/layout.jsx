@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
                             colorLink: 'rgb(10, 186, 181)',
                         }, components: {
                             Layout: {
-                                headerPadding: "0 50px",
+                                headerPadding: "0 20px",
                                 headerHeight: 40,
                                 headerBg: 'linear-gradient(to right, rgb(239, 207, 210),   rgb(129, 216, 208) 50%,rgb(10, 186, 181))', // 直接修改 Header 背景色
                                  // 直接修改 Header 背景色 // 浅蓝绿 'rgb(129, 216, 208)' // 香槟金 #E0BFB8 // #F5F5F5浅灰 // #E0F7FA薄荷绿 // 蓝绿色 #008B8B
@@ -26,12 +26,12 @@ export default function RootLayout({ children }) {
                                 itemBg: "transparent",
                                 itemColor: "#fff",
                                 activeBarHeight: "4px",
-                                itemHoverBg: "rgb(237, 108, 116)",
-                                itemSelectedBg: "rgb(237, 108, 116)",
+                                itemHoverBg: "rgb(10, 186, 181)",
+                                itemSelectedBg: "rgb(10, 186, 181)",
                                 itemSelectedColor: "#fff",
                                 itemHoverColor: "#fff",
-                                itemActiveBg: "rgb(237, 108, 116)",
-                                popupBg: "rgb(239, 207, 210)"
+                                itemActiveBg: "rgb(10, 186, 181)",
+                                popupBg: "rgb(129, 216, 208)"
                             },
                             Collapse: {
                                 headerPadding: "0px 10px",
@@ -51,6 +51,9 @@ export default function RootLayout({ children }) {
                             Input: {
                                 hoverBorderColor: "rgb(10, 186, 181)",
                             },
+                            Tooltip: {
+                                colorBg: "rgb(10, 186, 181)",
+                            },
                             Button: {
                                 colorBgContainer: "rgb(237, 108, 116)",
                                 colorBgSolidHover: "rgb(237, 108, 116)",
@@ -64,20 +67,23 @@ export default function RootLayout({ children }) {
                                 margin: 10,
                                 marginLG: 10
                             },
-                            Popover: {
-                            colorBgElevated: "#F5F5F5",
-                            colorText: "#000"
+                            Slider: {
+                                trackBg: "rgb(10, 186, 181)",
                             },
-                            Segmented: {
-                                trackPadding: 0,
-                                trackBg: "rgb(239, 207, 210)",
-                                itemColor: "rgb(182, 55, 106)",
-                                itemSelectedBg: "rgb(237, 108, 116)",
-                                itemSelectedColor: "#fff",
-                                itemActiveBg: "rgb(239, 207, 210)",
-                                itemHoverColor: "rgb(182, 55, 106)",
-                                itemHoverBg: "rgb(239, 207, 210)"
-                            }
+                            Popover: {
+                                colorBgElevated: "#F5F5F5",
+                                colorText: "#000"
+                            },
+                            // Segmented: {
+                            //     trackPadding: 0,
+                            //     trackBg: "rgb(239, 207, 210)",
+                            //     itemColor: "rgb(182, 55, 106)",
+                            //     itemSelectedBg: "rgb(237, 108, 116)",
+                            //     itemSelectedColor: "#fff",
+                            //     itemActiveBg: "rgb(239, 207, 210)",
+                            //     itemHoverColor: "rgb(182, 55, 106)",
+                            //     itemHoverBg: "rgb(239, 207, 210)"
+                            // }
                         },
                     }}>
                         <LanguageProvider lng={"en"}>

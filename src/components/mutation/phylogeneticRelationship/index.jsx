@@ -1295,7 +1295,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     useEffect(() => {
         setLoading(true)
         const fetchData = async () => {
-            let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
+            // let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
             // console.log("ITHList", ITHList)
             // console.log("patientList", patientList)
             if (!ITHList || !patientList) return;

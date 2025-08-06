@@ -3,10 +3,10 @@
     "home": "Home",
     "single-modal": "Single Modal",
     "multi-modal": "Multi Modal",
-    "mutation": "Mutation",
+    "mutation": "Genome",
     "help": "Help",
     "about": "About",
-    "expression": "Expression",
+    "expression": "Transcriptome",
     "immune": "Immune",
     "clinical": "Clinical"
   },
