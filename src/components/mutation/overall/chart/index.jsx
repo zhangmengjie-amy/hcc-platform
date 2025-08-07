@@ -2,6 +2,7 @@
 import React, { forwardRef, useState, useEffect } from 'react';
 import { PieChartOutlined, BarChartOutlined } from '@ant-design/icons';
 import { Row, Col, Flex, Segmented, Grid } from 'antd';
+import { useTranslation } from "react-i18next";
 import ReactECharts from 'echarts-for-react';
 import { color, symbol } from 'd3';
 
@@ -9,7 +10,7 @@ import { color, symbol } from 'd3';
 const Chart = forwardRef(({ option, title }, ref) => {
     const [chartOption, setChartOption] = useState(null);
     const [chartType, setChartType] = useState('pie');
-    console.log(JSON.stringify(option))
+    const { t } = useTranslation();
     useEffect(() => {
         if (!Object.keys(option).length) return;
         if (chartType === 'column') {
@@ -49,7 +50,7 @@ const Chart = forwardRef(({ option, title }, ref) => {
                 },
                 series: [
                     {
-                        data: Object.keys(option).map(key => ({ value: option[key].count, name: key })),
+                        data: Object.keys(option).map(key => ({ value: option[key].count, name: t(`mutation:sample.${key}`) })),
                         type: 'bar',
                         itemStyle: { // Add itemStyle for individual bar styling
                             color: (params) => {
@@ -64,7 +65,7 @@ const Chart = forwardRef(({ option, title }, ref) => {
         }
         const _chartOption = {
             title: {
-                text: title,
+                text: t(`mutation:sample.${title}`),
                 left: 'left',
                 textStyle: {
                     fontSize: 16,
@@ -95,14 +96,14 @@ const Chart = forwardRef(({ option, title }, ref) => {
             },
             series: [
                 {
-                    name: title,
+                    name:  t(`mutation:sample.${title}`),
                     type: 'pie',
                     label: {
                         show: false,
                     },
                     color: Object.keys(option).map(key => option[key].color),
                     radius: '80%',
-                    data: Object.keys(option).map(key => ({ value: option[key].count, name: key })),
+                    data: Object.keys(option).map(key => ({ value: option[key].count, name:  t(`mutation:sample.${key}`), })),
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,

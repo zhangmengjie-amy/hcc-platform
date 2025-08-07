@@ -101,6 +101,17 @@ return nameToNode["N"] || null;
 }
 
 self.onmessage = ({ data: { newick, mutations } }) => {
+    const mutationsWithGenomeChange = mutations.map((item) => {
+        return {
+            sampleId: item.sampleId,
+            mutations: item.mutations.map((mutation) => {
+                return {
+                    ...mutation,
+                    unionGene: mutation.gene + "/" + mutation.genome_change
+                };
+            }),
+        }
+    })
 // 1. 解析树
 const { tree, nameToNode } = parseNewick(newick);
 
@@ -108,13 +119,13 @@ const { tree, nameToNode } = parseNewick(newick);
     const sampleToGenes = Object.create(null);
     const geneToDriverFlag = Object.create(null);
 
-    mutations.forEach(({ sampleId, mutations: muts }) => {
+    mutationsWithGenomeChange.forEach(({ sampleId, mutations: muts }) => {
         if (!sampleToGenes[sampleId]) sampleToGenes[sampleId] = [];
         muts.forEach(m => {
-            sampleToGenes[sampleId].push({ gene: m.gene, isDriver: m.isDriver == 1 });
+            sampleToGenes[sampleId].push({ unionGene: m.unionGene, gene: m.gene, isDriver: m.isDriver == 1 });
             // 只要有一个 isDriver===true，就标记为 driver
-            if (!geneToDriverFlag[m.gene] || m.isDriver == 1) {
-                geneToDriverFlag[m.gene] = m.isDriver == 1;
+            if (!geneToDriverFlag[m.unionGene] || m.isDriver == 1) {
+                geneToDriverFlag[m.unionGene] = m.isDriver == 1;
             }
         });
     });
@@ -122,9 +133,9 @@ const { tree, nameToNode } = parseNewick(newick);
     // 3. 构建 gene->sampleId 列表
     const geneToSamples = Object.create(null);
     for (let [smp, arr] of Object.entries(sampleToGenes)) {
-        new Set(arr.map(x => x.gene)).forEach(gene => {
-            if (!geneToSamples[gene]) geneToSamples[gene] = [];
-            geneToSamples[gene].push(smp);
+        new Set(arr.map(x => x.unionGene)).forEach(unionGene => {
+            if (!geneToSamples[unionGene]) geneToSamples[unionGene] = [];
+            geneToSamples[unionGene].push(smp);
         });
     }
 
@@ -137,7 +148,7 @@ const { tree, nameToNode } = parseNewick(newick);
     );
 
     // 5. 标注每个基因到树节点
-    for (let [gene, samplesArr] of Object.entries(geneToSamples)) {
+    for (let [unionGene, samplesArr] of Object.entries(geneToSamples)) {
         const paths = samplesArr
             .map(s => samplePaths[s])
             .filter(p => p);
@@ -154,11 +165,11 @@ const { tree, nameToNode } = parseNewick(newick);
         if (!annotNode.mutations) {
             annotNode.mutations = { driver: [], nonDriver: [] };
         }
-        const bucket = geneToDriverFlag[gene]
+        const bucket = geneToDriverFlag[unionGene]
             ? annotNode.mutations.driver
             : annotNode.mutations.nonDriver;
-        if (!bucket.includes(gene)) {
-            bucket.push(gene);
+        if (!bucket.includes(unionGene)) {
+            bucket.push(unionGene);
         }
 
         // 收集并去重样本标签
@@ -198,8 +209,8 @@ const { tree, nameToNode } = parseNewick(newick);
 const sampleMutations = Object.fromEntries(
   Object.entries(sampleToGenes).map(([sample, arr]) => {
     // 提取所有基因
-    const driverGenesInSample = Array.from(new Set(arr.filter((item) => item.isDriver).map(x => x.gene)));
-    const nonDriverGenesInSample = Array.from(new Set(arr.filter((item) => !item.isDriver).map(x => x.gene)));
+    const driverGenesInSample = Array.from(new Set(arr.filter((item) => item.isDriver).map(x => x.unionGene)));
+    const nonDriverGenesInSample = Array.from(new Set(arr.filter((item) => !item.isDriver).map(x => x.unionGene)));
 
     // 可根据需要，存入对象或数组
     return [
@@ -211,8 +222,6 @@ const sampleMutations = Object.fromEntries(
     ];
   })
 );
-
-    console.log("tree", tree)
 
     // 8. 返回结果
     self.postMessage({ treeList: tree, clinic, sampleMutations });

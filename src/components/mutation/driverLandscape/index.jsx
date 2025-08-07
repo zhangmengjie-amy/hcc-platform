@@ -6,7 +6,6 @@ import ClinicChart from './clinicChart';
 import GeneChart from './geneChart';
 import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
-import GeneCoding from '@/components/gene-coding';
 import EmptyLoading from "@/components/empty-loading";
 import ChartsLegend from "./chartsLegend";
 

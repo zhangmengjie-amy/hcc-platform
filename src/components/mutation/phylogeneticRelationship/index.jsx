@@ -1611,7 +1611,6 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     const getVisibleTreeListWithStyle = useMemo(() => {
         const result = getVisibleTreeList();
         return result?.map((item, index) => {
-            console.log(item)
             return {
                 ...item,
                 image: `/images/${item?.patientId}.svg`,

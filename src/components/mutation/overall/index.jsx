@@ -43,9 +43,9 @@ const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
                                         count = result.clinicList.filter(c => c[item].value >=80).length;
                                     }
                                 } else if (item == "viralStatus") {
-                                    if (key == "hbv-positive") {
+                                    if (key == "hbv-single-positive") {
                                         count = result.clinicList.filter(c => c["hbv"].value == "positive" && c["hcv"].value == "negative").length;
-                                    } else if (key == "hcv-positive") {
+                                    } else if (key == "hcv-single-positive") {
                                         count = result.clinicList.filter(c => c["hcv"].value == "positive" && c["hbv"].value == "negative").length;
                                     } else if (key == "double-positive") {
                                         count = result.clinicList.filter(c => c["hcv"].value == "positive" && c["hbv"].value == "positive").length;

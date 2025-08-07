@@ -4,12 +4,19 @@ import { Layout, Flex, Row, Col, Card, Menu, FloatButton, Button, Input, Typogra
 import styles from "./style.module.scss";
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import classnames from 'classnames';
 import { useTranslation } from "react-i18next";
 const { Title, Paragraph } = Typography;
 const Home = () => {
     const { t } = useTranslation();
+    const router = useRouter();
+    // const [searchText, setSearchText] = useState('');
     const [seletedSingleModal, setSelectedSingleModal] = useState("mutation");
+
+    const onSearch = (value) => {
+        router.push(`/search?query=${!!value ? value : "TP53,CNNTB1,AXIN1"}`);
+    }
     const dataStaticList = [{
         icon: "/images/total-patients.svg",
         title: 12345,
@@ -82,6 +89,10 @@ const Home = () => {
         { key: 'clinical', label: 'Clinical' },
     ];
 
+    const handleAdvanceSearch = () => {
+        router.push(`/search/advanced`);
+    }
+
 
     const singleModalContent = useMemo(() => {
         if (seletedSingleModal == "mutation") {
@@ -123,9 +134,9 @@ const Home = () => {
                                 placeholder={t("home:search.placeholder")}
                                 enterButton
                                 size="large"
-                            // onSearch={onSearch}
+                                onSearch={onSearch}
                             />
-                            {/* <Button size='large' style={{ marginLeft: "20px" }}>Go To Multi Modal</Button> */}
+                            <Button size='large' onClick={handleAdvanceSearch} style={{ marginLeft: "10px", lineHeight: "40px", borderColor: "rgb(10, 186, 181)", backgroundColor: "rgb(10, 186, 181)" }}>Advanced Search</Button>
                         </Flex>
 
                         {/* <Image src={"/images/water-fall.jpg"} width={350} height={200} alt="water-fall"></Image>

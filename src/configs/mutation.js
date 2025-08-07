@@ -147,8 +147,8 @@ export const clinicCountConfig = {
         ">=80": "rgb(83, 125, 93)",
     },
     viralStatus: {
-        "hbv-positive": "rgb(255,255,224)",
-        "hcv-positive": "rgba(143, 156, 172, 1)",
+        "hbv-single-positive": "rgb(255,255,224)",
+        "hcv-single-positive": "rgba(143, 156, 172, 1)",
         "double-positive": "rgba(248, 248, 156, 1)",
         "double-negative": "rgba(92, 105, 119, 1)"
     },

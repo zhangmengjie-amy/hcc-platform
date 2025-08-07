@@ -84,15 +84,6 @@ const Mutation = () => {
     const geneRef = useRef(null);
     const listRef = useRef(null);
     const paramsRef = useRef(null);
-
-    useEffect(() => {
-        if (driverLandscapeRef.current) {
-          const svgElements = driverLandscapeRef.current.querySelectorAll('svg');
-          setSvgRefs(Array.from(svgElements).map(() => React.createRef()));
-        }
-      }, []);
-
-
     useEffect(() => {
         setFetchLoading(true);
         getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
@@ -856,7 +847,7 @@ const Mutation = () => {
                             </Button>
 
                             <Segmented
-                                options={[{ value: "overall", label: 'OverAll' },{ label: 'Driver Landscape', value: "driverLandscape" },
+                                options={[{ value: "overall", label: 'Overall' },{ label: 'Driver Landscape', value: "driverLandscape" },
                                 { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship' }
                                 ]}
                                 value={mutationTypeTab}

@@ -1,7 +1,39 @@
 "use client";
-import React, { useState, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Flex, Checkbox, Button, Input, Typography } from 'antd';
+import { useRouter } from 'next/navigation';
 export default function Login() {
+
+    const router = useRouter();
+const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [userNameError, setUserNameError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
+
+const handleLogin = useCallback(() => {
+    if (!username) {
+      setUserNameError('用户名不能为空');
+      return;
+    }
+    setUserNameError(''); // Clear any previous errors after successful validation
+    if (!password) {
+      setPasswordError('用户名和密码不能为空');
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,12}$/;
+    if (!passwordRegex.test(password)) {
+        console.log(111111)
+      setPasswordError('密码必须包含字母和数字，至少6位');
+      return;
+    }
+
+    // Placeholder for actual login logic
+    setPasswordError(''); // Clear any previous errors after successful validation
+    router.push('/home');
+    localStorage.setItem('isLoggedIn', 'true');
+  }, [username, password, router]);
 
     const [isRegisterMode, setIsRegisterMode] = useState(false);
     return (
@@ -15,13 +47,14 @@ export default function Login() {
                     !isRegisterMode && <Flex vertical justify="space-between" align="center" >
                         <Typography.Title level={1} style={{ letterSpacing: 2, marginBottom: 60 }}>Welcome to HCC!</Typography.Title>
                         <Flex vertical justify="center" align="center" style={{ width: '350px' }}>
-                            <Input placeholder="User Name" size="large" style={{ marginBottom: 16, }} />
-                            <Input.Password placeholder="Password" size="large" />
+                           
+                            <Input status={userNameError ? "error" : "normal"} value={username} onChange={(e) => setUsername(e.target.value)} placeholder="User Name" size="large" style={{ marginBottom: 16, }} />
+                            <Input.Password status={passwordError ? "error" : "normal"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" size="large" />
                             <Flex align="center" justify="space-between" style={{ width: '100%', marginBottom: 36, marginTop: 5 }}>
                                 <Checkbox>Remember me</Checkbox>
                                 <Button type="link">Forgot Password?</Button>
                             </Flex>
-                            <Button type="primary" size="large" style={{ width: '100%' }}>Login</Button>
+                            <Button onClick={handleLogin} type="primary" size="large" style={{ width: '100%' }}>Login</Button>
                         </Flex>
                         <Typography.Paragraph style={{ marginTop: 60 }}>Don't have an account yet? <Button type="link" onClick={() => { setIsRegisterMode(true) }}>Sign Up</Button></Typography.Paragraph>
                     </Flex>

@@ -1,0 +1,39 @@
+.searchCard {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
+    background-color: #fff;
+
+
+  }
+
+
+.searchCollapse {
+      margin: 10px 15px;
+      overflow: hidden;
+
+      :global(.ant-collapse-header) {
+        display: flex;
+        align-items: center;
+      }
+
+      :global(.ant-card-head) {
+        padding: 0 10px;
+        min-height: 50px;
+      }
+
+      :global(.ant-card-body) {
+        padding: 10px 15px;
+      }
+
+      :global(.ant-collapse-header) {
+        color: #fff !important;
+        align-items: center !important;
+      }
+      :global(.ant-collapse-content-box) {
+        padding: 0 !important
+      }
+      
+
+    }

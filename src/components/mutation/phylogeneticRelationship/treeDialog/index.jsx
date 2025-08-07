@@ -19,7 +19,6 @@ const TreeChart = ({ treeData, modalOpen, onclose }) => {
         getFullMutations().then((results) => {
             const mutations = results?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`))
 
-            console.log(mutations)
             treeWorker.postMessage({ newick: treeData?.newick, mutations });
             treeWorker.onmessage = ({ data }) => {
                 setTreeList(data.treeList);

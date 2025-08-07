@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from "react-i18next";
-import GeneDialog from '@/components/mutation/driverLandscape/sampleChart/geneDialog';
 import EmptyLoading from "@/components/empty-loading";
 import { mutationTypeColorConfig } from "@/configs/mutation";
 
@@ -186,7 +185,6 @@ const getPatientGroups = () => sampleCategories.reduce((groups, id, i) => {
         };
         return leftChartOption
     }
-    console.log(sampleGenesMutations)
     useEffect(() => {
         setLoading(true);
         if (!sampleGenesMutations || !finialGeneList || !sampleCategories || !sampleType) return;
@@ -195,20 +193,15 @@ const getPatientGroups = () => sampleCategories.reduce((groups, id, i) => {
         setLoading(false);
     }, [sampleGenesMutations, finialGeneList, sampleCategories, sampleType])
 
-    const handleClick = useCallback((params) => {
-        setModalOpen(true)
-    }, [])
 
     return (
         <>
                     <EmptyLoading loading={loading} showEmpty={!finialGeneList?.length} hasData={!!sampleGenesMutations?.series?.length}>
                 <ReactECharts ref={chartRef}
                     option={leftChartOption}
-                    onEvents={{ click: handleClick }} 
                     style={{ width: "100%", height: height }} opts={{ renderer: 'svg' }}>
                 </ReactECharts>
             </EmptyLoading>
-            <GeneDialog modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} ></GeneDialog>
             </>
 
     );

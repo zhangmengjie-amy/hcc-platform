@@ -31,6 +31,7 @@
     "jspdf-autotable": "^5.0.2",
     "lodash": "^4.17.21",
     "next": "14.2.28",
+    "next-auth": "^4.24.11",
     "next-i18next": "^15.4.2",
     "next-redux-wrapper": "^8.1.0",
     "pdf-lib": "^1.17.1",

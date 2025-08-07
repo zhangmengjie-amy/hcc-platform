@@ -457,7 +457,6 @@ const totalSvgHeight = adaptive
                 .filter(d => formatLabel(d.data.name) !== 'N')
                 .forEach(leaf => {
                     heatmapFields.forEach(field => {
-                        console.log(heatmapData, leaf.data.name, field)
                         const v = heatmapData?.[leaf.data.name]?.[field] ?? 0;
                         gHeat
                             .append('rect')

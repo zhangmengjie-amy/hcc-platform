@@ -131,7 +131,6 @@ const Expression = () => {
 
     const buildHeatMap = (patientId) => {
         let samples = subtypeList.current?.find((subtypeItem) => subtypeItem.publicationId == patientId)?.samples ?? [];
-        console.log(samples, patientId)
         if (samples.length) {
             const _mockHeatmap = {};
             samples.forEach((sample) => {
