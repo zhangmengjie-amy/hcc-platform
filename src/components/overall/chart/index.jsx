@@ -121,6 +121,8 @@ const Chart = forwardRef(({ option, title }, ref) => {
 
     }, [option, chartType, title]);
 
+    console.log(Object.keys(option))
+
     return (
         <>
             {

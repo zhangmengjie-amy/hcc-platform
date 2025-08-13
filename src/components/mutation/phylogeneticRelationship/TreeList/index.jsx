@@ -4,7 +4,7 @@ import { Flex } from 'antd';
 import Image from 'next/image';
 const TreeList = ({ list, viewTree }) => {
     return (
-        <Flex wrap="wrap" gap={5} style={{ width: "832px", overflowX: "scroll", maxHeight: "580px", position: "relative", overflowX: "hidden", overflowY: "scroll", margin: "0 auto", marginTop: "-240px", zIndex: "1" }}>
+        <Flex wrap="wrap" gap={5} style={{ width: "832px", overflowX: "scroll", maxHeight: "580px", position: "relative", overflowX: "hidden", overflowY: "scroll", margin: "0 auto", marginTop: "-300px", zIndex: "1" }}>
             {
                 list.map((item, i) => {
                     return <Flex vertical align='center' justify='center' key={i} onClick={() => { viewTree(item) }} style={{ cursor: "pointer", width: '200px', height: "200px", border: `3px solid ${item.itemStyle.color}`, borderRadius: "12px" }}>

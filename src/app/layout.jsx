@@ -74,16 +74,16 @@ export default function RootLayout({ children }) {
                                 colorBgElevated: "#F5F5F5",
                                 colorText: "#000"
                             },
-                            // Segmented: {
-                            //     trackPadding: 0,
-                            //     trackBg: "rgb(239, 207, 210)",
-                            //     itemColor: "rgb(182, 55, 106)",
-                            //     itemSelectedBg: "rgb(237, 108, 116)",
-                            //     itemSelectedColor: "#fff",
-                            //     itemActiveBg: "rgb(239, 207, 210)",
-                            //     itemHoverColor: "rgb(182, 55, 106)",
-                            //     itemHoverBg: "rgb(239, 207, 210)"
-                            // }
+                            Segmented: {
+                                trackPadding: 0,
+                                trackBg: "rgb(239, 207, 210)",
+                                itemColor: "rgb(182, 55, 106)",
+                                itemSelectedBg: "rgb(237, 108, 116)",
+                                itemSelectedColor: "#fff",
+                                itemActiveBg: "rgb(239, 207, 210)",
+                                itemHoverColor: "rgb(182, 55, 106)",
+                                itemHoverBg: "rgb(239, 207, 210)"
+                            }
                         },
                     }}>
                         <LanguageProvider lng={"en"}>

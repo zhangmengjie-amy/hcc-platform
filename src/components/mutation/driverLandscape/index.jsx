@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Alert } from 'antd';
 import { getFullMutations, getFullClinical } from "@/configs/request";
 import ClinicChart from './clinicChart';
 import GeneChart from './geneChart';
 import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
-import EmptyLoading from "@/components/empty-loading";
 import ChartsLegend from "./chartsLegend";
 
 const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => {
@@ -19,7 +18,6 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
     const [clinicList, setClinicList] = useState(null);
     const [finialGeneList, setFinialGeneList] = useState(null);
     const fullMutationsRef = useRef(null);
-
 
     useEffect(() => {
         if (!conditions?.geneList) return;
@@ -53,8 +51,8 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
     }, [conditions]);
 
     return (
-
-            <Row ref={ref} style={{ width: "100%", padding: "10px" }}>
+            <div ref={ref} style={{ margin: "0 10px" }}>
+                <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left.</span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
                 <Row style={{ width: "100%" }}>
                     <Col xs={21} sm={21} md={21} lg={21} xl={21}>
                         <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>
@@ -75,7 +73,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
                     </Col>
                 </Row>
                 <ChartsLegend></ChartsLegend>
-            </Row>
+            </div>
     );
 })
 export default DriverLandscape;

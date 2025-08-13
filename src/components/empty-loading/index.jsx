@@ -7,7 +7,7 @@ import {
 } from 'antd';
 const EmptyLoading = ({ hasData = false, showEmpty = true, loading, children }) => {
     return (
-        <Spin spinning={loading}>
+        <Spin spinning={loading} style={{ width: "100%" }}>
             {
                 loading ? <Skeleton active></Skeleton> : (
                     hasData ? children :

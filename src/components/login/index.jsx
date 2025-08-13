@@ -1,39 +1,43 @@
 "use client";
 import React, { useState, useCallback } from 'react';
-import { Flex, Checkbox, Button, Input, Typography } from 'antd';
+import { Flex,Popover , Alert, Checkbox, Button, Input, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
 export default function Login() {
 
     const router = useRouter();
-const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [userNameError, setUserNameError] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [userNameError, setUserNameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
 
-const handleLogin = useCallback(() => {
-    if (!username) {
-      setUserNameError('用户名不能为空');
-      return;
-    }
-    setUserNameError(''); // Clear any previous errors after successful validation
-    if (!password) {
-      setPasswordError('用户名和密码不能为空');
-      return;
-    }
+    const handleLogin = useCallback(() => {
+        const userRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!username) {
+            setUserNameError('Email can not be empty.');
+            return;
+        }
+        if (!userRegex.test(username)) {
+            setUserNameError('Please enter a valid email address.');
+            return;
+        }
+        setUserNameError(''); // Clear any previous errors after successful validation
+        if (!password) {
+            setPasswordError('Password can not be empty.');
+            return;
+        }
 
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,12}$/;
-    if (!passwordRegex.test(password)) {
-        console.log(111111)
-      setPasswordError('密码必须包含字母和数字，至少6位');
-      return;
-    }
+        const passwordRegex = /^\d{6}$/;
+        if (!passwordRegex.test(password)) {
+            setPasswordError('Password must be 6 digits.');
+            return;
+        }
 
-    // Placeholder for actual login logic
-    setPasswordError(''); // Clear any previous errors after successful validation
-    router.push('/home');
-    localStorage.setItem('isLoggedIn', 'true');
-  }, [username, password, router]);
+        // Placeholder for actual login logic
+        setPasswordError(''); // Clear any previous errors after successful validation
+        router.push('/home');
+        localStorage.setItem('isLoggedIn', 'true');
+    }, [username, password, router]);
 
     const [isRegisterMode, setIsRegisterMode] = useState(false);
     return (
@@ -47,9 +51,12 @@ const handleLogin = useCallback(() => {
                     !isRegisterMode && <Flex vertical justify="space-between" align="center" >
                         <Typography.Title level={1} style={{ letterSpacing: 2, marginBottom: 60 }}>Welcome to HCC!</Typography.Title>
                         <Flex vertical justify="center" align="center" style={{ width: '350px' }}>
-                           
-                            <Input status={userNameError ? "error" : "normal"} value={username} onChange={(e) => setUsername(e.target.value)} placeholder="User Name" size="large" style={{ marginBottom: 16, }} />
-                            <Input.Password status={passwordError ? "error" : "normal"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" size="large" />
+                        <Popover open={!!userNameError} content={userNameError} trigger="focus" placement="top">
+                            <Input status={userNameError ? "error" : "normal"} value={username} style={{ marginBottom: 16 }} onChange={(e) => setUsername(e.target.value)} placeholder="Email" size="large" />
+                        </Popover>
+                        <Popover open={!!passwordError} content={passwordError} trigger="focus" placement="top">
+                            <Input.Password status={passwordError ? "error" : "normal"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="6-digit password" size="large" />
+                        </Popover>
                             <Flex align="center" justify="space-between" style={{ width: '100%', marginBottom: 36, marginTop: 5 }}>
                                 <Checkbox>Remember me</Checkbox>
                                 <Button type="link">Forgot Password?</Button>

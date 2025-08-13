@@ -20,7 +20,7 @@ const GeneChart = ({ genesMutations, finialGeneList, height }) => {
         const rightChartOption = {
             grid: {
                 left: 10,
-                right: 20,
+                right: 5,
                 top: 20,
                 bottom: 0,
                 containLabel: false

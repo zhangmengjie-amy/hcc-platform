@@ -3,10 +3,12 @@ import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Row, Col, Flex } from 'antd';
 import { clinicCountConfig } from "@/configs/mutation";
 import { getFullMutations } from "@/configs/request";
+import EmptyLoading from "@/components/empty-loading";
 import Chart from './chart';
 
 const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
-    const [loading, setLoading] = useState(true);
+        const [loading, setLoading] = useState(true);
+        const [hasData, setHasData] = useState(true);
         const fullMutationsRef = useRef(null);
         const [countConfig, setCountConfig] = useState(null);
         useEffect(() => {
@@ -26,6 +28,11 @@ const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
                             viralStatus: {},
                             race: {},
                             tnmStageV8: {}
+                        }
+                        if (result.clinicList.length == 0) {
+                            setHasData(false);
+                            setCountConfig(_countConfig);
+                            return;
                         }
                         Object.keys(_countConfig).forEach((item) => {
                             Object.keys(clinicCountConfig[item]).forEach((key) => {
@@ -55,13 +62,14 @@ const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
                                 } else {
                                    count = result.clinicList.filter(c => c[item].value == key).length
                                 }
+
                                 _countConfig[item][key] = {
                                     count,
                                     color: clinicCountConfig[item][key]
                                 }
                             });
                         });
-
+                        setHasData(true);
                         setCountConfig(_countConfig);
                     };
                     handleApplyLoading?.(false);
@@ -77,16 +85,18 @@ const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
 
     return (
 
-        <Row ref={ref} style={{ width: "100%", padding: "10px" }}>
+        <Row ref={ref} style={{ width: "100%"}}>
             <Row style={{ width: '100%' }}>
                 {
                     countConfig && Object.keys(countConfig)?.map((item, index) => {
                         return <Col key={index} xs={8} sm={8} md={8} lg={8} xl={8}>
-                            <Flex style={{ margin: "10px", padding: "10px", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
+                            <div style={{ margin: "10px", padding: "10px", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
                                {
-                                    Object.keys(clinicCountConfig[item])?.length > 0 && <Chart title={item} option={countConfig[item]}></Chart>
+                                <EmptyLoading loading={false} hasData={hasData}>
+                                    <Chart title={item} option={countConfig[item]}></Chart>
+                                </EmptyLoading>
                                }
-                            </Flex>
+                            </div>
                         </Col>
                     })
                 }
