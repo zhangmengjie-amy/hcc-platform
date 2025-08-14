@@ -2,9 +2,10 @@
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { clinicColorConfig } from "@/configs/mutation";
+import { getLollipopPlotData } from '@/configs/request';
 import * as d3 from 'd3';
 
-const GeneLollipop = () => {
+const GeneLollipop = ({gene, samples }) => {
     const svgRef = useRef(null);
     const containerRef = useRef(null);
     const [dims, setDims] = useState({ width: 0 });
@@ -295,6 +296,13 @@ const mutationTypeColorConfig = {
         if (containerRef.current) ro.observe(containerRef.current);
         return () => ro.disconnect();
     }, []);
+
+    useEffect(() => {
+                getLollipopPlotData({gene}).then((results) => {
+                    console.log(results)
+                });
+        console.log(gene, samples);
+    }, [gene, samples]);
 
     const colors = ["#778beb", "#f3a683", "#f7d794"];
 

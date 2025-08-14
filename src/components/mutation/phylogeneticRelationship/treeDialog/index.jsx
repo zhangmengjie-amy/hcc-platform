@@ -5,25 +5,25 @@ import VerticalTree from "@/components/vertical-tree"
 import { Modal, Typography, Flex, Button } from 'antd';
 import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
-import { getFullMutations } from "@/configs/request";
+import { getFullPhylogenetic } from "@/configs/request";
 
 const TreeChart = ({ treeData, modalOpen, onclose }) => {
 
     const [treeList, setTreeList] = useState(null);
     const [clinic, setClinic] = useState(null);
-    const [sampleMutations, setSampleMutations] = useState(null);
+    const [sampleGeneData, setSampleGeneData] = useState(null);
     const { t } = useTranslation();
     useEffect(() => {
         if (!treeData?.newick) return;
         const treeWorker = new Worker('/workers/tree.js');
-        getFullMutations().then((results) => {
-            const mutations = results?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`))
+        getFullPhylogenetic().then((results) => {
+            const geneData = results?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`))
 
-            treeWorker.postMessage({ newick: treeData?.newick, mutations });
+            treeWorker.postMessage({ newick: treeData?.newick, geneData });
             treeWorker.onmessage = ({ data }) => {
                 setTreeList(data.treeList);
                 setClinic(data.clinic);
-                setSampleMutations(data.sampleMutations);
+                setSampleGeneData(data.sampleGeneData);
 
             };
         });
@@ -58,16 +58,12 @@ const TreeChart = ({ treeData, modalOpen, onclose }) => {
             ]}
             width="70vw"
         >
-            {/* {
-                treeList && <HorizontalTree data={treeList} sampleMutations={sampleMutations} color={treeData?.itemStyle?.color}></HorizontalTree>
-            } */}
-
             <VerticalTree
                 width={800}
                 height={500}
                 color={treeData?.itemStyle?.color}
                 data={treeList}
-                sampleMutations={sampleMutations}
+                sampleGeneData={sampleGeneData}
             />
         </Modal>
 

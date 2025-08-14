@@ -10,10 +10,10 @@ const fontSize = 14
 const labelPadding = 2
 const scaleOffset = 20       // 新增：刻度线相对分支的水平偏移量
 const VerticalTree = ({
-    sampleMutations,
+    sampleGeneData,
     data,
     color,
-    genes =  ["CTNNB1/g.chr1:248764615T>C", "KMT2D/g.chr3:35253149A>T", "TP53/g.chr7:108685025C>A"]
+    genes = ["CTNNB1", "KMT2D", "TP53"]
 }) => {
     const containerRef = useRef(null);
     const svgRef = useRef(null);
@@ -204,7 +204,7 @@ const VerticalTree = ({
                     name: branchNode.data.name || "",
                     length: branchNode.data.length,
                     samples: branchNode.data.samples,
-                    mutations: branchNode.data.mutations
+                    geneData: branchNode.data.geneData
                 });
                 allLinks.style('stroke', '#555')
                     .style('stroke-width', 1.5);
@@ -223,7 +223,7 @@ const VerticalTree = ({
                     name: branchNode.data.name || "",
                     length: branchNode.data.length,
                     samples: branchNode.data.samples,
-                    mutations: branchNode.data.mutations
+                    geneData: branchNode.data.geneData
                 });
                 allLinks.style('stroke', '#555')
                     .style('stroke-width', 1.5);
@@ -268,7 +268,7 @@ const VerticalTree = ({
                     name: d?.data?.name || "",
                     length: d?.data?.length,
                     samples: d?.data?.samples,
-                    mutations: sampleMutations?.[d?.data?.name]
+                    geneData: sampleGeneData?.[d?.data?.name]
                 });
                 const pathNodes = getPathNodes(d, outgroupNode);
 
@@ -295,7 +295,7 @@ const VerticalTree = ({
                     name: d?.data?.name || "",
                     length: d?.data?.length,
                     samples: d?.data?.samples,
-                    mutations: sampleMutations?.[d?.data?.name]
+                    geneData: sampleGeneData?.[d?.data?.name]
                 });
                 const pathNodes = getPathNodes(d, outgroupNode);
 
@@ -430,7 +430,7 @@ const VerticalTree = ({
             const geneMarkers = [];
             root.descendants().forEach(d => {
                 if (!d.parent) return;  // 跳过根节点
-                const drivers = d.data.mutations?.driver || [];
+                const drivers = d.data.geneData?.driver || [];
                 // 只保留我们关心的基因
                 const hits = drivers.filter(g => genes.includes(g));
                 hits.forEach((gene, idx) => {
@@ -444,28 +444,28 @@ const VerticalTree = ({
                 });
             });
 
-                // 4) 绘制五角星
-                g.selectAll('path.gene-marker')
-                    .data(geneMarkers)
-                    .enter().append('path')
-                    .attr('class', 'gene-marker')
-                    .attr('d', star)
-                    .attr('fill', d => geneColorMap[d.gene.split('/')[0]] || '#000')
-                    .attr('stroke', '#333')
-                    .attr('stroke-width', 0.5)
-                    .attr('transform', d => {
-                        const p = d.parent,
-                            c = d.child;
-                        const x0 = p.data.__out ? P.x : p.x,
-                            y0 = p.y,
-                            x1 = c.data.__out ? P.x : c.x,
-                            y1 = c.y;
-                        // 均匀分布在分支上
-                        const t = (d.idx + 1) / (d.total + 1);
-                        const x = x0 + (x1 - x0) * t;
-                        const y = y0 + (y1 - y0) * t;
-                        return `translate(${x},${y})`;
-                    }).append('title')
+            // 4) 绘制五角星
+            g.selectAll('path.gene-marker')
+                .data(geneMarkers)
+                .enter().append('path')
+                .attr('class', 'gene-marker')
+                .attr('d', star)
+                .attr('fill', d => geneColorMap[d.gene.split('/')[0]] || '#000')
+                .attr('stroke', '#333')
+                .attr('stroke-width', 0.5)
+                .attr('transform', d => {
+                    const p = d.parent,
+                        c = d.child;
+                    const x0 = p.data.__out ? P.x : p.x,
+                        y0 = p.y,
+                        x1 = c.data.__out ? P.x : c.x,
+                        y1 = c.y;
+                    // 均匀分布在分支上
+                    const t = (d.idx + 1) / (d.total + 1);
+                    const x = x0 + (x1 - x0) * t;
+                    const y = y0 + (y1 - y0) * t;
+                    return `translate(${x},${y})`;
+                }).append('title')
                 .text(d => d.gene);
         }
         return () => {
@@ -516,25 +516,25 @@ const VerticalTree = ({
                     </div>
                     <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Sample:</span> <span style={{ lineHeight: "24px", fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.samples?.join(", ") ?? "None"}</span></p>
                     {/* <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Length:</span> {tooltipState.data.length}</p> */}
-                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.mutations?.driver?.length ?? 0) + (tooltipState?.data?.mutations?.nonDriver?.length ?? 0)}</span></p>
-                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.driver?.length ?? 0} </span></p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.geneData?.driver?.length ?? 0) + (tooltipState?.data?.geneData?.nonDriver?.length ?? 0)}</span></p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.geneData?.driver?.length ?? 0} </span></p>
                     <p style={{ marginBottom: '0', fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{
-                        tooltipState?.data?.mutations?.driver.map((item, index) => {
+                        tooltipState?.data?.geneData?.driver.map((item, index) => {
                             return (
                                 <><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
-                                <span key={index+1} style={{ color: "#666" }}>({item.split("/")[1]})</span>)</>
+                                    <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span>)</>
                             )
                         })
                     }</p>
-                    <div style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.nonDriver?.length ?? 0} </span></div>
+                    <div style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.geneData?.nonDriver?.length ?? 0} </span></div>
                     <div style={{ fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>
                         {
-                            tooltipState?.data?.mutations?.nonDriver.map((item, index) => {
-                            return (
-                                <div><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
-                                <span key={index+1} style={{ color: "#666" }}>({item.split("/")[1]})</span>)</div>
-                            )
-                        })
+                            tooltipState?.data?.geneData?.nonDriver.map((item, index) => {
+                                return (
+                                    <div><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
+                                        <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span>)</div>
+                                )
+                            })
                         }
                     </div>
                 </div>

@@ -63,6 +63,26 @@ export const getITHList = async () => {
 
 
 
+export const getFullPhylogenetic = async () => {
+    try {
+        const geneData = await fetch(`/json/phylogenetic-tree.json`);
+        return geneData?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
+export const getLollipopPlotData = async (data) => {
+    try {
+        const lollipopPlotData = await post(`http://10.0.0.113:8000/lollipopPlot_datalist`, data);
+        return lollipopPlotData?.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
 export const getFullMutations = async () => {
     try {
         const geneData = await fetch(`/json/gene-based-mutations.json`);

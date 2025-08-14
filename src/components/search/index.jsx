@@ -51,16 +51,11 @@ const Search = () => {
                 <Row justify={"center"} align={"center"}>
                     <Col xs={24} md={24} lg={24} className={styles.chart} >
                         <Flex vertical className={styles.colFlex}>
-                            <GeneLollipop></GeneLollipop>
-
-                        </Flex>
-                    </Col>
-                </Row>
-                <Row justify={"center"} align={"center"} style={{ marginTop: "20px", marginBottom: "20px" }}>
-                    <Col xs={24} md={24} lg={24} className={styles.chart} >
-                        <Flex vertical className={styles.colFlex}>
-                            <GeneLollipop></GeneLollipop>
-
+                            {
+                                searchQuery.split(",").map((gene, index) => (
+                                     <GeneLollipop gene={gene} key={index}></GeneLollipop>
+                                ))
+                            }
                         </Flex>
                     </Col>
                 </Row>
