@@ -468,10 +468,9 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     const renderMeaage = useMemo(() => {
         return treeType === "overview" ?
             <>
-                <span>Phvogenetic tree is an eficent wav disoavina the genetic relationship of aiferent sectors n this oage, you wil be able to sub-select oatients based on the citenonshown on the left. The rainbow displays the overal distribuion of intra-tumor heterogeneity lTH) across al tumors, Bv sub-selecting the patient cohor lef or click onthe individual bars fom the rainbow, we can navigate through the cohor or zoom in individual patients. f you want to look at the individual phylogeny in detal,pleaseclick on the detail button on the top right.</span>
+                <span>Phylogenetic tree is an efficient way displaying the genetic relationship of different sectors. In this page, you will be able to sub-select patients based on the criterion shown on the left.  The rainbow displays the overall distribution of intra-tumor heterogeneity (ITH) across all tumors. By sub-selecting the patient cohort (left) or click on the individual bars from the rainbow, we can navigate through the cohort or zoom in individual patients.  If you want to look at the individual phylogeny in detail, please click on the detail button on the top right. </span>
                 <span> Please refer to <a href="https://en.wikipedia.org/wiki/Phylogenetic_tree">Phylogenetic tree</a></span></> :
             "In this page, you will be able select individual patient and glance through its phylogenetic tree by clicking on the individual panel."
-
     }, [treeType]);
 
     return (

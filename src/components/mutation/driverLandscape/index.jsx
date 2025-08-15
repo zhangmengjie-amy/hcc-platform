@@ -52,7 +52,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
 
     return (
             <div ref={ref} style={{ margin: "0 10px" }}>
-                <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left.</span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
+                <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left. </span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
                 <Row style={{ width: "100%" }}>
                     <Col xs={21} sm={21} md={21} lg={21} xl={21}>
                         <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>
