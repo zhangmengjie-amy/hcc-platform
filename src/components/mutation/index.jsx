@@ -7,6 +7,7 @@ import { FixedSizeList } from 'react-window';
 import { debounce } from 'lodash';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import TimingAnalysis from "@/components/mutation/timing-analysis";
 import ConditionSelection from '@/components/condition-selection';
 import EmptyLoading from "@/components/empty-loading";
 import ExportPdfButton from '@/components/export-pdf';
@@ -44,9 +45,6 @@ const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
 const DEFAULT_LEFT_PANEL_WIDTH = "25%";
 const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 100;
-
 
 const Mutation = () => {
     const { t } = useTranslation();
@@ -59,53 +57,12 @@ const Mutation = () => {
     const [params, setParams] = useState({});
     const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
     const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
-    const [fetchLoading, setFetchLoading] = useState(true);
-    const [geneList, setGeneList] = useState([]);
     const driverLandscapeRef = useRef(null);
     const conditionSelectionRef = useRef(null);
-    const [clinicList, setClinicList] = useState({
-        gender: [],
-        age: [],
-        race: [],
-        tnmStageV8: [],
-        viralStatus: []
-    });
-    const geneRef = useRef(null);
-    const paramsRef = useRef(null);
-    useEffect(() => {
-        setFetchLoading(true);
-        getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
-            geneRef.current = results?.records ?? [];
-            const driverList = getDriverList();
-            const _params = {
-                ...paramsRef.current,
-                ...clinicList,
-                sampleType: "bySample",
-                geneList: getGeneListWithIsDeriverGene(driverList)
-            }
-            setGeneList(driverList);
-            setParams(_params);
-            paramsRef.current = _params;
-            setFetchLoading(false);
-        });
-    }, []);
-
-    const getGeneListWithIsDeriverGene = (list) => {
-        return list.map((gene) => {
-            return {
-                gene,
-                isDriverGene: !!geneRef.current.find((item) => item.gene == gene)?.isDriverGene
-            }
-        })
-    }
-
-    const getDriverList = () => {
-        return geneRef.current?.filter((item) => !!item.isDriverGene).map((item) => item.gene);
-    }
 
     const handleApply = useCallback(() => {
-        setParams(paramsRef.current);
-    }, [params]);
+        setParams(conditionSelectionRef.current?.getParams());
+    }, []);
 
     const handleApplyLoading = (loading) => {
         setApplyLoading(loading);
@@ -138,11 +95,6 @@ const Mutation = () => {
 
     const onSampleTypeChange = useCallback((value) => {
         setSampleType(value);
-        paramsRef.current = {
-            ...paramsRef.current,
-            sampleType: value,
-        }
-        setParams(paramsRef.current)
     }, [])
 
     return (
@@ -151,8 +103,8 @@ const Mutation = () => {
             <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
                 <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
                     <Flex justify='space-between' align='center' style={{ paddingLeft: "10px", height: "40px" }}>
-                        <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary"
-                            style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
+                        <Button color="default" size="middle" disabled={applyLoading} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary"
+                            style={{ color: "#fff", background: !applyLoading ? "rgb(237, 108, 116)" : "gray" }}>
                             {t("common:apply")}
                         </Button>
                         <Button color="default" variant="text"
@@ -166,7 +118,7 @@ const Mutation = () => {
                             />
                         </Button>
                     </Flex>
-                    <ConditionSelection ref={conditionSelectionRef} onITHChange={setSliderValue} showITH={mutationTypeTab === "phylogeneticRelationship"}></ConditionSelection>
+                    <ConditionSelection ref={conditionSelectionRef} handleChange={handleApply} onITHChange={setSliderValue} showITH={mutationTypeTab !== "driverLandscape"}></ConditionSelection>
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
                     <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 10 }}>
@@ -183,8 +135,10 @@ const Mutation = () => {
                             </Button>
 
                             <Segmented
-                                options={[{ label: 'Driver Landscape', value: "driverLandscape" },
-                                { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship' }
+                                options={[
+                                    { label: 'Driver Landscape', value: "driverLandscape" },
+                                    { value: "phylogeneticRelationship", label: 'Phylogenetic Relationship' },
+                                    { value: 'timingAnalysis', label: "Timing Analysis" },
                                 ]}
                                 value={mutationTypeTab}
                                 onChange={value => setMutationTypeTab(value)}
@@ -209,10 +163,13 @@ const Mutation = () => {
                         <ExportPdfButton document={driverLandscapeRef.current}></ExportPdfButton>
                     </Flex>
                     {
-                        mutationTypeTab === "driverLandscape" && <DriverLandscape ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params}></DriverLandscape>
+                        mutationTypeTab === "driverLandscape" && <DriverLandscape ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params} sampleType={sampleType}></DriverLandscape>
                     }
                     {
-                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship range={sliderValue} treeType={treeType}></PhylogeneticRelationship>
+                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship range={sliderValue} conditions={params} treeType={treeType}></PhylogeneticRelationship>
+                    }
+                    {
+                        mutationTypeTab === "timingAnalysis" && <TimingAnalysis range={sliderValue} conditions={params}></TimingAnalysis>
                     }
                 </Panel>
             </Splitter>

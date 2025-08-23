@@ -8,7 +8,7 @@ import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
 import ChartsLegend from "./chartsLegend";
 
-const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => {
+const DriverLandscape = forwardRef(({ handleApplyLoading, sampleType, conditions }, ref) => {
     const [sampleMutations, setSampleMutations] = useState(null);
     const [genesMutations, setGenesMutations] = useState(null);
     const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
@@ -28,7 +28,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
 
             Promise.all([getFullMutations()]).then((results) => {
                 fullMutationsRef.current = results[0];
-                sampleWorker.postMessage({ key: "driverLandscape", data: { originalMutations: fullMutationsRef.current, conditions } });
+                sampleWorker.postMessage({ key: "driverLandscape", data: { sampleType, originalMutations: fullMutationsRef.current, conditions } });
                 sampleWorker.onmessage = (event) => {
                     const result = event.data;
                     setSampleMutations(result.sampleMutations);
@@ -48,7 +48,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
         return () => {
             sampleWorker.terminate();
         };
-    }, [conditions]);
+    }, [conditions, sampleType]);
 
     return (
             <div ref={ref} style={{ margin: "0 10px" }}>
@@ -61,7 +61,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, conditions }, ref) => 
 
                 <Row style={{ width: '100%' }}>
                     <Col xs={21} sm={21} md={21} lg={21} xl={21}>
-                        <SampleChart sampleType={conditions.sampleType} sampleGenesMutations={sampleGenesMutations} finialGeneList={finialGeneList} sampleCategories={sampleCategories} height={height}></SampleChart>
+                        <SampleChart sampleType={sampleType} sampleGenesMutations={sampleGenesMutations} finialGeneList={finialGeneList} sampleCategories={sampleCategories} height={height}></SampleChart>
                     </Col>
                     <Col xs={3} sm={3} md={3} lg={3} xl={3}>
                         <GeneChart genesMutations={genesMutations} finialGeneList={finialGeneList} height={height}></GeneChart>

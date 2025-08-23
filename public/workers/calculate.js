@@ -55,7 +55,7 @@ const clinicColorConfig = {
 
 self.onmessage = async ({ data }) => {
     if (data.key === "driverLandscape") {
-        const { data: { originalMutations, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, sampleType: sampleType, ...clinicList } } } = data;
+        const { data: { originalMutations, sampleType, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, ...clinicList } } } = data;
         const filteredMutations = filterSampleByConditions(originalMutations, clinicList, geneList);
         mutationTypeColorConfig = sortMutationTypeColorConfig(filteredMutations);
         const finialGeneList = sortGeneListByPercentage(filteredMutations, geneList);
@@ -81,10 +81,21 @@ self.onmessage = async ({ data }) => {
         const filteredMutations = filterSampleByConditions(originalMutations, clinicList, geneList);
         const finialClinicList = formatClinicList(filteredMutations);
         self.postMessage({ clinicList: finialClinicList });
+    } else if (data.key === "filterGene") {
+        const { data: { originalMutations, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, sampleType: sampleType, ...clinicList } } } = data;
+        let filteredMutations = filterSampleByConditions(originalMutations, clinicList, geneList);
+        filteredMutations = filterSampleByGene(filteredMutations, geneList);
+        const finialClinicList = formatClinicList(filteredMutations);
+        const finialSampleList = formatSampleList(finialClinicList);
+        self.postMessage({ finialSampleList: finialSampleList });
     } else if (data.key === "phylogenetic") {
         self.postMessage();
     }
 };
+
+    const formatSampleList = (finialMutations) => {
+        return Array.from(new Set(finialMutations.map((item) => item.sampleId?.split("_")?.slice(0, 2).join("_"))))
+    }
 
 const formatClinicList = (finialMutations) => {
     return finialMutations.map((item) => {
@@ -368,6 +379,12 @@ const sortGeneListByPercentage = (finialMutations, geneList) => {
             totalTimes: totalMutationsInSamples.length
         }
     }).sort((a, b) => a.totalTimes - b.totalTimes)
+}
+
+const filterSampleByGene = (originalSamples, geneList) => {
+    return originalSamples.filter((item) => {
+        return item.mutations?.some((muttation) => geneList.some((gene) => gene.gene == muttation.gene))
+    })
 }
 
 

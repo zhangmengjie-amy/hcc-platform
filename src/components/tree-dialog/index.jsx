@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import HorizontalTree from "@/components/horizontal-tree";
 import Image from 'next/image';
 import VerticalTree from "@/components/vertical-tree"
 import { Modal, Typography, Flex, Button } from 'antd';

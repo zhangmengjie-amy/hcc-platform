@@ -257,8 +257,7 @@ const Clinical = () => {
                         </Flex>
                         
                     </Flex>
-                    <Alert style={{margin: "0 10px"}} message="In this genomic modal, you will be able to explore the driver status (“Driver Landscape”) as well as Phylogenetic Relationship of the PLANet and Ditan cohort. 
-"></Alert>
+                    <Alert style={{margin: "0 10px"}} message="In this genomic modal, you will be able to explore the driver status (“Driver Landscape”) as well as Phylogenetic Relationship of the PLANet and Ditan cohort."></Alert>
                     <Overall conditions={params} handleApplyLoading={handleApplyLoading}></Overall>
                 </Panel>
             </Splitter>

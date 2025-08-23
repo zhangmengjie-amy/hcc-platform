@@ -13,7 +13,9 @@ const VerticalTree = ({
     sampleGeneData,
     data,
     color,
-    genes = ["CTNNB1", "KMT2D", "TP53"]
+    showTooltip = true,
+    handleClick = () => {},
+    geneList = []
 }) => {
     const containerRef = useRef(null);
     const svgRef = useRef(null);
@@ -199,6 +201,7 @@ const VerticalTree = ({
 
         allLinks.style('cursor', 'pointer')
             .on('pointerover', function (event, link) {
+                if (!showTooltip) return;
                 const branchNode = link.target;
                 showCustomTooltip(event, {
                     name: branchNode.data.name || "",
@@ -262,7 +265,7 @@ const VerticalTree = ({
         leafG.selectAll('circle')
             .style('cursor', 'pointer')
             .on('pointerover', function (event, d) {
-
+                if (!showTooltip) return;
                 event.stopPropagation();
                 showCustomTooltip(event, {
                     name: d?.data?.name || "",
@@ -271,7 +274,6 @@ const VerticalTree = ({
                     geneData: sampleGeneData?.[d?.data?.name]
                 });
                 const pathNodes = getPathNodes(d, outgroupNode);
-
 
 
 
@@ -327,6 +329,7 @@ const VerticalTree = ({
         g.selectAll('g.N-node circle')
             .style('cursor', 'pointer')
             .on('pointerover', function () {
+                if (!showTooltip) return;
                 const pathNodes = new Set([outgroupNode]);
                 // allLinks
                 //     .style('stroke', l => pathNodes.has(l.target) ? '#d46e40' : '#555')
@@ -416,15 +419,11 @@ const VerticalTree = ({
         const dx = padX - bbox.x + (((W - 2 * padX) - bbox.width) / 2)
         const dy = padY - bbox.y + (((H - 2 * padY) - bbox.height) / 2)
         g.attr('transform', `translate(${dx},${dy})`)
-        if (genes.length) {
+        if (geneList.length) {
             // 1) 基因颜色
-            const geneColorMap = {
-                "CTNNB1": "red",
-                "TP53": "yellow",
-                "KMT2D": "pink"
-            };
+            const geneColorMap = ["#FF6B35", "#E1B12C", "#00CC99", "#9B59B6", "#007F50", "#FF9AA2",   "#2D5D7B", "#6B8E23", "#FF5252", "#4CAF50", "#FF4081", "#3F51B5", "#FF9800", "#607D8B", "#E91E63", "#2196F3", "#4CAF50", "#795548", "#6C757D","#2E5A88"];
             // 2) 五角星 generator
-            const star = d3.symbol().type(d3.symbolStar).size(200);
+            const star = d3.symbol().type(d3.symbolStar).size(120);
 
             // 3) 收集需要标记的分支（parent → child）
             const geneMarkers = [];
@@ -432,7 +431,7 @@ const VerticalTree = ({
                 if (!d.parent) return;  // 跳过根节点
                 const drivers = d.data.geneData?.driver || [];
                 // 只保留我们关心的基因
-                const hits = drivers.filter(g => genes.includes(g));
+                const hits = Array.from(new Set(drivers.filter(g => geneList.filter((item) => item.isDriverGene).map((item) => item.gene).includes(g.split("/")?.[0])).map((item) => item?.split("/")[0])))
                 hits.forEach((gene, idx) => {
                     geneMarkers.push({
                         parent: d.parent,
@@ -444,15 +443,11 @@ const VerticalTree = ({
                 });
             });
 
-            // 4) 绘制五角星
-            g.selectAll('path.gene-marker')
+            // 4) 绘制五角星和基因名
+            const geneMarkerGroup = g.selectAll('g.gene-marker-group') // 选择一个组
                 .data(geneMarkers)
-                .enter().append('path')
-                .attr('class', 'gene-marker')
-                .attr('d', star)
-                .attr('fill', d => geneColorMap[d.gene.split('/')[0]] || '#000')
-                .attr('stroke', '#333')
-                .attr('stroke-width', 0.5)
+                .enter().append('g')
+                .attr('class', 'gene-marker-group')
                 .attr('transform', d => {
                     const p = d.parent,
                         c = d.child;
@@ -464,8 +459,29 @@ const VerticalTree = ({
                     const t = (d.idx + 1) / (d.total + 1);
                     const x = x0 + (x1 - x0) * t;
                     const y = y0 + (y1 - y0) * t;
-                    return `translate(${x},${y})`;
-                }).append('title')
+                    return `translate(${x},${y})`; // 整个组会进行平移
+                });
+
+            // 在组内添加五角星
+            geneMarkerGroup.append('path')
+                .attr('class', 'gene-marker-star') // 给它一个独特的类名
+                .attr('d', star)
+                .attr('fill', (d, index) => geneColorMap[index % 20] || '#f5f5f5')
+                .attr('stroke', '#f5f5f5')
+                .attr('stroke-width', 0.5)
+                .append('title') // 保留title用于hover提示
+                .text(d => d.gene);
+
+            // 在组内添加文本标签
+            const textOffset = 10; // 文本相对于五角星的偏移量
+            geneMarkerGroup.append('text')
+                .attr('class', 'gene-marker-label')
+                .attr('font-size', 10) // 文本字体大小略小
+                .attr('fill', '#000')
+                .attr('stoke', "#fff")
+                .attr('text-anchor', 'start') // 文本左对齐（在x坐标的右侧）
+                .attr('dominant-baseline', 'middle') // 文本垂直居中
+                .attr('x', textOffset) // 相对于组的(0,0)点（即五角星的中心）向右偏移
                 .text(d => d.gene);
         }
         return () => {
@@ -494,13 +510,14 @@ const VerticalTree = ({
 
     return (
         <div ref={containerRef}
-            style={{ width: '70%', height: '100%', position: 'relative' }}
+            onClick={handleClick}
+            style={{ width: '100%', height: '100%', position: 'relative' }}
         >
             <svg ref={svgRef} onClick={() => {
                 tooltipState?.visible && clearHighlights()
             }} />
 
-            {tooltipState?.visible && <Popover trigger="hover" fresh placement='right' content={(
+            {tooltipState?.visible && showTooltip && <Popover trigger="hover" fresh placement='right' content={(
                 <div
                     style={{
                         width: "350px",
@@ -517,7 +534,7 @@ const VerticalTree = ({
                     <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Sample:</span> <span style={{ lineHeight: "24px", fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.samples?.join(", ") ?? "None"}</span></p>
                     {/* <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Length:</span> {tooltipState.data.length}</p> */}
                     <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.geneData?.driver?.length ?? 0) + (tooltipState?.data?.geneData?.nonDriver?.length ?? 0)}</span></p>
-                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.geneData?.driver?.length ?? 0} </span></p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold" }}> {tooltipState?.data?.geneData?.driver?.length ?? 0} </span></p>
                     <p style={{ marginBottom: '0', fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{
                         tooltipState?.data?.geneData?.driver.map((item, index) => {
                             return (
@@ -526,7 +543,7 @@ const VerticalTree = ({
                             )
                         })
                     }</p>
-                    <div style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.geneData?.nonDriver?.length ?? 0} </span></div>
+                    <div style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold" }}> {tooltipState?.data?.geneData?.nonDriver?.length ?? 0} </span></div>
                     <div style={{ fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>
                         {
                             tooltipState?.data?.geneData?.nonDriver.map((item, index) => {
@@ -543,7 +560,6 @@ const VerticalTree = ({
                     position: 'absolute',
                     top: tooltipState.y,
                     left: tooltipState.x,
-
                 }}></div>
             </Popover>}
         </div>

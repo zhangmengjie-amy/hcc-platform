@@ -25,48 +25,30 @@ import {
     Select,
     Timeline,
     Upload,
-    Segmented,
     Slider,
     message
 } from 'antd';
-import DriverLandscape from "@/components/mutation/driverLandscape";
-import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
 import { useTranslation } from "react-i18next";
 import Image from 'next/image';
 import { clinicConfig } from '@/configs/mutation';
-const { Panel } = Splitter;
 import { FixedSizeList } from 'react-window';
 import styles from "./style.module.scss";
 const RELOAD_ICON = "/images/reload.svg";
 const SEARCH_SRC = "/images/search.svg";
-const LEFT_SQUARE_SRC = "/images/left-square.svg";
-const RIGHT_SQUARE_SRC = "/images/right-square.svg";
 const IMPORT_SRC = "/images/import.svg";
 const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
-const DEFAULT_LEFT_PANEL_WIDTH = "25%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
-const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneList= true, showClinical = true }, ref) => {
+const ConditionSelection = forwardRef(({ onITHChange, handleChange, showITH = true, showGeneList = true, showClinical = true }, ref) => {
     const { t } = useTranslation();
-    const [treeType, setTreeType] = useState("overview");
     const [driverList, setDriverList] = useState(["driver", "not-driver"]);
-    const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
-    const [applyLoading, setApplyLoading] = useState(false);
     const [sliderValue, setSliderValue] = useState([0, 1]);
-    const [messageApi, contextHolder] = message.useMessage();
     const [showSearchInput, setShowSearchInput] = useState(false);
-    const [params, setParams] = useState({});
-    const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
-    const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
     const [filterValue, setFilterValue] = useState("");
     const [loadMoreLoading, setLoadMoreLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
     const [current, setCurrent] = useState(1);
     const [geneList, setGeneList] = useState([]);
-    const [loading, setLoading] = useState(false)
-    const driverLandscapeRef = useRef(null);
-
     const [clinicList, setClinicList] = useState({
         gender: [],
         age: [],
@@ -76,6 +58,7 @@ const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneLi
     });
     const geneRef = useRef(null);
     const listRef = useRef(null);
+    const searchResultRef = useRef(null);
     const paramsRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
@@ -95,11 +78,10 @@ const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneLi
                 geneList: getGeneListWithIsDeriverGene(driverList)
             }
             setGeneList(driverList);
-            setParams(_params);
             paramsRef.current = _params;
+            handleChange?.(paramsRef.current);
             setFetchLoading(false);
         });
-
     }, []);
 
     const getGeneListWithIsDeriverGene = (list) => {
@@ -140,16 +122,12 @@ const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneLi
     }
     const handleDNAReload = (event) => {
         event.stopPropagation();
-        setSliderValue([0, 1])
+        setSliderValue([0, 1]);
     }
 
     const handleDriverReload = (event) => {
         event.stopPropagation();
         setDriverList(["driver", "not-driver"]);
-    }
-
-    const handleMutationTypeReload = () => {
-        event.stopPropagation();
     }
 
     const handleClinicReload = (event) => {
@@ -172,7 +150,7 @@ const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneLi
     }
 
     const renderSearchInput = () => {
-        return showSearchInput ? <Input size={"middle"} allowClear onChange={fuzzySearch} placeholder={t("common:search")} /> : ""
+        return showSearchInput ? <Input size={"middle"} style={{marginBottom: 10}} allowClear onChange={fuzzySearch} placeholder={t("common:search")} /> : ""
     }
 
     const getSelectedDriverList = () => {
@@ -354,35 +332,6 @@ const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneLi
         },
     };
 
-    const onPanelChange = (sizes) => {
-        setLeftPanelSize(sizes[0])
-        setRightPanelSize(sizes[1])
-    }
-
-    const leftPanelFullScreen = () => {
-        if (rightPanelSize == "0") {
-            setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH)
-            setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
-
-        } else {
-            setLeftPanelSize("0")
-            setRightPanelSize("100%")
-        }
-
-    }
-
-    const rightPanelFullScreen = () => {
-        if (leftPanelSize == "0") {
-            setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
-            setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
-
-        } else {
-            setLeftPanelSize("100%");
-            setRightPanelSize("0");
-
-        }
-    }
-
     const geneCollapseTitle = () => {
         return <Flex justify={"space-between"} align={"center"}>
             <Typography.Paragraph
@@ -527,8 +476,8 @@ const ConditionSelection = forwardRef(({ onITHChange, showITH = true, showGeneLi
 
     const geneCollapseContent = () => {
         return <div className={styles.searchCard}
-            variant="borderless" title={renderSearchInput()}>
-
+            variant="borderless">
+            {renderSearchInput()}
             <EmptyLoading loading={fetchLoading} hasData={!!geneRef.current?.length}>
                 <Checkbox.Group style={{ width: '100%' }} value={geneList}>
                     <FixedSizeList
