@@ -54,8 +54,8 @@ const LiverSampleChart = ({ data }) => {
             .attr("x", chartWidth / 2)
             .attr("y", -margin.top / 2) // Adjust position as needed
             .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .text(`Patient ID: ${data.patientId}, Tumor Size: ${data.tumor_size} cm`);
+            .style("font-size", "12px")
+            .text(`${data.patientId}, Tumor Size: ${data.tumor_size} cm, Sample Size: ${Number(data.samples[0].sample_r).toFixed(2)} cm`);
 
         // Draw the liver
         svg.append("circle")
@@ -82,13 +82,13 @@ const LiverSampleChart = ({ data }) => {
         //     .style("fill", "black");
 
         // Add sample diameter text in the center of the circle
-        sampleGroup.append("text")
-            .attr("dx", 0)
-            .attr("dy", 5)
-            .style("text-anchor", "middle")
-            .style("font-size", "10px")
-            .style("fill", "#000")
-            .text(d => (2 * d.r).toFixed(2)); // Display diameter with 2 decimal places
+        // sampleGroup.append("text")
+        //     .attr("dx", 0)
+        //     .attr("dy", 5)
+        //     .style("text-anchor", "middle")
+        //     .style("font-size", "10px")
+        //     .style("fill", "#000")
+        //     .text(d => (2 * d.r).toFixed(2)); // Display diameter with 2 decimal places
 
         // Add sample ID text beside the circle
         sampleGroup.append("text")

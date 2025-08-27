@@ -527,11 +527,11 @@ const SubtypeLandscape = ({ conditions }) => {
 
     return (
         <>
-            <Row style={{ position: "relative", display: "flex", justifyContent: "space-between" }}>
-                <Col xs={12} sm={12} md={12}>
-                   <div style={{border: "1px solid #f5f5f5", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", padding: "20px" }}>
-                        <EChartsReact option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
-                   </div>
+            <Row>
+                <Col xs={12} sm={12} md={12} style={{padding: "10px"}}>
+                   <Flex align='center' style={{border: "1px solid #f5f5f5",height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                        <EChartsReact style={{width: "100%",height: "320px"}} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
+                   </Flex>
                     
                     {/* <Flex>
                     <Flex vertical style={{ marginLeft: "10px" }}>
@@ -553,22 +553,26 @@ const SubtypeLandscape = ({ conditions }) => {
                     </Flex>
                 </Flex> */}
                 </Col>
-                <Col xs={12} sm={12} md={12}>
-                                       <div style={{border: "1px solid #f5f5f5", boxShadow: "0 0 15px #f5f5f5", padding: "20px" }}>
-                       <HorizontalTree alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"red"}></HorizontalTree>
-                    
-                   </div>
+                <Col xs={12} sm={12} md={12} style={{padding: "10px"}}>
+                                   <Flex align='center' style={{border: "1px solid #f5f5f5",height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                                  <HorizontalTree alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"rgb(106, 194, 165)"}></HorizontalTree>
+                     </Flex>
                     
                    
                     
                 </Col>
             </Row>
-            <Row style={{ position: "relative", padding: 20, display: "flex", justifyContent: "space-between" }}>
-                <Col xs={12} sm={12} md={12} style={{  height: "300px", border: "1px solid #f5f5f5", boxShadow: "0 0 10px rgb(0, 0, 0, .05)" }}>
-                  <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
-                </Col>
-                <Col xs={12} sm={12} md={12} style={{ height: "300px",padding: "20px", border: "1px solid #f5f5f5", boxShadow: "0 0 10px rgb(0, 0, 0, .05)" }} vertical>
-                 <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
+            <Row >
+                <Col xs={12} sm={12} md={12} style={{padding: "10px"}}>
+                                   <Flex align='center' style={{border: "1px solid #f5f5f5",height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                       <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
+               </Flex>
+               </Col>
+              <Col xs={12} sm={12} md={12} style={{padding: "10px"}}>
+                              <Flex align='center' style={{border: "1px solid #f5f5f5",height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                       <LiverSampleChart data={currentLiverSamples?.[1]}></LiverSampleChart>
+               </Flex>
+                
                 </Col>
             </Row>
         </>
