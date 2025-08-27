@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { getExpressionSubtypeList } from "@/configs/request";
-import { Flex } from 'antd';
-import { getITHList, getPatientList } from "@/configs/request";
+import { getExpressionpatientListRef } from "@/configs/request";
+import { Flex, Row, Col } from 'antd';
+import { getITHList, getPatientList, getLiverSamples } from "@/configs/request";
 import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
+import LiverSampleChart from '@/components/liver-sample';
 import EChartsReact from "echarts-for-react";
+import filterSampleByConditions from "@/utils/filter-patient";
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -77,31 +79,52 @@ const STAGE_COLOR = {
 
 const defaultValue = 1;
 const spaceValue = 0.5;
-const SubtypeLandscape = () => {
+const SubtypeLandscape = ({ conditions }) => {
     const [option, setOption] = useState({});
     const [treeList, setTreeList] = useState(null);
     const [sampleMutations, setSampleMutations] = useState(null);
     const [currentPatientId, setCurrentPatientId] = useState(null);
     const [mockHeatmap, setMockHeatmap] = useState(null);
+    const [patientList, setPatientList] = useState([]);
+    const [currentLiverSamples, setCurrentLiverSamples] = useState(null);
     const patientListRef = useRef(null);
-    const subtypeList = useRef(null);
+    const filteredListRef = useRef(null);
+    const liverSamplesRef = useRef(null);
     useEffect(() => {
         let newick = null;
         let patientId = null;
-        getExpressionSubtypeList().then((results) => {
-            const _option = buildOption(results);
-            subtypeList.current = [...results];
-            patientId = subtypeList.current?.[0]?.publicationId;
-            buildHeatMap(patientId);
-            setOption(_option);
-        });
+        const { geneList, ...clinicList } = conditions;
+        const filteredData = filterSampleByConditions(patientListRef.current, clinicList, geneList) ?? [];
+        filteredListRef.current = filteredData;
+
+        console.log("filteredData", clinicList);
+        console.log("patientListRef.current", patientListRef.current);
+        const _option = buildOption(filteredData);
+        patientId = filteredData?.[0]?.patientId;
+        buildHeatMap(patientId);
+        setOption(_option);
+        newick = filteredData?.find((item) => item.patientId == patientId)?.newick;
+        if (newick) {
+            buildTreeData(newick, patientId);
+        }
+    }, [conditions]);
+
+    useEffect(() => {
+        let newick = null;
+        let patientId = null;
         getPatientList().then((data) => {
+            const _option = buildOption(data);
+            setOption(_option);
+            patientId = data?.[0]?.patientId;
             patientListRef.current = data;
-            newick = patientListRef.current?.find((item) => item.patientId == patientId)?.newick;
-            if (newick) {
-                buildTreeData(newick, patientId);
-            }
+            filteredListRef.current = data;
+            setCurrentPatientId(patientId);
         })
+
+        getLiverSamples().then((data) => {
+            liverSamplesRef.current = data;
+        })
+
     }, []);
 
     const buildTreeData = (newick, patientId) => {
@@ -120,17 +143,22 @@ const SubtypeLandscape = () => {
         let newick = null;
         let patientId = currentPatientId;
         if (!currentPatientId) {
-            patientId = subtypeList.current?.[0]?.publicationId;
+            patientId = filteredListRef.current?.[0]?.patientId;
         }
-        newick = patientListRef.current?.find((item) => item.patientId == currentPatientId)?.newick;
+        newick = filteredListRef.current?.find((item) => item.patientId == currentPatientId)?.newick;
         if (newick && patientId) {
             buildHeatMap(patientId);
             buildTreeData(newick, patientId);
         }
+        console.log("liverSamplesRef.current", liverSamplesRef.current)
+        const currentLiver = liverSamplesRef.current?.filter((item) => item.patientId === patientId);
+        console.log("currentLiver", currentLiver, patientId)
+        setCurrentLiverSamples(currentLiver);
     }, [currentPatientId]);
 
     const buildHeatMap = (patientId) => {
-        let samples = subtypeList.current?.find((subtypeItem) => subtypeItem.publicationId == patientId)?.samples ?? [];
+        console.log(patientId, filteredListRef.current)
+        let samples = filteredListRef.current?.find((subtypeItem) => subtypeItem.patientId == patientId)?.samples ?? [];
         if (samples.length) {
             const _mockHeatmap = {};
             samples.forEach((sample) => {
@@ -158,14 +186,13 @@ const SubtypeLandscape = () => {
 
                 }
             })
-
+            console.log("_mockHeatmap", _mockHeatmap)
             setMockHeatmap(_mockHeatmap);
         }
-
     }
 
     const sortedPatientById = (patientList) => {
-        return patientList.sort((a, b) => a.publicationId.split("_")[1] - b.publicationId.split("_")[1])
+        return patientList?.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1])
     }
 
     const sortPatients = (_patientList) => {
@@ -174,7 +201,7 @@ const SubtypeLandscape = () => {
         const purePatientList = [];
         const mixedPatientList = [];
         let patientWithGroupSubtype = patientList
-            .filter((item) => new Set(item.samples.map((s) => s.subtype)).size > 1)
+            .filter((item) => new Set(item.samples?.map((s) => s.subtype)).size > 1)
             .map((item) => ({
                 ...item,
                 samples: item.samples.sort((a, b) => a.subtype.localeCompare(b.subtype))
@@ -187,7 +214,7 @@ const SubtypeLandscape = () => {
             }).sort((a, b) => a.stage.length - b.stage.length);
             mixedPatientList.push(...patient);
         })
-        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples.map((item) => item.subtype)).size == 1)
+        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples?.map((item) => item.subtype)).size == 1)
         Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
             const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
             purePatientList.push(...patientWithSameSubtype);
@@ -211,81 +238,87 @@ const SubtypeLandscape = () => {
         return maxLevel;
     }
 
+    const filterPatients = (_patientList) => {
+        return _patientList?.filter((item) => !!item.samples);
+    }
 
-    const buildOption = (patientList) => {
-
-        const sortedPatient = sortPatients(patientList);
-        let data = [];
-        const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.samples?.length))
-        const buildChildren = (sampleLength, patient, PURE_MIXED) => {
-            let children = [];
-            if (sampleLength == 0) return [
-                {
+    const buildChildren = (sampleLength, patient, PURE_MIXED) => {
+        let children = [];
+        if (sampleLength == 0) return [
+            {
+                value: defaultValue,
+                name: "",
+                itemStyle: {
+                    borderWidth: 0,
+                    color: MIXED_PURE_BG[PURE_MIXED]
+                },
+                children: [{
+                    name: patient.stage,
                     value: defaultValue,
-                    name: "",
+                    custom: {
+                        theme: "Stage",
+                        patientId: patient.patientId,
+                        sampleLength: patient.samples.length,
+                        PURE_MIXED: PURE_MIXED
+                    },
                     itemStyle: {
-                        borderWidth: 0,
-                        color: MIXED_PURE_BG[PURE_MIXED]
+                        color: STAGE_COLOR[patient.stage]
                     },
                     children: [{
-                        name: patient.stage,
                         value: defaultValue,
-                        custom: {
-                            theme: "Stage",
-                            patientId: patient.publicationId,
-                            sampleLength: patient.samples.length,
-                            PURE_MIXED: PURE_MIXED
-                        },
+                        name: "",
                         itemStyle: {
-                            color: STAGE_COLOR[patient.stage]
+                            borderWidth: 0,
+                            color: MIXED_PURE_BG[PURE_MIXED]
                         },
                         children: [{
                             value: defaultValue,
-                            name: "",
+                            custom: {
+                                theme: "RNA Mixed or Pure",
+                                patientId: patient.patientId,
+                                sampleId: patient.sampleId,
+                                sampleLength: patient.samples.length,
+                                stage: patient.stage
+                            },
+                            name: PURE_MIXED,
                             itemStyle: {
                                 borderWidth: 0,
-                                color: MIXED_PURE_BG[PURE_MIXED]
+                                color: MIXED_PURE[PURE_MIXED]
                             },
-                            children: [{
-                                value: defaultValue,
-                                custom: {
-                                    theme: "RNA Mixed or Pure",
-                                    patientId: patient.publicationId,
-                                    sampleId: patient.sampleId,
-                                    sampleLength: patient.samples.length,
-                                    stage: patient.stage
-                                },
-                                name: PURE_MIXED,
-                                itemStyle: {
-                                    borderWidth: 0,
-                                    color: MIXED_PURE[PURE_MIXED]
-                                },
-                            }]
                         }]
                     }]
-                }
-            ];
-            const subtype = patient.samples[sampleLength - 1]?.subtype;
-            const sampleId = patient.samples[sampleLength - 1]?.id;
-            const color = SUBTYPE_COLOR[subtype];
-            children.push({
-                name: subtype ?? "",
-                value: defaultValue,
-                custom: {
-                    theme: "Subtype",
-                    patientId: patient.publicationId,
-                    sampleId,
-                    stage: patient.stage,
-                    PURE_MIXED: PURE_MIXED
-                },
-                itemStyle: {
-                    borderWidth: color ? 1 : 0,
-                    color: color ?? MIXED_PURE_BG[PURE_MIXED]
-                },
-                children: buildChildren(sampleLength - 1, patient, PURE_MIXED)
-            })
-            return children
-        }
+                }]
+            }
+        ];
+        const subtype = patient.samples[sampleLength - 1]?.subtype;
+        const sampleId = patient.samples[sampleLength - 1]?.id;
+        const color = SUBTYPE_COLOR[subtype];
+        children.push({
+            name: subtype ?? "",
+            value: defaultValue,
+            custom: {
+                theme: "Subtype",
+                patientId: patient.patientId,
+                sampleId,
+                stage: patient.stage,
+                PURE_MIXED: PURE_MIXED
+            },
+            itemStyle: {
+                borderWidth: color ? 1 : 0,
+                color: color ?? MIXED_PURE_BG[PURE_MIXED]
+            },
+            children: buildChildren(sampleLength - 1, patient, PURE_MIXED)
+        })
+        return children
+    }
+
+
+    const buildOption = (patientList) => {
+        const filterdPatient = filterPatients(patientList);
+        const sortedPatient = sortPatients(filterdPatient);
+        let data = [];
+        const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.samples?.length))
+
 
         let pureChildren = [];
         let mixedChildren = [];
@@ -449,7 +482,11 @@ const SubtypeLandscape = () => {
                 left: 0,
                 top: 0,
                 right: 0,
-                bottom: 0
+                bottom: 0,
+                containLabel: true
+            },
+            legend: {
+                show: false
             },
             hoverLayerThreshold: 0,  // 禁用全局hover层
             tooltip: {
@@ -487,102 +524,16 @@ const SubtypeLandscape = () => {
         setCurrentPatientId(params.data?.custom?.patientId)
     }, []);
 
-    const config = {
-    container: {
-      width: 30,  // 容器宽度30cm
-      height: 30  // 容器高度20cm
-    },
-    bigCircle: {
-      diameter: 30, // 大圆直径15cm
-      center: [15, 10], // 圆心坐标 [x, y]（单位cm）
-      borderWidth: 0.2 // 边框宽度0.2cm
-    },
-    smallCircles: [
-      { center: [10, 8], diameter: 3, name: 'A' },
-      { center: [15, 6], diameter: 4, name: 'B' },
-      { center: [20, 8], diameter: 2.5, name: 'C' },
-      { center: [15, 12], diameter: 5, name: 'D' }
-    ]
-  };
-
-  // 将物理尺寸转换为图表坐标（厘米 -> 百分比）
-  const convertToChartCoordinates = () => {
-    // 大圆参数转换
-    const bigCircle = {
-      cx: (config.bigCircle.center[0] / config.container.width) * 100,
-      cy: (config.bigCircle.center[1] / config.container.height) * 100,
-      r: (config.bigCircle.diameter / 2 / config.container.width) * 100,
-      borderWidth: (config.bigCircle.borderWidth / config.container.width) * 100
-    };
-
-    // 小圆参数转换
-    const smallCircles = config.smallCircles.map(circle => ({
-      x: (circle.center[0] / config.container.width) * 100,
-      y: (circle.center[1] / config.container.height) * 100,
-      r: (circle.diameter / 2 / config.container.width) * 100,
-      name: circle.name
-    }));
-
-    return { bigCircle, smallCircles };
-  };
-
-  const { bigCircle, smallCircles } = convertToChartCoordinates();
-
-  const circleOption = {
-    grid: {
-        containLabel: true
-    },
-    xAxis: {
-      type: 'value',
-      name: 'X轴',
-      min:0,
-      max: 100
-    },
-    yAxis: {
-      type: 'value',
-      name: 'Y轴',
-            min:0,
-            max: 100
-    },
-    series: [{
-      type: 'scatter',
-      symbolSize: function (data, event) {
-        // 用第三个值控制气泡大小（需按比例缩放）
-
-        if (event.dataIndex == 0) {
-             return Math.sqrt(data[2]) * 40;
-        } else {
-            return Math.sqrt(data[2]) * 10;
-        }
-       
-      },
-      data: [
-        [50, 50, 100],
-        [50, 20, 10],  // [x, y, sizeValue]
-        [50, 30, 10],
-        [50, 40, 10],
-        [50, 60, 10]
-      ],
-      itemStyle: {
-        color: function(params) {
-          // 可添加颜色映射
-          const colors = ['#8ab7e9','#d48265','#d48265','#d48265'];
-          return colors[params.dataIndex % colors.length];
-        },
-      },
-      emphasis: {
-        itemStyle: false,
-        scale: false  // 悬停时放大
-      }
-    }]
-  };
 
     return (
         <>
-                <div style={{ position: "relative", height: "80vh", padding: 20, display: "flex", justifyContent: "space-between" }}>
-            <Flex flex="1">
-                <EChartsReact option={option} style={{ width: 500, height: 500 }} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
-                <Flex>
+            <Row style={{ position: "relative", display: "flex", justifyContent: "space-between" }}>
+                <Col xs={12} sm={12} md={12}>
+                   <div style={{border: "1px solid #f5f5f5", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", padding: "20px" }}>
+                        <EChartsReact option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
+                   </div>
+                    
+                    {/* <Flex>
                     <Flex vertical style={{ marginLeft: "10px" }}>
                         <Flex style={{ marginBottom: "10px" }}>Stage</Flex>
                         {
@@ -600,29 +551,27 @@ const SubtypeLandscape = () => {
                             })
                         }
                     </Flex>
-                </Flex>
-            </Flex>
-            <Flex flex="1">
-                <HorizontalTree alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"red"}></HorizontalTree>
-            </Flex>
-            
-        </div>
-      
- <div style={{ 
-      width: '600px',   // 网页显示宽度
-      height: '600px',  // 网页显示高度
-      margin: '0 auto',
-      border: '1px solid #f0f0f0'
-    }}>
-      <EChartsReact
-        option={circleOption}
-        style={{ height: '100%', width: '100%' }}
-        opts={{ renderer: 'svg' }}
-      />
-    </div>
-
+                </Flex> */}
+                </Col>
+                <Col xs={12} sm={12} md={12}>
+                                       <div style={{border: "1px solid #f5f5f5", boxShadow: "0 0 15px #f5f5f5", padding: "20px" }}>
+                       <HorizontalTree alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"red"}></HorizontalTree>
+                    
+                   </div>
+                    
+                   
+                    
+                </Col>
+            </Row>
+            <Row style={{ position: "relative", padding: 20, display: "flex", justifyContent: "space-between" }}>
+                <Col xs={12} sm={12} md={12} style={{  height: "300px", border: "1px solid #f5f5f5", boxShadow: "0 0 10px rgb(0, 0, 0, .05)" }}>
+                  <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
+                </Col>
+                <Col xs={12} sm={12} md={12} style={{ height: "300px",padding: "20px", border: "1px solid #f5f5f5", boxShadow: "0 0 10px rgb(0, 0, 0, .05)" }} vertical>
+                 <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
+                </Col>
+            </Row>
         </>
-
     )
 }
 

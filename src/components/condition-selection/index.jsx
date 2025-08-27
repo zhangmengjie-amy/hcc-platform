@@ -39,7 +39,7 @@ const IMPORT_SRC = "/images/import.svg";
 const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
-const ConditionSelection = forwardRef(({ onITHChange, handleChange, showITH = true, showGeneList = true, showClinical = true }, ref) => {
+const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH = true, showGeneList = true, showClinical = true }, ref) => {
     const { t } = useTranslation();
     const [driverList, setDriverList] = useState(["driver", "not-driver"]);
     const [sliderValue, setSliderValue] = useState([0, 1]);
@@ -79,7 +79,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleChange, showITH = tr
             }
             setGeneList(driverList);
             paramsRef.current = _params;
-            handleChange?.(paramsRef.current);
+            handleInitChange?.(paramsRef.current);
             setFetchLoading(false);
         });
     }, []);

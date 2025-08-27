@@ -118,7 +118,7 @@ const Mutation = () => {
                             />
                         </Button>
                     </Flex>
-                    <ConditionSelection ref={conditionSelectionRef} handleChange={handleApply} onITHChange={setSliderValue} showITH={mutationTypeTab !== "driverLandscape"}></ConditionSelection>
+                    <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} onITHChange={setSliderValue} showITH={mutationTypeTab !== "driverLandscape"}></ConditionSelection>
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
                     <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 10 }}>

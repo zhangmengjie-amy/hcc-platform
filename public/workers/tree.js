@@ -101,7 +101,6 @@ return nameToNode["N"] || null;
 }
 
 self.onmessage = ({ data: { newick, geneData } }) => {
-    console.log(geneData)
     const mutationsWithGenomeChange = geneData.map((item) => {
         return {
             sampleId: item.sampleId,

@@ -82,7 +82,6 @@ const Expression = () => {
             const _params = {
                 ...paramsRef.current,
                 ...clinicList,
-                sampleType: "bySample",
                 geneList: getGeneListWithIsDeriverGene(driverList)
             }
             setGeneList(driverList);
@@ -106,12 +105,8 @@ const Expression = () => {
     }
 
     const handleApply = useCallback(() => {
-        setParams(paramsRef.current);
-    }, [params]);
-
-    const handleApplyLoading = (loading) => {
-        setApplyLoading(loading);
-    }
+        setParams(conditionSelectionRef.current?.getParams());
+    }, []);
 
     const onPanelChange = (sizes) => {
         setLeftPanelSize(sizes[0])
@@ -136,16 +131,9 @@ const Expression = () => {
             setLeftPanelSize("100%");
             setRightPanelSize("0");
         }
-    }
 
-    const onSampleTypeChange = useCallback((value) => {
-        setSampleType(value);
-        paramsRef.current = {
-            ...paramsRef.current,
-            sampleType: value,
-        }
-        setParams(paramsRef.current)
-    }, [])
+        console.log(params)
+    }
 
     return (
         <>
@@ -168,7 +156,7 @@ const Expression = () => {
                             />
                         </Button>
                     </Flex>
-                    <ConditionSelection ref={conditionSelectionRef} showDriverGeneList={false} showITH={false} showGeneList={false}></ConditionSelection>
+                    <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
                     <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 10 }}>
@@ -195,10 +183,10 @@ const Expression = () => {
                         </Flex>
                     </Flex>
                     {
-                        mutationTypeTab == "subtype" &&  <SubtypeLandscape></SubtypeLandscape>
+                        mutationTypeTab == "subtype" &&  <SubtypeLandscape conditions={params}></SubtypeLandscape>
                     }
                     {
-                        mutationTypeTab == "pathways" &&  <Pathways></Pathways>
+                        mutationTypeTab == "pathways" &&  <Pathways conditions={params}></Pathways>
                     }
                 </Panel>
             </Splitter>

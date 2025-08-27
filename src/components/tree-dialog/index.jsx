@@ -6,7 +6,7 @@ import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import { getFullPhylogenetic } from "@/configs/request";
 
-const TreeChart = ({ treeData, modalOpen, onclose }) => {
+const TreeChart = ({ treeData, modalOpen, geneList, onclose }) => {
 
     const [treeList, setTreeList] = useState(null);
     const [clinic, setClinic] = useState(null);
@@ -60,6 +60,7 @@ const TreeChart = ({ treeData, modalOpen, onclose }) => {
             <VerticalTree
                 width={800}
                 height={500}
+                geneList={geneList}
                 color={treeData?.itemStyle?.color}
                 data={treeList}
                 sampleGeneData={sampleGeneData}

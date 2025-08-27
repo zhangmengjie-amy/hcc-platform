@@ -77,7 +77,7 @@ function resolveAnnotNode(mrcaInfo, nameToNode) {
 self.onmessage = ({ data: { treeData } }) => {
     const treeList = [];
 
-    for (const { newick, geneData, patientId, currentValue } of treeData) {
+    for (const { newick, geneData, patientId, currentValue, itemStyle } of treeData) {
         const mutationsWithGenomeChange = geneData.map((item) => {
             return {
                 sampleId: item.sampleId,
@@ -163,7 +163,8 @@ self.onmessage = ({ data: { treeData } }) => {
         treeList.push({
             tree,
             patientId,
-            currentValue
+            currentValue,
+            itemStyle
         }); // Push the processed tree into the treeList array
     }
 

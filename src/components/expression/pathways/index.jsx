@@ -91,7 +91,7 @@ const Pathways = () => {
         getExpressionSubtypeList().then((results) => {
             const _option = buildOption(results);
             subtypeList.current = [...results];
-            patientId = subtypeList.current?.[0]?.publicationId;
+            patientId = subtypeList.current?.[0]?.patientId;
             buildHeatMap(patientId);
             setOption(_option);
         });
@@ -120,7 +120,7 @@ const Pathways = () => {
         let newick = null;
         let patientId = currentPatientId;
         if (!currentPatientId) {
-            patientId = subtypeList.current?.[0]?.publicationId;
+            patientId = subtypeList.current?.[0]?.patientId;
         }
         newick = patientListRef.current?.find((item) => item.patientId == currentPatientId)?.newick;
         if (newick && patientId) {
@@ -130,7 +130,7 @@ const Pathways = () => {
     }, [currentPatientId]);
 
     const buildHeatMap = (patientId) => {
-        let samples = subtypeList.current?.find((subtypeItem) => subtypeItem.publicationId == patientId)?.samples ?? [];
+        let samples = subtypeList.current?.find((subtypeItem) => subtypeItem.patientId == patientId)?.samples ?? [];
         if (samples.length) {
             const _mockHeatmap = {};
             samples.forEach((sample) => {
@@ -165,7 +165,7 @@ const Pathways = () => {
     }
 
     const sortedPatientById = (patientList) => {
-        return patientList.sort((a, b) => a.publicationId.split("_")[1] - b.publicationId.split("_")[1])
+        return patientList.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1])
     }
 
     const sortPatients = (_patientList) => {
@@ -174,10 +174,10 @@ const Pathways = () => {
         const purePatientList = [];
         const mixedPatientList = [];
         let patientWithGroupSubtype = patientList
-            .filter((item) => new Set(item.samples.map((s) => s.subtype)).size > 1)
+            .filter((item) => new Set(item.samples?.map((s) => s.subtype)).size > 1)
             .map((item) => ({
                 ...item,
-                samples: item.samples.sort((a, b) => a.subtype.localeCompare(b.subtype))
+                samples: item.samples?.sort((a, b) => a.subtype.localeCompare(b.subtype))
             }));
 
 
@@ -187,9 +187,9 @@ const Pathways = () => {
             }).sort((a, b) => a.stage.length - b.stage.length);
             mixedPatientList.push(...patient);
         })
-        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples.map((item) => item.subtype)).size == 1)
+        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples?.map((item) => item.subtype)).size == 1)
         Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
+            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples?.[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
             purePatientList.push(...patientWithSameSubtype);
         })
         sortedPatientList = [...purePatientList, ...mixedPatientList];
@@ -232,7 +232,7 @@ const Pathways = () => {
                         value: defaultValue,
                         custom: {
                             theme: "Stage",
-                            patientId: patient.publicationId,
+                            patientId: patient.patientId,
                             sampleLength: patient.samples.length,
                             PURE_MIXED: PURE_MIXED
                         },
@@ -250,7 +250,7 @@ const Pathways = () => {
                                 value: defaultValue,
                                 custom: {
                                     theme: "RNA Mixed or Pure",
-                                    patientId: patient.publicationId,
+                                    patientId: patient.patientId,
                                     sampleId: patient.sampleId,
                                     sampleLength: patient.samples.length,
                                     stage: patient.stage
@@ -273,7 +273,7 @@ const Pathways = () => {
                 value: defaultValue,
                 custom: {
                     theme: "Subtype",
-                    patientId: patient.publicationId,
+                    patientId: patient.patientId,
                     sampleId,
                     stage: patient.stage,
                     PURE_MIXED: PURE_MIXED

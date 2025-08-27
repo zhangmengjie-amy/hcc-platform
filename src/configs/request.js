@@ -51,6 +51,16 @@ export const getImmuneSubtypeList = async () => {
     }
 };
 
+export const getLiverSamples = async () => {
+    try {
+        const samples = await fetch(`/json/liver-sample.json`);
+        return samples?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
 
 export const getITHList = async () => {
     try {

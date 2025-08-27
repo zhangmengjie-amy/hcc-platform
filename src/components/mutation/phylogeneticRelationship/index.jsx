@@ -9,6 +9,7 @@ import styles from "./style.module.scss";
 import TreeDialog from "@/components/tree-dialog"
 import TreeList from '@/components/mutation/phylogeneticRelationship/treeList';
 import { getFullMutations } from "@/configs/request";
+import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
 
 const VISIBLE_TREE_LENGTH = 6;
@@ -19,19 +20,6 @@ const BAR_CHART_WIDTH = PIE_CHART_WIDTH / 2;
 const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.3;
 const BAR_AXIS = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1'];
 const BAR_CATEGORIES = ['0~0.1', '0.1~0.2', '0.2~0.3', '0.3~0.4', '0.4~0.5', '0.5~0.6', '0.6~0.7', '0.7~0.8', '0.8~0.9', '0.9~1.0'];
-
-const baseColors = [
-    { r: 94, g: 79, b: 162 },    // #5E4FA2
-    { r: 170, g: 55, b: 236 },    // #AA37EC
-    { r: 132, g: 116, b: 197 },   // #8474C5
-    { r: 47, g: 155, b: 200 },   // #2F9BC8
-    { r: 102, g: 194, b: 165 },  // #66C2A5
-    { r: 171, g: 221, b: 164 },  // #ABDDA4
-    { r: 252, g: 212, b: 103 },  // #FCD467
-    { r: 253, g: 174, b: 97 },   // #FDAE61
-    { r: 244, g: 109, b: 67 },   // #F46D43
-    { r: 158, g: 1, b: 66 }      // #9E0142
-];
 
 const LEGEND = [{
     name: "<=0.1",
@@ -84,16 +72,15 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
         if (!conditions?.geneList) return;
 
         const fetchData = async (finialSampleList) => {
-            // let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
-            // if (!ITHList || !patientList) return;
-            // let _patientList = ITHList.filter((item) => finialSampleList?.some((patient) => patient == item.publicationId))?.map((item) => {
-            //     const currentPatient = patientList.find((patient) => patient.patientId == item.publicationId);
-            //     return {
-            //         ...currentPatient,
-            //         currentValue: item.ith?.toFixed(2)
-            //     }
-            // })
-            let _patientList = await getPatientList();
+            let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
+            if (!ITHList || !patientList) return;
+            let _patientList = ITHList.filter((item) => finialSampleList?.some((patient) => patient == item.publicationId))?.map((item) => {
+                const currentPatient = patientList.find((patient) => patient.patientId == item.publicationId);
+                return {
+                    ...currentPatient,
+                    currentValue: item.ith?.toFixed(2)
+                }
+            })
             _patientList = _patientList?.sort((a, b) => a.currentValue - b.currentValue);
             patientListRef.current = _patientList;
             patientListRef.current = buildAllPatientsData();
@@ -159,31 +146,6 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
         });
         setRangeList(rangePatientListRef.current);
     }, [range, activeBar])
-
-    function generateGradientColors(totalSteps) {
-        const colors = [];
-        const segments = baseColors.length - 1;
-        const stepsPerSegment = Math.floor(totalSteps / segments);
-
-        for (let i = 0; i < segments; i++) {
-            const start = baseColors[i];
-            const end = baseColors[i + 1];
-
-            // 当前分段的步数（最后一个分段补齐剩余步数）
-            const steps = (i === segments - 1)
-                ? totalSteps - (stepsPerSegment * (segments - 1))
-                : stepsPerSegment;
-
-            for (let j = 0; j < steps; j++) {
-                const ratio = j / steps;
-                const r = Math.round(start.r + (end.r - start.r) * ratio);
-                const g = Math.round(start.g + (end.g - start.g) * ratio);
-                const b = Math.round(start.b + (end.b - start.b) * ratio);
-                colors.push(`rgb(${r},${g},${b})`);
-            }
-        }
-        return colors;
-    }
 
     const buildPieChart = () => {
         const _pieChartOption = {

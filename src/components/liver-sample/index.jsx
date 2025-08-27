@@ -1,0 +1,146 @@
+import React, { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
+import PropTypes from 'prop-types';
+
+const LiverSampleChart = ({ data }) => {
+    const chartRef = useRef(null);
+
+    useEffect(() => {
+        const element = chartRef.current;
+        let width = element.offsetWidth;
+        let height = element.offsetHeight;
+
+        // 取宽高最小值
+        const minSize = Math.min(width, height);
+        width = minSize;
+        height = minSize;
+
+        // 从数据中提取肝脏直径和样本信息
+        if (!data) return;
+        const liverDiameter = parseFloat(data.tumor_size); // 假设所有样本的肿瘤大小相同
+        const samples = data?.samples.map(sample => ({
+            sample_id: sample.sample_id,
+            x: parseFloat(sample.X),
+            y: parseFloat(sample.Y),
+            r: parseFloat(sample.sample_r)
+        }));
+
+        // Configuration
+        const margin = { top: 60, right: 60, bottom: 45, left: 45 }; // 增加顶部边距以容纳标题
+        const chartWidth = width - margin.left - margin.right;
+        const chartHeight = height - margin.top - margin.bottom;
+
+        const liverRadius = liverDiameter / 2;
+
+        // Scales
+        const xScale = d3.scaleLinear()
+            .domain([0, liverDiameter])
+            .range([0, chartWidth]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, liverDiameter])
+            .range([chartHeight, 0]);
+
+        // Create SVG container
+        const svg = d3.select(chartRef.current)
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Add title
+        svg.append("text")
+            .attr("x", chartWidth / 2)
+            .attr("y", -margin.top / 2) // Adjust position as needed
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text(`Patient ID: ${data.patientId}, Tumor Size: ${data.tumor_size} cm`);
+
+        // Draw the liver
+        svg.append("circle")
+            .attr("class", "liver")
+            .attr("cx", xScale(liverRadius))
+            .attr("cy", yScale(liverRadius))
+            .attr("r", xScale(liverRadius)) // Use xScale to convert radius to pixels
+            .style("fill", "#8ab7e9");
+
+        // Draw samples
+        const sampleGroup = svg.selectAll(".sample")
+            .data(samples)
+            .enter()
+            .append("g") // Create a group for each sample
+            .attr("class", "sample")
+            .attr("transform", d => `translate(${xScale(d.x)}, ${yScale(d.y)})`); // Position the group
+
+        sampleGroup.append("circle") // Draw the sample circle
+            .attr("r", d => xScale(d.r)) // Use xScale to convert radius to pixels
+            .style("fill", "#316094");
+
+        // sampleGroup.append("circle") // Draw the center point
+        //     .attr("r", 1) // Radius of the center point
+        //     .style("fill", "black");
+
+        // Add sample diameter text in the center of the circle
+        sampleGroup.append("text")
+            .attr("dx", 0)
+            .attr("dy", 5)
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .style("fill", "#000")
+            .text(d => (2 * d.r).toFixed(2)); // Display diameter with 2 decimal places
+
+        // Add sample ID text beside the circle
+        sampleGroup.append("text")
+            .attr("dx", d => xScale(d.r) + 5) // Horizontal offset: circle radius + 5px
+            .attr("dy", 0) // Vertical alignment
+            .style("alignment-baseline", "middle") // Vertically align text to the middle
+            .style("font-size", "12px")
+            .style("fill", "black")
+            .text(d => d.sample_id.split('_').slice(2, 3).join("_"));
+
+        // Create axes
+        const numTicks = 5;
+        const xTicks = xScale.ticks(numTicks);
+        if (!xTicks.includes(xScale.domain()[1])) {
+            xTicks.push(xScale.domain()[1]);
+        }
+        const xAxis = d3.axisBottom(xScale)
+            .tickSizeOuter(0)
+            .tickValues(xTicks)
+            .tickFormat(d => `${d} cm`); // Add "cm" label
+
+        const yTicks = yScale.ticks(numTicks);
+        if (!yTicks.includes(yScale.domain()[1])) {
+            yTicks.push(yScale.domain()[1]);
+        }
+
+        const yAxis = d3.axisLeft(yScale)
+            .tickSizeOuter(0)
+            .tickValues(yTicks)
+            .tickFormat(d => `${d} cm`); // Add "cm" label
+
+        // Draw axes
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", `translate(0, ${chartHeight})`)
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .call(yAxis);
+
+        return () => {
+            // Cleanup on unmount
+            d3.select(chartRef.current).select("svg").remove();
+        };
+    }, [data]);
+
+    return (
+        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div id="chart" ref={chartRef} style={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
+        </div>
+    );
+};
+
+export default LiverSampleChart;
