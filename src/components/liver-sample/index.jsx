@@ -55,7 +55,7 @@ const LiverSampleChart = ({ data }) => {
             .attr("y", -margin.top / 2) // Adjust position as needed
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
-            .text(`${data.patientId}, Tumor Size: ${data.tumor_size} cm, Sample Size: ${Number(data.samples[0].sample_r).toFixed(2)} cm`);
+            .text(`${data.patientId}, Tumor Size: ${data.tumor_size} cm, Sample Size: ${(Number(data.samples[0].sample_r) * 2).toFixed(2)} cm`);
 
         // Draw the liver
         svg.append("circle")
@@ -108,7 +108,12 @@ const LiverSampleChart = ({ data }) => {
         const xAxis = d3.axisBottom(xScale)
             .tickSizeOuter(0)
             .tickValues(xTicks)
-            .tickFormat(d => `${d} cm`); // Add "cm" label
+.tickFormat((d, i) => {
+    if (i === xTicks.length - 2 && d === xTicks[xTicks.length - 2]) {
+        return ""; // Skip the second to last tick
+    }
+    return `${d} cm`; // Add "cm" label
+});
 
         const yTicks = yScale.ticks(numTicks);
         if (!yTicks.includes(yScale.domain()[1])) {
@@ -138,7 +143,7 @@ const LiverSampleChart = ({ data }) => {
 
     return (
         <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div id="chart" ref={chartRef} style={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
+            <div id="chart" ref={chartRef} style={{ display: "flex", justifyContent: "center", width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
         </div>
     );
 };

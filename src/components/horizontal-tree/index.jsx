@@ -44,7 +44,7 @@ const HorizontalTree = ({ data, color, adaptive,  sampleMutations, heatmapFields
     }
 
     // 2) 绘制
-    useEffect(() => {
+ useEffect(() => {
         if (!data || dims.width === 0 || dims.height === 0) return;
 
         const showHeatMap = heatmapFields.length > 0 && heatmapData && Object.keys(heatmapData)?.length;
@@ -91,8 +91,9 @@ const totalSvgHeight = adaptive
         const xMax = d3.max(root.descendants(), d => d.cum);
 
         // 1) 初始设置 margin.right（不考虑 label，只考虑 heatmap）
+        const extraRightPadding = 30; // 增加额外的右侧内边距
         const baseMarginRight =
-            (showHeatMap ? heatmapPadding + hmWidth : 0);
+            (showHeatMap ? heatmapPadding + hmWidth : extraRightPadding); // 修改这里，增加 extraRightPadding
 
         // 2) 先算可画宽度、xScale、并给每个叶子算个初始 d.x
         let width0 = dims.width - margin.left - baseMarginRight;
@@ -269,7 +270,12 @@ const totalSvgHeight = adaptive
                 .attr('x1', 6)    // circle 半径
                 .attr('y1', 0)
                 // 线到文字起点再往左 20px
-                .attr('x2', d => (labelAlignX - d.x) - 20)
+                // 修改这里，计算虚线的终点 x 坐标
+                .attr('x2', d => {
+                    const maxLeafX = maxLeaf.x; // 最长分支圆圈中心的 x 坐标
+                    const endX = maxLeafX - d.x; // 虚线终点相对于当前节点的偏移量
+                    return Math.max(endX - 6, (labelAlignX - d.x) - maxOverflow); // 确保不超出 labelAlignX
+                })
                 .attr('y2', 0)
                 .attr('stroke', '#999')
                 .attr('stroke-dasharray', '2,2');
@@ -284,7 +290,7 @@ const totalSvgHeight = adaptive
 
 
                 if (alignLabel) {
-                    return labelAlignX - d.x;
+                    return labelAlignX - d.x + (showHeatMap ? 0 : extraRightPadding);
                 } else {
                     return 10;
                 }
@@ -352,7 +358,7 @@ const totalSvgHeight = adaptive
                 });
                 // 1) 找到叶子名字为 "N" 的节点
                 const leafN = root.descendants()
-                    .find(n => formatLabel(n.data.name) === 'N');
+                    .find(n => formatLabel(d.data.name) === 'N');
                 if (!leafN) return;
 
                 // 2) 各自的祖先链（包括自己）
@@ -409,10 +415,10 @@ const totalSvgHeight = adaptive
                 .attr('x2', x0 + dx).attr('y2', y0 + tickSize / 2);
         });
         scaleBar.append('text')
-            .attr('x', x0 + barPx / 2)
+              .attr('x', x0)
             .attr('y', y0 - tickSize)
-            // 如果想让文字也显示“实际长度”，可以写 step，
-            // 或者写 step * scaleFactor 来对应缩短后的长度
+            .attr('text-anchor', 'start')
+            .attr('dx', '32px') // 稍微向右偏移，具体数值可能需要调整
             .text('Scale line: ' + step * scaleFactor);
         if (showHeatMap) {
             const startPos = dims.width - hmWidth - margin.left;
