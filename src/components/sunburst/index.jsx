@@ -1,13 +1,6 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { getExpressionpatientListRef } from "@/configs/request";
-import { Flex, Row, Col } from 'antd';
-import { getITHList, getPatientList, getLiverSamples } from "@/configs/request";
-import { getFullPhylogenetic } from "@/configs/request";
-import HorizontalTree from "@/components/horizontal-tree/index";
-import LiverSampleChart from '@/components/liver-sample';
+import React, { useEffect, useState, useCallback } from 'react';
 import EChartsReact from "echarts-for-react";
-import filterSampleByConditions from "@/utils/filter-patient";
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -17,41 +10,6 @@ const SUBTYPE_COLOR = {
     "C5": "rgb(238, 188, 57)",
     "C6": "rgb(218, 85, 76)",
 }
-
-const HEATMAP_COLORS = {
-    "Lee_2004": {
-        "SURVIVAL_UP": "rgb(94, 171, 214)",
-        "SURVIVAL_DN": "rgb(255, 180, 180)"
-    },
-    "Hoshida_2009": {
-        "S1": "rgb(250, 227, 198)",
-        "S2": "rgb(250, 164, 189)",
-        "S3": "rgb(245, 100, 169)"
-    },
-    "Boyault_2007": {
-        "G3": "rgb(61, 194, 236)",
-        "G12": "rgb(100, 226, 183)",
-        "G56": "rgb(252, 199, 55)"
-    },
-    "Chiang_2008": {
-        "INTERFERON": "rgb(251, 243, 193)",
-        "UNANNOTATED": "rgb(220, 139, 224)",
-        "POLYSOMY7": "rgb(213, 11, 139)",
-        "PROLIFERATION": "rgb(207, 255, 226)",
-        "CTNNB1": "rgb(244, 99, 30)"
-    },
-    "Subtype": {
-        "C1": "rgb(79, 151, 121)",
-        "C2": "rgb(72, 128, 187)",
-        "C3": "rgb(150, 91, 164)",
-        "C4": "rgb(167, 134, 56)",
-        "C5": "rgb(238, 188, 57)",
-        "C6": "rgb(218, 85, 76)",
-    }
-}
-
-const mockFields = ['Lee_2004', 'Hoshida_2009', 'Boyault_2007', 'Chiang_2008', 'Subtype'];
-
 
 const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
     "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
@@ -79,65 +37,15 @@ const STAGE_COLOR = {
 
 const defaultValue = 1;
 const spaceValue = 0.5;
-const SunburstChart = ({ conditions }) => {
+const SunburstChart = ({ data, handleItemClick }) => {
     const [option, setOption] = useState({});
-    const [treeList, setTreeList] = useState(null);
-    const [sampleMutations, setSampleMutations] = useState(null);
-    const [currentPatientId, setCurrentPatientId] = useState(null);
-    const [mockHeatmap, setMockHeatmap] = useState(null);
-    const [patientList, setPatientList] = useState([]);
-    const [currentLiverSamples, setCurrentLiverSamples] = useState(null);
-    const patientListRef = useRef(null);
-    const filteredListRef = useRef(null);
-    const liverSamplesRef = useRef(null);
-    useEffect(() => {
-        let newick = null;
-        let patientId = null;
-        const { geneList, ...clinicList } = conditions;
-        const filteredData = filterSampleByConditions(patientListRef.current, clinicList, geneList) ?? [];
-        filteredListRef.current = filteredData;
+    const [loading, setLoading] = useState(false);
 
-        console.log("filteredData", clinicList);
-        console.log("patientListRef.current", patientListRef.current);
-        const _option = buildOption(filteredData);
-        patientId = filteredData?.[0]?.patientId;
+    useEffect(() => {
+        if (!data) return;
+        const _option = buildOption();
         setOption(_option);
-    }, [conditions]);
-
-    useEffect(() => {
-        let newick = null;
-        let patientId = null;
-        getPatientList().then((data) => {
-            const _option = buildOption(data);
-            setOption(_option);
-            patientId = data?.[0]?.patientId;
-            patientListRef.current = data;
-            filteredListRef.current = data;
-            setCurrentPatientId(patientId);
-        })
-
-        getLiverSamples().then((data) => {
-            liverSamplesRef.current = data;
-        })
-
-    }, []);
-
-    useEffect(() => {
-        let newick = null;
-        let patientId = currentPatientId;
-        if (!currentPatientId) {
-            patientId = filteredListRef.current?.[0]?.patientId;
-        }
-        newick = filteredListRef.current?.find((item) => item.patientId == currentPatientId)?.newick;
-        if (newick && patientId) {
-            buildHeatMap(patientId);
-            buildTreeData(newick, patientId);
-        }
-        console.log("liverSamplesRef.current", liverSamplesRef.current)
-        const currentLiver = liverSamplesRef.current?.filter((item) => item.patientId === patientId);
-        console.log("currentLiver", currentLiver, patientId)
-        setCurrentLiverSamples(currentLiver);
-    }, [currentPatientId]);
+    }, [data]);
 
     const sortedPatientById = (patientList) => {
         return patientList?.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1])
@@ -261,10 +169,10 @@ const SunburstChart = ({ conditions }) => {
     }
 
 
-    const buildOption = (patientList) => {
-        const filterdPatient = filterPatients(patientList);
+    const buildOption = () => {
+        const filterdPatient = filterPatients(data);
         const sortedPatient = sortPatients(filterdPatient);
-        let data = [];
+        let seriesData = [];
         const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.samples?.length))
 
 
@@ -352,7 +260,7 @@ const SunburstChart = ({ conditions }) => {
 
         const totalPureLength = realPureLength + pureTotalSpace * spaceValue;
         const totalMixedLength = realMixedLength + mixedTotalSpace * spaceValue;
-        data = [{
+        seriesData = [{
             name: "",
             value: totalPureLength,
             itemStyle: {
@@ -391,7 +299,7 @@ const SunburstChart = ({ conditions }) => {
             children: mixedChildren,
         }]
 
-        const levelCount = getLevelCount(data);
+        const levelCount = getLevelCount(seriesData);
         const firstLevelRatio = 0.35;
         const remainingRatio = 1 - firstLevelRatio;
 
@@ -425,6 +333,8 @@ const SunburstChart = ({ conditions }) => {
         }
 
         const startAngle = 180 + ((totalPureLength) / (totalPureLength + totalMixedLength) * 360 - (totalMixedLength) / (totalPureLength + totalMixedLength) * 360) / 4;
+       console.log("levels", levels)
+       console.log("seriesData", seriesData)
         return {
             grid: {
                 left: 0,
@@ -458,7 +368,7 @@ const SunburstChart = ({ conditions }) => {
                 type: 'sunburst',
                 sort: undefined,
 
-                data: data,
+                data: seriesData,
                 levels: levels,
                 emphasis: {
                     disabled: true
@@ -469,11 +379,12 @@ const SunburstChart = ({ conditions }) => {
 
     const handleClick = useCallback((params) => {
         if (!params.data?.custom?.patientId) return;
-        setCurrentPatientId(params.data?.custom?.patientId)
+        handleItemClick?.(params.data?.custom?.patientId);
     }, []);
 
     return (
-        <EChartsReact style={{ width: "100%", height: "320px" }} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
+
+       <EChartsReact style={{ width: "100%", height: "320px" }} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
     )
 }
 

@@ -7,6 +7,7 @@ import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
 import LiverSampleChart from '@/components/liver-sample';
 import EChartsReact from "echarts-for-react";
+import SunburstChart from '@/components/sunburst';
 import filterSampleByConditions from "@/utils/filter-patient";
 
 const SUBTYPE_COLOR = {
@@ -519,18 +520,13 @@ const SubtypeLandscape = ({ conditions }) => {
         };
     }
 
-    const handleClick = useCallback((params) => {
-        if (!params.data?.custom?.patientId) return;
-        setCurrentPatientId(params.data?.custom?.patientId)
-    }, []);
-
-
     return (
         <>
             <Row>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
-                        <EChartsReact style={{ width: "100%", height: "320px" }} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
+                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <SunburstChart data={filteredListRef.current} handleItemClick={setCurrentPatientId}></SunburstChart>
+                        {/* <EChartsReact style={{ width: "100%", height: "320px" }} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact> */}
                     </Flex>
 
                     {/* <Flex>
@@ -554,19 +550,19 @@ const SubtypeLandscape = ({ conditions }) => {
                 </Flex> */}
                 </Col>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <HorizontalTree adaptive alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"rgb(106, 194, 165)"}></HorizontalTree>
                     </Flex>
                 </Col>
             </Row>
             <Row >
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
                     </Flex>
                 </Col>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 0  10px rgb(0, 0, 0, .05)", borderRadius: "12px" }}>
+                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <LiverSampleChart data={currentLiverSamples?.[1]}></LiverSampleChart>
                     </Flex>
                 </Col>
