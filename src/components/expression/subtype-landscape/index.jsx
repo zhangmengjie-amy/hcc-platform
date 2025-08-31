@@ -97,9 +97,6 @@ const SubtypeLandscape = ({ conditions }) => {
         const { geneList, ...clinicList } = conditions;
         const filteredData = filterSampleByConditions(patientListRef.current, clinicList, geneList) ?? [];
         filteredListRef.current = filteredData;
-
-        console.log("filteredData", clinicList);
-        console.log("patientListRef.current", patientListRef.current);
         const _option = buildOption(filteredData);
         patientId = filteredData?.[0]?.patientId;
         buildHeatMap(patientId);
@@ -503,7 +500,7 @@ const SubtypeLandscape = ({ conditions }) => {
                     </div>`
                 }
             },
-            animationEasing: 'elasticOut',
+            // animationEasing: 'elasticOut',
 
             series: {
                 nodeClick: false,

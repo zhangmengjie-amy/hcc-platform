@@ -7,6 +7,8 @@ import { FixedSizeList } from 'react-window';
 import { debounce } from 'lodash';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import ConditionSelection from '@/components/condition-selection';
 import EmptyLoading from "@/components/empty-loading";
 import ExportPdfButton from '@/components/export-pdf';
@@ -74,6 +76,8 @@ const Expression = () => {
     });
     const geneRef = useRef(null);
     const paramsRef = useRef(null);
+    const pathname = usePathname();
+
     useEffect(() => {
         setFetchLoading(true);
         getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
@@ -135,6 +139,13 @@ const Expression = () => {
         console.log(params)
     }
 
+    useEffect(() => {
+        setParams({});
+    }, [mutationTypeTab])
+
+
+    console.log("mutationTypeTab", mutationTypeTab)
+
     return (
         <>
             {contextHolder}
@@ -173,20 +184,19 @@ const Expression = () => {
                             </Button>
 
                             <Segmented
-                                options={[{ label: 'Subtype landscape and tree', value: "subtype" },
-                                    { label: "Customized DEGs and pathways", value: 'pathways' },
-                                    { label: "Biomarkers", value: 'biomarkers' }
+                                options={[{ label: <Link href="/expression/subtype">{'Subtype landscape and tree'}</Link> , value: "subtype" },
+                                    { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: 'pathways' },
+                                    { label: <Link href="/expression/biomarkers">{"Biomarkers"}</Link>, value: 'biomarkers' }
                                 ]}
-                                value={mutationTypeTab}
-                                onChange={value => setMutationTypeTab(value)}
+                                value={ pathname.split("/")[2]}
                             />
                         </Flex>
                     </Flex>
                     {
-                        mutationTypeTab == "subtype" &&  <SubtypeLandscape conditions={params}></SubtypeLandscape>
+                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape conditions={params}></SubtypeLandscape>
                     }
                     {
-                        mutationTypeTab == "pathways" &&  <Pathways conditions={params}></Pathways>
+                        pathname.split("/")[2] == "pathways" &&  <Pathways conditions={params}></Pathways>
                     }
                 </Panel>
             </Splitter>

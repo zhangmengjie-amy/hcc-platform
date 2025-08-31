@@ -1,6 +1,9 @@
 "use client";
 import React, { useEffect, useState, useCallback } from 'react';
 import EChartsReact from "echarts-for-react";
+import {
+    Empty
+} from 'antd';
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -36,10 +39,10 @@ const STAGE_COLOR = {
 }
 
 const defaultValue = 1;
-const spaceValue = 0.5;
+const spaceValue = 0.2;
 const SunburstChart = ({ data, handleItemClick }) => {
     const [option, setOption] = useState({});
-    const [loading, setLoading] = useState(false);
+    const [hasData, setHasData] = useState(false);
 
     useEffect(() => {
         if (!data) return;
@@ -171,6 +174,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
 
     const buildOption = () => {
         const filterdPatient = filterPatients(data);
+        setHasData(!!filterdPatient?.length)
         const sortedPatient = sortPatients(filterdPatient);
         let seriesData = [];
         const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.samples?.length))
@@ -182,31 +186,24 @@ const SunburstChart = ({ data, handleItemClick }) => {
         let initialMixedSubtype = null;
         let pureTotalSpace = 0;
         let mixedTotalSpace = 0;
+        const mixedPatientsLength = sortedPatient.filter((item) => {
+            return new Set(item.samples.map((item) => item.subtype)).size > 1;
+        })?.length;
+        const purePatientsLength = sortedPatient.filter((item) => {
+            return new Set(item.samples.map((item) => item.subtype)).size == 1;
+        })?.length;
         sortedPatient.forEach((patient, index) => {
             const isPure = new Set(patient.samples.map((item) => item.subtype)).size == 1;
-
             const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
             if (isPure) {
-                if (!initialPureSubtype) {
-                    pureChildren.push({
-                        value: defaultValue,
-                        name: "Pure",
-                        custom: {
-                            theme: "RNA Mixed or Pure",
-                            PURE_MIXED: "Pure"
-                        },
-                        itemStyle: {
-                            borderWidth: 0,
-                            color: MIXED_PURE_BG["Pure"],
-                        },
-                        children: [],
-                    });
-                } else {
-                    if (initialPureSubtype !== patient.samples[0].subtype) {
-                        pureTotalSpace += 1;
+                    if (!initialPureSubtype && !!mixedPatientsLength) {
                         pureChildren.push({
-                            value: spaceValue,
-                            name: "",
+                            value: defaultValue,
+                            name: "Pure",
+                            custom: {
+                                theme: "RNA Mixed or Pure",
+                                PURE_MIXED: "Pure"
+                            },
                             itemStyle: {
                                 borderWidth: 0,
                                 color: MIXED_PURE_BG["Pure"],
@@ -214,7 +211,18 @@ const SunburstChart = ({ data, handleItemClick }) => {
                             children: [],
                         });
                     }
-                }
+                    if (initialPureSubtype !== patient.samples[0].subtype && mixedPatientsLength) {
+                            pureTotalSpace += 1;
+                            pureChildren.push({
+                                value: spaceValue,
+                                name: "",
+                                itemStyle: {
+                                    borderWidth: 0,
+                                    color: MIXED_PURE_BG["Pure"],
+                                },
+                                children: [],
+                            });
+                    }
 
                 initialPureSubtype = patient.samples[0].subtype;
                 pureChildren.push(...result);
@@ -236,7 +244,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
 
             } else {
                 const currentMixedSubtype = Array.from(new Set(patient.samples.map((sample) => sample.subtype))).join(",");
-                if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype) {
+                if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype && !!purePatientsLength) {
                     mixedTotalSpace += 1;
                     mixedChildren.push({
                         value: spaceValue,
@@ -260,6 +268,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
 
         const totalPureLength = realPureLength + pureTotalSpace * spaceValue;
         const totalMixedLength = realMixedLength + mixedTotalSpace * spaceValue;
+
         seriesData = [{
             name: "",
             value: totalPureLength,
@@ -269,12 +278,12 @@ const SunburstChart = ({ data, handleItemClick }) => {
             },
             label: {
                 formatter: () => {
-                    return `Pure patients (${realPurePercent}%)`
+                    return `(${realPurePercent}%)\n\nPure patients`;
                 },
                 rotate: 'tangential',
                 verticalAlign: 'top',
-                padding: [90, 0],
-                fontSize: 16,
+                padding: [!mixedPatientsLength ? -15 : 90, 0],
+                fontSize: 14,
                 color: '#000',
                 hideOverlap: false
             },
@@ -287,12 +296,12 @@ const SunburstChart = ({ data, handleItemClick }) => {
             },
             label: {
                 formatter: () => {
-                    return `Mixed patients (${realMixedPercent}%)`
+                    return `Mixed patients\n\n(${realMixedPercent}%)`;
                 },
                 rotate: 'tangential',
                 verticalAlign: 'bottom',
-                padding: [80, 0],
-                fontSize: 16,
+                padding: [!purePatientsLength ? -20 : 90, 0],
+                fontSize: 14,
                 color: '#000',
                 hideOverlap: false
             },
@@ -300,7 +309,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
         }]
 
         const levelCount = getLevelCount(seriesData);
-        const firstLevelRatio = 0.35;
+        const firstLevelRatio = 0.45;
         const remainingRatio = 1 - firstLevelRatio;
 
         // 创建层级配置
@@ -333,8 +342,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
         }
 
         const startAngle = 180 + ((totalPureLength) / (totalPureLength + totalMixedLength) * 360 - (totalMixedLength) / (totalPureLength + totalMixedLength) * 360) / 4;
-       console.log("levels", levels)
-       console.log("seriesData", seriesData)
+                console.log("seriesData", seriesData)
         return {
             grid: {
                 left: 0,
@@ -367,7 +375,6 @@ const SunburstChart = ({ data, handleItemClick }) => {
                 startAngle: startAngle,
                 type: 'sunburst',
                 sort: undefined,
-
                 data: seriesData,
                 levels: levels,
                 emphasis: {
@@ -383,8 +390,10 @@ const SunburstChart = ({ data, handleItemClick }) => {
     }, []);
 
     return (
+        hasData ?   <EChartsReact style={{ width: "100%", height: "320px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg'}}></EChartsReact> :            <Empty style={{ width: '100%', padding: "20px" }}>
+                                        </Empty>
 
-       <EChartsReact style={{ width: "100%", height: "320px" }} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
+      
     )
 }
 
