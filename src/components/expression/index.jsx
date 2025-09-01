@@ -135,16 +135,11 @@ const Expression = () => {
             setLeftPanelSize("100%");
             setRightPanelSize("0");
         }
-
-        console.log(params)
     }
 
     useEffect(() => {
         setParams({});
     }, [mutationTypeTab])
-
-
-    console.log("mutationTypeTab", mutationTypeTab)
 
     return (
         <>

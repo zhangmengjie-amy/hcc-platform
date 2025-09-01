@@ -299,7 +299,6 @@ const mutationTypeColorConfig = {
 
     useEffect(() => {
         getLollipopPlotData({gene}).then((results) => {
-            console.log(results)
         });
     }, [gene, samples]);
 

@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { Popover } from 'antd';
+import distinctColors from '@/utils/colors';
 import * as d3 from 'd3'
 
 
@@ -420,8 +421,7 @@ const VerticalTree = ({
         const dy = padY - bbox.y + (((H - 2 * padY) - bbox.height) / 2)
         g.attr('transform', `translate(${dx},${dy})`)
         if (geneList.length) {
-            // 1) 基因颜色
-            const geneColorMap = ["#FF6B35", "#E1B12C", "#00CC99", "#9B59B6", "#007F50", "#FF9AA2",   "#2D5D7B", "#6B8E23", "#FF5252", "#4CAF50", "#FF4081", "#3F51B5", "#FF9800", "#607D8B", "#E91E63", "#2196F3", "#4CAF50", "#795548", "#6C757D","#2E5A88"];
+            // 1) 基因颜色映射;
             // 2) 五角星 generator
             const star = d3.symbol().type(d3.symbolStar).size(120);
 
@@ -466,7 +466,7 @@ const VerticalTree = ({
             geneMarkerGroup.append('path')
                 .attr('class', 'gene-marker-star') // 给它一个独特的类名
                 .attr('d', star)
-                .attr('fill', (d, index) => geneColorMap[index % 20] || '#f5f5f5')
+                .attr('fill', (d) => distinctColors[d.gene] || '#f5f5f5')
                 .attr('stroke', '#f5f5f5')
                 .attr('stroke-width', 0.5)
                 .append('title') // 保留title用于hover提示

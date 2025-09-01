@@ -3,14 +3,15 @@ import * as d3 from 'd3';
 import { Popover } from 'antd';
 import styles from "./style.module.scss";
 
-
 const heatmapCellSize = 20;
 const heatmapPadding = 10;
-const HorizontalTree = ({ data, color, adaptive,  sampleMutations, heatmapFields = [], heatmapData = {}, alignLabel = false }) => {
+
+const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields = [], heatmapData = {}, alignLabel = false }) => {
     const containerRef = useRef(null);
     const svgRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
     const [tooltipState, setTooltipState] = useState({ visible: false, x: 0, y: 0, data: null });
+
     // 1) 监听容器尺寸
     useEffect(() => {
         const ro = new ResizeObserver(entries => {
@@ -35,7 +36,6 @@ const HorizontalTree = ({ data, color, adaptive,  sampleMutations, heatmapFields
 
     function hideCustomTooltipMenu() {
         setTooltipState({ visible: false, x: 0, y: 0, data: null });
-
     }
 
     function formatLabel(str) {
@@ -44,56 +44,54 @@ const HorizontalTree = ({ data, color, adaptive,  sampleMutations, heatmapFields
     }
 
     // 2) 绘制
- useEffect(() => {
+    useEffect(() => {
         if (!data || dims.width === 0 || dims.height === 0) return;
 
         const showHeatMap = heatmapFields.length > 0 && heatmapData && Object.keys(heatmapData)?.length;
         const hmWidth = heatmapFields.length * heatmapCellSize;
 
-
         const svg = d3.select(svgRef.current)
             .style('width', '100%')
-.style('height', adaptive ? '100%' : 'auto')
+            .style('height', adaptive ? '100%' : 'auto')
             .style('position', 'relative')
             .style('overflow', 'visible')
             .on('contextmenu', event => event.preventDefault());
 
         svg.selectAll('*').remove();
 
-
         const padY = 20, tickSize = 5;
         const margin = { top: 30, right: 20, bottom: padY + tickSize + 50, left: 20 };
-
 
         const root = d3.hierarchy(data, d => d.branchset);
         root.each(d => d.cum = (d.parent ? d.parent.cum : 0) + (d.data.length || 0));
         const leaves = root.leaves();
-const availableH = dims.height - margin.top - margin.bottom;
-  const treeBodyHeight = adaptive
-    ? availableH
-    : heatmapCellSize * (leaves.length - 1);
+        const availableH = dims.height - margin.top - margin.bottom;
+        const treeBodyHeight = adaptive
+            ? availableH
+            : heatmapCellSize * (leaves.length - 1);
 
-  const dy = adaptive
-    ? treeBodyHeight / (leaves.length - 1)
-    : heatmapCellSize;
+        const dy = adaptive
+            ? treeBodyHeight / (leaves.length - 1)
+            : heatmapCellSize;
         leaves.forEach((d, i) => d.y = i * dy);
         root.eachAfter(d => { if (d.children) d.y = d3.mean(d.children, c => c.y); });
 
-const totalSvgHeight = adaptive
-    ? dims.height
-    : margin.top + treeBodyHeight + margin.bottom;
+        const totalSvgHeight = adaptive
+            ? dims.height
+            : margin.top + treeBodyHeight + margin.bottom;
 
-       svg
-    .attr('viewBox', `0 0 ${dims.width} ${totalSvgHeight}`)
-    // 当 adaptive = false 时，给一个固定像素高度；否则留给外层 div 的 100%
-    .style('height', adaptive ? '100%' : `${totalSvgHeight}px`);
+        svg
+            .attr('viewBox', `0 0 ${dims.width} ${totalSvgHeight}`)
+            // 当 adaptive = false 时，给一个固定像素高度；否则留给外层 div 的 100%
+            .style('height', adaptive ? '100%' : `${totalSvgHeight}px`);
         // 然后把 height 变量赋给 treeBodyHeight
         const xMax = d3.max(root.descendants(), d => d.cum);
 
         // 1) 初始设置 margin.right（不考虑 label，只考虑 heatmap）
         const extraRightPadding = 30; // 增加额外的右侧内边距
+        const heatmapRightPadding = showHeatMap ? 20 : 0; // 热图右侧间距
         const baseMarginRight =
-            (showHeatMap ? heatmapPadding + hmWidth : extraRightPadding); // 修改这里，增加 extraRightPadding
+            (showHeatMap ? heatmapPadding + hmWidth + heatmapRightPadding : extraRightPadding); // 修改这里，增加 extraRightPadding 和 heatmapRightPadding
 
         // 2) 先算可画宽度、xScale、并给每个叶子算个初始 d.x
         let width0 = dims.width - margin.left - baseMarginRight;
@@ -124,7 +122,7 @@ const totalSvgHeight = adaptive
         const xScale = d3.scaleLinear([0, xMax], [0, width]);
         root.each(d => (d.x = xScale(d.cum)));
 
-        // —— zoomable group —— 
+        // —— zoomable group ——
         const g = svg.append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
         const yMaxLeaf = d3.max(leaves, d => d.y);
@@ -150,7 +148,7 @@ const totalSvgHeight = adaptive
         // —— 在绘制连线之前 ——
         const links = root.links();
 
-        // —— 去重：只保留每对 (source.x, target.y) 的第一条 ——  
+        // —— 去重：只保留每对 (source.x, target.y) 的第一条 ——
         const seenVert = new Set();
         const uniqueVertLinks = links.filter(l => {
             // 对于垂直线，我们关心的关键坐标是：x 固定为 source.x，y1 = source.y, y2 = target.y
@@ -207,7 +205,6 @@ const totalSvgHeight = adaptive
                 event.stopPropagation();
                 // 给当前路径打高亮
 
-
                 g.selectAll(`path.${styles.horzlink}`).classed(styles.highlight, false);
                 g.selectAll(`path.${styles.vertlink}`).classed(styles.highlight, false);
                 g.selectAll('circle')
@@ -237,9 +234,8 @@ const totalSvgHeight = adaptive
             });
 
 
-
         const heatmapStartX = showHeatMap
-            ? dims.width - hmWidth - margin.left  // 这里跟画 heatmap 时的 startPos 保持一致
+            ? dims.width - hmWidth - margin.left - heatmapRightPadding  // 这里跟画 heatmap 时的 startPos 保持一致
             : xScale(xMax);                       // 如果没 heatmap，就对齐到最长分支末端
 
         const labelGapToHeatmap = 5;   // label 与 heatmap 之间留 5px
@@ -287,17 +283,12 @@ const totalSvgHeight = adaptive
             .text(d => formatLabel(d.data.name) || '')
             .attr('dy', '0')
             .attr('x', d => {
-
-
                 if (alignLabel) {
                     return labelAlignX - d.x + (showHeatMap ? 0 : extraRightPadding);
                 } else {
                     return 10;
                 }
-
-
                 // 默认紧跟在 circle 右侧
-
             })
             .attr('text-anchor', d => {
                 return alignLabel ? "end" : "start";
@@ -396,8 +387,7 @@ const totalSvgHeight = adaptive
                     .classed(styles.highlightNode, false);
             });
 
-
-        // —— 底部比例尺 —— 
+        // —— 底部比例尺 ——
         const step = d3.tickStep(0, xMax, 2);
         const rawBarPx = xScale(step) - xScale(0);
         const scaleFactor = 0.2;      // 0.5 表示 50% 长度
@@ -415,13 +405,15 @@ const totalSvgHeight = adaptive
                 .attr('x2', x0 + dx).attr('y2', y0 + tickSize / 2);
         });
         scaleBar.append('text')
-              .attr('x', x0)
+            .attr('x', x0)
             .attr('y', y0 - tickSize)
             .attr('text-anchor', 'start')
             .attr('dx', '32px') // 稍微向右偏移，具体数值可能需要调整
             .text('Scale line: ' + step * scaleFactor);
+
         if (showHeatMap) {
-            const startPos = dims.width - hmWidth - margin.left;
+            const heatmapRightPadding = showHeatMap ? 20 : 0;
+            const startPos = dims.width - hmWidth - margin.left - heatmapRightPadding;
             const gHeat = g
                 .append('g')
                 .attr('transform', `translate(${startPos},0)`)
@@ -435,7 +427,6 @@ const totalSvgHeight = adaptive
 
             // 底部字段名
             // 假设你在上面已经计算了 yMaxLeaf（叶子最大 y 值）和 heatmapCellSize
-
 
             const secondLastLeaf = leaves[leaves.length - 2];
             const axisY = secondLastLeaf.y + heatmapCellSize / 2 + 6;
@@ -456,7 +447,6 @@ const totalSvgHeight = adaptive
                 .attr('dy', '0')
                 .attr('dx', '0')
                 .style('font-size', '12px');
-
 
             // 每个叶子一行
             leaves
@@ -494,8 +484,6 @@ const totalSvgHeight = adaptive
         }))
     }, [])
 
-
-
     return (
         <div
             ref={containerRef}
@@ -505,7 +493,6 @@ const totalSvgHeight = adaptive
             <svg ref={svgRef} onClick={() => {
                 tooltipState?.visible && clearHighlights()
             }} />
-
 
             {tooltipState?.visible && <Popover trigger="hover" fresh placement='right' content={(
                 <div
@@ -534,7 +521,6 @@ const totalSvgHeight = adaptive
                     position: 'absolute',
                     top: tooltipState.y,
                     left: tooltipState.x,
-
                 }}></div>
             </Popover>}
         </div>

@@ -44,6 +44,8 @@ const SunburstChart = ({ data, handleItemClick }) => {
     const [option, setOption] = useState({});
     const [hasData, setHasData] = useState(false);
 
+    const [currentPatientId, setCurrentPatientId] = useState(null);
+
     useEffect(() => {
         if (!data) return;
         const _option = buildOption();
@@ -170,7 +172,6 @@ const SunburstChart = ({ data, handleItemClick }) => {
         })
         return children
     }
-
 
     const buildOption = () => {
         const filterdPatient = filterPatients(data);
@@ -342,7 +343,6 @@ const SunburstChart = ({ data, handleItemClick }) => {
         }
 
         const startAngle = 180 + ((totalPureLength) / (totalPureLength + totalMixedLength) * 360 - (totalMixedLength) / (totalPureLength + totalMixedLength) * 360) / 4;
-                console.log("seriesData", seriesData)
         return {
             grid: {
                 left: 0,
@@ -386,6 +386,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
 
     const handleClick = useCallback((params) => {
         if (!params.data?.custom?.patientId) return;
+        setCurrentPatientId(params.data?.custom?.patientId);
         handleItemClick?.(params.data?.custom?.patientId);
     }, []);
 
