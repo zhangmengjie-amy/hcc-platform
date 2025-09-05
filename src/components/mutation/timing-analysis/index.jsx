@@ -9,6 +9,7 @@ import {
     Typography,
     Flex
 } from 'antd';
+import distinctColors from '@/utils/colors';
 import { useTranslation } from "react-i18next";
 import EmptyLoading from "@/components/empty-loading";
 import TreeDialog from "@/components/tree-dialog";
@@ -105,6 +106,7 @@ const TimingAnalysis = ({ range = [0, 1], conditions }) => {
                                             color={item.itemStyle?.color}
                                             showTooltip={false}
                                             data={item.tree}
+                                            baseline="left" 
                                             geneList={conditions?.geneList}
                                         />
                                     </Flex>

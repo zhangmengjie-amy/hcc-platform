@@ -1,5 +1,5 @@
 const distinctColors = {
-   "APC": "#55efc4",  // 薄荷绿
+    "APC": "#55efc4",  // 薄荷绿
     "ARID1B": "#81ecec", // 天蓝色
     "ATRX": "#74b9ff", // 淡蓝色
     "CELF1": "#a29bfe", // 薰衣草紫

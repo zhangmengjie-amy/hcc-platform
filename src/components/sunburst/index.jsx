@@ -4,6 +4,7 @@ import EChartsReact from "echarts-for-react";
 import {
     Empty
 } from 'antd';
+import { set } from 'lodash';
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -40,6 +41,7 @@ const STAGE_COLOR = {
 
 const defaultValue = 1;
 const spaceValue = 0.2;
+const spaceValue_lg = 0.2;
 const SunburstChart = ({ data, handleItemClick }) => {
     const [option, setOption] = useState({});
     const [hasData, setHasData] = useState(false);
@@ -50,7 +52,8 @@ const SunburstChart = ({ data, handleItemClick }) => {
         if (!data) return;
         const _option = buildOption();
         setOption(_option);
-    }, [data]);
+    }, [data, currentPatientId]);
+
 
     const sortedPatientById = (patientList) => {
         return patientList?.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1])
@@ -141,11 +144,19 @@ const SunburstChart = ({ data, handleItemClick }) => {
                                 sampleLength: patient.samples.length,
                                 stage: patient.stage
                             },
+                            children: [{
+                                value: 1,
+                                itemStyle: {
+                                borderWidth: 0,
+                                color: (currentPatientId ?? data[0]?.patientId) == patient.patientId ? "rgb(49, 96, 148)" : MIXED_PURE_BG[PURE_MIXED]
+                            },
+                            }],
                             name: PURE_MIXED,
                             itemStyle: {
                                 borderWidth: 0,
                                 color: MIXED_PURE[PURE_MIXED]
                             },
+                           
                         }]
                     }]
                 }]
@@ -279,11 +290,11 @@ const SunburstChart = ({ data, handleItemClick }) => {
             },
             label: {
                 formatter: () => {
-                    return `(${realPurePercent}%)\n\nPure patients`;
+                    return `${realPurePercent}%\n\nPure patients`;
                 },
                 rotate: 'tangential',
                 verticalAlign: 'top',
-                padding: [!mixedPatientsLength ? -15 : 90, 0],
+                padding: [!mixedPatientsLength ? -15 : 20, 0],
                 fontSize: 14,
                 color: '#000',
                 hideOverlap: false
@@ -297,11 +308,11 @@ const SunburstChart = ({ data, handleItemClick }) => {
             },
             label: {
                 formatter: () => {
-                    return `Mixed patients\n\n(${realMixedPercent}%)`;
+                    return `Mixed patients\n\n${realMixedPercent}%`;
                 },
                 rotate: 'tangential',
                 verticalAlign: 'bottom',
-                padding: [!purePatientsLength ? -20 : 90, 0],
+                padding: [!purePatientsLength ? -20 : 20, 0],
                 fontSize: 14,
                 color: '#000',
                 hideOverlap: false
@@ -316,12 +327,12 @@ const SunburstChart = ({ data, handleItemClick }) => {
         // 创建层级配置
         const levels = [{}, {
             r0: '0%',
-            r: 100 + '%',
+            r: 95 + '%',
             label: {
                 show: true,
             },
             itemStyle: {
-                borderWidth: 1.5,
+                borderWidth: 1,
                 borderColor: "#ccc",
                 color: MIXED_PURE_BG["MIXED"]
             },
@@ -354,7 +365,6 @@ const SunburstChart = ({ data, handleItemClick }) => {
             legend: {
                 show: false
             },
-            hoverLayerThreshold: 0,  // 禁用全局hover层
             tooltip: {
                 formatter: (event) => {
                     if (!event?.data?.name) return null;
@@ -368,8 +378,8 @@ const SunburstChart = ({ data, handleItemClick }) => {
                     </div>`
                 }
             },
-            animationEasing: 'elasticOut',
-
+            // animationEasing: 'elasticOut',
+            animation: false,
             series: {
                 nodeClick: false,
                 startAngle: startAngle,
@@ -391,10 +401,8 @@ const SunburstChart = ({ data, handleItemClick }) => {
     }, []);
 
     return (
-        hasData ?   <EChartsReact style={{ width: "100%", height: "320px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg'}}></EChartsReact> :            <Empty style={{ width: '100%', padding: "20px" }}>
-                                        </Empty>
-
-      
+        hasData ?   <EChartsReact style={{ width: "100%", height: "360px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg'}}></EChartsReact> : 
+        <Empty style={{ width: '100%', padding: "20px" }}></Empty>
     )
 }
 

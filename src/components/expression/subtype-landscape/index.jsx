@@ -9,6 +9,7 @@ import LiverSampleChart from '@/components/liver-sample';
 import EChartsReact from "echarts-for-react";
 import SunburstChart from '@/components/sunburst';
 import filterSampleByConditions from "@/utils/filter-patient";
+import { scale } from 'pdf-lib';
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -98,10 +99,11 @@ const SubtypeLandscape = ({ conditions }) => {
     }, [conditions]);
 
     useEffect(() => {
-         getPatientList().then((data) => {
-            let patientId = data?.[0]?.patientId;
-            patientListRef.current = data;
-            setPatientList(data);
+        getPatientList().then((data) => {
+
+            patientListRef.current = data?.filter((item) => !!item.samples?.length);
+            let patientId = patientListRef.current?.[0]?.patientId;
+            setPatientList(patientListRef.current);
             setCurrentPatientId(patientId);
         })
 
@@ -132,11 +134,13 @@ const SubtypeLandscape = ({ conditions }) => {
         newick = patientList?.find((item) => item.patientId == currentPatientId)?.newick;
         if (newick && patientId) {
             buildHeatMap(patientId);
+            console.log("newick", newick, patientId);
             buildTreeData(newick, patientId);
         }
         const currentLiver = liverSamplesRef.current?.filter((item) => item.patientId === patientId);
         setCurrentLiverSamples(currentLiver);
     }, [currentPatientId, patientList]);
+    
 
     const buildHeatMap = (patientId) => {
         let samples = patientList?.find((subtypeItem) => subtypeItem.patientId == patientId)?.samples ?? [];
@@ -174,51 +178,73 @@ const SubtypeLandscape = ({ conditions }) => {
         <>
             <Row>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                    <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "700px", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <SunburstChart data={patientList} handleItemClick={setCurrentPatientId}></SunburstChart>
-                        {/* <EChartsReact style={{ width: "100%", height: "320px" }} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact> */}
+                        <Flex style={{marginTop: "30px"}}><Flex vertical style={{ marginLeft: "10px" }}>
+                            <Flex align='center' style={{ marginBottom: "10px" }}>Pure or Mixed</Flex>
+                            {
+                                Object.keys(MIXED_PURE).map((item) => {
+                                    return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: MIXED_PURE[item] }}></span><span>{item}</span></Flex>
+                                })
+                            }
+                        </Flex>
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Stage</Flex>
+                                {
+                                    Object.keys(STAGE_COLOR).map((item) => {
+                                        return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: STAGE_COLOR[item] }}></span><span>{item}</span></Flex>
+                                    })
+                                }
+                            </Flex>
+
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Subtype</Flex>
+                                {
+                                    Object.keys(SUBTYPE_COLOR).map((item) => {
+                                        return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
+                                    })
+                                }
+                            </Flex>
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Samples</Flex>
+                                {
+                                    [...Array(7)].map((_, i) => {
+                                        const tStage = `T${i + 1}`;
+
+                                        return (
+                                            <Flex key={tStage} align='center'>
+                                                <svg width="20" height="16" style={{ marginRight: "5px", transform: `scale(${1 / (i * 0.05 + 1)})` }} >
+                                                    <polygon points="0,0 5,16 15,16 20,0" style={{ fill: "#fff", strokeWidth: 1, stroke: "#000" }} />
+                                                </svg>
+                                                <span>{tStage}</span>
+                                            </Flex>
+                                        );
+                                    })
+                                }
+                            </Flex>
+                        </Flex>
                     </Flex>
 
-                    {/* <Flex>
-                    <Flex vertical style={{ marginLeft: "10px" }}>
-                        <Flex style={{ marginBottom: "10px" }}>Stage</Flex>
-                        {
-                            Object.keys(STAGE_COLOR).map((item) => {
-                                return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: STAGE_COLOR[item] }}></span><span>{item}</span></Flex>
-                            })
-                        }
-                    </Flex>
-
-                    <Flex vertical style={{ marginLeft: "10px" }}>
-                        <Flex style={{ marginBottom: "10px" }}>Subtype</Flex>
-                        {
-                            Object.keys(SUBTYPE_COLOR).map((item) => {
-                                return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
-                            })
-                        }
-                    </Flex>
-                </Flex> */}
                 </Col>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                        <HorizontalTree adaptive alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"rgb(106, 194, 165)"}></HorizontalTree>
-                    </Flex>
-                </Col>
-            </Row>
-            <Row >
-                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                        <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
-                    </Flex>
-                </Col>
-                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                       {
-                        currentLiverSamples?.[1] ? <LiverSampleChart data={currentLiverSamples?.[1]}></LiverSampleChart> :  <Empty style={{ width: '100%', padding: "20px" }}>
-                                        </Empty>
-                       }
-                       
-                    </Flex>
+                    <Row style={{ marginBottom: "20px" }}>
+                        <Col xs={24} sm={24} md={24} style={{ padding: "10px", height: "340px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                            {currentPatientId}
+                            <HorizontalTree adaptive alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"rgb(106, 194, 165)"}></HorizontalTree>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={24} sm={24} md={24} style={{ display: "flex" }}>
+                            <Flex flex="1" align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                                <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart>
+                            </Flex>
+                            {
+                                currentLiverSamples?.[1] && <Flex flex="1" align='center' style={{ border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                                    <LiverSampleChart data={currentLiverSamples?.[1]}></LiverSampleChart>
+                                </Flex>
+                            }
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
         </>

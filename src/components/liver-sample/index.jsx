@@ -26,7 +26,7 @@ const LiverSampleChart = ({ data }) => {
         }));
 
         // Configuration
-        const margin = { top: 60, right: 60, bottom: 45, left: 45 }; // 增加顶部边距以容纳标题
+        const margin = { top: 35, right: 35, bottom: 45, left: 45 }; // Smaller margins
         const chartWidth = width - margin.left - margin.right;
         const chartHeight = height - margin.top - margin.bottom;
 
@@ -52,10 +52,10 @@ const LiverSampleChart = ({ data }) => {
         // Add title
         svg.append("text")
             .attr("x", chartWidth / 2)
-            .attr("y", -margin.top / 2) // Adjust position as needed
+            .attr("y", -margin.top / 2 + 5) // Adjust position as needed
             .attr("text-anchor", "middle")
-            .style("font-size", "12px")
-            .text(`${data.patientId}, Tumor Size: ${data.tumor_size} cm, Sample Size: ${(Number(data.samples[0].sample_r) * 2).toFixed(2)} cm`);
+            .style("font-size", "10px") // Slightly smaller font
+            .text(`${data.patientId}, Tumor: ${data.tumor_size}cm, Sample: ${(Number(data.samples[0].sample_r) * 2).toFixed(2)}cm`);
 
         // Draw the liver
         svg.append("circle")
@@ -77,25 +77,12 @@ const LiverSampleChart = ({ data }) => {
             .attr("r", d => xScale(d.r)) // Use xScale to convert radius to pixels
             .style("fill", "#316094");
 
-        // sampleGroup.append("circle") // Draw the center point
-        //     .attr("r", 1) // Radius of the center point
-        //     .style("fill", "black");
-
-        // Add sample diameter text in the center of the circle
-        // sampleGroup.append("text")
-        //     .attr("dx", 0)
-        //     .attr("dy", 5)
-        //     .style("text-anchor", "middle")
-        //     .style("font-size", "10px")
-        //     .style("fill", "#000")
-        //     .text(d => (2 * d.r).toFixed(2)); // Display diameter with 2 decimal places
-
         // Add sample ID text beside the circle
         sampleGroup.append("text")
-            .attr("dx", d => xScale(d.r) + 5) // Horizontal offset: circle radius + 5px
+            .attr("dx", d => xScale(d.r) + 3) // Horizontal offset: circle radius + 5px
             .attr("dy", 0) // Vertical alignment
             .style("alignment-baseline", "middle") // Vertically align text to the middle
-            .style("font-size", "12px")
+            .style("font-size", "10px")
             .style("fill", "black")
             .text(d => d.sample_id.split('_').slice(2, 3).join("_"));
 
@@ -108,12 +95,9 @@ const LiverSampleChart = ({ data }) => {
         const xAxis = d3.axisBottom(xScale)
             .tickSizeOuter(0)
             .tickValues(xTicks)
-.tickFormat((d, i) => {
-    if (i === xTicks.length - 2 && d === xTicks[xTicks.length - 2]) {
-        return ""; // Skip the second to last tick
-    }
-    return `${d} cm`; // Add "cm" label
-});
+            .tickFormat((d, i) => {
+                return `${d}`; // Add "cm" label
+            });
 
         const yTicks = yScale.ticks(numTicks);
         if (!yTicks.includes(yScale.domain()[1])) {
@@ -123,7 +107,7 @@ const LiverSampleChart = ({ data }) => {
         const yAxis = d3.axisLeft(yScale)
             .tickSizeOuter(0)
             .tickValues(yTicks)
-            .tickFormat(d => `${d} cm`); // Add "cm" label
+            .tickFormat(d => `${d}`); // Add "cm" label
 
         // Draw axes
         svg.append("g")
@@ -134,6 +118,23 @@ const LiverSampleChart = ({ data }) => {
         svg.append("g")
             .attr("class", "axis")
             .call(yAxis);
+
+        // Add X axis label
+        svg.append("text")
+            .attr("x", chartWidth / 2)
+            .attr("y", chartHeight + margin.bottom - 15) // Position label below the axis
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .text("X (cm)");
+
+        // Add Y axis label
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left + 25) // Position label to the left of the axis
+            .attr("x", 0 - (chartHeight / 2))
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .text("Y (cm)");
 
         return () => {
             // Cleanup on unmount
