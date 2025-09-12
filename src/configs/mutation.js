@@ -24,17 +24,17 @@ export const clinicConfig = [
         }]
     },
     {
-        key: "tnmStageV8",
+        key: "stage",
         children: [{
-            key: "TNM Stage II"
+            key: "II"
         }, {
-            key: "TNM Stage IA"
+            key: "IA"
         }, {
-            key: "TNM Stage IB"
+            key: "IB"
         }, {
-            key: "TNM Stage IIIA",
+            key: "IIIA",
         }, {
-            key: "TNM Stage IIIB",
+            key: "IIIB",
         }]
     },
     {
@@ -88,12 +88,12 @@ export const clinicConfig = [
 ]
 
 export const clinicColorConfig = {
-    tnmStageV8: {
-        "TNM Stage IA": 'rgb(255, 245, 240)',
-        "TNM Stage IB": "rgb(252, 187, 161)",
-        "TNM Stage II": 'rgb(251, 106, 74)',
-        "TNM Stage IIIA": "rgb(239, 59, 44)",
-        "TNM Stage IIIB": "rgb(203, 24, 29)"
+    stage: {
+        "IA": 'rgb(255, 245, 240)',
+        "IB": "rgb(252, 187, 161)",
+        "II": 'rgb(251, 106, 74)',
+        "IIIA": "rgb(239, 59, 44)",
+        "IIIB": "rgb(203, 24, 29)"
     },
     age: {
         "<20": "rgb(242, 250, 248)",
@@ -132,12 +132,13 @@ export const clinicColorConfig = {
 
 
 export const clinicCountConfig = {
-    tnmStageV8: {
-        "TNM Stage IA": 'rgb(255, 245, 240)',
-        "TNM Stage IB": "rgb(252, 187, 161)",
-        "TNM Stage II": 'rgb(251, 106, 74)',
-        "TNM Stage IIIA": "rgb(239, 59, 44)",
-        "TNM Stage IIIB": "rgb(203, 24, 29)"
+    stage: {
+        "IA": 'rgb(255, 245, 240)',
+        "IB": "rgb(252, 187, 161)",
+        "II": 'rgb(251, 106, 74)',
+        "IIIA": "rgb(239, 59, 44)",
+        "IIIB": "rgb(203, 24, 29)",
+        "IVA": "rgba(154, 8, 13, 1)"
     },
     age: {
         "<20": "rgb(242, 250, 248)",

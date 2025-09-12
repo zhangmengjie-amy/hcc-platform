@@ -74,7 +74,7 @@ const Clinical = () => {
         gender: [],
         age: [],
         race: [],
-        tnmStageV8: [],
+        stage: [],
         viralStatus: []
     });
     const geneRef = useRef(null);
@@ -112,61 +112,6 @@ const Clinical = () => {
         return geneRef.current?.filter((item) => !!item.isDriverGene).map((item) => item.gene);
     }
 
-    const handleSearch = (event) => {
-        event.stopPropagation();
-        setShowSearchInput(!showSearchInput);
-    }
-
-    const handleImport = (event) => {
-        event.stopPropagation();
-    }
-
-    const fuzzySearch = (e) => {
-        setFilterValue(e.target.value)
-        handleSearchGene(e.target.value)
-    }
-
-    const handleGeneReload = (event) => {
-        event.stopPropagation();
-        const driverList = getDriverList();
-        setGeneList(driverList);
-        paramsRef.current = {
-            ...paramsRef.current,
-            geneList: getGeneListWithIsDeriverGene(driverList)
-        };
-    }
-    const handleDNAReload = (event) => {
-        event.stopPropagation();
-        setSliderValue([0, 1])
-    }
-
-    const handleDriverReload = (event) => {
-        event.stopPropagation();
-        setDriverList(["driver", "not-driver"]);
-    }
-
-    const handleMutationTypeReload = () => {
-        event.stopPropagation();
-    }
-
-    const handleClinicReload = (event) => {
-        event.stopPropagation();
-        setClinicList({
-            gender: [],
-            age: [],
-            race: [],
-            tnmStageV8: [],
-            viralStatus: []
-        });
-        paramsRef.current = {
-            ...paramsRef.current,
-            gender: [],
-            age: [],
-            race: [],
-            tnmStageV8: [],
-            viralStatus: []
-        };
-    }
 
     const handleApply = useCallback(() => {
        setParams(conditionSelectionRef.current.getParams());

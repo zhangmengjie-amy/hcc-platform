@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Row, Col, Alert } from 'antd';
-import { getFullMutations, getFullClinical } from "@/configs/request";
+import { getFullMutations, getDTMutations } from "@/configs/request";
 import ClinicChart from './clinicChart';
 import GeneChart from './geneChart';
 import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
 import ChartsLegend from "./chartsLegend";
 
-const DriverLandscape = forwardRef(({ handleApplyLoading, sampleType, conditions }, ref) => {
+const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, sampleType = "bySample", conditions }, ref) => {
     const [sampleMutations, setSampleMutations] = useState(null);
     const [genesMutations, setGenesMutations] = useState(null);
     const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
@@ -18,6 +18,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, sampleType, conditions
     const [clinicList, setClinicList] = useState(null);
     const [finialGeneList, setFinialGeneList] = useState(null);
     const fullMutationsRef = useRef(null);
+    const dtMutationsRef = useRef(null);
 
     useEffect(() => {
         if (!conditions?.geneList) return;
@@ -26,7 +27,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, sampleType, conditions
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
 
-            Promise.all([getFullMutations()]).then((results) => {
+            Promise.all([getFullMutations(dataType)]).then((results) => {
                 fullMutationsRef.current = results[0];
                 sampleWorker.postMessage({ key: "driverLandscape", data: { sampleType, originalMutations: fullMutationsRef.current, conditions } });
                 sampleWorker.onmessage = (event) => {
@@ -35,6 +36,7 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, sampleType, conditions
                     setGenesMutations(result.genesMutations);
                     setSampleGenesMutations(result.sampleGenesMutations);
                     setFinialGeneList(result.finialGeneList);
+                    console.log("result.clinicList", result.clinicList);
                     setClinicList(result.clinicList);
                     setSampleCategories(result.sampleCategories);
                     setHeight(result.finialGeneList.length * 8 + 30);
@@ -48,32 +50,32 @@ const DriverLandscape = forwardRef(({ handleApplyLoading, sampleType, conditions
         return () => {
             sampleWorker.terminate();
         };
-    }, [conditions, sampleType]);
+    }, [conditions, sampleType, dataType]);
 
     return (
-            <div ref={ref} style={{ margin: "0 10px" }}>
-                <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left. </span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
-                <Row style={{ width: "100%" }}>
-                    <Col xs={21} sm={21} md={21} lg={21} xl={21}>
-                        <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>
-                    </Col>
-                </Row>
+        <div ref={ref} style={{ margin: "0 10px" }}>
+            <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left. </span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
+            <Row style={{ width: "100%" }}>
+                <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+                    <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>
+                </Col>
+            </Row>
 
-                <Row style={{ width: '100%' }}>
-                    <Col xs={21} sm={21} md={21} lg={21} xl={21}>
-                        <SampleChart sampleType={sampleType} sampleGenesMutations={sampleGenesMutations} finialGeneList={finialGeneList} sampleCategories={sampleCategories} height={height}></SampleChart>
-                    </Col>
-                    <Col xs={3} sm={3} md={3} lg={3} xl={3}>
-                        <GeneChart genesMutations={genesMutations} finialGeneList={finialGeneList} height={height}></GeneChart>
-                    </Col>
-                </Row>
-                <Row style={{ width: '100%' }}>
-                    <Col xs={21} sm={21} md={21} lg={21} xl={21}>
-                        <ClinicChart clinicList={clinicList}></ClinicChart>
-                    </Col>
-                </Row>
-                <ChartsLegend></ChartsLegend>
-            </div>
+            <Row style={{ width: '100%' }}>
+                <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+                    <SampleChart sampleType={sampleType} sampleGenesMutations={sampleGenesMutations} finialGeneList={finialGeneList} sampleCategories={sampleCategories} height={height}></SampleChart>
+                </Col>
+                <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                    <GeneChart genesMutations={genesMutations} finialGeneList={finialGeneList} height={height}></GeneChart>
+                </Col>
+            </Row>
+            <Row style={{ width: '100%' }}>
+                <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+                    <ClinicChart clinicList={clinicList}></ClinicChart>
+                </Col>
+            </Row>
+            <ChartsLegend></ChartsLegend>
+        </div>
     );
 })
 export default DriverLandscape;

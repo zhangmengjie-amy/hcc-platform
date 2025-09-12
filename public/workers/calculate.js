@@ -11,12 +11,12 @@ let mutationTypeColorConfig = {
 }
 
 const clinicColorConfig = {
-    tnmStageV8: {
-        "TNM Stage IA": 'rgb(255, 245, 240)',
-        "TNM Stage IB": "rgb(252, 187, 161)",
-        "TNM Stage II": 'rgb(251, 106, 74)',
-        "TNM Stage IIIA": "rgb(239, 59, 44)",
-        "TNM Stage IIIB": "rgb(203, 24, 29)"
+    stage: {
+        "IA": 'rgb(255, 245, 240)',
+        "IB": "rgb(252, 187, 161)",
+        "II": 'rgb(251, 106, 74)',
+        "IIIA": "rgb(239, 59, 44)",
+        "IIIB": "rgb(203, 24, 29)",
     },
     age: {
         "<20": "rgb(242, 250, 248)",
@@ -105,7 +105,7 @@ const formatClinicList = (finialMutations) => {
                 item.age < 40 ? "20-39" :
                     item.age < 60 ? "40-59" :
                         item.age < 80 ? "60-79" : ">=80";
-        const clinicProperties = ['gender', 'race', 'hcv', 'hbv', 'tnmStageV8'];
+        const clinicProperties = ['gender', 'race', 'hcv', 'hbv', 'stage'];
 
         const result = {
             sampleId: item.sampleId,
@@ -286,7 +286,7 @@ function mergePatients(samples, geneList) {
             return acc;
         }, {});
 
-        const finalMutations = Object.values(geneMutations).map(({ gene, isDriver, genome_change,  mutationTypes }) => {
+        const finalMutations = Object.values(geneMutations).map(({ gene, isDriver, mutationTypes }) => {
             const types = Array.from(mutationTypes);
             const mutation = { gene, isDriver };
 
@@ -383,7 +383,7 @@ const sortGeneListByPercentage = (finialMutations, geneList) => {
 
 const filterSampleByGene = (originalSamples, geneList) => {
     return originalSamples.filter((item) => {
-        return item.mutations?.some((muttation) => geneList.some((gene) => gene.gene == muttation.gene))
+        return item.mutations?.some((mutation) => geneList.some((gene) => gene.gene == mutation.gene))
     })
 }
 
@@ -393,10 +393,10 @@ const filterSampleByConditions = (originalSamples, clinicList, geneList) => {
     return originalSamples.map((item) => {
         return {
             ...item,
-            tnmStageV8: item.tnmStageV8 === "TNM Stage Ib" ? "TNM Stage IB" : (item.tnmStageV8 === "TNM Stage III A" ? "TNM Stage IIIA" : (item.tnmStageV8 === "TNM  Stage II" ? "TNM Stage II" : item.tnmStageV8)),
+            stage: item.stage === "Ib" ? "IB" : (item.stage === "III A" ? "IIIA" : item.stage),
             hcv: item.viralStatus == "0" || item.viralStatus == "B" ? "negative" : "positive",
             hbv: item.viralStatus == "0" || item.viralStatus == "C" ? "negative" : "positive",
-            mutations: !item.mutations ? null : item.mutations?.filter((muttation) => geneList.some((gene) => gene.gene == muttation.gene))
+            mutations: !item.mutations ? null : item.mutations?.filter((mutation) => geneList.some((gene) => gene.gene == mutation.gene))
         }
     }).filter((clinic) => {
         return Object.keys(clinicList).every((condition) => {

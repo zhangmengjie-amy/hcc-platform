@@ -54,6 +54,7 @@ const DEFAULT_PAGE_SIZE = 100;
 
 const Expression = () => {
     const { t } = useTranslation();
+    const [dataType, setDataType] = useState("planet");
     const [treeType, setTreeType] = useState("overview");
     const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
     const [sampleType, setSampleType] = useState("bySample");
@@ -65,13 +66,12 @@ const Expression = () => {
     const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
     const [fetchLoading, setFetchLoading] = useState(true);
     const [geneList, setGeneList] = useState([]);
-    const driverLandscapeRef = useRef(null);
     const conditionSelectionRef = useRef(null);
     const [clinicList, setClinicList] = useState({
         gender: [],
         age: [],
         race: [],
-        tnmStageV8: [],
+        stage: [],
         viralStatus: []
     });
     const geneRef = useRef(null);
@@ -151,6 +151,16 @@ const Expression = () => {
                             style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
                             {t("common:apply")}
                         </Button>
+                        {
+                            <Segmented
+                                options={[
+                                    { label: 'PLANET', value: "planet" },
+                                    { label: 'DT', value: "dt" },
+                                ]}
+                                value={dataType}
+                                onChange={value => setDataType(value)}
+                            />
+                        } 
                         <Button color="default" variant="text"
                             onClick={leftPanelFullScreen}
                             style={{ color: "#fff", padding: 0 }}>
@@ -188,7 +198,7 @@ const Expression = () => {
                         </Flex>
                     </Flex>
                     {
-                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape conditions={params}></SubtypeLandscape>
+                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape dataType={dataType} conditions={params}></SubtypeLandscape>
                     }
                     {
                         pathname.split("/")[2] == "pathways" &&  <Pathways conditions={params}></Pathways>

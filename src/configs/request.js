@@ -61,10 +61,9 @@ export const getLiverSamples = async () => {
     }
 };
 
-
-export const getITHList = async () => {
+export const getITHList = async (type = "planet") => {
     try {
-        const geneData = await get(`/hcc/v1/getITHList`);
+        const geneData = await get(`/hcc/v1/ith/list?type=${type}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -74,10 +73,10 @@ export const getITHList = async () => {
 
 
 
-export const getFullPhylogenetic = async () => {
+export const getFullPhylogenetic = async (type = "planet") => {
     try {
-        const geneData = await fetch(`/json/phylogenetic-tree.json`);
-        return geneData?.json();
+        const geneData = await get(`/hcc/v1/phylogeneticTree/list?type=${type}`);
+        return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;
@@ -94,59 +93,21 @@ export const getLollipopPlotData = async (data) => {
     }
 };
 
-export const getFullMutations = async () => {
-    try {
-        const geneData = await fetch(`/json/gene-based-mutations.json`);
-        return geneData?.json();
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
-    }
-};
 
-export const getPatientList = async () => {
+export const getPatientList = async (type = "planet") => {
     try {
-        const geneData = await fetch(`/json/hcc-patient.json`);
-        return geneData?.json();
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
-    }
-};
-
-export const getGeneChart = async (data) => {
-    try {
-        const geneData = await post('/hcc/v1/mutation/gene-list', data); // 获取 public/json/hcc-gene.json 文件
+  const geneData = await get(`/hcc/v1/patient/list?type=${type}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;
     }
-};
+}; 
 
-export const getMutationChart = async (data) => {
-    try {
-        const geneData = await post('/hcc/v1/mutation/sample-mutation-type-list', data); // 获取 public/json/hcc-sample-full.json 文件
-        return geneData?.data;
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
-    }
-};
 
-export const getSampleGeneChart = async (data) => {
+export const getFullMutations = async (type = "planet") => {
     try {
-        const geneData = await post('/hcc/v1/mutation/sample-gene-list', data); // 获取 public/json/hcc-sample-full.json 文件
-        return geneData?.data;
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
-    }
-};
-
-export const getClinicChart = async (data) => {
-    try {
-        const geneData = await post('/hcc/v1/mutation/clinic-list', data); // 获取 public/json/hcc-sample.json 文件
+  const geneData = await get(`/hcc/v1/oncoprint/list?type=${type}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { getITHList, getPatientList } from "@/configs/request";
+import { getFullMutations, getPatientList } from "@/configs/request";
 import ReactECharts from 'echarts-for-react';
 import { Modal } from 'antd';
 import Image from 'next/image';
@@ -8,7 +8,6 @@ import { Flex, Typography, Alert, Row, Button } from 'antd';
 import styles from "./style.module.scss";
 import TreeDialog from "@/components/tree-dialog"
 import TreeList from '@/components/mutation/phylogeneticRelationship/treeList';
-import { getFullMutations } from "@/configs/request";
 import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
 
@@ -17,7 +16,7 @@ const TREE_WIDTH = 120;
 const TREE_CONTAINER_WIDTH = VISIBLE_TREE_LENGTH * TREE_WIDTH;
 const PIE_CHART_WIDTH = 600;
 const BAR_CHART_WIDTH = PIE_CHART_WIDTH / 2;
-const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.3;
+const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.35;
 const BAR_AXIS = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1'];
 const BAR_CATEGORIES = ['0~0.1', '0.1~0.2', '0.2~0.3', '0.3~0.4', '0.4~0.5', '0.5~0.6', '0.6~0.7', '0.7~0.8', '0.8~0.9', '0.9~1.0'];
 
@@ -54,7 +53,8 @@ const LEGEND = [{
 }]
 
 
-const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", conditions }) => {
+
+const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType = "overview", conditions }) => {
     const [pieChartOption, setPieChartOption] = useState({});
     const [columnOption, setColumnOption] = useState({});
     const [loading, setLoading] = useState(true);
@@ -72,19 +72,20 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
         if (!conditions?.geneList) return;
 
         const fetchData = async (finialSampleList) => {
-            let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
-            if (!ITHList || !patientList) return;
-            let _patientList = ITHList.filter((item) => finialSampleList?.some((patient) => patient == item.publicationId))?.map((item) => {
-                const currentPatient = patientList.find((patient) => patient.patientId == item.publicationId);
+            let [ITHList] = await Promise.all([getPatientList(dataType)]);
+            if (!ITHList) return;
+           
+            let _patientList = ITHList.filter((item) => !!item.newick && finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
                 return {
-                    ...currentPatient,
-                    currentValue: item.ith?.toFixed(2)
+                    ...item,
+                    ith: Number(item.ith)?.toFixed(2) ?? 1
                 }
             })
-            _patientList = _patientList?.sort((a, b) => a.currentValue - b.currentValue);
+            _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
             patientListRef.current = _patientList;
             patientListRef.current = buildAllPatientsData();
             rangePatientListRef.current = getPatientListByRange();
+           
             setRangeList(rangePatientListRef.current);
             buildPieChart();
             buildBarChart();
@@ -92,7 +93,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
 
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            Promise.all([getFullMutations()]).then((results) => {
+            Promise.all([getFullMutations(dataType)]).then((results) => {
                 sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
                 sampleWorker.onmessage = (event) => {
                     const result = event.data;
@@ -106,18 +107,18 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
         return () => {
             sampleWorker.terminate();
         };
-    }, [conditions]);
+    }, [conditions, dataType]);
 
     const getPatientListByRange = () => {
         return patientListRef.current?.filter((item) => {
-            return item.ITH >= range[0] && item.ITH <= range[1];
+            return item.ith >= range[0] && item.ith <= range[1];
         })
     }
 
     const getPatientListByActiveBar = () => {
         const [min, max] = activeBar.split("~");
         return rangePatientListRef.current.filter((item) => {
-            return item.ITH > min && item.ITH <= max
+            return item.ith > min && item.ith <= max
         })
     }
 
@@ -169,7 +170,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
                                     background:${color};
                                     margin-right:8px;
                                     border-radius:2px">
-                        </span><span >${params.name}</span> <span style="font-weight:bold">${params?.data?.ITH}<span>
+                        </span><span >${params.name}</span> <span style="font-weight:bold">${params?.data?.ith}<span>
                     </div>
                 `;
                 }
@@ -224,7 +225,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
     const buildBarChart = () => {
         const _columnOption = {
             grid: {
-                top: 20,
+                top: 35,
                 right: 0,
                 bottom: 20,
                 left: 0,
@@ -233,7 +234,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
             title: {
                 text: `Total: ${rangePatientListRef.current?.length ?? 0}`,
                 left: 'center',
-                top: "0",
+                top: 5,
                 textStyle: {
                     fontSize: "14px",
                     color: "#000"
@@ -376,7 +377,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
             result = rangePatientListRef.current;
         }
 
-        return result.sort((a, b) => a.ITH - b.ITH);
+        return result.sort((a, b) => a.ith - b.ith);
     };
 
     const getVisibleTreeListWithStyle = useMemo(() => {
@@ -384,21 +385,21 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
         return result?.map((item, index) => {
             return {
                 ...item,
-                image: `/images/${item?.patientId}.svg`,
+                image: dataType == "dt" ? `/images/${item?.patientId}.png` : `/images/${item?.patientId}.svg`,
                 transform: `rotate(${calculateFanLayout(result?.length)[index].rotate}deg) translate(${calculateFanLayout(result?.length)[index].translate})`
             }
         })
-    }, [rangePatientListRef.current])
+    }, [rangePatientListRef.current, dataType])
 
     const buildAllPatientsData = () => {
         const colors = generateGradientColors(100);
         return patientListRef.current?.map((item) => {
             return {
-                ITH: item.currentValue,
+                ith: item.ith,
                 newick: item.newick,
                 name: item.patientId,
                 patientId: item.patientId,
-                itemStyle: { color: colors[Math.round(item.currentValue * 100) - 1] },
+                itemStyle: { color: colors[Math.round(item.ith * 100) - 1] },
             }
         })
     }
@@ -413,19 +414,19 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
     }
 
     const getAreaPatientData = (minValue, maxValue) => {
-        return rangePatientListRef.current?.filter((patient) => patient.ITH > minValue && patient.ITH <= maxValue);
+        return rangePatientListRef.current?.filter((patient) => patient.ith > minValue && patient.ith <= maxValue);
     }
 
     const onBarEvents = useMemo(() => ({
         "click": function (params) {
             const [rangeMin, rangeMax] = range;
             rangePatientListRef.current = rangePatientListRef.current = patientListRef.current.filter((item) => {
-                return item.ITH > rangeMin && item.ITH <= rangeMax
+                return item.ith > rangeMin && item.ith <= rangeMax
             })
             if (activeBar !== params.name) {
                 const [min, max] = params.name.split("~");
                 rangePatientListRef.current = rangePatientListRef.current.filter((item) => {
-                    return item.ITH > min && item.ITH <= max
+                    return item.ith > min && item.ith <= max
                 })
                 setActiveBar(params.name);
             } else {
@@ -457,7 +458,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
 
         <>
             {
-                <EmptyLoading loading={loading} showEmpty={true} hasData={!!pieChartOption}>
+                <EmptyLoading loading={loading} showEmpty={true} hasData={!!Object.keys(pieChartOption)?.length}>
 
                     {
                         <><Alert style={{ margin: "0px 10px" }} message={renderMeaage} type="info" />
@@ -470,7 +471,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
                                 <ReactECharts ref={barChartRef} option={columnOption} opts={{ renderer: 'svg' }}
                                     lazyUpdate={true}
                                     onEvents={onBarEvents}
-                                    style={{ height: BAR_CHART_HEIGHT, width: BAR_CHART_WIDTH, position: "absolute", left: "50%", marginLeft: -BAR_CHART_WIDTH / 2, bottom: "285px" }}>
+                                    style={{ height: BAR_CHART_HEIGHT, width: BAR_CHART_WIDTH, position: "absolute", left: "50%", marginLeft: -BAR_CHART_WIDTH / 2, bottom: "265px" }}>
                                 </ReactECharts>
                                 {
                                     treeType == "overview" && <Flex style={{ width: TREE_CONTAINER_WIDTH, margin: "0 auto", justifyContent: "space-between", position: "absolute", top: "-120px", left: "50%", marginLeft: "-360px" }}>
@@ -492,7 +493,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
                                     <Flex>
                                         {
                                             LEGEND.map((item) => {
-                                                return <Flex key={item.name} align='center'>
+                                                return <Flex key={item.patientId} align='center'>
                                                     <span style={{ marginLeft: 8, backgroundColor: item.color, borderRadius: 3, width: 12, height: 12, display: "inline-block" }}></span><span style={{ marginLeft: 3, color: "#666" }}>{item.name}</span>
                                                 </Flex>
                                             })
@@ -501,10 +502,10 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview", condi
                                 </Flex>
                             </div>
                             {
-                                treeType === "detail" && <TreeList list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
+                                treeType === "detail" && <TreeList dataType={dataType} list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
                             }
                             {
-                                <TreeDialog treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+                                modalOpen && <TreeDialog treeData={currentPatientRef.current} dataType={dataType} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
                             }
                         </>
                     }

@@ -6,12 +6,12 @@ import styles from "./style.module.scss";
 const heatmapCellSize = 20;
 const heatmapPadding = 10;
 
-const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields = [], heatmapData = {}, alignLabel = false }) => {
+const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields = [], heatmapData = {}, alignLabel = false }) => {
     const containerRef = useRef(null);
     const svgRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
     const [tooltipState, setTooltipState] = useState({ visible: false, x: 0, y: 0, data: null });
-
+    console.log("data", data)
     // 1) 监听容器尺寸
     useEffect(() => {
         const ro = new ResizeObserver(entries => {
@@ -198,7 +198,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
                     name: branchNode.data.name || "",
                     length: branchNode.data.length,
                     samples: branchNode.data.samples,
-                    mutations: branchNode.data.mutations
+                    geneData: branchNode.data.geneData
                 });
             })
             .on('pointerover', (event, link) => {
@@ -218,7 +218,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
                     name: branchNode.data.name || "",
                     length: branchNode.data.length,
                     samples: branchNode.data.samples,
-                    mutations: branchNode.data.mutations
+                    geneData: branchNode.data.geneData
                 });
             })
             .on('pointerout', (event, link) => {
@@ -306,7 +306,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
                     name: d?.data?.name || "",
                     length: d?.data?.length,
                     samples: d?.data?.samples,
-                    mutations: sampleMutations?.[d?.data?.name]
+                    geneData: sampleGeneData?.[d?.data?.name]
                 });
                 // 1) 找到叶子名字为 "N" 的节点
                 const leafN = root.descendants()
@@ -345,7 +345,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
                     name: d?.data?.name || "",
                     length: d?.data?.length,
                     samples: d?.data?.samples,
-                    mutations: sampleMutations?.[d?.data?.name]
+                    geneData: sampleGeneData?.[d?.data?.name]
                 });
                 // 1) 找到叶子名字为 "N" 的节点
                 const leafN = root.descendants()
@@ -484,6 +484,9 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
         }))
     }, [])
 
+
+    console.log("tooltipState", tooltipState)
+
     return (
         <div
             ref={containerRef}
@@ -500,7 +503,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
                         width: "350px",
                         overflowY: "auto",
                         padding: '10px',
-                        maxHeight: "90vh",
+                        maxHeight: "50vh",
                         border: "2px solid #fff",
                         borderRadius: "8px"
                     }}
@@ -509,12 +512,27 @@ const HorizontalTree = ({ data, color, adaptive, sampleMutations, heatmapFields 
                         <strong>Current Branch Info</strong>
                     </div>
                     <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Sample:</span> <span style={{ lineHeight: "24px", fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.samples?.join(", ") ?? "None"}</span></p>
-                    {/* <p style={{ marginBottom: '10px' }}><span style={{ fontWeight: "lighter" }}>Length:</span> {tooltipState.data.length}</p> */}
-                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.mutations?.driver?.length ?? 0) + (tooltipState?.data?.mutations?.nonDriver?.length ?? 0)}</span></p>
-                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.driver?.length ?? 0} </span></p>
-                    <p style={{ marginBottom: '0', fontSize: "14px", overflowY: "auto", fontWeight: "normal", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0, fontWeight: "bold" }}>{tooltipState?.data?.mutations?.driver?.join(', ')}</p>
-                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.mutations?.nonDriver?.length ?? 0} </span></p>
-                    <p style={{ fontSize: "14px", overflowY: "auto", fontWeight: "normal", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{tooltipState?.data?.mutations?.nonDriver?.join(', ')}</p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.geneData?.driver?.length ?? 0) + (tooltipState?.data?.geneData?.nonDriver?.length ?? 0)}</span></p>
+                    <p style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold" }}> {tooltipState?.data?.geneData?.driver?.length ?? 0} </span></p>
+                    <p style={{ marginBottom: '0', fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{
+                        tooltipState?.data?.geneData?.driver.map((item, index) => {
+                            return (
+                                <><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
+                                    <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span></>
+                            );
+                        })
+                    }</p>
+                    <div style={{ marginBottom: '0' }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold" }}> {tooltipState?.data?.geneData?.nonDriver?.length ?? 0} </span></div>
+                    <div style={{ fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>
+                        {
+                            tooltipState?.data?.geneData?.nonDriver.map((item, index) => {
+                                return (
+                                    <div><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
+                                        <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span>)</div>
+                                );
+                            })
+                        }
+                    </div>
                 </div>
             )} open>
                 <div style={{

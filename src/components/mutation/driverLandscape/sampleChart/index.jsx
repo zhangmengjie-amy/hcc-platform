@@ -159,14 +159,14 @@ const getPatientGroups = () => sampleCategories.reduce((groups, id, i) => {
             tooltip: {
                 formatter: function (params) {
                     const { sampleId = "", gene = "", isDriver = "", mutationTypesCounts = null, clinic } = params.data?.custom ?? {};
-                    const { gender = "", race = "", age = "", hbv = "", hcv = "", tnmStageV8 = "" } = clinic ?? {}
+                    const { gender = "", race = "", age = "", hbv = "", hcv = "", stage = "" } = clinic ?? {}
                     const [x, y, value] = params.data?.value;
                     let tooltipContent = `Gene: ${gene} ${isDriver ? "Is Driver Gene" : "Not Driver Gene"}<br>`;
                     tooltipContent += `Sample: ${sampleType == "bySample" ? sampleId : (sampleId?.split('_').slice(0, 2).join('_'))}<br>`;
                     tooltipContent += `<span style="display: inline-block; background-color:${age.color};width: 10px;height: 10px;margin-right: 5px"></span>Age: ${age.value}<br>`;
                     tooltipContent += `<span style="display: inline-block; background-color:${gender.color};width: 10px;height: 10px;margin-right: 5px"></span>Gender: ${gender.value}<br>`;
                     tooltipContent += `<span style="display: inline-block; background-color:${race.color};width: 10px;height: 10px;margin-right: 5px"></span>Race: ${race.value}<br>`;
-                    tooltipContent += `<span style="display: inline-block; background-color:${tnmStageV8.color};width: 10px;height: 10px;margin-right: 5px"></span>Stage: ${tnmStageV8.value}<br>`;
+                    tooltipContent += `<span style="display: inline-block; background-color:${stage.color};width: 10px;height: 10px;margin-right: 5px"></span>Stage: ${stage.value}<br>`;
                     tooltipContent += `<span style="display: inline-block; background-color:${hbv.color};width: 10px;height: 10px;margin-right: 5px"></span>HBV: ${hbv.value}<br>`;
                     tooltipContent += `<span style="display: inline-block; background-color:${hcv.color};width: 10px;height: 10px;margin-right: 5px"></span>HCV: ${hcv.value}<br>`;
                     tooltipContent += `Mutation Total: ${value}<br>`;

@@ -1,6 +1,6 @@
-// 将 "ITH_01_T1" → "T1"
+// 将 "ITH_01_T1" → "T1", 将DT01_01 → T1
 function formatLabel(str) {
-    return str?.replace(/^.*?_.*?_/, '') ?? str;
+    return str?.replace(/.*_/, '') ?? str;
 }
 
 // 解析 Newick, 给每个节点设置 _parent，并收集叶节点 name->node 映射
@@ -29,8 +29,8 @@ function parseNewick(newick) {
             const len = parseFloat(tokens[++i]);
             current.length = isNaN(len) ? 0 : len;
         } else if (t && t !== ';') {
-            current.name = t;
-            nameToNode[t] = current;
+            current.name = formatLabel(t);
+            nameToNode[formatLabel(t)] = current;
         }
     }
 
@@ -77,7 +77,7 @@ function resolveAnnotNode(mrcaInfo, nameToNode) {
 self.onmessage = ({ data: { treeData } }) => {
     const treeList = [];
 
-    for (const { newick, geneData, patientId, currentValue, itemStyle } of treeData) {
+    for (const { newick, geneData, patientId, ith, itemStyle } of treeData) {
         const mutationsWithGenomeChange = geneData.map((item) => {
             return {
                 sampleId: item.sampleId,
@@ -93,17 +93,17 @@ self.onmessage = ({ data: { treeData } }) => {
         // 1. 解析树
         const { tree, nameToNode } = parseNewick(newick);
 
-        // 2. 构建 sample->[{gene,is_driver_gene}]，并记录 gene 的 is_driver_gene 标记
+        // 2. 构建 sample->[{gene,isDriver}]，并记录 gene 的 isDriver 标记
         const sampleToGenes = Object.create(null);
         const geneToDriverFlag = Object.create(null);
 
         mutationsWithGenomeChange.forEach(({ sampleId, geneData: muts }) => {
-            if (!sampleToGenes[sampleId]) sampleToGenes[sampleId] = [];
+            if (!sampleToGenes[formatLabel(sampleId)]) sampleToGenes[formatLabel(sampleId)] = [];
             muts.forEach(m => {
-                sampleToGenes[sampleId].push({ unionGene: m.unionGene, gene: m.gene, is_driver_gene: m.is_driver_gene == 1 });
-                // 只要有一个 is_driver_gene===true，就标记为 driver
-                if (!geneToDriverFlag[m.unionGene] || m.is_driver_gene == 1) {
-                    geneToDriverFlag[m.unionGene] = m.is_driver_gene == 1;
+                sampleToGenes[formatLabel(sampleId)].push({ unionGene: m.unionGene, gene: m.gene, isDriver: m.isDriver == 1 });
+                // 只要有一个 isDriver===true，就标记为 driver
+                if (!geneToDriverFlag[m.unionGene] || m.isDriver == 1) {
+                    geneToDriverFlag[m.unionGene] = m.isDriver == 1;
                 }
             });
         });
@@ -163,7 +163,7 @@ self.onmessage = ({ data: { treeData } }) => {
         treeList.push({
             tree,
             patientId,
-            currentValue,
+            ith,
             itemStyle
         }); // Push the processed tree into the treeList array
     }

@@ -42,14 +42,14 @@ const ChartsLegend = () => {
             <Col sm={2} md={2} lg={2}>
                 <Row style={{ width: '100%' }} algin={"center"} justify={"center"}>
                     <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: 'rgb(210, 235, 227)' }} dashed>
-                        {(t(`mutation:sample.tnmStageV8`))}
+                        {(t(`mutation:sample.stage`))}
                     </Divider>
                 </Row>
                 {
-                    Object.keys(clinicColorConfig["tnmStageV8"]).map((item) => {
+                    Object.keys(clinicColorConfig["stage"]).map((item) => {
                         return <Typography.Paragraph key={item} className={styles.legendName}>
                             <span className={styles.colorBlock}
-                                style={{ backgroundColor: clinicColorConfig["tnmStageV8"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                                style={{ backgroundColor: clinicColorConfig["stage"][item] }}></span>{(t(`mutation:sample.${item}`))}
                         </Typography.Paragraph>
                     })
                 }

@@ -5,7 +5,7 @@
         "race": "Malay",
         "age": 44,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_05",
@@ -13,7 +13,7 @@
         "race": "Cambodia",
         "age": 59,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_06",
@@ -21,7 +21,7 @@
         "race": "Indonesian",
         "age": 58,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage Ib"
+        "stage": "TNM Stage Ib"
     },
     {
         "patientId": "ITH_07",
@@ -29,7 +29,7 @@
         "race": "Chinese",
         "age": 30,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_08",
@@ -37,7 +37,7 @@
         "race": "Chinese",
         "age": 54,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_09",
@@ -45,7 +45,7 @@
         "race": "Chinese",
         "age": 66,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_100",
@@ -53,7 +53,7 @@
         "race": "Thai",
         "age": 52,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_101",
@@ -61,7 +61,7 @@
         "race": "Thai",
         "age": 62,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_102",
@@ -69,7 +69,7 @@
         "race": "Thai",
         "age": 36,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_103",
@@ -77,7 +77,7 @@
         "race": "Thai",
         "age": 57,
         "viralStatus": "B/C",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_104",
@@ -85,7 +85,7 @@
         "race": "Thai",
         "age": 58,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_105",
@@ -93,7 +93,7 @@
         "race": "Thai",
         "age": 47,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_106",
@@ -101,7 +101,7 @@
         "race": "Filipino",
         "age": 62,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_107",
@@ -109,7 +109,7 @@
         "race": "Filipino",
         "age": 78,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_108",
@@ -117,7 +117,7 @@
         "race": "Filipino",
         "age": 53,
         "viralStatus": "B",
-        "tnmStageV8": "TNM  Stage II"
+        "stage": "TNM  Stage II"
     },
     {
         "patientId": "ITH_109",
@@ -125,7 +125,7 @@
         "race": "Filipino",
         "age": 67,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_110",
@@ -133,7 +133,7 @@
         "race": "Filipino",
         "age": 78,
         "viralStatus": "B",
-        "tnmStageV8": "TNM  Stage II"
+        "stage": "TNM  Stage II"
     },
     {
         "patientId": "ITH_111",
@@ -141,7 +141,7 @@
         "race": "Filipino",
         "age": 51,
         "viralStatus": "B",
-        "tnmStageV8": "TNM  Stage II"
+        "stage": "TNM  Stage II"
     },
     {
         "patientId": "ITH_112",
@@ -149,7 +149,7 @@
         "race": "Chinese",
         "age": 74,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_114",
@@ -157,7 +157,7 @@
         "race": "Chinese",
         "age": 69,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_115",
@@ -165,7 +165,7 @@
         "race": "Chinese",
         "age": 54,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_117",
@@ -173,7 +173,7 @@
         "race": "Indian",
         "age": 62,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_118",
@@ -181,7 +181,7 @@
         "race": "Malay",
         "age": 57,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_119",
@@ -189,7 +189,7 @@
         "race": "Sikh",
         "age": 65,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_120",
@@ -197,7 +197,7 @@
         "race": "Chinese",
         "age": 69,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_121",
@@ -205,7 +205,7 @@
         "race": "Others",
         "age": 77,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_122",
@@ -213,7 +213,7 @@
         "race": "Others",
         "age": 56,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_123",
@@ -221,7 +221,7 @@
         "race": "Others",
         "age": 67,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_124",
@@ -229,7 +229,7 @@
         "race": "Others",
         "age": 59,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_125",
@@ -237,7 +237,7 @@
         "race": "Others",
         "age": 55,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_126",
@@ -245,7 +245,7 @@
         "race": "Others",
         "age": 43,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_127",
@@ -253,7 +253,7 @@
         "race": "Chinese",
         "age": 52,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_128",
@@ -261,7 +261,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_129",
@@ -269,7 +269,7 @@
         "race": "Chinese",
         "age": 72,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_13",
@@ -277,7 +277,7 @@
         "race": "Chinese",
         "age": 81,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_130",
@@ -285,7 +285,7 @@
         "race": "Chinese",
         "age": 80,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_131",
@@ -293,7 +293,7 @@
         "race": "Vietnamese",
         "age": 57,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_132",
@@ -301,7 +301,7 @@
         "race": "Others",
         "age": 65,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_133",
@@ -309,7 +309,7 @@
         "race": "Chinese",
         "age": 79,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_134",
@@ -317,7 +317,7 @@
         "race": "Chinese",
         "age": 66,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_135",
@@ -325,7 +325,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_136",
@@ -333,7 +333,7 @@
         "race": "Chinese",
         "age": 79,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_137",
@@ -341,7 +341,7 @@
         "race": "Chinese",
         "age": 74,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_138",
@@ -349,7 +349,7 @@
         "race": "Others",
         "age": 64,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_15",
@@ -357,7 +357,7 @@
         "race": "Chinese",
         "age": 66,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_16",
@@ -365,7 +365,7 @@
         "race": "Chinese",
         "age": 74,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_17",
@@ -373,7 +373,7 @@
         "race": "Chinese",
         "age": 78,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_18",
@@ -381,7 +381,7 @@
         "race": "Chinese",
         "age": 50,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_20",
@@ -389,7 +389,7 @@
         "race": "Chinese",
         "age": 53,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_21",
@@ -397,7 +397,7 @@
         "race": "Chinese",
         "age": 60,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_22",
@@ -405,7 +405,7 @@
         "race": "Chinese",
         "age": 53,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_23",
@@ -413,7 +413,7 @@
         "race": "Chinese",
         "age": 65,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_24",
@@ -421,7 +421,7 @@
         "race": "Chinese",
         "age": 69,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_25",
@@ -429,7 +429,7 @@
         "race": "Chinese",
         "age": 82,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_26",
@@ -437,7 +437,7 @@
         "race": "Chinese",
         "age": 77,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_27",
@@ -445,7 +445,7 @@
         "race": "Chinese",
         "age": 70,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_29",
@@ -453,7 +453,7 @@
         "race": "Chinese",
         "age": 64,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_31",
@@ -461,7 +461,7 @@
         "race": "Indonesian",
         "age": 70,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_32",
@@ -469,7 +469,7 @@
         "race": "Chinese",
         "age": 80,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_33",
@@ -477,7 +477,7 @@
         "race": "Chinese",
         "age": 70,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_34",
@@ -485,7 +485,7 @@
         "race": "Chinese",
         "age": 88,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_35",
@@ -493,7 +493,7 @@
         "race": "Thai",
         "age": 80,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_36",
@@ -501,7 +501,7 @@
         "race": "Thai",
         "age": 54,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_37",
@@ -509,7 +509,7 @@
         "race": "Chinese",
         "age": 73,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_39",
@@ -517,7 +517,7 @@
         "race": "Chinese",
         "age": 68,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_40",
@@ -525,7 +525,7 @@
         "race": "Malay",
         "age": 65,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_41",
@@ -533,7 +533,7 @@
         "race": "Malay",
         "age": 68,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_42",
@@ -541,7 +541,7 @@
         "race": "Chinese",
         "age": 64,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_43",
@@ -549,7 +549,7 @@
         "race": "Chinese",
         "age": 61,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_44",
@@ -557,7 +557,7 @@
         "race": "Chinese",
         "age": 75,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_45",
@@ -565,7 +565,7 @@
         "race": "Chinese",
         "age": 54,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_48",
@@ -573,7 +573,7 @@
         "race": "Chinese",
         "age": 63,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_49",
@@ -581,7 +581,7 @@
         "race": "Chinese",
         "age": 51,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_50",
@@ -589,7 +589,7 @@
         "race": "Chinese",
         "age": 79,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_51",
@@ -597,7 +597,7 @@
         "race": "Malay",
         "age": 68,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_52",
@@ -605,7 +605,7 @@
         "race": "Thai",
         "age": 60,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_53",
@@ -613,7 +613,7 @@
         "race": "Thai",
         "age": 67,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_54",
@@ -621,7 +621,7 @@
         "race": "Chinese",
         "age": 74,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_55",
@@ -629,7 +629,7 @@
         "race": "Chinese",
         "age": 70,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_56",
@@ -637,7 +637,7 @@
         "race": "Chinese",
         "age": 61,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_57",
@@ -645,7 +645,7 @@
         "race": "Chinese",
         "age": 73,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_58",
@@ -653,7 +653,7 @@
         "race": "Chinese",
         "age": 69,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_59",
@@ -661,7 +661,7 @@
         "race": "Chinese",
         "age": 73,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_60",
@@ -669,7 +669,7 @@
         "race": "Other",
         "age": 61,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIB"
+        "stage": "TNM Stage IIIB"
     },
     {
         "patientId": "ITH_61",
@@ -677,7 +677,7 @@
         "race": "Malay",
         "age": 71,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_62",
@@ -685,7 +685,7 @@
         "race": "Chinese",
         "age": 64,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_63",
@@ -693,7 +693,7 @@
         "race": "Chinese",
         "age": 47,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_64",
@@ -701,7 +701,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_65",
@@ -709,7 +709,7 @@
         "race": "Chinese",
         "age": 76,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_66",
@@ -717,7 +717,7 @@
         "race": "Indian",
         "age": 55,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_67",
@@ -725,7 +725,7 @@
         "race": "Chinese",
         "age": 76,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_68",
@@ -733,7 +733,7 @@
         "race": "Chinese",
         "age": 62,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_69",
@@ -741,7 +741,7 @@
         "race": "Chinese",
         "age": 57,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_70",
@@ -749,7 +749,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_71",
@@ -757,7 +757,7 @@
         "race": "Chinese",
         "age": 69,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IA"
+        "stage": "TNM Stage IA"
     },
     {
         "patientId": "ITH_72",
@@ -765,7 +765,7 @@
         "race": "Chinese",
         "age": 60,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_73",
@@ -773,7 +773,7 @@
         "race": "Chinese",
         "age": 47,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_74",
@@ -781,7 +781,7 @@
         "race": "Chinese",
         "age": 64,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage III A"
+        "stage": "TNM Stage III A"
     },
     {
         "patientId": "ITH_75",
@@ -789,7 +789,7 @@
         "race": "Chinese",
         "age": 80,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_76",
@@ -797,7 +797,7 @@
         "race": "Chinese",
         "age": 68,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_77",
@@ -805,7 +805,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_78",
@@ -813,7 +813,7 @@
         "race": "Malay",
         "age": 65,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_79",
@@ -821,7 +821,7 @@
         "race": "Chinese",
         "age": 76,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_80",
@@ -829,7 +829,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_81",
@@ -837,7 +837,7 @@
         "race": "Indian",
         "age": 71,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_82",
@@ -845,7 +845,7 @@
         "race": "Chinese",
         "age": 71,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_83",
@@ -853,7 +853,7 @@
         "race": "Chinese",
         "age": 61,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_84",
@@ -861,7 +861,7 @@
         "race": "Chinese",
         "age": 75,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_85",
@@ -869,7 +869,7 @@
         "race": "Chinese",
         "age": 65,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_86",
@@ -877,7 +877,7 @@
         "race": "Chinese",
         "age": 61,
         "viralStatus": "B/C",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_87",
@@ -885,7 +885,7 @@
         "race": "Other",
         "age": 65,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_88",
@@ -893,7 +893,7 @@
         "race": "Chinese",
         "age": 63,
         "viralStatus": "C",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_89",
@@ -901,7 +901,7 @@
         "race": "Indian",
         "age": 23,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_90",
@@ -909,7 +909,7 @@
         "race": "Chinese",
         "age": 66,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_91",
@@ -917,7 +917,7 @@
         "race": "Chinese",
         "age": 73,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_92",
@@ -925,7 +925,7 @@
         "race": "Chinese",
         "age": 54,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_93",
@@ -933,7 +933,7 @@
         "race": "Chinese",
         "age": 74,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_94",
@@ -941,7 +941,7 @@
         "race": "Chinese",
         "age": 75,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage II"
+        "stage": "TNM Stage II"
     },
     {
         "patientId": "ITH_95",
@@ -949,7 +949,7 @@
         "race": "Malay",
         "age": 69,
         "viralStatus": "0",
-        "tnmStageV8": "TNM Stage IIIA"
+        "stage": "TNM Stage IIIA"
     },
     {
         "patientId": "ITH_96",
@@ -957,7 +957,7 @@
         "race": "Thai",
         "age": 57,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_97",
@@ -965,7 +965,7 @@
         "race": "Thai",
         "age": 61,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_98",
@@ -973,7 +973,7 @@
         "race": "Thai",
         "age": 61,
         "viralStatus": "B/C",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     },
     {
         "patientId": "ITH_99",
@@ -981,6 +981,6 @@
         "race": "Thai",
         "age": 76,
         "viralStatus": "B",
-        "tnmStageV8": "TNM Stage IB"
+        "stage": "TNM Stage IB"
     }
 ]

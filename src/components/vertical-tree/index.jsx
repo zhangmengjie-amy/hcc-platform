@@ -5,7 +5,6 @@ import distinctColors from '@/utils/colors';
 import * as d3 from 'd3';
 
 const margin = 20;
-const circleRadius = 8;
 const fontSize = 14;
 const labelPadding = 2;
 const scaleOffset = 20;
@@ -14,6 +13,7 @@ const VerticalTree = ({
     sampleGeneData,
     data,
     color,
+    circleRadius = 8,
     showTooltip = true,
     handleClick = () => { },
     geneList = [],

@@ -65,22 +65,22 @@ const SunburstChart = ({ data, handleItemClick }) => {
         const purePatientList = [];
         const mixedPatientList = [];
         let patientWithGroupSubtype = patientList
-            .filter((item) => new Set(item.samples?.map((s) => s.subtype)).size > 1)
+            .filter((item) => new Set(item.subtypes?.map((s) => s.subtype)).size > 1)
             .map((item) => ({
                 ...item,
-                samples: item.samples.sort((a, b) => a.subtype.localeCompare(b.subtype))
+                subtypes: item.subtypes.sort((a, b) => a.subtype.localeCompare(b.subtype))
             }));
 
 
         MIXED_GROUP.forEach((group) => {
             const patient = patientWithGroupSubtype.filter((item) => {
-                return Array.from(new Set(item.samples.map((sample) => sample.subtype))).join(",") == group
+                return Array.from(new Set(item.subtypes.map((sample) => sample.subtype))).join(",") == group
             }).sort((a, b) => a.stage.length - b.stage.length);
             mixedPatientList.push(...patient);
         })
-        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples?.map((item) => item.subtype)).size == 1)
+        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.subtypes?.map((item) => item.subtype)).size == 1)
         Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
+            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.subtypes[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
             purePatientList.push(...patientWithSameSubtype);
         })
         sortedPatientList = [...purePatientList, ...mixedPatientList];
@@ -103,7 +103,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
     }
 
     const filterPatients = (_patientList) => {
-        return _patientList?.filter((item) => !!item.samples);
+        return _patientList?.filter((item) => !!item.subtypes);
     }
 
     const buildChildren = (sampleLength, patient, PURE_MIXED) => {
@@ -122,7 +122,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
                     custom: {
                         theme: "Stage",
                         patientId: patient.patientId,
-                        sampleLength: patient.samples.length,
+                        sampleLength: patient.subtypes.length,
                         PURE_MIXED: PURE_MIXED
                     },
                     itemStyle: {
@@ -141,7 +141,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
                                 theme: "RNA Mixed or Pure",
                                 patientId: patient.patientId,
                                 sampleId: patient.sampleId,
-                                sampleLength: patient.samples.length,
+                                sampleLength: patient.subtypes.length,
                                 stage: patient.stage
                             },
                             children: [{
@@ -162,8 +162,8 @@ const SunburstChart = ({ data, handleItemClick }) => {
                 }]
             }
         ];
-        const subtype = patient.samples[sampleLength - 1]?.subtype;
-        const sampleId = patient.samples[sampleLength - 1]?.id;
+        const subtype = patient.subtypes[sampleLength - 1]?.subtype;
+        const sampleId = patient.subtypes[sampleLength - 1]?.id;
         const color = SUBTYPE_COLOR[subtype];
         children.push({
             name: subtype ?? "",
@@ -189,7 +189,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
         setHasData(!!filterdPatient?.length)
         const sortedPatient = sortPatients(filterdPatient);
         let seriesData = [];
-        const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.samples?.length))
+        const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.subtypes?.length))
 
 
         let pureChildren = [];
@@ -199,13 +199,13 @@ const SunburstChart = ({ data, handleItemClick }) => {
         let pureTotalSpace = 0;
         let mixedTotalSpace = 0;
         const mixedPatientsLength = sortedPatient.filter((item) => {
-            return new Set(item.samples.map((item) => item.subtype)).size > 1;
+            return new Set(item.subtypes.map((item) => item.subtype)).size > 1;
         })?.length;
         const purePatientsLength = sortedPatient.filter((item) => {
-            return new Set(item.samples.map((item) => item.subtype)).size == 1;
+            return new Set(item.subtypes.map((item) => item.subtype)).size == 1;
         })?.length;
         sortedPatient.forEach((patient, index) => {
-            const isPure = new Set(patient.samples.map((item) => item.subtype)).size == 1;
+            const isPure = new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
             const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
             if (isPure) {
                     if (!initialPureSubtype && !!mixedPatientsLength) {
@@ -223,7 +223,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
                             children: [],
                         });
                     }
-                    if (initialPureSubtype !== patient.samples[0].subtype && mixedPatientsLength) {
+                    if (initialPureSubtype !== patient.subtypes[0].subtype && mixedPatientsLength) {
                             pureTotalSpace += 1;
                             pureChildren.push({
                                 value: spaceValue,
@@ -236,9 +236,9 @@ const SunburstChart = ({ data, handleItemClick }) => {
                             });
                     }
 
-                initialPureSubtype = patient.samples[0].subtype;
+                initialPureSubtype = patient.subtypes[0].subtype;
                 pureChildren.push(...result);
-                if (new Set(sortedPatient[index + 1]?.samples.map((item) => item.subtype)).size > 1) {
+                if (new Set(sortedPatient[index + 1]?.subtypes.map((item) => item.subtype)).size > 1) {
                     pureChildren.push({
                         value: defaultValue,
                         name: "Pure",
@@ -255,7 +255,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
                 }
 
             } else {
-                const currentMixedSubtype = Array.from(new Set(patient.samples.map((sample) => sample.subtype))).join(",");
+                const currentMixedSubtype = Array.from(new Set(patient.subtypes.map((sample) => sample.subtype))).join(",");
                 if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype && !!purePatientsLength) {
                     mixedTotalSpace += 1;
                     mixedChildren.push({

@@ -54,7 +54,7 @@ const LiverSampleChart = ({ data }) => {
             .attr("x", chartWidth / 2)
             .attr("y", -margin.top / 2 + 5) // Adjust position as needed
             .attr("text-anchor", "middle")
-            .style("font-size", "10px") // Slightly smaller font
+            .style("font-size", "12px") // Slightly smaller font
             .text(`${data.patientId}, Tumor: ${data.tumor_size}cm, Sample: ${(Number(data.samples[0].sample_r) * 2).toFixed(2)}cm`);
 
         // Draw the liver
@@ -130,7 +130,7 @@ const LiverSampleChart = ({ data }) => {
         // Add Y axis label
         svg.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left + 25) // Position label to the left of the axis
+            .attr("y", 0 - margin.left + 20) // Position label to the left of the axis
             .attr("x", 0 - (chartHeight / 2))
             .style("text-anchor", "middle")
             .style("font-size", "10px")

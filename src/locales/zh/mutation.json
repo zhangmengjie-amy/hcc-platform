@@ -69,11 +69,17 @@
     "double-positive": "HBV+ HCV+",
     "double-negative": "HBV+ HCV+",
     "tnmStageV8": "TNM阶段",
+    "stage": "TNM阶段",
     "TNM Stage II": "II",
     "TNM Stage IA": "IA",
     "TNM Stage IB": "IB",
     "TNM Stage IIIA": "IIIA",
-    "TNM Stage IIIB": "IIIB"
+    "TNM Stage IIIB": "IIIB",
+    "II": "II",
+    "IA": "IA",
+    "IB": "IB",
+    "IIIA": "IIIA",
+    "IIIB": "IIIB"
   },
   "driver": {
     "driver": "驱动基因",

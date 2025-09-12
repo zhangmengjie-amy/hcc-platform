@@ -1,21 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import VerticalTree from "@/components/vertical-tree"
-import { Modal, Typography, Flex, Button } from 'antd';
+import { Modal, Typography, Flex, Button, Spin } from 'antd';
 import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import { getFullPhylogenetic } from "@/configs/request";
-
-const TreeChart = ({ treeData, modalOpen, geneList, onclose }) => {
+import EmptyLoading from "@/components/empty-loading";
+const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline = 'left', circleRadius = 8 }) => {
 
     const [treeList, setTreeList] = useState(null);
     const [clinic, setClinic] = useState(null);
     const [sampleGeneData, setSampleGeneData] = useState(null);
     const { t } = useTranslation();
     useEffect(() => {
-        if (!treeData?.newick) return;
+        if (!treeData?.newick || !dataType) return;
         const treeWorker = new Worker('/workers/tree.js');
-        getFullPhylogenetic().then((results) => {
+        getFullPhylogenetic(dataType).then((results) => {
             const geneData = results?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`))
 
             treeWorker.postMessage({ newick: treeData?.newick, geneData });
@@ -23,11 +23,10 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose }) => {
                 setTreeList(data.treeList);
                 setClinic(data.clinic);
                 setSampleGeneData(data.sampleGeneData);
-
             };
         });
 
-    }, [treeData?.newick]);
+    }, [treeData?.newick, dataType]);
 
     const renderModalTitle = useMemo(() => {
         return <><Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
@@ -55,18 +54,21 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose }) => {
                     Cancel
                 </Button>
             ]}
-            width="70vw"
+            width="90vw"
         >
-            <VerticalTree
-                width={800}
-                height={500}
-                geneList={geneList}
-                color={treeData?.itemStyle?.color}
-                data={treeList}
-                sampleGeneData={sampleGeneData}
-            />
-        </Modal>
+            {
+                treeList ? <VerticalTree
+                    geneList={geneList}
+                    baseline={baseline}
+                    color={treeData?.itemStyle?.color}
+                    data={treeList}
+                    sampleGeneData={sampleGeneData}
+                /> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
+                    <Spin spinning={true} ></Spin>
+                </Flex>
+            }
 
+        </Modal>
     );
 };
 

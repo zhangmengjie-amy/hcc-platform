@@ -1,11 +1,11 @@
 // tree.js (作为 Web Worker)
 const clinicColorConfig = {
-    tnmStageV8: {
-        "TNM Stage IA": 'rgb(255, 245, 240)',
-        "TNM Stage IB": "rgb(252, 187, 161)",
-        "TNM Stage II": 'rgb(251, 106, 74)',
-        "TNM Stage IIIA": "rgb(239, 59, 44)",
-        "TNM Stage IIIB": "rgb(203, 24, 29)"
+    stage: {
+        "IA": 'rgb(255, 245, 240)',
+        "IB": "rgb(252, 187, 161)",
+        "II": 'rgb(251, 106, 74)',
+        "IIIA": "rgb(239, 59, 44)",
+        "IIIB": "rgb(203, 24, 29)"
     },
     age: {
         "<20": "rgb(242, 250, 248)",
@@ -25,9 +25,9 @@ const clinicColorConfig = {
     gender: { Female: 'rgb(255, 144, 187)', Male: 'rgb(109, 225, 210)' }
 };
 
-// 将 "ITH_01_T1" → "T1"
+// 将 "ITH_01_T1" → "T1", 将DT01_01 → T1
 function formatLabel(str) {
-    return str?.replace(/^.*?_.*?_/, '') ?? str;
+    return str?.replace(/.*_/, '') ?? str;
 }
 
 // 解析 Newick, 给每个节点设置 _parent，并收集叶节点 name->node 映射
@@ -56,8 +56,8 @@ function parseNewick(newick) {
             const len = parseFloat(tokens[++i]);
             current.length = isNaN(len) ? 0 : len;
         } else if (t && t !== ';') {
-            current.name = t;
-            nameToNode[t] = current;
+            current.name = formatLabel(t);
+            nameToNode[current.name] = current;
         }
     }
 
@@ -115,17 +115,17 @@ self.onmessage = ({ data: { newick, geneData } }) => {
 // 1. 解析树
 const { tree, nameToNode } = parseNewick(newick);
 
-    // 2. 构建 sample->[{gene,is_driver_gene}]，并记录 gene 的 is_driver_gene 标记
+    // 2. 构建 sample->[{gene,isDriver}]，并记录 gene 的 isDriver 标记
     const sampleToGenes = Object.create(null);
     const geneToDriverFlag = Object.create(null);
 
     mutationsWithGenomeChange.forEach(({ sampleId, geneData: muts }) => {
-        if (!sampleToGenes[sampleId]) sampleToGenes[sampleId] = [];
+        if (!sampleToGenes[formatLabel(sampleId)]) sampleToGenes[formatLabel(sampleId)] = [];
         muts.forEach(m => {
-            sampleToGenes[sampleId].push({ unionGene: m.unionGene, gene: m.gene, is_driver_gene: m.is_driver_gene == 1 });
-            // 只要有一个 is_driver_gene===true，就标记为 driver
-            if (!geneToDriverFlag[m.unionGene] || m.is_driver_gene == 1) {
-                geneToDriverFlag[m.unionGene] = m.is_driver_gene == 1;
+            sampleToGenes[formatLabel(sampleId)].push({ unionGene: m.unionGene, gene: m.gene, isDriver: m.isDriver == 1 });
+            // 只要有一个 isDriver===true，就标记为 driver
+            if (!geneToDriverFlag[m.unionGene] || m.isDriver == 1) {
+                geneToDriverFlag[m.unionGene] = m.isDriver == 1;
             }
         });
     });
@@ -198,7 +198,7 @@ const { tree, nameToNode } = parseNewick(newick);
     const clinic = {
         age: { value: patientItem.age, color: clinicColorConfig.age[ageGroup] }
     };
-    ["gender", "race", "hcv", "hbv", "tnmStageV8"].forEach(prop => {
+    ["gender", "race", "hcv", "hbv", "stage"].forEach(prop => {
         clinic[prop] = {
             value: patientItem[prop],
             color: clinicColorConfig[prop][patientItem[prop]]
@@ -209,8 +209,8 @@ const { tree, nameToNode } = parseNewick(newick);
 const sampleGeneData = Object.fromEntries(
   Object.entries(sampleToGenes).map(([sample, arr]) => {
     // 提取所有基因
-    const driverGenesInSample = Array.from(new Set(arr.filter((item) => item.is_driver_gene).map(x => x.unionGene)));
-    const nonDriverGenesInSample = Array.from(new Set(arr.filter((item) => !item.is_driver_gene).map(x => x.unionGene)));
+    const driverGenesInSample = Array.from(new Set(arr.filter((item) => item.isDriver).map(x => x.unionGene)));
+    const nonDriverGenesInSample = Array.from(new Set(arr.filter((item) => !item.isDriver).map(x => x.unionGene)));
 
     // 可根据需要，存入对象或数组
     return [

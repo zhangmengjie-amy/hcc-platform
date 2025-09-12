@@ -2,7 +2,7 @@ const filterSampleByConditions = (originalSamples, clinicList, geneList) => {
     return originalSamples?.map((item) => {
         return {
             ...item,
-            tnmStageV8: item.tnmStageV8 === "TNM Stage Ib" ? "TNM Stage IB" : (item.tnmStageV8 === "TNM Stage III A" ? "TNM Stage IIIA" : (item.tnmStageV8 === "TNM  Stage II" ? "TNM Stage II" : item.tnmStageV8)),
+            stage: item.stage,
             hcv: item.viralStatus == "0" || item.viralStatus == "B" ? "negative" : "positive",
             hbv: item.viralStatus == "0" || item.viralStatus == "C" ? "negative" : "positive",
             mutations: !item.mutations ? null : item.mutations?.filter((muttation) => geneList.some((gene) => gene.gene == muttation.gene))

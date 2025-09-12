@@ -49,6 +49,7 @@ const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const Mutation = () => {
     const { t } = useTranslation();
     const [treeType, setTreeType] = useState("overview");
+    const [dataType, setDataType] = useState("planet");
     const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
     const [sampleType, setSampleType] = useState("bySample");
     const [applyLoading, setApplyLoading] = useState(false);
@@ -107,6 +108,16 @@ const Mutation = () => {
                             style={{ color: "#fff", background: !applyLoading ? "rgb(237, 108, 116)" : "gray" }}>
                             {t("common:apply")}
                         </Button>
+                        {
+                           <Segmented
+                                options={[
+                                    { label: 'PLANET', value: "planet" },
+                                    { label: 'DT', value: "dt" },
+                                ]}
+                                value={dataType}
+                                onChange={value => setDataType(value)}
+                            />
+                        } 
                         <Button color="default" variant="text"
                             onClick={leftPanelFullScreen}
                             style={{ color: "#fff", padding: 0 }}>
@@ -163,13 +174,13 @@ const Mutation = () => {
                         <ExportPdfButton document={driverLandscapeRef.current}></ExportPdfButton>
                     </Flex>
                     {
-                        mutationTypeTab === "driverLandscape" && <DriverLandscape ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params} sampleType={sampleType}></DriverLandscape>
+                        mutationTypeTab === "driverLandscape" && <DriverLandscape dataType={dataType} ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params} sampleType={sampleType}></DriverLandscape>
                     }
                     {
-                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship range={sliderValue} conditions={params} treeType={treeType}></PhylogeneticRelationship>
+                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship  dataType={dataType}  range={sliderValue} conditions={params} treeType={treeType}></PhylogeneticRelationship>
                     }
                     {
-                        mutationTypeTab === "timingAnalysis" && <TimingAnalysis range={sliderValue} conditions={params}></TimingAnalysis>
+                        mutationTypeTab === "timingAnalysis" && <TimingAnalysis dataType={dataType} range={sliderValue} conditions={params}></TimingAnalysis>
                     }
                 </Panel>
             </Splitter>
