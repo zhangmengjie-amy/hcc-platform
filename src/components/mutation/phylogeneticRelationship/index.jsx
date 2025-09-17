@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { getITHList, getPatientList } from "@/configs/request";
+import { getFullMutations, getPatientList } from "@/configs/request";
 import ReactECharts from 'echarts-for-react';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { Flex, Typography, Alert, Row, Button } from 'antd';
 import styles from "./style.module.scss";
-import TreeDialog from "@/components/mutation/phylogeneticRelationship/treeDialog"
+import TreeDialog from "@/components/tree-dialog"
 import TreeList from '@/components/mutation/phylogeneticRelationship/treeList';
+import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
 
 const VISIBLE_TREE_LENGTH = 6;
@@ -15,22 +16,9 @@ const TREE_WIDTH = 120;
 const TREE_CONTAINER_WIDTH = VISIBLE_TREE_LENGTH * TREE_WIDTH;
 const PIE_CHART_WIDTH = 600;
 const BAR_CHART_WIDTH = PIE_CHART_WIDTH / 2;
-const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.3;
+const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.35;
 const BAR_AXIS = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1'];
 const BAR_CATEGORIES = ['0~0.1', '0.1~0.2', '0.2~0.3', '0.3~0.4', '0.4~0.5', '0.5~0.6', '0.6~0.7', '0.7~0.8', '0.8~0.9', '0.9~1.0'];
-
-const baseColors = [
-    { r: 94, g: 79, b: 162 },    // #5E4FA2
-    { r: 170, g: 55, b: 236 },    // #AA37EC
-    { r: 132, g: 116, b: 197 },   // #8474C5
-    { r: 47, g: 155, b: 200 },   // #2F9BC8
-    { r: 102, g: 194, b: 165 },  // #66C2A5
-    { r: 171, g: 221, b: 164 },  // #ABDDA4
-    { r: 252, g: 212, b: 103 },  // #FCD467
-    { r: 253, g: 174, b: 97 },   // #FDAE61
-    { r: 244, g: 109, b: 67 },   // #F46D43
-    { r: 158, g: 1, b: 66 }      // #9E0142
-];
 
 const LEGEND = [{
     name: "<=0.1",
@@ -64,9 +52,11 @@ const LEGEND = [{
     color: "#9E0142"
 }]
 
-const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => {
-    const [pieChartOption, setPieChartOption] = useState();
-    const [columnOption, setColumnOption] = useState();
+
+
+const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeType = "overview", conditions }) => {
+    const [pieChartOption, setPieChartOption] = useState({});
+    const [columnOption, setColumnOption] = useState({});
     const [loading, setLoading] = useState(true);
     const [rangeList, setRangeList] = useState([]);
     const barChartRef = useRef(null);
@@ -78,18 +68,19 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     const rangePatientListRef = useRef(null);
 
     useEffect(() => {
-        setLoading(true)
-        const fetchData = async () => {
-            let [ITHList, patientList] = await Promise.all([getITHList(), getPatientList()]);
-            if (!ITHList || !patientList) return;
-            let _patientList = ITHList?.map((item) => {
-                const currentPatient = patientList.find((patient) => patient.patientId == item.publicationId);
+        setLoading(true);
+        if (!conditions?.geneList) return;
+
+        const fetchData = async (finialSampleList) => {
+            let [patientList] = await Promise.all([getPatientList(dataType.length == 2 ? null : dataType[0])]);
+            if (!patientList) return;
+            let _patientList = patientList.filter((item) => !!item.newick && finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
                 return {
-                    ...currentPatient,
-                    currentValue: item.ith?.toFixed(2)
+                    ...item,
+                    ith: Number(item.ith)?.toFixed(2) ?? 1
                 }
             })
-            _patientList = _patientList?.sort((a, b) => a.currentValue - b.currentValue);
+            _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
             patientListRef.current = _patientList;
             patientListRef.current = buildAllPatientsData();
             rangePatientListRef.current = getPatientListByRange();
@@ -97,23 +88,37 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
             buildPieChart();
             buildBarChart();
         }
-        fetchData();
-        setLoading(false);
-    }, []);
+
+        const sampleWorker = new Worker('/workers/calculate.js');
+        try {
+            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
+                sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
+                sampleWorker.onmessage = (event) => {
+                    const result = event.data;
+                    fetchData(result.finialSampleList);
+                };
+                setLoading(false);
+            });
+        } catch (error) {
+
+        }
+        return () => {
+            sampleWorker.terminate();
+        };
+    }, [conditions, dataType]);
 
     const getPatientListByRange = () => {
         return patientListRef.current?.filter((item) => {
-            return item.ITH >= range[0] && item.ITH <= range[1];
+            return item.ith >= range[0] && item.ith <= range[1];
         })
     }
 
     const getPatientListByActiveBar = () => {
         const [min, max] = activeBar.split("~");
         return rangePatientListRef.current.filter((item) => {
-            return item.ITH > min && item.ITH <= max
+            return item.ith > min && item.ith <= max
         })
     }
-
 
     useEffect(() => {
         if (!range?.length) return;
@@ -141,31 +146,6 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
         setRangeList(rangePatientListRef.current);
     }, [range, activeBar])
 
-    function generateGradientColors(totalSteps) {
-        const colors = [];
-        const segments = baseColors.length - 1;
-        const stepsPerSegment = Math.floor(totalSteps / segments);
-
-        for (let i = 0; i < segments; i++) {
-            const start = baseColors[i];
-            const end = baseColors[i + 1];
-
-            // 当前分段的步数（最后一个分段补齐剩余步数）
-            const steps = (i === segments - 1)
-                ? totalSteps - (stepsPerSegment * (segments - 1))
-                : stepsPerSegment;
-
-            for (let j = 0; j < steps; j++) {
-                const ratio = j / steps;
-                const r = Math.round(start.r + (end.r - start.r) * ratio);
-                const g = Math.round(start.g + (end.g - start.g) * ratio);
-                const b = Math.round(start.b + (end.b - start.b) * ratio);
-                colors.push(`rgb(${r},${g},${b})`);
-            }
-        }
-        return colors;
-    }
-
     const buildPieChart = () => {
         const _pieChartOption = {
             grid: {
@@ -188,7 +168,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
                                     background:${color};
                                     margin-right:8px;
                                     border-radius:2px">
-                        </span><span >${params.name}</span> <span style="font-weight:bold">${params?.data?.ITH}<span>
+                        </span><span >${params.name}</span> <span style="font-weight:bold">${params?.data?.ith}<span>
                     </div>
                 `;
                 }
@@ -243,7 +223,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     const buildBarChart = () => {
         const _columnOption = {
             grid: {
-                top: 20,
+                top: 35,
                 right: 0,
                 bottom: 20,
                 left: 0,
@@ -252,7 +232,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
             title: {
                 text: `Total: ${rangePatientListRef.current?.length ?? 0}`,
                 left: 'center',
-                top: "0",
+                top: 5,
                 textStyle: {
                     fontSize: "14px",
                     color: "#000"
@@ -395,7 +375,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
             result = rangePatientListRef.current;
         }
 
-        return result.sort((a, b) => a.ITH - b.ITH);
+        return result.sort((a, b) => a.ith - b.ith);
     };
 
     const getVisibleTreeListWithStyle = useMemo(() => {
@@ -407,18 +387,17 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
                 transform: `rotate(${calculateFanLayout(result?.length)[index].rotate}deg) translate(${calculateFanLayout(result?.length)[index].translate})`
             }
         })
-    }, [rangePatientListRef.current])
+    }, [rangePatientListRef.current, dataType])
 
     const buildAllPatientsData = () => {
         const colors = generateGradientColors(100);
         return patientListRef.current?.map((item) => {
             return {
-                ITH: item.currentValue,
+                ith: item.ith,
                 newick: item.newick,
-                samples: item.samples,
                 name: item.patientId,
                 patientId: item.patientId,
-                itemStyle: { color: colors[Math.round(item.currentValue * 100) - 1] },
+                itemStyle: { color: colors[Math.round(item.ith * 100) - 1] },
             }
         })
     }
@@ -433,19 +412,19 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     }
 
     const getAreaPatientData = (minValue, maxValue) => {
-        return rangePatientListRef.current?.filter((patient) => patient.ITH > minValue && patient.ITH <= maxValue);
+        return rangePatientListRef.current?.filter((patient) => patient.ith > minValue && patient.ith <= maxValue);
     }
 
     const onBarEvents = useMemo(() => ({
         "click": function (params) {
             const [rangeMin, rangeMax] = range;
             rangePatientListRef.current = rangePatientListRef.current = patientListRef.current.filter((item) => {
-                return item.ITH > rangeMin && item.ITH <= rangeMax
+                return item.ith > rangeMin && item.ith <= rangeMax
             })
             if (activeBar !== params.name) {
                 const [min, max] = params.name.split("~");
                 rangePatientListRef.current = rangePatientListRef.current.filter((item) => {
-                    return item.ITH > min && item.ITH <= max
+                    return item.ith > min && item.ith <= max
                 })
                 setActiveBar(params.name);
             } else {
@@ -476,54 +455,59 @@ const PhylogeneticRelationship = ({ range = [0, 1], treeType = "overview" }) => 
     return (
 
         <>
-            <EmptyLoading loading={loading} showEmpty={true} hasData={!!pieChartOption}>
-                <Alert style={{ margin: "0px 10px" }} message={renderMeaage} type="info" />
-                <div style={{ position: "relative", top: treeType == "overview" ? 0 : "-70px", marginTop: treeType == "overview" ? "150px" : "0px", transform: `scale(${treeType == "overview" ? 1 : 0.7})`, transition: "all ease .3s" }}>
-                    <ReactECharts ref={pieChartRef} option={pieChartOption} opts={{ renderer: 'svg' }}
-                        lazyUpdate={true}
-                        onEvents={onPieEvents}
-                        style={{ height: PIE_CHART_WIDTH, width: PIE_CHART_WIDTH, margin: "0 auto" }}>
-                    </ReactECharts>
-                    <ReactECharts ref={barChartRef} option={columnOption} opts={{ renderer: 'svg' }}
-                        lazyUpdate={true}
-                        onEvents={onBarEvents}
-                        style={{ height: BAR_CHART_HEIGHT, width: BAR_CHART_WIDTH, position: "absolute", left: "50%", marginLeft: -BAR_CHART_WIDTH / 2, bottom: "285px" }}>
-                    </ReactECharts>
-                    {
-                        treeType == "overview" && <Flex style={{ width: TREE_CONTAINER_WIDTH, margin: "0 auto", justifyContent: "space-between", position: "absolute", top: "-120px", left: "50%", marginLeft: "-360px" }}>
-                            {
-                                getVisibleTreeListWithStyle?.map((item, index) => {
-                                    return <Flex onClick={() => { viewTree(item) }} className={rangeList?.length > 6 && index != getVisibleTreeListWithStyle.length - 1 ? styles.ellipse : null} key={item.patientId} vertical align="center" style={{ width: "120px", height: "120px", transform: item.transform }}>
-                                        <Typography.Paragraph style={{ margin: 0, textAlign: "center" }}>
-                                            {item.patientId}
-                                        </Typography.Paragraph>
-
-                                        <Image src={item.image} width="100" height="100" alt='tree'></Image>
-                                    </Flex>
-                                })
-                            }
-
-                        </Flex>
-                    }
-
-                    <Flex align='center' justify="center" style={{ position: "absolute", width: "100%", bottom: 240, margin: "0 auto" }}>
-                        <Flex>
-                            {
-                                LEGEND.map((item) => {
-                                    return <Flex key={item.name} align='center'>
-                                        <span style={{ marginLeft: 8, backgroundColor: item.color, borderRadius: 3, width: 12, height: 12, display: "inline-block" }}></span><span style={{ marginLeft: 3, color: "#666" }}>{item.name}</span>
-                                    </Flex>
-                                })
-                            }
-                        </Flex>
-                    </Flex>
-                </div>
-                {
-                    treeType === "detail" && <TreeList list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
-                }
-            </EmptyLoading>
             {
-                <TreeDialog treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+                <EmptyLoading loading={loading} showEmpty={true} hasData={!!Object.keys(pieChartOption)?.length}>
+
+                    {
+                        <><Alert style={{ margin: "0px 10px" }} message={renderMeaage} type="info" />
+                            <div style={{ position: "relative", top: treeType == "overview" ? 0 : "-70px", marginTop: treeType == "overview" ? "150px" : "0px", transform: `scale(${treeType == "overview" ? 1 : 0.7})`, transition: "all ease .3s" }}>
+                                <ReactECharts ref={pieChartRef} option={pieChartOption} opts={{ renderer: 'svg' }}
+                                    lazyUpdate={true}
+                                    onEvents={onPieEvents}
+                                    style={{ height: PIE_CHART_WIDTH, width: PIE_CHART_WIDTH, margin: "0 auto" }}>
+                                </ReactECharts>
+                                <ReactECharts ref={barChartRef} option={columnOption} opts={{ renderer: 'svg' }}
+                                    lazyUpdate={true}
+                                    onEvents={onBarEvents}
+                                    style={{ height: BAR_CHART_HEIGHT, width: BAR_CHART_WIDTH, position: "absolute", left: "50%", marginLeft: -BAR_CHART_WIDTH / 2, bottom: "265px" }}>
+                                </ReactECharts>
+                                {
+                                    treeType == "overview" && <Flex style={{ width: TREE_CONTAINER_WIDTH, margin: "0 auto", justifyContent: "space-between", position: "absolute", top: "-120px", left: "50%", marginLeft: "-360px" }}>
+                                        {
+                                            getVisibleTreeListWithStyle?.map((item, index) => {
+                                                return <Flex onClick={() => { viewTree(item) }} className={rangeList?.length > 6 && index != getVisibleTreeListWithStyle.length - 1 ? styles.ellipse : null} key={item.patientId} vertical align="center" style={{ width: "120px", height: "120px", transform: item.transform }}>
+                                                    <Typography.Paragraph style={{ margin: 0, textAlign: "center" }}>
+                                                        {item.patientId}
+                                                    </Typography.Paragraph>
+
+                                                    <Image src={item.image} width="100" height="100" alt='tree'></Image>
+                                                </Flex>
+                                            })
+                                        }
+                                    </Flex>
+                                }
+
+                                <Flex align='center' justify="center" style={{ position: "absolute", width: "100%", bottom: 240, margin: "0 auto" }}>
+                                    <Flex>
+                                        {
+                                            LEGEND.map((item) => {
+                                                return <Flex key={item.patientId} align='center'>
+                                                    <span style={{ marginLeft: 8, backgroundColor: item.color, borderRadius: 3, width: 12, height: 12, display: "inline-block" }}></span><span style={{ marginLeft: 3, color: "#666" }}>{item.name}</span>
+                                                </Flex>
+                                            })
+                                        }
+                                    </Flex>
+                                </Flex>
+                            </div>
+                            {
+                                treeType === "detail" && <TreeList dataType={dataType} list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
+                            }
+                            {
+                                modalOpen && <TreeDialog treeData={currentPatientRef.current} dataType={dataType} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+                            }
+                        </>
+                    }
+                </EmptyLoading>
             }
         </>
     );

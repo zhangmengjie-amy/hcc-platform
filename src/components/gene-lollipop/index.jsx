@@ -298,10 +298,8 @@ const mutationTypeColorConfig = {
     }, []);
 
     useEffect(() => {
-                getLollipopPlotData({gene}).then((results) => {
-                    console.log(results)
-                });
-        console.log(gene, samples);
+        getLollipopPlotData({gene}).then((results) => {
+        });
     }, [gene, samples]);
 
     const colors = ["#778beb", "#f3a683", "#f7d794"];

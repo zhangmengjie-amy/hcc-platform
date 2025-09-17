@@ -92,10 +92,10 @@ const Immune = () => {
         const purePatientList = [];
         const mixedPatientList = [];
         let patientWithGroupSubtype = patientList
-            .filter((item) => new Set(item.samples.map((s) => s.subtype)).size > 1)
+            .filter((item) => new Set(item.samples?.map((s) => s.subtype)).size > 1)
             .map((item) => ({
                 ...item,
-                samples: item.samples.sort((a, b) => a.subtype.localeCompare(b.subtype))
+                samples: item.samples?.sort((a, b) => a.subtype.localeCompare(b.subtype))
             }));
 
 

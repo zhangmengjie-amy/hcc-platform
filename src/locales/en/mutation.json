@@ -66,12 +66,17 @@
     "double-negative": "HBV- HCV-",
     "positive": "Positive",
     "negative": "Negative",
-    "tnmStageV8": "TNM Stage",
+    "stage": "TNM Stage",
     "TNM Stage II": "II",
     "TNM Stage IA": "IA",
     "TNM Stage IB": "IB",
     "TNM Stage IIIA": "IIIA",
-    "TNM Stage IIIB": "IIIB"
+    "TNM Stage IIIB": "IIIB",
+    "II": "II",
+    "IA": "IA",
+    "IB": "IB",
+    "IIIA": "IIIA",
+    "IIIB": "IIIB"
   },
   "driver": {
     "driver": "Driver",

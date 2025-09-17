@@ -1,540 +1,211 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { getExpressionSubtypeList } from "@/configs/request";
-import { Flex } from 'antd';
-import { getITHList, getPatientList } from "@/configs/request";
-import { getFullMutations } from "@/configs/request";
-import HorizontalTree from "@/components/horizontal-tree/index";
-import EChartsReact from "echarts-for-react";
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { usePDF } from 'react-to-pdf';
+import { getGeneList } from "@/configs/request";
+import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
+import { FixedSizeList } from 'react-window';
+import { debounce } from 'lodash';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
+import ConditionSelection from '@/components/condition-selection';
+import EmptyLoading from "@/components/empty-loading";
+import ExportPdfButton from '@/components/export-pdf';
+import SubtypeLandscape from '@/components/expression/subtype-landscape'
+import Pathways from '@/components/expression/pathways'
+import {
+    Card,
+    Collapse,
+    Row,
+    Col,
+    Tag,
+    Tooltip,
+    Space,
+    List,
+    Checkbox,
+    Button,
+    Affix,
+    Spin,
+    Flex,
+    Input,
+    Splitter,
+    Typography,
+    Select,
+    Timeline,
+    Upload,
+    Segmented,
+    Slider,
+    message
+} from 'antd';
+import DriverLandscape from "@/components/mutation/driverLandscape";
+import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
+import { useTranslation } from "react-i18next";
+import Image from 'next/image';
+import styles from "./style.module.scss";
+const { Panel } = Splitter;
+const LEFT_SQUARE_SRC = "/images/left-square.svg";
+const RIGHT_SQUARE_SRC = "/images/right-square.svg";
+const DEFAULT_LEFT_PANEL_WIDTH = "25%";
+const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 100;
 
-const SUBTYPE_COLOR = {
-    "C1": "rgb(79, 151, 121)",
-    "C2": "rgb(72, 128, 187)",
-    "C3": "rgb(150, 91, 164)",
-    "C4": "rgb(167, 134, 56)",
-    "C5": "rgb(238, 188, 57)",
-    "C6": "rgb(218, 85, 76)",
-}
 
-const HEATMAP_COLORS = {
-    "Lee_2004": {
-        "SURVIVAL_UP": "rgb(94, 171, 214)",
-        "SURVIVAL_DN": "rgb(255, 180, 180)"
-    },
-    "Hoshida_2009": {
-        "S1": "rgb(250, 227, 198)",
-        "S2": "rgb(250, 164, 189)",
-        "S3": "rgb(245, 100, 169)"
-    },
-    "Boyault_2007": {
-        "G3": "rgb(61, 194, 236)",
-        "G12": "rgb(100, 226, 183)",
-        "G56": "rgb(252, 199, 55)"
-    },
-    "Chiang_2008": {
-        "INTERFERON": "rgb(251, 243, 193)",
-        "UNANNOTATED": "rgb(220, 139, 224)",
-        "POLYSOMY7": "rgb(213, 11, 139)",
-        "PROLIFERATION": "rgb(207, 255, 226)",
-        "CTNNB1": "rgb(244, 99, 30)"
-    },
-    "Subtype": {
-        "C1": "rgb(79, 151, 121)",
-        "C2": "rgb(72, 128, 187)",
-        "C3": "rgb(150, 91, 164)",
-        "C4": "rgb(167, 134, 56)",
-        "C5": "rgb(238, 188, 57)",
-        "C6": "rgb(218, 85, 76)",
-    }
-}
-
-const mockFields = ['Lee_2004', 'Hoshida_2009', 'Boyault_2007', 'Chiang_2008', 'Subtype'];
-
-
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-    "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-    "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-    "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-    "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
-    "C1,C2,C3,C4,C5,C6"
-]
-
-const MIXED_PURE = {
-    "Pure": "rgb(106, 194, 165)",
-    "Mixed": "rgb(158, 153, 197)",
-}
-
-const MIXED_PURE_BG = {
-    "Pure": "rgb(239, 249, 247)",
-    "Mixed": "rgb(247, 240, 247)",
-}
-
-const STAGE_COLOR = {
-    "I": "rgb(250, 213, 120)",
-    "II": "rgb(245, 138, 66)",
-    "III": "rgb(224, 36, 40)",
-}
-
-const defaultValue = 1;
-const spaceValue = 0.5;
 const Expression = () => {
-    const [option, setOption] = useState({});
-    const [treeList, setTreeList] = useState(null);
-    const [sampleMutations, setSampleMutations] = useState(null);
-    const [currentPatientId, setCurrentPatientId] = useState(null);
-    const [mockHeatmap, setMockHeatmap] = useState(null);
-    const patientListRef = useRef(null);
-    const subtypeList = useRef(null);
-    useEffect(() => {
-        let newick = null;
-        let patientId = null;
-        getExpressionSubtypeList().then((results) => {
-            const _option = buildOption(results);
-            subtypeList.current = [...results];
-            patientId = subtypeList.current?.[0]?.publicationId;
-            buildHeatMap(patientId);
-            setOption(_option);
-        });
-        getPatientList().then((data) => {
-            patientListRef.current = data;
-            newick = patientListRef.current?.find((item) => item.patientId == patientId)?.newick;
-            if (newick) {
-                buildTreeData(newick, patientId);
-            }
-        })
-    }, []);
-
-    const buildTreeData = (newick, patientId) => {
-        const treeWorker = new Worker('/workers/tree.js');
-        getFullMutations().then((results) => {
-            const mutations = results?.filter((item) => item?.sampleId?.includes(`${patientId}_`))
-            treeWorker.postMessage({ newick: newick, mutations });
-            treeWorker.onmessage = ({ data }) => {
-                setTreeList(data.treeList);
-                setSampleMutations(data.sampleMutations);
-            };
-        });
-    }
+    const { t } = useTranslation();
+    const [dataType, setDataType] = useState("planet");
+    const [treeType, setTreeType] = useState("overview");
+    const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
+    const [sampleType, setSampleType] = useState("bySample");
+    const [applyLoading, setApplyLoading] = useState(false);
+    const [sliderValue, setSliderValue] = useState([0, 1]);
+    const [messageApi, contextHolder] = message.useMessage();
+    const [params, setParams] = useState({});
+    const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
+    const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
+    const [fetchLoading, setFetchLoading] = useState(true);
+    const [geneList, setGeneList] = useState([]);
+    const conditionSelectionRef = useRef(null);
+    const [clinicList, setClinicList] = useState({
+        gender: [],
+        age: [],
+        race: [],
+        stage: [],
+        viralStatus: []
+    });
+    const geneRef = useRef(null);
+    const paramsRef = useRef(null);
+    const pathname = usePathname();
 
     useEffect(() => {
-        let newick = null;
-        let patientId = currentPatientId;
-        if (!currentPatientId) {
-            patientId = subtypeList.current?.[0]?.publicationId;
-        }
-        newick = patientListRef.current?.find((item) => item.patientId == currentPatientId)?.newick;
-        if (newick && patientId) {
-            buildHeatMap(patientId);
-            buildTreeData(newick, patientId);
-        }
-    }, [currentPatientId]);
-
-    const buildHeatMap = (patientId) => {
-        let samples = subtypeList.current?.find((subtypeItem) => subtypeItem.publicationId == patientId)?.samples ?? [];
-        if (samples.length) {
-            const _mockHeatmap = {};
-            samples.forEach((sample) => {
-                _mockHeatmap[sample.id] = {
-                    "Boyault_2007": {
-                        color: HEATMAP_COLORS["Boyault_2007"][sample.Boyault_2007],
-                        value: sample.Boyault_2007
-                    },
-                    "Chiang_2008": {
-                        color: HEATMAP_COLORS["Chiang_2008"][sample.Chiang_2008],
-                        value: sample.Chiang_2008
-                    },
-                    "Hoshida_2009": {
-                        color: HEATMAP_COLORS["Hoshida_2009"][sample.Hoshida_2009],
-                        value: sample.Hoshida_2009
-                    },
-                    "Lee_2004": {
-                        color: HEATMAP_COLORS["Lee_2004"][sample.Lee_2004],
-                        value: sample.Lee_2004
-                    },
-                    "Subtype": {
-                        color: HEATMAP_COLORS["Subtype"][sample.subtype],
-                        value: sample.subtype
-                    }
-
-                }
-            })
-
-            setMockHeatmap(_mockHeatmap);
-        }
-
-    }
-
-    const sortedPatientById = (patientList) => {
-        return patientList.sort((a, b) => a.publicationId.split("_")[1] - b.publicationId.split("_")[1])
-    }
-
-    const sortPatients = (_patientList) => {
-        let patientList = sortedPatientById(_patientList);
-        let sortedPatientList = [];
-        const purePatientList = [];
-        const mixedPatientList = [];
-        let patientWithGroupSubtype = patientList
-            .filter((item) => new Set(item.samples.map((s) => s.subtype)).size > 1)
-            .map((item) => ({
-                ...item,
-                samples: item.samples.sort((a, b) => a.subtype.localeCompare(b.subtype))
-            }));
-
-
-        MIXED_GROUP.forEach((group) => {
-            const patient = patientWithGroupSubtype.filter((item) => {
-                return Array.from(new Set(item.samples.map((sample) => sample.subtype))).join(",") == group
-            }).sort((a, b) => a.stage.length - b.stage.length);
-            mixedPatientList.push(...patient);
-        })
-        let patientWithSingleSubtype = patientList.filter((item) => new Set(item.samples.map((item) => item.subtype)).size == 1)
-        Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-            const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.samples[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
-            purePatientList.push(...patientWithSameSubtype);
-        })
-        sortedPatientList = [...purePatientList, ...mixedPatientList];
-        return sortedPatientList;
-    }
-    function getLevelCount(data) {
-        let maxLevel = 0;
-
-        function traverse(node, currentLevel) {
-            if (currentLevel > maxLevel) {
-                maxLevel = currentLevel;
+        setFetchLoading(true);
+        getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
+            geneRef.current = results?.records ?? [];
+            const driverList = getDriverList();
+            const _params = {
+                ...paramsRef.current,
+                ...clinicList,
+                geneList: getGeneListWithIsDeriverGene(driverList)
             }
-            if (node.children && node.children.length > 0) {
-                node.children.forEach(child => traverse(child, currentLevel + 1));
-            }
-        }
-
-        data.forEach(root => traverse(root, 1));
-        return maxLevel;
-    }
-
-
-    const buildOption = (patientList) => {
-
-        const sortedPatient = sortPatients(patientList);
-        let data = [];
-        const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.samples?.length))
-        const buildChildren = (sampleLength, patient, PURE_MIXED) => {
-            let children = [];
-            if (sampleLength == 0) return [
-                {
-                    value: defaultValue,
-                    name: "",
-                    itemStyle: {
-                        borderWidth: 0,
-                        color: MIXED_PURE_BG[PURE_MIXED]
-                    },
-                    children: [{
-                        name: patient.stage,
-                        value: defaultValue,
-                        custom: {
-                            theme: "Stage",
-                            patientId: patient.publicationId,
-                            sampleLength: patient.samples.length,
-                            PURE_MIXED: PURE_MIXED
-                        },
-                        itemStyle: {
-                            color: STAGE_COLOR[patient.stage]
-                        },
-                        children: [{
-                            value: defaultValue,
-                            name: "",
-                            itemStyle: {
-                                borderWidth: 0,
-                                color: MIXED_PURE_BG[PURE_MIXED]
-                            },
-                            children: [{
-                                value: defaultValue,
-                                custom: {
-                                    theme: "RNA Mixed or Pure",
-                                    patientId: patient.publicationId,
-                                    sampleId: patient.sampleId,
-                                    sampleLength: patient.samples.length,
-                                    stage: patient.stage
-                                },
-                                name: PURE_MIXED,
-                                itemStyle: {
-                                    borderWidth: 0,
-                                    color: MIXED_PURE[PURE_MIXED]
-                                },
-                            }]
-                        }]
-                    }]
-                }
-            ];
-            const subtype = patient.samples[sampleLength - 1]?.subtype;
-            const sampleId = patient.samples[sampleLength - 1]?.id;
-            const color = SUBTYPE_COLOR[subtype];
-            children.push({
-                name: subtype ?? "",
-                value: defaultValue,
-                custom: {
-                    theme: "Subtype",
-                    patientId: patient.publicationId,
-                    sampleId,
-                    stage: patient.stage,
-                    PURE_MIXED: PURE_MIXED
-                },
-                itemStyle: {
-                    borderWidth: color ? 1 : 0,
-                    color: color ?? MIXED_PURE_BG[PURE_MIXED]
-                },
-                children: buildChildren(sampleLength - 1, patient, PURE_MIXED)
-            })
-            return children
-        }
-
-        let pureChildren = [];
-        let mixedChildren = [];
-        let initialPureSubtype = null;
-        let initialMixedSubtype = null;
-        let pureTotalSpace = 0;
-        let mixedTotalSpace = 0;
-        sortedPatient.forEach((patient, index) => {
-            const isPure = new Set(patient.samples.map((item) => item.subtype)).size == 1;
-
-            const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
-            if (isPure) {
-                if (!initialPureSubtype) {
-                    pureChildren.push({
-                        value: defaultValue,
-                        name: "Pure",
-                        custom: {
-                            theme: "RNA Mixed or Pure",
-                            PURE_MIXED: "Pure"
-                        },
-                        itemStyle: {
-                            borderWidth: 0,
-                            color: MIXED_PURE_BG["Pure"],
-                        },
-                        children: [],
-                    });
-                } else {
-                    if (initialPureSubtype !== patient.samples[0].subtype) {
-                        pureTotalSpace += 1;
-                        pureChildren.push({
-                            value: spaceValue,
-                            name: "",
-                            itemStyle: {
-                                borderWidth: 0,
-                                color: MIXED_PURE_BG["Pure"],
-                            },
-                            children: [],
-                        });
-                    }
-                }
-
-                initialPureSubtype = patient.samples[0].subtype;
-                pureChildren.push(...result);
-                if (new Set(sortedPatient[index + 1]?.samples.map((item) => item.subtype)).size > 1) {
-                    pureChildren.push({
-                        value: defaultValue,
-                        name: "Pure",
-                        custom: {
-                            theme: "RNA Mixed or Pure",
-                            PURE_MIXED: "Pure"
-                        },
-                        itemStyle: {
-                            borderWidth: 0,
-                            color: MIXED_PURE_BG["Pure"],
-                        },
-                        children: [],
-                    });
-                }
-
-            } else {
-                const currentMixedSubtype = Array.from(new Set(patient.samples.map((sample) => sample.subtype))).join(",");
-                if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype) {
-                    mixedTotalSpace += 1;
-                    mixedChildren.push({
-                        value: spaceValue,
-                        name: "",
-                        itemStyle: {
-                            borderWidth: 0,
-                            color: MIXED_PURE_BG["Mixed"],
-                        },
-                        children: [],
-                    });
-                }
-                initialMixedSubtype = currentMixedSubtype;
-                mixedChildren.push(...result)
-            }
-        })
-        const realPureLength = pureChildren.filter((item) => item.value == 1)?.length;
-        const realMixedLength = mixedChildren.filter((item) => item.value == 1)?.length;
-        const totalLength = realPureLength + realMixedLength;
-        const realPurePercent = (realPureLength / totalLength * 100).toFixed(0);
-        const realMixedPercent = (realMixedLength / totalLength * 100).toFixed(0);
-
-        const totalPureLength = realPureLength + pureTotalSpace * spaceValue;
-        const totalMixedLength = realMixedLength + mixedTotalSpace * spaceValue;
-        data = [{
-            name: "",
-            value: totalPureLength,
-            itemStyle: {
-                borderWidth: 0,
-                color: MIXED_PURE_BG["Pure"],
-            },
-            label: {
-                formatter: () => {
-                    return `Pure patients (${realPurePercent}%)`
-                },
-                rotate: 'tangential',
-                verticalAlign: 'top',
-                padding: [90, 0],
-                fontSize: 16,
-                color: '#000',
-                hideOverlap: false
-            },
-            children: pureChildren,
-        }, {
-            name: "",
-            value: totalMixedLength,
-            itemStyle: {
-                color: MIXED_PURE_BG["Mixed"]
-            },
-            label: {
-                formatter: () => {
-                    return `Mixed patients (${realMixedPercent}%)`
-                },
-                rotate: 'tangential',
-                verticalAlign: 'bottom',
-                padding: [80, 0],
-                fontSize: 16,
-                color: '#000',
-                hideOverlap: false
-            },
-            children: mixedChildren,
-        }]
-
-        const levelCount = getLevelCount(data);
-        const firstLevelRatio = 0.35;
-        const remainingRatio = 1 - firstLevelRatio;
-
-        // 创建层级配置
-        const levels = [{}, {
-            r0: '0%',
-            r: 100 + '%',
-            label: {
-                show: true,
-            },
-            itemStyle: {
-                borderWidth: 1.5,
-                borderColor: "#ccc",
-                color: MIXED_PURE_BG["MIXED"]
-            },
-        }];
-
-        // 为剩余层级创建配置
-        for (let i = 1; i < levelCount; i++) {
-            const start = firstLevelRatio + (i - 1) * (remainingRatio / (levelCount - 1));
-            const end = firstLevelRatio + i * (remainingRatio / (levelCount - 1));
-            levels.push({
-                r0: (start * 100) + '%',
-                r: (end * 100) + '%',
-                label: {
-                    align: 'right',
-                    rotate: 'radial',
-                    show: false
-                }
-            });
-        }
-
-        const startAngle = 180 + ((totalPureLength) / (totalPureLength + totalMixedLength) * 360 - (totalMixedLength) / (totalPureLength + totalMixedLength) * 360) / 4;
-        return {
-            grid: {
-                left: 0,
-                top: 0,
-                right: 0,
-                bottom: 0
-            },
-            hoverLayerThreshold: 0,  // 禁用全局hover层
-            tooltip: {
-                formatter: (event) => {
-                    if (!event?.data?.name) return null;
-                    return `<div>
-                    ${event?.data?.custom?.patientId ? `<div style="color: #000"><span>Patient ID: </span><span style="color: #666">${event?.data?.custom?.patientId}</span></div>` : ""}
-                    ${event?.data?.custom?.sampleLength ? `<div style="color: #000"><span>Sample Counts: </span><span style="color: #666">${event?.data?.custom?.sampleLength}</span></div>` : ""} 
-                    ${event?.data?.custom?.sampleId ? `<div style="color: #000"><span>Sample ID: </span><span style="color: #666">${event?.data?.custom?.sampleId}</span></div>` : ""} 
-                    <div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${event.color}"></span>${event?.data?.custom?.theme}: <span style="color: #666">${event?.data?.name}</span></div>
-                    ${event?.data?.custom?.stage ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${STAGE_COLOR[event?.data?.custom?.stage]}"></span><span>Stage: </span><span style="color: #666">${event?.data?.custom?.stage}</span></div>` : ""}
-                    ${event?.data?.custom?.PURE_MIXED ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${MIXED_PURE[event?.data?.custom?.PURE_MIXED]}"></span><span>RNA Mixed or Pure: </span><span style="color: #666">${event?.data?.custom?.PURE_MIXED}</span></div>` : ""} 
-                    </div>`
-                }
-            },
-            animationEasing: 'elasticOut',
-
-            series: {
-                nodeClick: false,
-                startAngle: startAngle,
-                type: 'sunburst',
-                sort: undefined,
-
-                data: data,
-                levels: levels,
-                emphasis: {
-                    disabled: true
-                },
-            }
-        };
-    }
-
-    const handleClick = useCallback((params) => {
-        if (!params.data?.custom?.patientId) return;
-        setCurrentPatientId(params.data?.custom?.patientId)
+            setGeneList(driverList);
+            setParams(_params);
+            paramsRef.current = _params;
+            setFetchLoading(false);
+        });
     }, []);
 
+    const getGeneListWithIsDeriverGene = (list) => {
+        return list.map((gene) => {
+            return {
+                gene,
+                isDriverGene: !!geneRef.current.find((item) => item.gene == gene)?.isDriverGene
+            }
+        })
+    }
 
+    const getDriverList = () => {
+        return geneRef.current?.filter((item) => !!item.isDriverGene).map((item) => item.gene);
+    }
 
-    // // Mock 热图数据：叶子节点名称 -> 每个 field 的值（0~1）
-    // const mockHeatmap = {
-    //     'ITH_01_T1': { 'Lee_2004': 0.1, 'Ⅱ': 0.5, 'Ⅲ': 0.9, 'Ⅳ': 0.2 },
-    //     'ITH_01_T2': { 'Lee_2004': 0.8, 'Ⅱ': 0.3, 'Ⅲ': 0.1, 'Ⅳ': 0.6 },
-    //     'ITH_01_T3': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T4': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T5': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T6': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T7': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T8': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T9': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T10': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    //     'ITH_01_T11': { 'Lee_2004': 0.4, 'Ⅱ': 0.7, 'Ⅲ': 0.2, 'Ⅳ': 0.5 },
-    // };
+    const handleApply = useCallback(() => {
+        setParams(conditionSelectionRef.current?.getParams());
+    }, []);
 
-    console.log("HorizontalTree", mockHeatmap)
+    const onPanelChange = (sizes) => {
+        setLeftPanelSize(sizes[0])
+        setRightPanelSize(sizes[1])
+    }
 
+    const leftPanelFullScreen = () => {
+        if (rightPanelSize == "0") {
+            setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH)
+            setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
+        } else {
+            setLeftPanelSize("0")
+            setRightPanelSize("100%")
+        }
+    }
+
+    const rightPanelFullScreen = () => {
+        if (leftPanelSize == "0") {
+            setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
+            setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
+        } else {
+            setLeftPanelSize("100%");
+            setRightPanelSize("0");
+        }
+    }
+
+    useEffect(() => {
+        setParams({});
+    }, [mutationTypeTab])
 
     return (
-        <div style={{ position: "relative", height: "80vh", padding: 20, display: "flex", justifyContent: "space-between" }}>
-            <Flex flex="1">
-                <EChartsReact option={option} style={{ width: 500, height: 500 }} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact>
-                <Flex>
-                    <Flex vertical style={{ marginLeft: "10px" }}>
-                        <Flex style={{ marginBottom: "10px" }}>Stage</Flex>
+        <>
+            {contextHolder}
+            <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
+                <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
+                    <Flex justify='space-between' align='center' style={{ paddingLeft: "10px", height: "40px" }}>
+                        <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary"
+                            style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
+                            {t("common:apply")}
+                        </Button>
                         {
-                            Object.keys(STAGE_COLOR).map((item) => {
-                                return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: STAGE_COLOR[item] }}></span><span>{item}</span></Flex>
-                            })
-                        }
+                            <Segmented
+                                options={[
+                                    { label: 'PLANET', value: "planet" },
+                                    { label: 'DT', value: "dt" },
+                                ]}
+                                value={dataType}
+                                onChange={value => setDataType(value)}
+                            />
+                        } 
+                        <Button color="default" variant="text"
+                            onClick={leftPanelFullScreen}
+                            style={{ color: "#fff", padding: 0 }}>
+                            <Image
+                                src={LEFT_SQUARE_SRC}
+                                alt="import"
+                                width={30}
+                                height={30}
+                            />
+                        </Button>
                     </Flex>
+                    <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
+                </Panel>
+                <Panel size={rightPanelSize} min={"50%"} max="80%">
+                    <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 10 }}>
+                        <Flex align='center'>
+                            <Button color="default" variant="text"
+                                style={{ color: "#fff", padding: 0, marginRight: 5 }}
+                                onClick={rightPanelFullScreen}>
+                                <Image
+                                    src={RIGHT_SQUARE_SRC}
+                                    alt="import"
+                                    width={30}
+                                    height={30}
+                                />
+                            </Button>
 
-                    <Flex vertical style={{ marginLeft: "10px" }}>
-                        <Flex style={{ marginBottom: "10px" }}>Subtype</Flex>
-                        {
-                            Object.keys(SUBTYPE_COLOR).map((item) => {
-                                return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
-                            })
-                        }
+                            <Segmented
+                                options={[{ label: <Link href="/expression/subtype">{'Subtype landscape and tree'}</Link> , value: "subtype" },
+                                    { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: 'pathways' },
+                                    { label: <Link href="/expression/biomarkers">{"Biomarkers"}</Link>, value: 'biomarkers' }
+                                ]}
+                                value={ pathname.split("/")[2]}
+                            />
+                        </Flex>
                     </Flex>
-                </Flex>
-            </Flex>
-            <Flex flex="1">
-                <HorizontalTree alignLabel={true} heatmapFields={mockFields} heatmapData={mockHeatmap} data={treeList} sampleMutations={sampleMutations} color={"red"}></HorizontalTree>
-            </Flex>
-        </div>
+                    {
+                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape dataType={dataType} conditions={params}></SubtypeLandscape>
+                    }
+                    {
+                        pathname.split("/")[2] == "pathways" &&  <Pathways conditions={params}></Pathways>
+                    }
+                </Panel>
+            </Splitter>
+        </>
     )
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import i18n from 'i18next';
 import { Layout, Affix, Menu, Flex, Typography, Button } from 'antd';
 import Image from 'next/image';
@@ -43,7 +43,7 @@ const HCCHeader = () => {
             key: '/single-modal',
             children: [
                 { key: '/mutation', label: <Link href="/mutation"  onClick={handleClick}>{t('home:header.mutation')}</Link> },
-                { key: '/expression', label: <Link href="/expression"  onClick={handleClick}>{t('home:header.expression')}</Link> },
+                { key: '/expression/subtype', label: <Link href="/expression/subtype"  onClick={handleClick}>{t('home:header.expression')}</Link> },
                 { key: '/immune', label: <Link href="/immune"  onClick={handleClick}>{t('home:header.immune')}</Link> },
                 { key: '/clinical', label: <Link href="/clinical"  onClick={handleClick}>{t('home:header.clinical')}</Link> },
             ],
@@ -82,6 +82,18 @@ const HCCHeader = () => {
         },
     ];
 
+    const selectedKeys = useMemo(() => {
+        if (pathname == "/") {
+            return "/home"
+        } else if (pathname?.split("/")?.[1] == "expression") {
+            return "/single-modal"
+        }
+
+        return pathname
+    }, [pathname])
+
+
+
     return (
         <Layout.Header className={styles.hccHeader}>
             <Flex align={"center"}>
@@ -90,7 +102,7 @@ const HCCHeader = () => {
                     triggerSubMenuAction={"hover"}
                     items={items}
                     defaultSelectedKeys={"/home"}
-                    selectedKeys={pathname == "/" ? "/home" : pathname}
+                    selectedKeys={selectedKeys}
                     style={{
                         flex: 1,
                         justifyContent: "center"

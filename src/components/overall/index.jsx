@@ -27,7 +27,7 @@ const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
                             gender: {},
                             viralStatus: {},
                             race: {},
-                            tnmStageV8: {}
+                            stage: {}
                         }
                         if (result.clinicList.length == 0) {
                             setHasData(false);
