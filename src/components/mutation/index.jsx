@@ -9,30 +9,18 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import TimingAnalysis from "@/components/mutation/timing-analysis";
 import ConditionSelection from '@/components/condition-selection';
-import EmptyLoading from "@/components/empty-loading";
 import ExportPdfButton from '@/components/export-pdf';
 import {
-    Card,
     Collapse,
     Row,
     Col,
-    Tag,
     Tooltip,
-    Space,
-    List,
     Checkbox,
     Button,
-    Affix,
-    Spin,
     Flex,
-    Input,
     Splitter,
     Typography,
-    Select,
-    Timeline,
-    Upload,
     Segmented,
-    Slider,
     message
 } from 'antd';
 import DriverLandscape from "@/components/mutation/driverLandscape";
@@ -45,11 +33,11 @@ const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
 const DEFAULT_LEFT_PANEL_WIDTH = "25%";
 const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
-
+const RELOAD_ICON = "/images/reload.svg";
 const Mutation = () => {
     const { t } = useTranslation();
     const [treeType, setTreeType] = useState("overview");
-    const [dataType, setDataType] = useState("planet");
+    const [dataTypeList, setDataTypeList] = useState(["planet"]);
     const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
     const [sampleType, setSampleType] = useState("bySample");
     const [applyLoading, setApplyLoading] = useState(false);
@@ -98,6 +86,61 @@ const Mutation = () => {
         setSampleType(value);
     }, [])
 
+        const dataTypeCollapseTitle = () => {
+        return <Flex justify={"space-between"} align={"center"}>
+            <Typography.Paragraph
+                ellipsis={{
+                    rows: 1,
+                    expandable: false
+                }}
+                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.driver")}</Typography.Paragraph>
+
+            <Tooltip placement="bottom" title={t("common:reset-selection")}>
+                <Button color="default" onClick={(event) => {
+                    handleDriverReload(event)
+                }} variant="text"
+                    style={{ color: "#fff", padding: 0 }}>
+                    <Image
+                        src={RELOAD_ICON}
+                        alt="reload"
+                        width={16}
+                        height={16}
+                        tooltip={t("common:reload")}
+                    />
+                </Button>
+            </Tooltip>
+        </Flex>
+    }
+
+    const dataTypeCollapseContent = () => {
+        return <div className={styles.searchCard}
+            variant="borderless">
+            <Checkbox.Group style={{ display: 'block' }} value={dataTypeList} onChange={onDataTypeListChange}>
+                <Row>
+                    <Col xs={20} sm={20} md={20} lg={20}>
+                        <Checkbox
+                            value={"planet"}
+                            label={"PLANET"}>{"PLANET"}</Checkbox>
+
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={20} sm={20} md={20} lg={20}>
+                        <Checkbox
+                            value={"dt"}
+                            label={"DT"}>{"DT"}</Checkbox>
+
+                    </Col>
+                </Row>
+            </Checkbox.Group>
+        </div>
+    }
+
+    const onDataTypeListChange = (value) => {
+        if (!value?.length) return;
+        setDataTypeList(value);
+    }
+
     return (
         <>
             {contextHolder}
@@ -108,16 +151,6 @@ const Mutation = () => {
                             style={{ color: "#fff", background: !applyLoading ? "rgb(237, 108, 116)" : "gray" }}>
                             {t("common:apply")}
                         </Button>
-                        {
-                           <Segmented
-                                options={[
-                                    { label: 'PLANET', value: "planet" },
-                                    { label: 'DT', value: "dt" },
-                                ]}
-                                value={dataType}
-                                onChange={value => setDataType(value)}
-                            />
-                        } 
                         <Button color="default" variant="text"
                             onClick={leftPanelFullScreen}
                             style={{ color: "#fff", padding: 0 }}>
@@ -129,6 +162,17 @@ const Mutation = () => {
                             />
                         </Button>
                     </Flex>
+                    <Collapse
+                        defaultActiveKey={"dataType"}
+                        className={styles.searchCollapse}
+                        expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                        items={[{
+                            key: "dataType",
+                            label: dataTypeCollapseTitle(),
+                            children: dataTypeCollapseContent()
+
+                        }]}>
+                    </Collapse>
                     <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} onITHChange={setSliderValue} showITH={mutationTypeTab !== "driverLandscape"}></ConditionSelection>
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
@@ -174,13 +218,13 @@ const Mutation = () => {
                         <ExportPdfButton document={driverLandscapeRef.current}></ExportPdfButton>
                     </Flex>
                     {
-                        mutationTypeTab === "driverLandscape" && <DriverLandscape dataType={dataType} ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params} sampleType={sampleType}></DriverLandscape>
+                        mutationTypeTab === "driverLandscape" && <DriverLandscape dataType={dataTypeList} ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params} sampleType={sampleType}></DriverLandscape>
                     }
                     {
-                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship  dataType={dataType}  range={sliderValue} conditions={params} treeType={treeType}></PhylogeneticRelationship>
+                        mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship  dataType={dataTypeList}  range={sliderValue} conditions={params} treeType={treeType}></PhylogeneticRelationship>
                     }
                     {
-                        mutationTypeTab === "timingAnalysis" && <TimingAnalysis dataType={dataType} range={sliderValue} conditions={params}></TimingAnalysis>
+                        mutationTypeTab === "timingAnalysis" && <TimingAnalysis dataType={dataTypeList} range={sliderValue} conditions={params}></TimingAnalysis>
                     }
                 </Panel>
             </Splitter>

@@ -75,7 +75,7 @@ export const getITHList = async (type = "planet") => {
 
 export const getFullPhylogenetic = async (type = "planet") => {
     try {
-        const geneData = await get(`/hcc/v1/phylogeneticTree/list?type=${type}`);
+        const geneData = await get(`/hcc/v1/phylogeneticTree/list${type ? '?type=' + type : ''}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -96,7 +96,7 @@ export const getLollipopPlotData = async (data) => {
 
 export const getPatientList = async (type = "planet") => {
     try {
-  const geneData = await get(`/hcc/v1/patient/list?type=${type}`);
+  const geneData = await get(`/hcc/v1/patient/list${type ? '?type=' + type : ''}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -105,9 +105,9 @@ export const getPatientList = async (type = "planet") => {
 }; 
 
 
-export const getFullMutations = async (type = "planet") => {
+export const getFullMutations = async (type) => {
     try {
-  const geneData = await get(`/hcc/v1/oncoprint/list?type=${type}`);
+  const geneData = await get(`/hcc/v1/oncoprint/list${type ? '?type=' + type : ''}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);

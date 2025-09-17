@@ -63,7 +63,7 @@ const LiverSampleChart = ({ data }) => {
             .attr("cx", xScale(liverRadius))
             .attr("cy", yScale(liverRadius))
             .attr("r", xScale(liverRadius)) // Use xScale to convert radius to pixels
-            .style("fill", "#8ab7e9");
+            .style("fill", "#FDE4E1");
 
         // Draw samples
         const sampleGroup = svg.selectAll(".sample")
@@ -75,7 +75,7 @@ const LiverSampleChart = ({ data }) => {
 
         sampleGroup.append("circle") // Draw the sample circle
             .attr("r", d => xScale(d.r)) // Use xScale to convert radius to pixels
-            .style("fill", "#316094");
+            .style("fill", "#E95D65");
 
         // Add sample ID text beside the circle
         sampleGroup.append("text")

@@ -16,7 +16,7 @@ import TreeDialog from "@/components/tree-dialog";
 import generateGradientColors from "@/utils/ith-color";
 
 
-const TimingAnalysis = ({ range = [0, 1], dataType="planet", conditions }) => {
+const TimingAnalysis = ({ range = [0, 1], dataType=["planet"], conditions }) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [treeList, setTreeList] = useState(null);
@@ -29,7 +29,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType="planet", conditions }) => {
         if (!conditions?.geneList) return;
 
         const fetchData = async (finialSampleList) => {
-            let [ITHList] = await Promise.all([getPatientList(dataType)]);
+            let [ITHList] = await Promise.all([getPatientList(dataType.length == 2 ? null : dataType[0])]);
             if (!ITHList) return;
             const colors = generateGradientColors(100);
             let _patientList = ITHList?.filter((item) => !!item.newick)?.map((item) => {
@@ -42,7 +42,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType="planet", conditions }) => {
             _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
             rangePatientListRef.current = getPatientListByRange(_patientList);
             const treeWorker = new Worker('/workers/full-tree.js');
-            getFullPhylogenetic(dataType).then((results) => {
+            getFullPhylogenetic(dataType.length == 2 ? null : dataType[0]).then((results) => {
                 const treeList = rangePatientListRef.current.filter((item) => finialSampleList?.some((patient) => patient == item.patientId)).map((item) => {
                     const geneData = results?.filter((sample) => sample?.sampleId?.includes(`${item.patientId}_`))
                     return {
@@ -59,7 +59,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType="planet", conditions }) => {
         }
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            Promise.all([getFullMutations(dataType)]).then((results) => {
+            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
                 sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
                 sampleWorker.onmessage = (event) => {
                     const result = event.data;

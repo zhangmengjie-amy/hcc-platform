@@ -54,7 +54,7 @@ const LEGEND = [{
 
 
 
-const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType = "overview", conditions }) => {
+const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeType = "overview", conditions }) => {
     const [pieChartOption, setPieChartOption] = useState({});
     const [columnOption, setColumnOption] = useState({});
     const [loading, setLoading] = useState(true);
@@ -72,10 +72,9 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
         if (!conditions?.geneList) return;
 
         const fetchData = async (finialSampleList) => {
-            let [ITHList] = await Promise.all([getPatientList(dataType)]);
-            if (!ITHList) return;
-           
-            let _patientList = ITHList.filter((item) => !!item.newick && finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
+            let [patientList] = await Promise.all([getPatientList(dataType.length == 2 ? null : dataType[0])]);
+            if (!patientList) return;
+            let _patientList = patientList.filter((item) => !!item.newick && finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
                 return {
                     ...item,
                     ith: Number(item.ith)?.toFixed(2) ?? 1
@@ -85,7 +84,6 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
             patientListRef.current = _patientList;
             patientListRef.current = buildAllPatientsData();
             rangePatientListRef.current = getPatientListByRange();
-           
             setRangeList(rangePatientListRef.current);
             buildPieChart();
             buildBarChart();
@@ -93,7 +91,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
 
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            Promise.all([getFullMutations(dataType)]).then((results) => {
+            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
                 sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
                 sampleWorker.onmessage = (event) => {
                     const result = event.data;
@@ -385,7 +383,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
         return result?.map((item, index) => {
             return {
                 ...item,
-                image: dataType == "dt" ? `/images/${item?.patientId}.png` : `/images/${item?.patientId}.svg`,
+                image: `/images/${item?.patientId}.svg`,
                 transform: `rotate(${calculateFanLayout(result?.length)[index].rotate}deg) translate(${calculateFanLayout(result?.length)[index].translate})`
             }
         })
