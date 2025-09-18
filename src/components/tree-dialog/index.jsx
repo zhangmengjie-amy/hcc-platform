@@ -5,8 +5,7 @@ import { Modal, Typography, Flex, Button, Spin } from 'antd';
 import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import { getFullPhylogenetic } from "@/configs/request";
-import EmptyLoading from "@/components/empty-loading";
-const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline = 'left', circleRadius = 8 }) => {
+const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline = 'left', showTumor = false }) => {
 
     const [treeList, setTreeList] = useState(null);
     const [clinic, setClinic] = useState(null);
@@ -56,7 +55,8 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
             ]}
             width="90vw"
         >
-            {
+            <Flex style={{ width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }} >
+                 {
                 treeList ? <VerticalTree
                     geneList={geneList}
                     baseline={baseline}
@@ -67,7 +67,13 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
                     <Spin spinning={true} ></Spin>
                 </Flex>
             }
+               {
+                treeData.patientId?.startsWith("DT") && showTumor && <Image src={`/images/DNA_${treeData.patientId}.svg`} width={350} height={350} alt='123'></Image>
+               } 
+                </Flex>
+           
 
+            
         </Modal>
     );
 };
