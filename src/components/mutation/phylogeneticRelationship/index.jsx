@@ -503,7 +503,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeTyp
                                 treeType === "detail" && <TreeList dataType={dataType} list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
                             }
                             {
-                                modalOpen && <TreeDialog treeData={currentPatientRef.current} dataType={dataType} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+                                modalOpen && <TreeDialog showTumor treeData={currentPatientRef.current} dataType={dataType} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
                             }
                         </>
                     }

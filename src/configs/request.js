@@ -93,10 +93,19 @@ export const getLollipopPlotData = async (data) => {
     }
 };
 
+export const getClinicalConfig = async () => {
+    try {
+    const clinicalConfig = await get(`/hcc/v1/clinical/select/list`);
+        return clinicalConfig?.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+}
 
 export const getPatientList = async (type = "planet") => {
     try {
-  const geneData = await get(`/hcc/v1/patient/list${type ? '?type=' + type : ''}`);
+    const geneData = await get(`/hcc/v1/clinical/list${type ? '?type=' + type : ''}`);
         return geneData?.data;
     } catch (error) {
         console.error('Error fetching data:', error);

@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import DEGCondition from '@/components/deg-condition';
 import ConditionSelection from '@/components/condition-selection';
 import EmptyLoading from "@/components/empty-loading";
 import ExportPdfButton from '@/components/export-pdf';
@@ -172,7 +173,12 @@ const Expression = () => {
                             />
                         </Button>
                     </Flex>
-                    <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
+                    {
+                        pathname.split("/")[2] == "subtype" && <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
+                    }
+                    {
+                        pathname.split("/")[2] == "pathways" && <DEGCondition></DEGCondition>
+                    }
                 </Panel>
                 <Panel size={rightPanelSize} min={"50%"} max="80%">
                     <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 10 }}>

@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef, useEffect, useImperativeHandle, useState, useCallback, forwardRef } from 'react';
 import { usePDF } from 'react-to-pdf';
-import { getGeneList, getValidGeneList } from "@/configs/request";
+import { getGeneList, getValidGeneList, getClinicalConfig  } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
 import EmptyLoading from "@/components/empty-loading";
@@ -58,7 +58,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
     });
     const geneRef = useRef(null);
     const listRef = useRef(null);
-    const searchResultRef = useRef(null);
+    const clinicalConfigRef = useRef(null);
     const paramsRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
@@ -69,8 +69,10 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
 
     useEffect(() => {
         setFetchLoading(true);
-        getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
-            geneRef.current = results?.records ?? [];
+        Promise.all([getClinicalConfig(), getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "")]).then((results) => {
+            const [clinicConfig, geneData] = results;
+            clinicalConfigRef.current = clinicConfig;
+             geneRef.current = geneData?.records ?? [];
             const driverList = getDriverList();
             const _params = {
                 ...paramsRef.current,
@@ -81,7 +83,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
             paramsRef.current = _params;
             handleInitChange?.(paramsRef.current);
             setFetchLoading(false);
-        });
+        })
     }, []);
 
     const getGeneListWithIsDeriverGene = (list) => {
@@ -608,33 +610,34 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
             </Tooltip>
         </Flex>
     }
+    console.log('clinicalConfigRef.current', clinicalConfigRef.current);
 
     const clinicCollapseContent = () => {
         return <div className={styles.clinicCard} style={{ height: 240, overflowY: "scroll", overflowX: "hidden" }}
             variant="borderless">
             <Row key={"clinicContent"}>
                 {
-                    clinicConfig?.map((item, index) => {
-                        return <Col xs={12} md={12} lg={12} key={item.key}>
+                  clinicalConfigRef.current && [ 'age', 'stage', 'hbv', 'hcv', 'race', 'gender']?.map((item, index) => {
+                        return <Col xs={12} md={12} lg={12} key={item}>
                             <Timeline
                                 items={[{
-                                    dot: <Image src={`/images/${item.key == "stage" ? "tnm-stage-v8" : item.key}.svg`} width={15} height={15} alt={item.key}></Image>,
-                                    children: <Checkbox.Group value={clinicList[item.key]} onChange={(value) => { onClinicChange(value, item.key) }} key={index}>
+                                    dot: <Image src={`/images/${item == "stage" ? "tnm-stage-v8" : item}.svg`} width={15} height={15} alt={item}></Image>,
+                                    children: <Checkbox.Group value={clinicList[item]} onChange={(value) => { onClinicChange(value, item) }} key={index}>
                                         <Row key={item.key}>
                                             <Typography.Title
                                                 level={5}
-                                                style={{ fontSize: "14px" }}>{t(`mutation:sample.${item.key}`)}</Typography.Title>
+                                                style={{ fontSize: "14px" }}>{t(`mutation:sample.${item}`)}</Typography.Title>
                                             {
-                                                item.children?.map((child) => {
+                                                clinicalConfigRef.current[item]?.map((child) => {
                                                     return (
                                                         <Col xs={24} sm={24} md={24} lg={24}
-                                                            key={child.key}>
+                                                            key={child}>
 
-                                                            <Checkbox value={child.key}
+                                                            <Checkbox value={child}
                                                                 label={child.title}><Typography.Paragraph style={{ margin: 0 }} ellipsis={{
                                                                     rows: 1,
                                                                     expandable: false
-                                                                }}>{t(`mutation:sample.${child.key}`)}</Typography.Paragraph></Checkbox>
+                                                                }}>{t(`mutation:sample.${child}`)}</Typography.Paragraph></Checkbox>
                                                         </Col>
                                                     )
                                                 })
