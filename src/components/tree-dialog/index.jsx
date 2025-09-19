@@ -28,17 +28,17 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
     }, [treeData?.newick, dataType]);
 
     const renderModalTitle = useMemo(() => {
-        return <><Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
+        return <Flex vertical style={{ height: "50px" }}><Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
             {treeData?.patientId}
         </Typography.Paragraph>
             <Flex align='baseline'> <span style={{ display: "inline-block", width: "18px", height: "18px", marginLeft: "5px", backgroundColor: treeData?.itemStyle?.color }}></span><span style={{ marginLeft: "5px", fontSize: "24px" }}>{treeData?.ITH}</span></Flex>
         </Flex>
-            <Flex style={{ height: "20px" }} >
+            <Flex >
                 {
                     clinic && Object.keys(clinic)?.map((item) => {
                         return <Flex align='center' key={item}><span style={{ marginLeft: "10px", fontSize: "14px" }}>{t(`mutation:sample.${item}`)}:</span><span style={{ display: "inline-block", marginLeft: "5px", width: "12px", height: "12px", borderRadius: "6px", backgroundColor: `${clinic?.[item]?.color}` }}></span><span style={{ marginLeft: "5px", fontSize: "12px", color: "#666" }}>{clinic?.[item]?.value}</span></Flex>
                     })
-                }</Flex></>
+                }</Flex></Flex>
     })
 
     return (
@@ -56,24 +56,21 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
             width="90vw"
         >
             <Flex style={{ width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }} >
-                 {
-                treeList ? <VerticalTree
-                    geneList={geneList}
-                    baseline={baseline}
-                    color={treeData?.itemStyle?.color}
-                    data={treeList}
-                    sampleGeneData={sampleGeneData}
-                /> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
-                    <Spin spinning={true} ></Spin>
-                </Flex>
-            }
-               {
-                treeData.patientId?.startsWith("DT") && showTumor && <Image src={`/images/DNA_${treeData.patientId}.svg`} width={350} height={350} alt='123'></Image>
-               } 
-                </Flex>
-           
-
-            
+                {
+                    treeList ? <VerticalTree
+                        geneList={geneList}
+                        baseline={baseline}
+                        color={treeData?.itemStyle?.color}
+                        data={treeList}
+                        sampleGeneData={sampleGeneData}
+                    /> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
+                        <Spin spinning={true} ></Spin>
+                    </Flex>
+                }
+                {
+                    treeData.patientId?.startsWith("DT") && showTumor && <Image src={`/images/DNA_${treeData.patientId}.svg`} width={350} height={350} alt='123'></Image>
+                }
+            </Flex>
         </Modal>
     );
 };
