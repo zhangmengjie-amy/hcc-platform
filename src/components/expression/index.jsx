@@ -51,10 +51,11 @@ const DEFAULT_LEFT_PANEL_WIDTH = "25%";
 const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
-
+const RELOAD_ICON = "/images/reload.svg";
 
 const Expression = () => {
     const { t } = useTranslation();
+        const [dataTypeList, setDataTypeList] = useState(["planet"]);
     const [dataType, setDataType] = useState("planet");
     const [treeType, setTreeType] = useState("overview");
     const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
@@ -142,6 +143,65 @@ const Expression = () => {
         setParams({});
     }, [mutationTypeTab])
 
+    
+        const dataTypeCollapseTitle = () => {
+        return <Flex justify={"space-between"} align={"center"}>
+            <Typography.Paragraph
+                ellipsis={{
+                    rows: 1,
+                    expandable: false
+                }}
+                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.driver")}</Typography.Paragraph>
+
+            <Tooltip placement="bottom" title={t("common:reset-selection")}>
+                <Button color="default" onClick={(event) => {
+                    handleDriverReload(event)
+                }} variant="text"
+                    style={{ color: "#fff", padding: 0 }}>
+                    <Image
+                        src={RELOAD_ICON}
+                        alt="reload"
+                        width={16}
+                        height={16}
+                        tooltip={t("common:reload")}
+                    />
+                </Button>
+            </Tooltip>
+        </Flex>
+    }
+
+    
+    const onDataTypeListChange = (value) => {
+        if (!value?.length) return;
+        setDataTypeList(value);
+    }
+
+    const dataTypeCollapseContent = () => {
+        return <div className={styles.searchCard}
+            variant="borderless">
+            <Checkbox.Group style={{ display: 'block' }} value={dataTypeList} onChange={onDataTypeListChange}>
+                <Row>
+                    <Col xs={20} sm={20} md={20} lg={20}>
+                        <Checkbox
+                            value={"planet"}
+                            label={"PLANET"}>{"PLANET"}</Checkbox>
+
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={20} sm={20} md={20} lg={20}>
+                        <Checkbox
+                            value={"dt"}
+                            label={"DT"}>{"DT"}</Checkbox>
+
+                    </Col>
+                </Row>
+            </Checkbox.Group>
+        </div>
+    }
+
+    console.log("dataType--------------", dataTypeList)
+
     return (
         <>
             {contextHolder}
@@ -152,16 +212,7 @@ const Expression = () => {
                             style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
                             {t("common:apply")}
                         </Button>
-                        {
-                            <Segmented
-                                options={[
-                                    { label: 'PLANET', value: "planet" },
-                                    { label: 'DT', value: "dt" },
-                                ]}
-                                value={dataType}
-                                onChange={value => setDataType(value)}
-                            />
-                        } 
+                        
                         <Button color="default" variant="text"
                             onClick={leftPanelFullScreen}
                             style={{ color: "#fff", padding: 0 }}>
@@ -173,6 +224,17 @@ const Expression = () => {
                             />
                         </Button>
                     </Flex>
+                    <Collapse
+                        defaultActiveKey={"dataType"}
+                        className={styles.searchCollapse}
+                        expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                        items={[{
+                            key: "dataType",
+                            label: dataTypeCollapseTitle(),
+                            children: dataTypeCollapseContent()
+
+                        }]}>
+                    </Collapse>
                     {
                         pathname.split("/")[2] == "subtype" && <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
                     }
@@ -204,7 +266,7 @@ const Expression = () => {
                         </Flex>
                     </Flex>
                     {
-                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape dataType={dataType} conditions={params}></SubtypeLandscape>
+                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape dataType={dataTypeList} conditions={params}></SubtypeLandscape>
                     }
                     {
                         pathname.split("/")[2] == "pathways" &&  <Pathways conditions={params}></Pathways>

@@ -87,6 +87,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeTyp
             setRangeList(rangePatientListRef.current);
             buildPieChart();
             buildBarChart();
+            setLoading(false);
         }
 
         const sampleWorker = new Worker('/workers/calculate.js');
@@ -97,7 +98,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeTyp
                     const result = event.data;
                     fetchData(result.finialSampleList);
                 };
-                setLoading(false);
+
             });
         } catch (error) {
 

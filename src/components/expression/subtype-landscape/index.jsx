@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { getExpressionpatientListRef } from "@/configs/request";
 import { Flex, Row, Col, Empty, Spin } from 'antd';
 import { getITHList, getPatientList, getLiverSamples } from "@/configs/request";
@@ -7,10 +7,9 @@ import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
 import LiverSampleChart from '@/components/liver-sample';
 import EChartsReact from "echarts-for-react";
-import SunburstChart from '@/components/sunburst';
+import SunburstChart from '@/components/expression/subtype-landscape/sunburst';
+import ColumnChart from '@/components/expression/subtype-landscape/column';
 import filterSampleByConditions from "@/utils/filter-patient";
-import { scale } from 'pdf-lib';
-import { tree } from 'd3';
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -98,7 +97,7 @@ const STAGE_TRANS = {
 
 const defaultValue = 1;
 const spaceValue = 0.5;
-const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
+const SubtypeLandscape = ({ conditions, dataType = ["planet"] }) => {
     const [option, setOption] = useState({});
     const [loading, setLoading] = useState(false);
     const [treeList, setTreeList] = useState(null);
@@ -115,7 +114,7 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
     }, [conditions]);
 
     useEffect(() => {
-        getPatientList(dataType).then((data) => {
+        getPatientList(dataType.length == 2 ? null : dataType[0]).then((data) => {
             patientListRef.current = data?.filter((item) => !!item.subtypes?.length).map((item) => {
                 return {
                     ...item,
@@ -132,7 +131,7 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
     const buildTreeData = (newick, patientId) => {
         setLoading(true)
         const treeWorker = new Worker('/workers/tree.js');
-        getFullPhylogenetic(dataType).then((results) => {
+        getFullPhylogenetic(dataType.length == 2 ? null : dataType[0]).then((results) => {
             const geneData = results?.filter((item) => item?.sampleId?.includes(`${patientId}_`))
             treeWorker.postMessage({ newick: newick, geneData });
             treeWorker.onmessage = ({ data }) => {
@@ -199,12 +198,22 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
             setMockHeatmap(_mockHeatmap);
         }
     }
+
+    const renderDtColumns = useMemo(() => {
+        return dataType.map((item) => {
+            if (item == "planet") {
+                return <SunburstChart data={patientList.filter((item) => item.type === "PLANET")} handleItemClick={setCurrentPatientId}></SunburstChart>
+            } else {
+                return <ColumnChart data={patientList.filter((item) => item.type === "DT")} handleItemClick={setCurrentPatientId}></ColumnChart>
+            }
+        })
+    }, [dataType, patientList])
     return (
         <>
             <Row>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "700px", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                        <SunburstChart data={patientList} handleItemClick={setCurrentPatientId}></SunburstChart>
+                    <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: `${dataType?.length > 1 ? "1000px" : "700px"}`, padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        {renderDtColumns}
                         <Flex style={{ marginTop: "30px" }}><Flex vertical style={{ marginLeft: "10px" }}>
                             <Flex align='center' style={{ marginBottom: "10px" }}>Pure or Mixed</Flex>
                             {
