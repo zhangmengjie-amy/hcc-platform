@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { getExpressionpatientListRef } from "@/configs/request";
 import { Flex, Row, Col, Empty, Spin } from 'antd';
-import { getITHList, getPatientList, getLiverSamples } from "@/configs/request";
+import { getPatientList } from "@/configs/request";
 import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
 import LiverSampleChart from '@/components/liver-sample';
-import EChartsReact from "echarts-for-react";
+import Image from 'next/image';
 import SunburstChart from '@/components/expression/subtype-landscape/sunburst';
 import ColumnChart from '@/components/expression/subtype-landscape/column';
 import filterSampleByConditions from "@/utils/filter-patient";
@@ -106,9 +105,9 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
     const [dtTreeList, setDtTreeList] = useState(null);
     const [dtSampleGeneData, setDtSampleGeneData] = useState(null);
     const [currentPlanetPatientId, setCurrentPlanetPatientId] = useState(null);
-    const [currentDTPatientId, setCurrentDTPatientId] = useState(null);
+    const [currentDtPatientId, setCurrentDtPatientId] = useState(null);
     const [planetHeatmap, setPlanetHeatmap] = useState(null);
-    const [dtHeatmap, setDTHeatmap] = useState(null);
+    const [dtHeatmap, setDtHeatmap] = useState(null);
     const [allPatientList, setAllPatientList] = useState([]);
     const [currentLiverSamples, setCurrentLiverSamples] = useState(null);
     const patientListRef = useRef(null);
@@ -128,33 +127,16 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
             });
 
             setAllPatientList(patientListRef.current);
-            setCurrentPlanetPatientId(planetPatientList[0]?.patientId);
-            setCurrentDTPatientId(dtPatientList[0]?.patientId);
+            setCurrentPlanetPatientId(patientListRef.current?.filter((item) => item.type === "PLANET")[0]?.patientId);
+            setCurrentDtPatientId(patientListRef.current?.filter((item) => item.type === "DT")[0]?.patientId);
         })
 
     }, [dataType]);
 
-    const buildTreeData = (planetPatientId, dtPatientId, dataType) => {
-        setPlanetTreeLoading(true);
+    const buildDtTreeData = (dtPatientId, dataType) => {
         setDtTreeLoading(true);
         const treeWorker = new Worker('/workers/tree.js');
         getFullPhylogenetic(dataType == "all" ? null : dataType).then((results) => {
-
-            if (dataType == "all" || dataType == "planet") {
-
-                if (!planetPatientId) {
-                    planetPatientId = planetPatientList?.[0]?.patientId;
-                }
-                const newick = planetPatientList?.find((item) => item.patientId === planetPatientId)?.newick;
-                if (!newick) return;
-                const geneData = results.filter((item) => item)?.filter((item) => item?.sampleId?.includes(`${planetPatientId}_`))
-                treeWorker.postMessage({ newick: newick, geneData });
-                treeWorker.onmessage = ({ data }) => {
-                    setPlanetTreeList(data.treeList);
-                    setPlanetSampleGeneData(data.sampleGeneData);
-                    setPlanetTreeLoading(false);
-                };
-            }
             if (dataType == "all" || dataType == "dt") {
 
                 if (!dtPatientId) {
@@ -173,11 +155,37 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
         });
     }
 
+    const buildPlanetTreeData = (planetPatientId, dataType) => {
+        setPlanetTreeLoading(true);
+        const treeWorker = new Worker('/workers/tree.js');
+        getFullPhylogenetic(dataType == "all" ? null : dataType).then((results) => {
+            if (dataType == "all" || dataType == "planet") {
+                if (!planetPatientId) {
+                    planetPatientId = planetPatientList?.[0]?.patientId;
+                }
+                const newick = planetPatientList?.find((item) => item.patientId === planetPatientId)?.newick;
+                if (!newick) return;
+                const geneData = results.filter((item) => item)?.filter((item) => item?.sampleId?.includes(`${planetPatientId}_`))
+                treeWorker.postMessage({ newick: newick, geneData });
+                treeWorker.onmessage = ({ data }) => {
+                    setPlanetTreeList(data.treeList);
+                    setPlanetSampleGeneData(data.sampleGeneData);
+                    setPlanetTreeLoading(false);
+                };
+            }
+        });
+    }
+
+    useEffect(() => {
+        buildDtHeatMap(currentDtPatientId, dataType);
+        buildDtTreeData(currentDtPatientId, dataType);
+    }, [currentDtPatientId, allPatientList, dataType]);
+
     useEffect(() => {
         buildLiverSamples(currentPlanetPatientId, dataType);
-        buildHeatMap(currentPlanetPatientId, currentDTPatientId, dataType);
-        buildTreeData(currentPlanetPatientId, currentDTPatientId, dataType);
-    }, [currentPlanetPatientId, currentDTPatientId, allPatientList, dataType]);
+        buildPlanetHeatMap(currentPlanetPatientId, dataType);
+        buildPlanetTreeData(currentPlanetPatientId, dataType);
+    }, [currentPlanetPatientId, allPatientList, dataType]);
 
     function formatLabel(str) {
         return str?.replace(/.*_/, '') ?? str;
@@ -198,22 +206,25 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
         }
     }
 
-    const buildHeatMap = (planetPatientId, dtPatientId, dataType) => {
-        if (dataType == "all" || dataType == "planet") {
-            if (!planetPatientId) {
-                planetPatientId = planetPatientList?.[0]?.patientId;
-            }
-            let subtypes = planetPatientList?.find((subtypeItem) => subtypeItem.patientId == planetPatientId)?.subtypes ?? [];
-            const _heatmap = buildSubtypes(subtypes);
-            setPlanetHeatmap(_heatmap);
-        }
+    const buildDtHeatMap = (dtPatientId, dataType) => {
         if (dataType == "all" || dataType == "dt") {
             if (!dtPatientId) {
                 dtPatientId = dtPatientList?.[0]?.patientId;
             }
             let subtypes = dtPatientList?.find((subtypeItem) => subtypeItem.patientId == dtPatientId)?.subtypes ?? [];
             const _heatmap = buildSubtypes(subtypes);
-            setDTHeatmap(_heatmap);
+            setDtHeatmap(_heatmap);
+        }
+    }
+
+    const buildPlanetHeatMap = (planetPatientId, dataType) => {
+        if (dataType == "all" || dataType == "planet") {
+            if (!planetPatientId) {
+                planetPatientId = dtPatientList?.[0]?.patientId;
+            }
+            let subtypes = dtPatientList?.find((subtypeItem) => subtypeItem.patientId == planetPatientId)?.subtypes ?? [];
+            const _heatmap = buildSubtypes(subtypes);
+            setPlanetHeatmap(_heatmap);
         }
     }
 
@@ -251,15 +262,15 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
     }
 
     const dtPatientList = useMemo(() => {
-        return allPatientList.filter((item) => item.type === "DT")
-    }, [allPatientList])
+        return patientListRef.current?.filter((item) => item.type === "DT")
+    }, [patientListRef.current])
 
     const planetPatientList = useMemo(() => {
-        return allPatientList.filter((item) => item.type === "PLANET")
-    }, [allPatientList])
+        return patientListRef.current?.filter((item) => item.type === "PLANET")
+    }, [patientListRef.current])
     return (
         <>
-           {planetPatientList?.length > 1 && <Row style={{ width: "100%" }}>
+           {planetPatientList?.length > 1 && <><Row style={{ width: "100%" }}>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
                     <Flex vertical align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <SunburstChart data={planetPatientList} handleItemClick={setCurrentPlanetPatientId}></SunburstChart>
@@ -277,29 +288,7 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
                             </Flex>}
                     </Flex>
                 </Col>
-            </Row>}
-
-            {dtPatientList?.length > 1 && <Row style={{ width: "100%" }}>
-                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex vertical align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                        <ColumnChart data={dtPatientList} handleItemClick={setCurrentDTPatientId}></ColumnChart>
-
-                    </Flex>
-
-                </Col>
-                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                    <Flex vertical align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                        {currentDTPatientId}
-                        {!dtTreeLoading ?
-                            dtTreeList ? <HorizontalTree adaptive alignLabel={true} heatmapFields={mockFields} heatmapData={dtHeatmap} data={dtTreeList} sampleGeneData={dtSampleGeneData} color={"rgb(106, 194, 165)"}></HorizontalTree> : <Empty style={{ width: '100%', padding: "20px" }} />
-                            : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
-                                <Spin spinning={true} ></Spin>
-                            </Flex>}
-                    </Flex>
-                </Col>
-            </Row>}
-
-            <Row style={{ width: "100%" }}>
+            </Row><Row style={{ width: "100%" }}>
                 <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
                     <Flex justify='center' align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <Flex>
@@ -362,7 +351,86 @@ const SubtypeLandscape = ({ conditions, dataType = "planet" }) => {
                         }
                     </Flex>
                 </Col>
-            </Row>
+            </Row></> }
+
+            {dtPatientList?.length > 1 && <><Row style={{ width: "100%" }}>
+                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
+                    <Flex vertical align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <ColumnChart data={dtPatientList} handleItemClick={setCurrentDtPatientId}></ColumnChart>
+
+                    </Flex>
+
+                </Col>
+                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
+                    <Flex vertical align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        {currentDtPatientId}
+                        {!dtTreeLoading ?
+                            dtTreeList ? <HorizontalTree adaptive alignLabel={true} heatmapFields={mockFields} heatmapData={dtHeatmap} data={dtTreeList} sampleGeneData={dtSampleGeneData} color={"rgb(106, 194, 165)"}></HorizontalTree> : <Empty style={{ width: '100%', padding: "20px" }} />
+                            : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
+                                <Spin spinning={true} ></Spin>
+                            </Flex>}
+                    </Flex>
+                </Col>
+            </Row><Row style={{ width: "100%" }}>
+                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
+                    <Flex justify='center' align='center' style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <Flex>
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Pure or Mixed</Flex>
+                                {
+                                    Object.keys(MIXED_PURE).map((item) => {
+                                        return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: MIXED_PURE[item] }}></span><span>{item}</span></Flex>
+                                    })
+                                }
+                            </Flex>
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Stage</Flex>
+                                {
+                                    Object.keys(STAGE_COLOR).map((item) => {
+                                        return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: STAGE_COLOR[item] }}></span><span>{item}</span></Flex>
+                                    })
+                                }
+                            </Flex>
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Subtype</Flex>
+                                {
+                                    Object.keys(SUBTYPE_COLOR).map((item) => {
+                                        return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
+                                    })
+                                }
+                            </Flex>
+                            <Flex vertical style={{ marginLeft: "10px" }}>
+                                <Flex align='center' style={{ marginBottom: "10px" }}>Samples</Flex>
+                                {
+                                    [...Array(7)].map((_, i) => {
+                                        const tStage = `T${i + 1}`;
+                                        return (
+                                            <Flex key={tStage} align='center'>
+                                                <svg width="20" height="16" style={{ marginRight: "5px", transform: `scale(${1 / (i * 0.05 + 1)})` }} >
+                                                    <polygon points="0,0 5,16 15,16 20,0" style={{ fill: "#fff", strokeWidth: 1, stroke: "#000" }} />
+                                                </svg>
+                                                <span>{tStage}</span>
+                                            </Flex>
+                                        );
+                                    })
+                                }
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                </Col>
+                <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
+                    <Flex style={{ height: "400px", border: "1px solid #f5f5f5", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <Flex flex="1" align='center' justify='center'>
+                            {
+                              currentDtPatientId && <Image src={`/images/DNA_${currentDtPatientId}.svg`} width={350} height={350} alt='123'></Image>
+                            }
+                        </Flex>
+
+                    </Flex>
+                </Col>
+            </Row></> }
+
+
         </>
     )
 }
