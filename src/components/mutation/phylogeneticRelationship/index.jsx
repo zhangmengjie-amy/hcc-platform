@@ -54,7 +54,7 @@ const LEGEND = [{
 
 
 
-const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeType = "overview", conditions }) => {
+const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType = "overview", conditions }) => {
     const [pieChartOption, setPieChartOption] = useState({});
     const [columnOption, setColumnOption] = useState({});
     const [loading, setLoading] = useState(true);
@@ -72,7 +72,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeTyp
         if (!conditions?.geneList) return;
 
         const fetchData = async (finialSampleList) => {
-            let [patientList] = await Promise.all([getPatientList(dataType.length == 2 ? null : dataType[0])]);
+            let [patientList] = await Promise.all([getPatientList(dataType == "all" ? null : dataType)]);
             if (!patientList) return;
             let _patientList = patientList.filter((item) => !!item.newick && finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
                 return {
@@ -92,7 +92,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType=["planet"], treeTyp
 
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
+            Promise.all([getFullMutations(dataType == "all" ? null : dataType)]).then((results) => {
                 sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
                 sampleWorker.onmessage = (event) => {
                     const result = event.data;

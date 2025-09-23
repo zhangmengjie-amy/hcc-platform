@@ -143,8 +143,8 @@ const LiverSampleChart = ({ data }) => {
     }, [data]);
 
     return (
-        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div id="chart" ref={chartRef} style={{ display: "flex", justifyContent: "center", width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
+        <div style={{ width: '100%', height: '100%' }}>
+            <div id="chart" ref={chartRef} style={{ display: "flex", justifyContent: "center", alignItems: "center", width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
         </div>
     );
 };

@@ -63,6 +63,9 @@ const ColumnChart = ({ data, handleItemClick }) => {
                     value: [yIndex, xIndex, 1],
                     itemStyle: {
                         color: SUBTYPE_COLOR[item.subtype],
+                        borderWidth: 2, // 设置边框宽度
+                        borderColor: '#fff', // 设置边框颜色
+
                     }
                 });
             })
@@ -99,7 +102,8 @@ const ColumnChart = ({ data, handleItemClick }) => {
             },
             yAxis: {
                 type: 'category',
-                data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+                data: [],
+                show: false,
                 splitArea: {
                     show: true
                 }

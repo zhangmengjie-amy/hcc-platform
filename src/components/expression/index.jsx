@@ -1,46 +1,24 @@
 "use client";
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { usePDF } from 'react-to-pdf';
 import { getGeneList } from "@/configs/request";
-import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
-import { FixedSizeList } from 'react-window';
-import { debounce } from 'lodash';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import DEGCondition from '@/components/deg-condition';
 import ConditionSelection from '@/components/condition-selection';
-import EmptyLoading from "@/components/empty-loading";
-import ExportPdfButton from '@/components/export-pdf';
 import SubtypeLandscape from '@/components/expression/subtype-landscape'
 import Pathways from '@/components/expression/pathways'
 import {
-    Card,
     Collapse,
-    Row,
-    Col,
-    Tag,
+    Radio,
     Tooltip,
-    Space,
-    List,
-    Checkbox,
     Button,
-    Affix,
-    Spin,
     Flex,
-    Input,
     Splitter,
     Typography,
-    Select,
-    Timeline,
-    Upload,
     Segmented,
-    Slider,
     message
 } from 'antd';
-import DriverLandscape from "@/components/mutation/driverLandscape";
-import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
 import { useTranslation } from "react-i18next";
 import Image from 'next/image';
 import styles from "./style.module.scss";
@@ -55,13 +33,9 @@ const RELOAD_ICON = "/images/reload.svg";
 
 const Expression = () => {
     const { t } = useTranslation();
-        const [dataTypeList, setDataTypeList] = useState(["planet"]);
     const [dataType, setDataType] = useState("planet");
-    const [treeType, setTreeType] = useState("overview");
     const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
-    const [sampleType, setSampleType] = useState("bySample");
     const [applyLoading, setApplyLoading] = useState(false);
-    const [sliderValue, setSliderValue] = useState([0, 1]);
     const [messageApi, contextHolder] = message.useMessage();
     const [params, setParams] = useState({});
     const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
@@ -170,37 +144,24 @@ const Expression = () => {
         </Flex>
     }
 
-    
-    const onDataTypeListChange = (value) => {
-        if (!value?.length) return;
-        setDataTypeList(value);
+    const onDataTypeChange = (e) => {
+        setDataType(e.target.value);
     }
 
     const dataTypeCollapseContent = () => {
         return <div className={styles.searchCard}
             variant="borderless">
-            <Checkbox.Group style={{ display: 'block' }} value={dataTypeList} onChange={onDataTypeListChange}>
-                <Row>
-                    <Col xs={20} sm={20} md={20} lg={20}>
-                        <Checkbox
-                            value={"planet"}
-                            label={"PLANET"}>{"PLANET"}</Checkbox>
-
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={20} sm={20} md={20} lg={20}>
-                        <Checkbox
-                            value={"dt"}
-                            label={"DT"}>{"DT"}</Checkbox>
-
-                    </Col>
-                </Row>
-            </Checkbox.Group>
+  <Radio.Group
+            value={dataType}
+            onChange={onDataTypeChange}
+            options={[
+            { value: "planet", label: 'PLANET' },
+            { value: "dt", label: 'DT' },
+            { value: "all", label: 'All' },
+            ]}
+  />
         </div>
     }
-
-    console.log("dataType--------------", dataTypeList)
 
     return (
         <>
@@ -266,7 +227,7 @@ const Expression = () => {
                         </Flex>
                     </Flex>
                     {
-                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape dataType={dataTypeList} conditions={params}></SubtypeLandscape>
+                        pathname.split("/")[2] == "subtype" &&  <SubtypeLandscape dataType={dataType} conditions={params}></SubtypeLandscape>
                     }
                     {
                         pathname.split("/")[2] == "pathways" &&  <Pathways conditions={params}></Pathways>

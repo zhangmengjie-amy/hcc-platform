@@ -8,7 +8,7 @@ import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
 import ChartsLegend from "./chartsLegend";
 
-const DriverLandscape = forwardRef(({ dataType = ["planet"], handleApplyLoading, sampleType = "bySample", conditions }, ref) => {
+const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, sampleType = "bySample", conditions }, ref) => {
     const [sampleMutations, setSampleMutations] = useState(null);
     const [genesMutations, setGenesMutations] = useState(null);
     const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
@@ -26,7 +26,7 @@ const DriverLandscape = forwardRef(({ dataType = ["planet"], handleApplyLoading,
         setLoading(true);
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
+            Promise.all([getFullMutations(dataType == "all" ? null : dataType)]).then((results) => {
                 fullMutationsRef.current = results[0];
                 sampleWorker.postMessage({ key: "driverLandscape", data: { sampleType, originalMutations: fullMutationsRef.current, conditions } });
                 sampleWorker.onmessage = (event) => {
