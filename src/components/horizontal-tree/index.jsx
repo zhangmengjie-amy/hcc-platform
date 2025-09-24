@@ -11,7 +11,6 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
     const svgRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
     const [tooltipState, setTooltipState] = useState({ visible: false, x: 0, y: 0, data: null });
-    console.log("data", data)
     // 1) 监听容器尺寸
     useEffect(() => {
         const ro = new ResizeObserver(entries => {

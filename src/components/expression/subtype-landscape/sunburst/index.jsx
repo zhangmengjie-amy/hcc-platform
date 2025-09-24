@@ -2,7 +2,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import EChartsReact from "echarts-for-react";
 import {
-    Empty
+    Empty,
+    Flex
 } from 'antd';
 import { set } from 'lodash';
 
@@ -41,18 +42,16 @@ const STAGE_COLOR = {
 
 const defaultValue = 1;
 const spaceValue = 0.2;
-const spaceValue_lg = 0.2;
-const SunburstChart = ({ data, handleItemClick }) => {
+const SunburstChart = ({ data, patientId, handleItemClick }) => {
     const [option, setOption] = useState({});
     const [hasData, setHasData] = useState(false);
-
-    const [currentPatientId, setCurrentPatientId] = useState(null);
 
     useEffect(() => {
         if (!data) return;
         const _option = buildOption();
         setOption(_option);
-    }, [data, currentPatientId]);
+    }, [data, patientId]);
+
 
 
     const sortedPatientById = (patientList) => {
@@ -148,7 +147,7 @@ const SunburstChart = ({ data, handleItemClick }) => {
                                 value: 1,
                                 itemStyle: {
                                 borderWidth: 0,
-                                color: (currentPatientId ?? data[0]?.patientId) == patient.patientId ? "rgb(49, 96, 148)" : MIXED_PURE_BG[PURE_MIXED]
+                                color: (patientId ?? data[0]?.patientId) == patient.patientId ? "rgb(49, 96, 148)" : MIXED_PURE_BG[PURE_MIXED]
                             },
                             }],
                             name: PURE_MIXED,
@@ -396,13 +395,12 @@ const SunburstChart = ({ data, handleItemClick }) => {
 
     const handleClick = useCallback((params) => {
         if (!params.data?.custom?.patientId) return;
-        setCurrentPatientId(params.data?.custom?.patientId);
         handleItemClick?.(params.data?.custom?.patientId);
     }, []);
 
     return (
-        hasData ?   <EChartsReact style={{ width: "100%", height: "360px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg'}}></EChartsReact> : 
-        <Empty style={{ width: '100%', padding: "20px" }}></Empty>
+        hasData ?  <EChartsReact style={{ width: "100%", height: "360px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg'}}></EChartsReact> : 
+        <Flex style={{height: "360px"}} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px"}}></Empty> </Flex>
     )
 }
 

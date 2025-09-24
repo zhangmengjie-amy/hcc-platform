@@ -610,7 +610,6 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
             </Tooltip>
         </Flex>
     }
-    console.log('clinicalConfigRef.current', clinicalConfigRef.current);
 
     const clinicCollapseContent = () => {
         return <div className={styles.clinicCard} style={{ height: 240, overflowY: "scroll", overflowX: "hidden" }}
