@@ -427,8 +427,9 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
             // 底部字段名
             // 假设你在上面已经计算了 yMaxLeaf（叶子最大 y 值）和 heatmapCellSize
 
-            const secondLastLeaf = leaves[leaves.length - 2];
-            const axisY = secondLastLeaf.y + heatmapCellSize / 2 + 6;
+            // 用最后一个 leaf（yMaxLeaf）来定底部轴线位置，并且用动态 cellHeight
+            const cellHeight = adaptive ? Math.min(dy, heatmapCellSize) : heatmapCellSize;
+            const axisY = yMaxLeaf + cellHeight / 2 + 6;
 
             gHeat
                 .append('g')
@@ -456,9 +457,9 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                         gHeat
                             .append('rect')
                             .attr('x', xHeat(field))
-                            .attr('y', leaf.y - heatmapCellSize / 2)
+                            .attr('y', leaf.y - cellHeight / 2)
                             .attr('width', xHeat.bandwidth())
-                            .attr('height', heatmapCellSize)
+                            .attr('height', cellHeight)
                             .attr('fill', v.color ?? "#f0f0f0")
                             .attr('stroke', 'rgb(29, 86, 126)')
                             .attr('stroke-width', 1)
@@ -501,9 +502,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                     style={{
                         width: "350px",
                         overflowY: "auto",
-                        padding: '10px',
                         maxHeight: "50vh",
-                        border: "2px solid #fff",
                         borderRadius: "8px"
                     }}
                 >

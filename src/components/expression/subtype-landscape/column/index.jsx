@@ -41,7 +41,7 @@ const STAGE_COLOR = {
 const defaultValue = 1;
 const spaceValue = 0.2;
 const spaceValue_lg = 0.2;
-const ColumnChart = ({ data, handleItemClick }) => {
+const ColumnChart = ({ data, patientId, handleItemClick }) => {
     const [option, setOption] = useState({});
     const [hasData, setHasData] = useState(false);
 
@@ -55,41 +55,57 @@ const ColumnChart = ({ data, handleItemClick }) => {
     const filterPatients = (data) => {
         return data?.filter((item) => !!item.subtypes);
     }
-    const getBottomSeries = (data) => {
-        const seriesData = [];
+
+    const sortData = (data) => {
         const pureList = data.filter((item) => new Set(item.subtypes.map((item) => item.subtype)).size == 1);
         const mixedList = data.filter((item) => new Set(item.subtypes.map((item) => item.subtype)).size > 1);
-        [...pureList, ...mixedList].forEach((patient, yIndex) => {
+        return [...pureList, ...mixedList];
+    }
+    const getBottomSeries = (data) => {
+        const seriesData = [];
+        sortData(data).forEach((patient, yIndex) => {
             const isPure = new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
             patient.subtypes?.forEach((item, xIndex) => {
                 if (xIndex == 0) {
                     seriesData.push({
-                    value: [yIndex, 0, 1],
-                    custom: {
-                        patientId: patient.patientId
-                    },
-                    itemStyle: {
-                        color: MIXED_PURE[isPure ? "Pure" : "Mixed"],
-                        borderWidth: 2, // 设置边框宽度
-                        borderColor: '#fff', // 设置边框颜色
-                    }
-                 });
-                seriesData.push({
-                    value: [yIndex, 1, 1],
-                    custom: {
-                        patientId: patient.patientId
-                    },
-                    itemStyle: {
-                        color: STAGE_COLOR[patient.stage],
-                        borderWidth: 2, // 设置边框宽度
-                        borderColor: '#fff', // 设置边框颜色
-                    }
-                 });
+                        value: [yIndex, 0, 1],
+                        custom: {
+                            patientId: patient.patientId,
+                            PURE_MIXED: isPure ? "Pure" : "Mixed",
+                            sampleId: item.sampleId,
+                            stage: patient.stage,
+                            subtype: item.subtype
+                        },
+                        itemStyle: {
+                            color: MIXED_PURE[isPure ? "Pure" : "Mixed"],
+                            borderWidth: 2, // 设置边框宽度
+                            borderColor: '#fff', // 设置边框颜色
+                        }
+                    });
+                    seriesData.push({
+                        value: [yIndex, 1, 1],
+                        custom: {
+                            patientId: patient.patientId,
+                            PURE_MIXED: isPure ? "Pure" : "Mixed",
+                            sampleId: item.sampleId,
+                            stage: patient.stage,
+                            subtype: item.subtype
+                        },
+                        itemStyle: {
+                            color: STAGE_COLOR[patient.stage],
+                            borderWidth: 2, // 设置边框宽度
+                            borderColor: '#fff', // 设置边框颜色
+                        }
+                    });
                 }
                 seriesData.push({
                     value: [yIndex, xIndex + 2, 1],
                     custom: {
-                        patientId: patient.patientId
+                        patientId: patient.patientId,
+                        PURE_MIXED: isPure ? "Pure" : "Mixed",
+                        sampleId: item.sampleId,
+                        stage: patient.stage,
+                        subtype: item.subtype
                     },
                     itemStyle: {
                         color: SUBTYPE_COLOR[item.subtype],
@@ -103,8 +119,7 @@ const ColumnChart = ({ data, handleItemClick }) => {
         return seriesData;
 
     }
-    
-        console.log("data", data)
+
     const buildOption = (data) => {
         const filterdPatient = filterPatients(data);
         setHasData(!!filterdPatient?.length)
@@ -119,17 +134,31 @@ const ColumnChart = ({ data, handleItemClick }) => {
                 bottom: "40",
                 left: "20",
                 right: "20",
-
             },
             xAxis: {
                 type: 'category',
-                data: data.map((item) => {
+                data: sortData(data).map((item) => {
                     return item.patientId
                 }),
                 axisLabel: {
                     textStyle: {
                         fontSize: 10, // 调整字体大小
                         color: '#666' // 字体颜色
+                    },
+                    formatter: function(value, index) {
+                        // 根据索引获取对应的柱子id
+                        var currentId = sortData(data)[index]?.patientId;
+                        if (currentId === patientId) {
+                            return `{highlight|${value}}`;
+                        } else {
+                            return value;
+                        }
+                    },
+                    rich: {
+                        highlight: {
+                            color: '#ff6b35',
+                            fontWeight: 'bold'
+                        }
                     },
                     rotate: 0, // 倾斜45度
                     interval: 0, // 显示所有标签
@@ -141,6 +170,17 @@ const ColumnChart = ({ data, handleItemClick }) => {
             },
             visualMap: {
                 show: false,
+            },
+            tooltip: {
+                formatter: (event) => {
+                    return `<div>
+                    ${event?.data?.custom?.patientId ? `<div style="color: #000"><span>Patient ID: </span><span style="color: #666">${event?.data?.custom?.patientId}</span></div>` : ""}
+                     <div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${event.color}"></span>Subtype: <span style="color: #666">${event?.data?.custom?.subtype}</span></div>
+                    ${event?.data?.custom?.sampleId ? `<div style="color: #000"><span>Sample ID: </span><span style="color: #666">${event?.data?.custom?.sampleId}</span></div>` : ""} 
+                    ${event?.data?.custom?.stage ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${STAGE_COLOR[event?.data?.custom?.stage]}"></span><span>Stage: </span><span style="color: #666">${event?.data?.custom?.stage}</span></div>` : ""}
+                    ${event?.data?.custom?.PURE_MIXED ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${MIXED_PURE[event?.data?.custom?.PURE_MIXED]}"></span><span>RNA Mixed or Pure: </span><span style="color: #666">${event?.data?.custom?.PURE_MIXED}</span></div>` : ""} 
+                    </div>`
+                }
             },
             yAxis: {
                 type: 'category',
@@ -178,7 +218,7 @@ const ColumnChart = ({ data, handleItemClick }) => {
 
     return (
         hasData ? <EChartsReact style={{ width: "100%", height: "400px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: 'svg' }}></EChartsReact> :
-            <Flex style={{height: "400px"}} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px"}}></Empty> </Flex>
+            <Flex style={{ height: "400px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
     )
 }
 

@@ -126,17 +126,18 @@ const TimingAnalysis = ({ range = [0, 1], dataType="planet", conditions }) => {
                     })
                 }
             </Row>
-            <Flex justify='flex-end'> <Pagination
+            <Flex justify='flex-end' style={{margin: "20px 0"}}> <Pagination
                 total={treeList?.length}
                 showTotal={(total) => `Total ${total} items`}
                 defaultPageSize={6}
                 onChange={onPageSizeChange}
                 defaultCurrent={1}
+                pageSizeOptions={[6, 10, 20, 50, 100]}
                 />
             </Flex>        
         </EmptyLoading>
         {
-            modalOpen && <TreeDialog geneList={conditions?.geneList} dataType={dataType} treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+            modalOpen && <TreeDialog showTumor geneList={conditions?.geneList} dataType={dataType} treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
         }
         
         </>

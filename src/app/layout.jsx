@@ -71,7 +71,7 @@ export default function RootLayout({ children }) {
                                 trackBg: "rgb(10, 186, 181)",
                             },
                             Popover: {
-                                colorBgElevated: "#F5F5F5",
+                                colorBgElevated: "#fff",
                                 colorText: "#000"
                             },
                             Segmented: {
