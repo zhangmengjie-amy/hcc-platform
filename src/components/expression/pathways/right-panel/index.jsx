@@ -1,120 +1,39 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { getExpressionSubtypeList } from "@/configs/request";
-import { getITHList, getCohortList } from "@/configs/request";
-import { getFullPhylogenetic } from "@/configs/request";
-import HorizontalTree from "@/components/horizontal-tree/index";
+import React, { useEffect, useRef } from 'react';
+import { getCohortList } from "@/configs/request";
 import EChartsReact from "echarts-for-react";
 import {
-    Collapse,
-    Radio,
-    Tooltip,
-    Button,
-    Flex,
-    Tag ,
-    Splitter,
-    Typography,
-    Segmented,
-    message
+  Flex,
+  Tag,
+  Typography,
 } from 'antd';
-const SUBTYPE_COLOR = {
-    "C1": "rgb(79, 151, 121)",
-    "C2": "rgb(72, 128, 187)",
-    "C3": "rgb(150, 91, 164)",
-    "C4": "rgb(167, 134, 56)",
-    "C5": "rgb(238, 188, 57)",
-    "C6": "rgb(218, 85, 76)",
-}
 
 const SOURCE_COLOR = {
     "Tissue": "rgb(218, 85, 76)",
     "Cell lines": "rgb(238, 188, 57)"
 }
 
+const LEVEL_COLOR = {
+    "Intra": "rgba(172, 233, 153, 1)",
+    "Inter": "rgba(86, 213, 235, 1)"
+}
+
 const TECH_COLOR = {
     "micro-array": "rgb(79, 151, 121)",
-    "Sequence": "rgb(150, 91, 164)"
+    "Sequence": "rgba(216, 136, 136, 1)"
 }
 
-const HEATMAP_COLORS = {
-    "Lee_2004": {
-        "SURVIVAL_UP": "rgb(94, 171, 214)",
-        "SURVIVAL_DN": "rgb(255, 180, 180)"
-    },
-    "Hoshida_2009": {
-        "S1": "rgb(250, 227, 198)",
-        "S2": "rgb(250, 164, 189)",
-        "S3": "rgb(245, 100, 169)"
-    },
-    "Boyault_2007": {
-        "G3": "rgb(61, 194, 236)",
-        "G12": "rgb(100, 226, 183)",
-        "G56": "rgb(252, 199, 55)"
-    },
-    "Chiang_2008": {
-        "INTERFERON": "rgb(251, 243, 193)",
-        "UNANNOTATED": "rgb(220, 139, 224)",
-        "POLYSOMY7": "rgb(213, 11, 139)",
-        "PROLIFERATION": "rgb(207, 255, 226)",
-        "CTNNB1": "rgb(244, 99, 30)"
-    },
-    "Subtype": {
-        "C1": "rgb(79, 151, 121)",
-        "C2": "rgb(72, 128, 187)",
-        "C3": "rgb(150, 91, 164)",
-        "C4": "rgb(167, 134, 56)",
-        "C5": "rgb(238, 188, 57)",
-        "C6": "rgb(218, 85, 76)",
-    }
-}
-
-const mockFields = ['Lee_2004', 'Hoshida_2009', 'Boyault_2007', 'Chiang_2008', 'Subtype'];
-
-
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-    "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-    "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-    "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-    "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
-    "C1,C2,C3,C4,C5,C6"
-]
-
-const MIXED_PURE = {
-    "Pure": "rgb(106, 194, 165)",
-    "Mixed": "rgb(158, 153, 197)",
-}
-
-const MIXED_PURE_BG = {
-    "Pure": "rgb(239, 249, 247)",
-    "Mixed": "rgb(247, 240, 247)",
-}
-
-const STAGE_COLOR = {
-    "I": "rgb(250, 213, 120)",
-    "II": "rgb(245, 138, 66)",
-    "III": "rgb(224, 36, 40)",
-}
-
-const defaultValue = 1;
-const spaceValue = 0.5;
 const Pathways = () => {
-    const [option, setOption] = useState({});
-    const [treeList, setTreeList] = useState(null);
-    const [sampleMutations, setSampleMutations] = useState(null);
-    const [currentPatientId, setCurrentPatientId] = useState(null);
-    const [mockHeatmap, setMockHeatmap] = useState(null);
-    const patientListRef = useRef(null);
-    const subtypeList = useRef(null);
 
-    const cohortListRef = useRef(null)
-    useEffect(() => {
-        getCohortList().then((data) => {
-        cohortListRef.current = data;
-        })
-    }, [])
+  const cohortListRef = useRef(null)
+  useEffect(() => {
+    getCohortList().then((data) => {
+      cohortListRef.current = data;
+    })
+  }, [])
 
 
-   const leftData = [
+  const leftData = [
     [10, 20],
     [15, 30],
     [20, 40],
@@ -189,7 +108,7 @@ const Pathways = () => {
   };
 
 
-const bubbleLeftData = [
+  const bubbleLeftData = [
     [20, 30, 15], // [x, y, size]
     [30, 50, 25],
     [40, 20, 10],
@@ -243,31 +162,27 @@ const bubbleLeftData = [
       },
     ],
   };
-    return (
-        <div style={{padding: 20}}>{
-            cohortListRef.current?.slice(0, 2).map((item) => {
-                return <Flex vertical style={{marginBottom: "20px"}}>
-                    <Flex style={{marginBottom: "20px"}}>
-                        <Typography.Title level={5} style={{marginBottom: 0, marginRight: "20px"}}>{item.cohort}</Typography.Title><Tag color={SOURCE_COLOR[item.source]}>{item.source}</Tag>
-                        <Tag color={TECH_COLOR[item.tech]}>{item.tech}</Tag>
-                    </Flex>
-                     <Flex style={{ height: "500px" }}>
-            <Flex flex="1" style={{border: "1px solid #f5f5f5", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", padding: "15px", borderRadius: "12px"}}>
-                <EChartsReact option={scatter} style={{ width: "100%", height: "100%" }}  opts={{ renderer: 'svg' }}></EChartsReact>
+  return (
+    <div style={{ padding: 20 }}>{
+      cohortListRef.current?.slice(0, 2).map((item) => {
+        return <Flex vertical style={{ marginBottom: "20px" }}>
+          <Flex style={{ marginBottom: "20px" }}>
+            <Typography.Title level={5} style={{ marginBottom: 0, marginRight: "20px" }}>{item.cohort}</Typography.Title><Tag color={LEVEL_COLOR[item.level]}>{item.level}</Tag><Tag color={SOURCE_COLOR[item.source]}>{item.source}</Tag>
+            <Tag color={TECH_COLOR[item.tech]}>{item.tech}</Tag>
+          </Flex>
+          <Flex style={{ height: "500px" }}>
+            <Flex flex="1" style={{ border: "1px solid #f5f5f5", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", padding: "15px", borderRadius: "12px" }}>
+              <EChartsReact option={scatter} style={{ width: "100%", height: "100%" }} opts={{ renderer: 'svg' }}></EChartsReact>
             </Flex>
-            <Flex flex="1" style={{border: "1px solid #f5f5f5", marginLeft: "20px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", padding: "15px", borderRadius: "12px"}}>
-                 <EChartsReact option={bubbleOption} style={{ width: "100%", height: "100%" }}   opts={{ renderer: 'svg' }}></EChartsReact>
+            <Flex flex="1" style={{ border: "1px solid #f5f5f5", marginLeft: "20px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", padding: "15px", borderRadius: "12px" }}>
+              <EChartsReact option={bubbleOption} style={{ width: "100%", height: "100%" }} opts={{ renderer: 'svg' }}></EChartsReact>
             </Flex>
+          </Flex>
         </Flex>
-                </Flex>
-            })
-        }
-           
-      
-
-        </div>
-
-    )
+      })
+    }
+    </div>
+  )
 }
 
 export default Pathways;

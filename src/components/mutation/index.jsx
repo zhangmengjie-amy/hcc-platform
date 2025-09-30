@@ -94,7 +94,7 @@ const Mutation = () => {
                     rows: 1,
                     expandable: false
                 }}
-                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.driver")}</Typography.Paragraph>
+                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>Filter By Cohort</Typography.Paragraph>
 
             <Tooltip placement="bottom" title={t("common:reset-selection")}>
                 <Button color="default" onClick={(event) => {

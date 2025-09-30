@@ -3,36 +3,42 @@
         "cohort": "Cohort1",
         "tech": "Sequence",
         "source": "Tissue",
+        "level": "Inter",
         "description": "description looooooong"
     },
     {
         "cohort": "Cohort2",
         "tech": "micro-array",
         "source": "Cell lines",
+        "level": "Intra",
         "description": "description looooooong"
     },
     {
         "cohort": "Cohort3",
         "tech": "micro-array",
         "source": "Cell lines",
+        "level": "Intra",
         "description": "description looooooong"
     },
     {
         "cohort": "Cohort4",
         "tech": "Sequence",
         "source": "Tissue",
+        "level": "Intra",
         "description": "description looooooong"
     },
     {
         "cohort": "Cohort5",
         "tech": "Sequence",
         "source": "Cell lines",
+        "level": "Intra",
         "description": "description looooooong"
     },
     {
         "cohort": "Cohort6",
         "tech": "micro-array",
         "source": "Tissue",
+        "level": "Inter",
         "description": "description looooooong"
     }
 ]

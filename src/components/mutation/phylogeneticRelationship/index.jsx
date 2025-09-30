@@ -54,7 +54,7 @@ const LEGEND = [{
 
 
 
-const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType = "overview", conditions }) => {
+const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeType = "overview", conditions }) => {
     const [pieChartOption, setPieChartOption] = useState({});
     const [columnOption, setColumnOption] = useState({});
     const [loading, setLoading] = useState(true);
@@ -66,50 +66,63 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
     const patientListRef = useRef(null);
     const currentPatientRef = useRef(null);
     const rangePatientListRef = useRef(null);
+    const fullMutationsRef = useRef(null);
 
     useEffect(() => {
-        setLoading(true);
         if (!conditions?.geneList) return;
+        if (!patientListRef.current || !fullMutationsRef.current) {
+            Promise.all([getPatientList(null), getFullMutations(null)]).then((results) => {
+                const [patientList, originalMutations] = results;
+                patientListRef.current = patientList;
+                fullMutationsRef.current = originalMutations;
+                let _fullMutations = fullMutationsRef.current;
+                let _patientList = patientListRef.current;
+                if (dataType !== "all") {
+                    _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
+                    _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
+                }
+                buildCharts(_patientList, originalMutations);
+            });
+        } else {
+            let _fullMutations = fullMutationsRef.current;
+            let _patientList = patientListRef.current;
+            if (dataType !== "all") {
+                _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
+                _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
+            }
+            buildCharts(_patientList, _fullMutations);
+        }
 
-        const fetchData = async (finialSampleList) => {
-            let [patientList] = await Promise.all([getPatientList(dataType == "all" ? null : dataType)]);
-            if (!patientList) return;
-            let _patientList = patientList.filter((item) => !!item.newick && finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
+    }, [conditions, dataType]);
+
+    const buildCharts = (patientList, originalMutations) => {
+        setLoading(true);
+        const sampleWorker = new Worker('/workers/calculate.js');
+        sampleWorker.postMessage({ key: "filterGene", data: { originalMutations, conditions } });
+        sampleWorker.onmessage = (event) => {
+            const result = event.data;
+            let _patientList = patientList.filter((item) => !!item.newick && result.finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
                 return {
                     ...item,
                     ith: Number(item.ith)?.toFixed(2) ?? 1
                 }
             })
             _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
-            patientListRef.current = _patientList;
-            patientListRef.current = buildAllPatientsData();
-            rangePatientListRef.current = getPatientListByRange();
+            const _rangeList = buildAllPatientsData(_patientList);
+            rangePatientListRef.current = getPatientListByRange(_rangeList);
             setRangeList(rangePatientListRef.current);
             buildPieChart();
             buildBarChart();
             setLoading(false);
-        }
-
-        const sampleWorker = new Worker('/workers/calculate.js');
-        try {
-            Promise.all([getFullMutations(dataType == "all" ? null : dataType)]).then((results) => {
-                sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
-                sampleWorker.onmessage = (event) => {
-                    const result = event.data;
-                    fetchData(result.finialSampleList);
-                };
-
-            });
-        } catch (error) {
-
-        }
+        };
         return () => {
             sampleWorker.terminate();
         };
-    }, [conditions, dataType]);
+    }
 
-    const getPatientListByRange = () => {
-        return patientListRef.current?.filter((item) => {
+    const getPatientListByRange = (rangeList) => {
+        console.log("rangeList", rangeList)
+        return rangeList?.filter((item) => {
             return item.ith >= range[0] && item.ith <= range[1];
         })
     }
@@ -117,13 +130,13 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
     const getPatientListByActiveBar = () => {
         const [min, max] = activeBar.split("~");
         return rangePatientListRef.current.filter((item) => {
-            return item.ith > min && item.ith <= max
+            return item.ith >= min && item.ith <= max
         })
     }
 
     useEffect(() => {
         if (!range?.length) return;
-        rangePatientListRef.current = getPatientListByRange();
+        rangePatientListRef.current = getPatientListByRange(range);
         const barEchartsInstance = barChartRef.current?.getEchartsInstance();
         barEchartsInstance?.setOption({
             series: [{
@@ -390,9 +403,9 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
         })
     }, [rangePatientListRef.current, dataType])
 
-    const buildAllPatientsData = () => {
+    const buildAllPatientsData = (patientList) => {
         const colors = generateGradientColors(100);
-        return patientListRef.current?.map((item) => {
+        return patientList?.map((item) => {
             return {
                 ith: item.ith,
                 newick: item.newick,
@@ -420,12 +433,12 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType="planet", treeType 
         "click": function (params) {
             const [rangeMin, rangeMax] = range;
             rangePatientListRef.current = rangePatientListRef.current = patientListRef.current.filter((item) => {
-                return item.ith > rangeMin && item.ith <= rangeMax
+                return item.ith >= rangeMin && item.ith <= rangeMax
             })
             if (activeBar !== params.name) {
                 const [min, max] = params.name.split("~");
                 rangePatientListRef.current = rangePatientListRef.current.filter((item) => {
-                    return item.ith > min && item.ith <= max
+                    return item.ith >= min && item.ith <= max
                 })
                 setActiveBar(params.name);
             } else {

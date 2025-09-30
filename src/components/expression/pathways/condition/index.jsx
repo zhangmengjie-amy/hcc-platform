@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useImperativeHandle, useState, useCallback, f
 import { usePDF } from 'react-to-pdf';
 import { getGeneList, getValidGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
-import { debounce } from 'lodash';
+import { debounce, set } from 'lodash';
 import EmptyLoading from "@/components/empty-loading";
 import {
     Card,
@@ -39,15 +39,23 @@ const SOURCE_COLOR = {
     "Cell lines": "rgb(238, 188, 57)"
 }
 
+const LEVEL_COLOR = {
+    "Intra": "rgba(172, 233, 153, 1)",
+    "Inter": "rgba(86, 213, 235, 1)"
+}
+
 const TECH_COLOR = {
     "micro-array": "rgb(79, 151, 121)",
-    "Sequence": "rgb(150, 91, 164)"
+    "Sequence": "rgba(216, 136, 136, 1)"
 }
 const RELOAD_ICON = "/images/reload.svg";
 const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true, showGeneList = true, showClinical = true }, ref) => {
     const { t } = useTranslation();
     const paramsRef = useRef(null);
-    const cohortListRef = useRef(null)
+    const [selectedTech, setSelectedTech] = useState(["sequence", "micro-array"]);
+    const [selectedSource, setSelectedSource] = useState(["tissue", "cell-lines"]);
+    const [groupBy, setGroupBy] = useState("n/t");
+    const cohortListRef = useRef(null);
     useEffect(() => {
         getCohortList().then((data) => {
             cohortListRef.current = data;
@@ -60,14 +68,19 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
             render: text => <a>{text}</a>,
         },
         {
+            title: 'Level',
+            dataIndex: 'level',
+            render: text => <Tag style={{display: "block", textAlign: "center"}} color={LEVEL_COLOR[text]}>{text}</Tag>
+        },
+        {
             title: 'Tech',
             dataIndex: 'tech',
-            render: text => <Tag color={TECH_COLOR[text]}>{text}</Tag>
+            render: text => <Tag style={{display: "block", textAlign: "center"}} color={TECH_COLOR[text]}>{text}</Tag>
         },
         {
             title: 'Source',
             dataIndex: 'source',
-            render: text => <Tag color={SOURCE_COLOR[text]}>{text}</Tag>
+            render: text => <Tag style={{display: "block", textAlign: "center"}} color={SOURCE_COLOR[text]}>{text}</Tag>
         },
         {
             title: 'Description',
@@ -180,14 +193,24 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
 
                 <Flex vertical flex={1} style={{ border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
                     <Typography.Paragraph>Tech</Typography.Paragraph>
-                    <Checkbox value="sequence">Sequence</Checkbox>
-                    <Checkbox value="micro">micro-array</Checkbox>
+                    <Checkbox.Group onChange={setSelectedTech} value={selectedTech}>
+                        <Flex vertical>
+                            <Checkbox value="sequence">Sequence</Checkbox>
 
+                            <Checkbox value="micro-array">micro-array</Checkbox>
+                        </Flex>
+
+
+                    </Checkbox.Group>
                 </Flex>
                 <Flex vertical flex={1} style={{ marginLeft: "15px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
                     <Typography.Paragraph>Source</Typography.Paragraph>
-                    <Checkbox value="sequence">Tissue</Checkbox>
-                    <Checkbox value="micro">Cell lines</Checkbox>
+                    <Checkbox.Group onChange={setSelectedSource} value={selectedSource}>
+                        <Flex vertical>
+                            <Checkbox value="tissue">Tissue</Checkbox>
+                            <Checkbox value="cell-lines">Cell lines</Checkbox>
+                        </Flex>
+                    </Checkbox.Group>
                 </Flex>
             </Flex>
         </div>
@@ -199,26 +222,104 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
             <Flex>
                 <Flex vertical flex={1} style={{ border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
                     <Typography.Paragraph>Group By</Typography.Paragraph>
-                    <Radio.Group value={1} onChange={(e) => { }}>
-                        <Radio value={1}>N/T</Radio>
-                        <br />
-                        <Radio value={2}>HBV</Radio>
-                        <br />
-                        <Radio value={3}>HCV</Radio>
-                        <br />
-                        <Radio value={4}>Age</Radio>
-                        <br />
-                        <Radio value={5}>Stage</Radio>
-                        <br />
-                        <Radio value={4}>Gene</Radio>
+                    <Radio.Group value={groupBy} onChange={(e) => { setGroupBy(e.target.value); }}>
+                        <Flex vertical>
+                            <Radio value={"n/t"}>N/T</Radio>
+
+                            <Radio value={"hbv"}>HBV</Radio>
+
+                            <Radio value={"hcv"}>HCV</Radio>
+
+                            <Radio value={"age"}>Age</Radio>
+
+                            <Radio value={"stage"}>Stage</Radio>
+
+                            <Radio value={"gene"}>Gene</Radio>
+                        </Flex>
+
 
                     </Radio.Group>
 
                 </Flex>
                 <Flex vertical flex={1} style={{ marginLeft: "15px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
-                    <Typography.Paragraph>Source</Typography.Paragraph>
-                    <Checkbox value="sequence">Tissue</Checkbox>
-                    <Checkbox value="micro">Cell lines</Checkbox>
+
+
+                    {
+                        groupBy == "n/t" && <Checkbox.Group value={['normal', 'tumor']}>
+                            <Flex vertical>
+                                <Flex vertical style={{ marginBottom: "10px" }}>
+                                    <Typography.Paragraph style={{ marginBottom: 0 }}>First Group</Typography.Paragraph>
+                                    <Checkbox value="normal" disabled>Normal</Checkbox>
+                                </Flex>
+                                <Flex vertical>
+                                    <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
+                                    <Checkbox value="tumor" disabled>Tumor</Checkbox>
+                                </Flex>
+                            </Flex>
+                        </Checkbox.Group>
+                    }
+                    {
+                        (groupBy == "hbv" || groupBy == "hcv") && <Checkbox.Group value={['positive', 'negative']}>
+                            <Flex vertical>
+                                <Flex vertical style={{ marginBottom: "10px" }}>
+                                    <Typography.Paragraph style={{ marginBottom: 0 }}>First Group</Typography.Paragraph>
+                                    <Checkbox value="positive" disabled>Positive</Checkbox>
+                                </Flex>
+                                <Flex vertical>
+                                    <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
+                                    <Checkbox value="negative" disabled>Negative</Checkbox>
+                                </Flex>
+                            </Flex>
+                        </Checkbox.Group>
+                    }
+                    {
+                        groupBy == "age" && <><Input placeholder='Please input age to group' value={50}></Input>
+                            <Flex style={{ marginTop: "20px" }}>
+                                <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
+                                    <Typography.Paragraph style={{ marginBottom: 0 }}>First Group</Typography.Paragraph>
+                                    {"<50岁"}
+                                </Flex>
+                                <Flex vertical flex={1}>
+                                    <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
+                                    {">=50岁"}
+                                </Flex>
+                            </Flex>
+                        </>
+
+                    }
+                    {
+                        groupBy == "stage" &&
+                        <Flex >
+                            <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
+                                <Typography.Paragraph style={{ marginBottom: 0 }}>First Group</Typography.Paragraph>
+
+                                <Checkbox.Group value={['I', 'II']}>
+                                    <Flex vertical>
+                                        <Checkbox value="I">II</Checkbox>
+                                        <Checkbox value="II">II</Checkbox>
+                                        <Checkbox value="III">III</Checkbox>
+                                        <Checkbox value="IV">IV</Checkbox>
+                                    </Flex>
+                                </Checkbox.Group>
+
+                            </Flex>
+                            <Flex vertical flex={1}>
+                                <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
+
+                                <Checkbox.Group value={['III', 'IV']}>
+                                    <Flex vertical>
+                                        <Checkbox value="I" disabled>II</Checkbox>
+                                        <Checkbox value="II" disabled>II</Checkbox>
+                                        <Checkbox value="III" disabled>III</Checkbox>
+                                        <Checkbox value="IV" disabled>IV</Checkbox>
+                                    </Flex>
+                                </Checkbox.Group>
+
+                            </Flex>
+                        </Flex>
+
+
+                    }
                 </Flex>
             </Flex>
         </div>
@@ -250,16 +351,6 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                 }]}>
             </Collapse>
             <Collapse
-                defaultActiveKey={"analysis"}
-                className={styles.searchCollapse}
-                expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
-                items={[{
-                    key: "analysis",
-                    label: analysisCollapseTitle(),
-                    children: analysisCollapseContent()
-                }]}>
-            </Collapse>
-            <Collapse
                 defaultActiveKey={"table"}
                 className={styles.searchCollapse}
                 expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
@@ -269,6 +360,17 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                     children: tableCollapseContent()
                 }]}>
             </Collapse>
+            <Collapse
+                defaultActiveKey={"analysis"}
+                className={styles.searchCollapse}
+                expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+                items={[{
+                    key: "analysis",
+                    label: analysisCollapseTitle(),
+                    children: analysisCollapseContent()
+                }]}>
+            </Collapse>
+
 
         </div>
     );

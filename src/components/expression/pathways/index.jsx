@@ -4,7 +4,7 @@ import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import DEGCondition from '@/components/deg-condition';
+import DEGCondition from '@/components/expression/pathways/condition';
 import ConditionSelection from '@/components/condition-selection';
 import RightPanel from '@/components/expression/pathways/right-panel'
 import {
@@ -24,8 +24,8 @@ import styles from "./style.module.scss";
 const { Panel } = Splitter;
 const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const DEFAULT_LEFT_PANEL_WIDTH = "50%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "50%";
+const DEFAULT_LEFT_PANEL_WIDTH = "40%";
+const DEFAULT_RIGHT_PANEL_WIDTH = "60%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
 const RELOAD_ICON = "/images/reload.svg";
@@ -116,8 +116,8 @@ const Pathways = () => {
         setParams({});
     }, [mutationTypeTab])
 
-    
-        const dataTypeCollapseTitle = () => {
+
+    const dataTypeCollapseTitle = () => {
         return <Flex justify={"space-between"} align={"center"}>
             <Typography.Paragraph
                 ellipsis={{
@@ -150,15 +150,15 @@ const Pathways = () => {
     const dataTypeCollapseContent = () => {
         return <div className={styles.searchCard}
             variant="borderless">
-  <Radio.Group
-            value={dataType}
-            onChange={onDataTypeChange}
-            options={[
-            { value: "planet", label: 'PLANET' },
-            { value: "dt", label: 'DT' },
-            { value: "all", label: 'All' },
-            ]}
-  />
+            <Radio.Group
+                value={dataType}
+                onChange={onDataTypeChange}
+                options={[
+                    { value: "planet", label: 'PLANET' },
+                    { value: "dt", label: 'DT' },
+                    { value: "all", label: 'All' },
+                ]}
+            />
         </div>
     }
 
@@ -172,7 +172,7 @@ const Pathways = () => {
                             style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
                             {t("common:apply")}
                         </Button>
-                        
+
                         <Button color="default" variant="text"
                             onClick={leftPanelFullScreen}
                             style={{ color: "#fff", padding: 0 }}>
@@ -185,9 +185,9 @@ const Pathways = () => {
                         </Button>
                     </Flex>
 
-                    
-                      <DEGCondition ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></DEGCondition>
-                    
+
+                    <DEGCondition ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></DEGCondition>
+
                 </Panel>
                 <Panel size={rightPanelSize} min={"20%"} max="80%">
                     <Flex justify='space-between' align='center' style={{ height: "40px", paddingRight: 10 }}>
@@ -204,11 +204,11 @@ const Pathways = () => {
                             </Button>
 
                             <Segmented
-                                options={[{ label: <Link href="/expression/subtype">{'Subtype landscape and tree'}</Link> , value: "subtype" },
-                                    { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: 'pathways' },
-                                    { label: <Link href="/expression/biomarkers">{"Biomarkers"}</Link>, value: 'biomarkers' }
+                                options={[{ label: <Link href="/expression/subtype">{'Subtype landscape and tree'}</Link>, value: "subtype" },
+                                { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: 'pathways' },
+                                { label: <Link href="/expression/biomarkers">{"Biomarkers"}</Link>, value: 'biomarkers' }
                                 ]}
-                                value={ pathname.split("/")[2]}
+                                value={pathname.split("/")[2]}
                             />
                         </Flex>
                     </Flex>

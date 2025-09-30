@@ -4,7 +4,7 @@ import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import DEGCondition from '@/components/deg-condition';
+import DEGCondition from '@/components/expression/pathways/condition';
 import ConditionSelection from '@/components/condition-selection';
 import RightPanel from '@/components/expression/subtype-landscape/right-panel'
 import {
@@ -124,7 +124,7 @@ const Expression = () => {
                     rows: 1,
                     expandable: false
                 }}
-                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.driver")}</Typography.Paragraph>
+                style={{ margin: 0, color: "#fff", fontWeight: "500" }}>Filter By Cohort</Typography.Paragraph>
 
             <Tooltip placement="bottom" title={t("common:reset-selection")}>
                 <Button color="default" onClick={(event) => {

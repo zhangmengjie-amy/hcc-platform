@@ -1,16 +1,14 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { getExpressionpatientListRef } from "@/configs/request";
 import { Flex, Row, Col, Empty, Spin } from 'antd';
-import { getITHList, getPatientList, getLiverSamples } from "@/configs/request";
+import { getPatientList } from "@/configs/request";
 import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
 import LiverSampleChart from '@/components/liver-sample';
 import Image from 'next/image';
-import SunburstChart from '@/components/expression/subtype-landscape/sunburst';
-import ColumnChart from '@/components/expression/subtype-landscape/column';
+import SunburstChart from '@/components/expression/subtype-landscape/right-panel/sunburst';
+import ColumnChart from '@/components/expression/subtype-landscape/right-panel/column';
 import filterSampleByConditions from "@/utils/filter-patient";
-import { SP } from 'next/dist/shared/lib/utils';
 
 const SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
@@ -71,10 +69,6 @@ const MIXED_PURE = {
     "Mixed": "rgb(158, 153, 197)",
 }
 
-const MIXED_PURE_BG = {
-    "Pure": "rgb(239, 249, 247)",
-    "Mixed": "rgb(247, 240, 247)",
-}
 
 const STAGE_COLOR = {
     "I": "rgb(250, 213, 120)",
@@ -434,7 +428,7 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
                             <Col xs={24} sm={24} md={24} style={{ width: "100%", padding: "10px", height: "320px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                                 <Flex flex={1} align='center' justify='center'>
                                     {
-                                        currentDtPatientId ? <Image src={`/images/DNA_${currentDtPatientId}.svg`} width={330} height={330} alt='DT-Tumor'></Image> : <Flex style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>
+                                        currentDtPatientId ? <Image src={`/images/DNA_${currentDtPatientId}.svg`} width={310} height={310} alt='DT-Tumor'></Image> : <Flex style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>
                                     }
                                 </Flex>
                             </Col>
