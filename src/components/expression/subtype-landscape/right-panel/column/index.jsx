@@ -6,6 +6,7 @@ import {
     Flex
 } from 'antd';
 import { set } from 'lodash';
+import { ticks } from 'd3';
 
 const SUBTYPE_COLOR = {
     "Classic": "rgba(225, 229, 144, 1)",
@@ -140,6 +141,10 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
                 data: sortData(data).map((item) => {
                     return item.patientId
                 }),
+                axisTick: {
+                show: false,
+
+                },
                 axisLabel: {
                     textStyle: {
                         fontSize: 10, // 调整字体大小
@@ -164,9 +169,6 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
                     interval: 0, // 显示所有标签
                     margin: 10 // 标签与坐标轴的间距
                 },
-                splitArea: {
-                    show: true
-                }
             },
             visualMap: {
                 show: false,

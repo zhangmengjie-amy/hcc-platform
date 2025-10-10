@@ -407,7 +407,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
             .attr('x', x0)
             .attr('y', y0 - tickSize)
             .attr('text-anchor', 'start')
-            .attr('dx', '32px') // 稍微向右偏移，具体数值可能需要调整
+            .attr('dx', '28px') // 稍微向右偏移，具体数值可能需要调整
             .text('Scale line: ' + step * scaleFactor);
 
         if (showHeatMap) {
@@ -445,7 +445,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                 .attr('transform', 'rotate(90)')
                 .attr('text-anchor', 'start')
                 .attr('dy', '0')
-                .attr('dx', '0')
+                .attr('dx', '-15')
                 .style('font-size', '12px');
 
             // 每个叶子一行
@@ -461,7 +461,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                             .attr('width', xHeat.bandwidth())
                             .attr('height', cellHeight)
                             .attr('fill', v.color ?? "#f0f0f0")
-                            .attr('stroke', 'rgb(29, 86, 126)')
+                            .attr('stroke', '#fff')
                             .attr('stroke-width', 1)
                             .append('title')
                             .text(`${field}: ${v.value ?? "None"}`);

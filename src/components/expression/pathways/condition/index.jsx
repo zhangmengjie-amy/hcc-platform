@@ -52,7 +52,7 @@ const RELOAD_ICON = "/images/reload.svg";
 const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true, showGeneList = true, showClinical = true }, ref) => {
     const { t } = useTranslation();
     const paramsRef = useRef(null);
-    const [selectedTech, setSelectedTech] = useState(["sequence", "micro-array"]);
+    const [selectedTech, setSelectedTech] = useState([]);
     const [selectedSource, setSelectedSource] = useState(["tissue", "cell-lines"]);
     const [groupBy, setGroupBy] = useState("n/t");
     const cohortListRef = useRef(null);
@@ -196,10 +196,14 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                     <Checkbox.Group onChange={setSelectedTech} value={selectedTech}>
                         <Flex vertical>
                             <Checkbox value="sequence">Sequence</Checkbox>
-
-                            <Checkbox value="micro-array">micro-array</Checkbox>
+                            <Checkbox value="micro-array">Micro Array</Checkbox>
+                            <Checkbox value="n/t">N/T</Checkbox>
+                            <Checkbox value="hbv">HBV</Checkbox>
+                            <Checkbox value="hcv">HCV</Checkbox>
+                            <Checkbox value="age">Age</Checkbox>
+                            <Checkbox value="stage">Stage</Checkbox>
+                            <Checkbox value="gene">Gene</Checkbox>
                         </Flex>
-
 
                     </Checkbox.Group>
                 </Flex>
@@ -273,18 +277,26 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                         </Checkbox.Group>
                     }
                     {
-                        groupBy == "age" && <><Input placeholder='Please input age to group' value={50}></Input>
-                            <Flex style={{ marginTop: "20px" }}>
-                                <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
+                        groupBy == "age" && <Checkbox.Group value={['positive', 'negative']}>
+                   
+                                <Flex vertical flex={1} style={{ marginBottom: "10px" }}>
                                     <Typography.Paragraph style={{ marginBottom: 0 }}>First Group</Typography.Paragraph>
-                                    {"<50岁"}
+                                    <Checkbox value="<20">{"<20"}</Checkbox>
+                                    <Checkbox value="<=40">{"<40"}</Checkbox>
+                                    <Checkbox value="<=60">{"<60"}</Checkbox>
+                                    <Checkbox value="<=80">{"<80"}</Checkbox>
+                                    <Checkbox value=">80">{">80"}</Checkbox>
                                 </Flex>
                                 <Flex vertical flex={1}>
                                     <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
-                                    {">=50岁"}
+                                    <Checkbox value="<20">{"<20"}</Checkbox>
+                                    <Checkbox value="<=40">{"<40"}</Checkbox>
+                                    <Checkbox value="<=60">{"<60"}</Checkbox>
+                                    <Checkbox value="<=80">{"<80"}</Checkbox>
+                                    <Checkbox value=">80">{">80"}</Checkbox>
                                 </Flex>
-                            </Flex>
-                        </>
+                 
+                        </Checkbox.Group>
 
                     }
                     {
@@ -292,8 +304,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                         <Flex >
                             <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
                                 <Typography.Paragraph style={{ marginBottom: 0 }}>First Group</Typography.Paragraph>
-
-                                <Checkbox.Group value={['I', 'II']}>
+                                <Checkbox.Group value={[]}>
                                     <Flex vertical>
                                         <Checkbox value="I">II</Checkbox>
                                         <Checkbox value="II">II</Checkbox>
@@ -305,13 +316,12 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                             </Flex>
                             <Flex vertical flex={1}>
                                 <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
-
-                                <Checkbox.Group value={['III', 'IV']}>
+                                <Checkbox.Group value={[]}>
                                     <Flex vertical>
-                                        <Checkbox value="I" disabled>II</Checkbox>
-                                        <Checkbox value="II" disabled>II</Checkbox>
-                                        <Checkbox value="III" disabled>III</Checkbox>
-                                        <Checkbox value="IV" disabled>IV</Checkbox>
+                                        <Checkbox value="I" >II</Checkbox>
+                                        <Checkbox value="II" >II</Checkbox>
+                                        <Checkbox value="III" >III</Checkbox>
+                                        <Checkbox value="IV" >IV</Checkbox>
                                     </Flex>
                                 </Checkbox.Group>
 
@@ -330,6 +340,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
             variant="borderless">
             {cohortListRef.current && <Table
                 pagination={false}
+                size="small"
                 rowSelection={{ type: "checkbox", ...rowSelection }}
                 columns={columns}
                 dataSource={cohortListRef.current}

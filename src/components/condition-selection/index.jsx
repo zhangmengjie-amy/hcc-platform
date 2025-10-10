@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useEffect, useImperativeHandle, useState, useCallback, forwardRef } from 'react';
+import React, { useRef, useMemo, useEffect, useImperativeHandle, useState, useCallback, forwardRef } from 'react';
 import { usePDF } from 'react-to-pdf';
 import { getGeneList, getValidGeneList, getClinicalConfig  } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
@@ -30,11 +30,9 @@ import {
 } from 'antd';
 import { useTranslation } from "react-i18next";
 import Image from 'next/image';
-import { clinicConfig } from '@/configs/mutation';
 import { FixedSizeList } from 'react-window';
 import styles from "./style.module.scss";
 const RELOAD_ICON = "/images/reload.svg";
-const SEARCH_SRC = "/images/search.svg";
 const IMPORT_SRC = "/images/import.svg";
 const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
 const DEFAULT_PAGE = 1;
@@ -43,7 +41,6 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
     const { t } = useTranslation();
     const [driverList, setDriverList] = useState(["driver", "not-driver"]);
     const [sliderValue, setSliderValue] = useState([0, 1]);
-    const [showSearchInput, setShowSearchInput] = useState(false);
     const [filterValue, setFilterValue] = useState("");
     const [loadMoreLoading, setLoadMoreLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
@@ -56,6 +53,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         stage: [],
         viralStatus: []
     });
+    const filteredRef = useRef(null);
     const geneRef = useRef(null);
     const listRef = useRef(null);
     const clinicalConfigRef = useRef(null);
@@ -72,7 +70,8 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         Promise.all([getClinicalConfig(), getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "")]).then((results) => {
             const [clinicConfig, geneData] = results;
             clinicalConfigRef.current = clinicConfig;
-             geneRef.current = geneData?.records ?? [];
+            geneRef.current = geneData?.records ?? [];
+            filteredRef.current = geneData?.records ?? [];
             const driverList = getDriverList();
             const _params = {
                 ...paramsRef.current,
@@ -97,11 +96,6 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
 
     const getDriverList = () => {
         return geneRef.current?.filter((item) => !!item.isDriverGene).map((item) => item.gene);
-    }
-
-    const handleSearch = (event) => {
-        event.stopPropagation();
-        setShowSearchInput(!showSearchInput);
     }
 
     const handleImport = (event) => {
@@ -152,7 +146,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
     }
 
     const renderSearchInput = () => {
-        return showSearchInput ? <Input size={"middle"} style={{marginBottom: 10}} allowClear onChange={fuzzySearch} placeholder={t("common:search")} /> : ""
+        return <Input size={"middle"} style={{marginBottom: 10}} allowClear onChange={fuzzySearch} placeholder={t("common:search")} />
     }
 
     const getSelectedDriverList = () => {
@@ -237,11 +231,11 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         }
     }
 
-    const virtualRow = ({ index, style }) => (
+    const virtualRow = (({ index, style }) => (
         <List.Item style={style}>{<Checkbox
-            value={geneRef.current?.[index].gene}
-            onChange={onGeneSelection}>{geneRef.current?.[index].gene}</Checkbox>}</List.Item>
-    );
+            value={filteredRef.current?.[index]?.gene}
+            onChange={onGeneSelection}>{filteredRef.current?.[index]?.gene}</Checkbox>}</List.Item>
+    ));
 
     const onPreventMouseDown = event => {
         event.preventDefault();
@@ -358,19 +352,6 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
                         </Button>
                     </Upload>
                 </Tooltip>
-                <Tooltip placement="bottom" title={"Search"}>
-                    <Button color="default" onClick={(event) => {
-                        handleSearch(event)
-                    }} variant="text"
-                        style={{ color: "#fff", padding: 0 }}>
-                        <Image
-                            src={SEARCH_SRC}
-                            alt="search"
-                            width={18}
-                            height={18}
-                        />
-                    </Button>
-                </Tooltip>
                 <Tooltip placement="bottom" title={t("common:reset-selection")}>
                     <Button color="default" onClick={(event) => {
                         handleGeneReload(event)
@@ -436,14 +417,15 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         debounce(() => {
             if (loadMoreLoading) return;
             setLoadMoreLoading(true);
-            getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue)
+                getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue ?? "")
                 .then(newData => {
-                    geneRef.current = [...geneRef.current, ...newData.records];
+                    setFilteredList([...geneRef.current, ...newData.records]);
                     setCurrent(p => p + 1);
                 })
                 .finally(() => {
                     setLoadMoreLoading(false);
                 });
+           
         }, 300),
         [current, filterValue]
     );
@@ -453,7 +435,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         setLoadMoreLoading(true);
         getGeneList(1, DEFAULT_PAGE_SIZE, _filterValue)
             .then(newData => {
-                geneRef.current = newData.records;
+                filteredRef.current = newData.records;
                 setCurrent(1);
             })
             .finally(() => {

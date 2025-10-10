@@ -21,27 +21,26 @@ const SUBTYPE_COLOR = {
 
 const HEATMAP_COLORS = {
     "lee": {
-        "SURVIVAL_UP": "rgb(94, 171, 214)",
-        "SURVIVAL_DN": "rgb(255, 180, 180)"
+        "SURVIVAL_UP": "#FC8D62",
+        "SURVIVAL_DN": "#66C2A5"
     },
     "hoshida": {
-        "S1": "rgb(250, 227, 198)",
-        "S2": "rgb(250, 164, 189)",
-        "S3": "rgb(245, 100, 169)"
+        "S1": "#377EB8",
+        "S2": "#FFFF33",
+        "S3": "#E41A1C"
     },
     "boyault": {
-        "G2": "rgba(241, 90, 209, 1)",
-        "G3": "rgb(61, 194, 236)",
-        "G4": "rgb(100, 226, 183)",
-        "G5": "rgba(217, 106, 37, 1)",
+        "G2": "#BF3131",
+        "G3": "#A1D99B",
+        "G4": "#A367B1",
+        "G5": "#A9A9A9",
         "G6": "rgb(252, 199, 55)"
     },
     "chiang": {
-        "INTERFERON": "rgb(251, 243, 193)",
-        "UNANNOTATED": "rgb(220, 139, 224)",
-        "POLYSOMY7": "rgb(213, 11, 139)",
-        "PROLIFERATION": "rgb(207, 255, 226)",
-        "CTNNB1": "rgb(244, 99, 30)"
+        "INTERFERON": "#FFBEAED4",
+        "UNANNOTATED": "black",
+        "POLYSOMY7": "#5C8374",
+        "PROLIFERATION": "#FF1E90FF",
     },
     "subtype": {
         "C1": "rgb(79, 151, 121)",
@@ -272,8 +271,6 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
         return filterdPatientList?.filter((item) => item.type === "PLANET")
     }, [filterdPatientList, dataType])
 
-    console.log("currentLiverSamples", currentLiverSamples)
-
     return (
         <>
             {
@@ -358,7 +355,6 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
                                                     }
                                                 </Flex>
                                             }</> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>
-
                                 }
 
                             </Col>
