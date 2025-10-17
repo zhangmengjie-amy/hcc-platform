@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef, useMemo, useEffect, useImperativeHandle, useState, useCallback, forwardRef } from 'react';
 import { usePDF } from 'react-to-pdf';
-import { getGeneList, getValidGeneList, getClinicalConfig  } from "@/configs/request";
+import { getGeneList, getValidGeneList, getClinicalConfig } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
 import EmptyLoading from "@/components/empty-loading";
@@ -26,7 +26,8 @@ import {
     Timeline,
     Upload,
     Slider,
-    message
+    message,
+    Radio
 } from 'antd';
 import { useTranslation } from "react-i18next";
 import Image from 'next/image';
@@ -39,7 +40,7 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
 const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH = true, showGeneList = true, showClinical = true }, ref) => {
     const { t } = useTranslation();
-    const [driverList, setDriverList] = useState(["driver", "not-driver"]);
+    const [driverList, setDriverList] = useState("driver");
     const [sliderValue, setSliderValue] = useState([0, 1]);
     const [filterValue, setFilterValue] = useState("");
     const [loadMoreLoading, setLoadMoreLoading] = useState(false);
@@ -146,7 +147,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
     }
 
     const renderSearchInput = () => {
-        return <Input size={"middle"} style={{marginBottom: 10}} allowClear onChange={fuzzySearch} placeholder={t("common:search")} />
+        return <Input size={"middle"} style={{ marginBottom: 10 }} allowClear onChange={fuzzySearch} placeholder={t("common:search")} />
     }
 
     const getSelectedDriverList = () => {
@@ -206,22 +207,20 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         }
     }
 
-    const onDriverChange = (value) => {
-        if (value.length === 0) {
-            return;
-        }
+    const onDriverChange = (e) => {
+        const { value } = e.target;
+
         setDriverList(value);
-        if (value.length == 1) {
-            if (value[0] == "driver") {
-                paramsRef.current = {
-                    ...paramsRef.current,
-                    geneList: getGeneListWithIsDeriverGene(getSelectedDriverList())
-                }
-            } else {
-                paramsRef.current = {
-                    ...paramsRef.current,
-                    geneList: getGeneListWithIsDeriverGene(getSelectedNoneDriverList())
-                }
+
+        if (value == "driver") {
+            paramsRef.current = {
+                ...paramsRef.current,
+                geneList: getGeneListWithIsDeriverGene(getSelectedDriverList())
+            }
+        } else if (value == "not-driver") {
+            paramsRef.current = {
+                ...paramsRef.current,
+                geneList: getGeneListWithIsDeriverGene(getSelectedNoneDriverList())
             }
         } else {
             paramsRef.current = {
@@ -262,8 +261,12 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         const driverCount = getSelectedDriverList()?.length ?? 0;
         if (value === "driver") {
             return driverCount
+        } else if (value === "not-driver") {
+            return ((geneList?.length ?? 0) - driverCount)
         }
-        return ((geneList?.length ?? 0) - driverCount)
+
+        return geneList?.length
+
     }
 
     const isAllDriverChecked = () => {
@@ -417,15 +420,16 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         debounce(() => {
             if (loadMoreLoading) return;
             setLoadMoreLoading(true);
-                getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue ?? "")
+            getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue ?? "")
                 .then(newData => {
-                    setFilteredList([...geneRef.current, ...newData.records]);
+                    filteredRef.current = [...filteredRef.current, ...newData.records];
+                    // filteredRef.current = geneRef.current;
                     setCurrent(p => p + 1);
                 })
                 .finally(() => {
                     setLoadMoreLoading(false);
                 });
-           
+
         }, 300),
         [current, filterValue]
     );
@@ -530,13 +534,12 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
     const driverCollapseContent = () => {
         return <div className={styles.searchCard}
             variant="borderless">
-            <Checkbox.Group style={{ display: 'block' }} value={driverList} onChange={onDriverChange}>
+            <Radio.Group style={{ display: 'block' }} value={driverList} onChange={onDriverChange}>
                 <Row>
                     <Col xs={20} sm={20} md={20} lg={20}>
-                        <Checkbox
+                        <Radio
                             value={"driver"}
-                            disabled={getGeneCount("driver") == 0}
-                            label={t("mutation:driver.driver")}>{t("mutation:driver.driver")}</Checkbox>
+                            label={t("mutation:driver.driver")}>{t("mutation:driver.driver")}</Radio>
 
                     </Col>
                     <Col xs={4} sm={4} md={4} lg={4}>
@@ -549,10 +552,9 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
                 </Row>
                 <Row>
                     <Col xs={20} sm={20} md={20} lg={20}>
-                        <Checkbox
-                            disabled={getGeneCount("not-driver") == 0}
+                        <Radio
                             value={"not-driver"}
-                            label={t("mutation:driver.not-driver")}>{t("mutation:driver.not-driver")}</Checkbox>
+                            label={t("mutation:driver.not-driver")}>{t("mutation:driver.not-driver")}</Radio>
 
                     </Col>
                     <Col xs={4} sm={4} md={4} lg={4}>
@@ -563,7 +565,22 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
                             }}>{getGeneCount("not-driver")}</Typography.Paragraph>
                     </Col>
                 </Row>
-            </Checkbox.Group>
+                <Row>
+                    <Col xs={20} sm={20} md={20} lg={20}>
+                        <Radio
+                            value={"all"}
+                            label={"All"}>{"All"}</Radio>
+
+                    </Col>
+                    <Col xs={4} sm={4} md={4} lg={4}>
+                        <Typography.Paragraph
+                            style={{
+                                textAlign: "right",
+                                margin: 0
+                            }}>{getGeneCount("all")}</Typography.Paragraph>
+                    </Col>
+                </Row>
+            </Radio.Group>
         </div>
     }
 
@@ -598,7 +615,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
             variant="borderless">
             <Row key={"clinicContent"}>
                 {
-                  clinicalConfigRef.current && [ 'age', 'stage', 'hbv', 'hcv', 'race', 'gender']?.map((item, index) => {
+                    clinicalConfigRef.current && ['age', 'stage', 'hbv', 'hcv', 'race', 'gender']?.map((item, index) => {
                         return <Col xs={12} md={12} lg={12} key={item}>
                             <Timeline
                                 items={[{

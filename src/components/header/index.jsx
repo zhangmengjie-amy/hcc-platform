@@ -95,9 +95,8 @@ const HCCHeader = () => {
 
 
     return (
-        <Layout.Header className={styles.hccHeader}>
-            <Flex align={"center"}>
-                <Typography.Title level={2} style={{ marginBottom: 0, color: "rgb(10, 186, 181)" }}>HCC</Typography.Title>
+            < >
+                <div>11111</div>
                 <Menu className={styles.hccMenu} mode="horizontal"
                     triggerSubMenuAction={"hover"}
                     items={items}
@@ -113,8 +112,7 @@ const HCCHeader = () => {
                     !storageData && <Button><Link href={"/login"}>登录</Link></Button>
                 } 
                 <></>
-            </Flex>
-        </Layout.Header>
+            </>
     );
 }
 export default HCCHeader;

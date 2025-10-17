@@ -108,8 +108,8 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
                 }
             })
             _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
-            const _rangeList = buildAllPatientsData(_patientList);
-            rangePatientListRef.current = getPatientListByRange(_rangeList);
+            patientListRef.current = buildAllPatientsData(_patientList);
+            rangePatientListRef.current = getPatientListByRange();
             setRangeList(rangePatientListRef.current);
             buildPieChart();
             buildBarChart();
@@ -120,9 +120,8 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         };
     }
 
-    const getPatientListByRange = (rangeList) => {
-        console.log("rangeList", rangeList)
-        return rangeList?.filter((item) => {
+    const getPatientListByRange = () => {
+        return patientListRef.current?.filter((item) => {
             return item.ith >= range[0] && item.ith <= range[1];
         })
     }
@@ -136,7 +135,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
 
     useEffect(() => {
         if (!range?.length) return;
-        rangePatientListRef.current = getPatientListByRange(range);
+        rangePatientListRef.current = getPatientListByRange();
         const barEchartsInstance = barChartRef.current?.getEchartsInstance();
         barEchartsInstance?.setOption({
             series: [{

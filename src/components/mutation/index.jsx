@@ -87,7 +87,7 @@ const Mutation = () => {
         setSampleType(value);
     }, [])
 
-        const dataTypeCollapseTitle = () => {
+    const dataTypeCollapseTitle = () => {
         return <Flex justify={"space-between"} align={"center"}>
             <Typography.Paragraph
                 ellipsis={{
