@@ -55,6 +55,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
     const [selectedTech, setSelectedTech] = useState([]);
     const [selectedSource, setSelectedSource] = useState(["tissue", "cell-lines"]);
     const [groupBy, setGroupBy] = useState("n/t");
+    const [geneType, setGeneType] = useState("custom");
     const cohortListRef = useRef(null);
     useEffect(() => {
         getCohortList().then((data) => {
@@ -192,11 +193,9 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
             <Flex>
 
                 <Flex vertical flex={1} style={{ border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
-                    <Typography.Paragraph>Tech</Typography.Paragraph>
+                    {/* <Typography.Paragraph>Tech</Typography.Paragraph> */}
                     <Checkbox.Group onChange={setSelectedTech} value={selectedTech}>
                         <Flex vertical>
-                            <Checkbox value="sequence">Sequence</Checkbox>
-                            <Checkbox value="micro-array">Micro Array</Checkbox>
                             <Checkbox value="n/t">N/T</Checkbox>
                             <Checkbox value="hbv">HBV</Checkbox>
                             <Checkbox value="hcv">HCV</Checkbox>
@@ -204,7 +203,10 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                             <Checkbox value="stage">Stage</Checkbox>
                             <Checkbox value="gene">Gene</Checkbox>
                         </Flex>
-
+                        <Flex vertical>
+                            <Checkbox value="sequence">Sequence</Checkbox>
+                            <Checkbox value="micro-array">Micro Array</Checkbox>
+                        </Flex>
                     </Checkbox.Group>
                 </Flex>
                 <Flex vertical flex={1} style={{ marginLeft: "15px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
@@ -246,8 +248,6 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
 
                 </Flex>
                 <Flex vertical flex={1} style={{ marginLeft: "15px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
-
-
                     {
                         groupBy == "n/t" && <Checkbox.Group value={['normal', 'tumor']}>
                             <Flex vertical>
@@ -295,9 +295,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                                     <Checkbox value="<=80">{"<80"}</Checkbox>
                                     <Checkbox value=">80">{">80"}</Checkbox>
                                 </Flex>
-                 
                         </Checkbox.Group>
-
                     }
                     {
                         groupBy == "stage" &&
@@ -312,7 +310,6 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                                         <Checkbox value="IV">IV</Checkbox>
                                     </Flex>
                                 </Checkbox.Group>
-
                             </Flex>
                             <Flex vertical flex={1}>
                                 <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
@@ -324,11 +321,36 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                                         <Checkbox value="IV" >IV</Checkbox>
                                     </Flex>
                                 </Checkbox.Group>
-
                             </Flex>
                         </Flex>
-
-
+                    }
+                    {
+                        groupBy == "gene" &&
+                        <Flex >
+                            <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
+                                <Typography.Paragraph >Gene Type</Typography.Paragraph>
+                                <Radio.Group value={geneType} onChange={(e) => { setGeneType(e.target.value); }}>
+                                <Flex vertical>
+                                    <Radio value={"custom"}>Custom</Radio>
+                                    <Radio value={"fixed"}>Fixed Gene</Radio>
+                                </Flex>
+                                </Radio.Group>
+                            </Flex>
+                            <Flex vertical flex={1}>
+                                <Typography.Paragraph >Gene</Typography.Paragraph>
+                                <Radio.Group value={"TP53"}>
+                                    {
+                                        geneType == "custom" ? <Flex vertical>
+                                        <Radio value="TP53" >TP53</Radio>
+                                        <Radio value="CNNTB1" >CNNTB1</Radio>
+                                        <Radio value="APC" >APC</Radio>
+                                        <Radio value="DOCK2" >DOCK2</Radio>
+                                    </Flex> : <Typography.Paragraph style={{ marginBottom: 0 }}>TP53</Typography.Paragraph>
+                                    }
+                                    
+                                </Radio.Group>
+                            </Flex>
+                        </Flex>
                     }
                 </Flex>
             </Flex>
@@ -358,7 +380,6 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                     key: "cohort",
                     label: cohortCollapseTitle(),
                     children: cohortCollapseContent()
-
                 }]}>
             </Collapse>
             <Collapse
@@ -381,8 +402,6 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                     children: analysisCollapseContent()
                 }]}>
             </Collapse>
-
-
         </div>
     );
 })

@@ -21,8 +21,7 @@ export default function RootLayout({ children }) {
                                 headerHeight: 50,
                                 headerBg: "#fff",
                                 fontSize: 22,
-                                
-                                // headerBg: 'linear-gradient(to right, rgb(239, 207, 210),   rgb(129, 216, 208) 50%,rgb(10, 186, 181))', // 直接修改 Header 背景色
+                                headerBg: 'linear-gradient(to right, rgb(239, 207, 210),   rgb(129, 216, 208) 50%,rgb(10, 186, 181))', // 直接修改 Header 背景色
                                  // 直接修改 Header 背景色 // 浅蓝绿 'rgb(129, 216, 208)' // 香槟金 #E0BFB8 // #F5F5F5浅灰 // #E0F7FA薄荷绿 // 蓝绿色 #008B8B
                             },
                             Menu: {
@@ -35,9 +34,9 @@ export default function RootLayout({ children }) {
                                 itemHoverBg: "rgb(10, 186, 181)",
                                 itemSelectedBg: "rgb(10, 186, 181)",
                                 itemSelectedColor: "#fff",
-                                itemHoverColor: "#000",
+                                itemHoverColor: "#fff",
                                 itemActiveBg: "rgb(10, 186, 181)",
-                                popupBg: "#fff",
+                                popupBg: "#fff"
                             },
                             Collapse: {
                                 headerPadding: "0px 10px",
