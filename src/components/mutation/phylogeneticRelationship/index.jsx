@@ -64,6 +64,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     const [activeBar, setActiveBar] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const patientListRef = useRef(null);
+    const patientListFilteredByConditionRef = useRef(null);
     const currentPatientRef = useRef(null);
     const rangePatientListRef = useRef(null);
     const fullMutationsRef = useRef(null);
@@ -73,13 +74,12 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         if (!patientListRef.current || !fullMutationsRef.current) {
             Promise.all([getPatientList(null), getFullMutations(null)]).then((results) => {
                 const [patientList, originalMutations] = results;
-                patientListRef.current = patientList;
+                patientListRef.current = buildAllPatientsData(patientList);
+                patientListFilteredByConditionRef.current = patientListRef.current;
                 fullMutationsRef.current = originalMutations;
-                let _fullMutations = fullMutationsRef.current;
                 let _patientList = patientListRef.current;
                 if (dataType !== "all") {
                     _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
-                    _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
                 }
                 buildCharts(_patientList, originalMutations);
             });
@@ -108,7 +108,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
                 }
             })
             _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
-            patientListRef.current = buildAllPatientsData(_patientList);
+            patientListFilteredByConditionRef.current = _patientList;
             rangePatientListRef.current = getPatientListByRange();
             setRangeList(rangePatientListRef.current);
             buildPieChart();
@@ -121,7 +121,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     }
 
     const getPatientListByRange = () => {
-        return patientListRef.current?.filter((item) => {
+        return patientListFilteredByConditionRef.current?.filter((item) => {
             return item.ith >= range[0] && item.ith <= range[1];
         })
     }
@@ -406,6 +406,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         const colors = generateGradientColors(100);
         return patientList?.map((item) => {
             return {
+                ...item,
                 ith: item.ith,
                 newick: item.newick,
                 name: item.patientId,

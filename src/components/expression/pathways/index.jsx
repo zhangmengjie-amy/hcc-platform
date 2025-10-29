@@ -147,21 +147,6 @@ const Pathways = () => {
         setDataType(e.target.value);
     }
 
-    const dataTypeCollapseContent = () => {
-        return <div className={styles.searchCard}
-            variant="borderless">
-            <Radio.Group
-                value={dataType}
-                onChange={onDataTypeChange}
-                options={[
-                    { value: "planet", label: 'PLANET' },
-                    { value: "dt", label: 'DT' },
-                    { value: "all", label: 'All' },
-                ]}
-            />
-        </div>
-    }
-
     return (
         <>
             {contextHolder}

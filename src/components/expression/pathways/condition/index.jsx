@@ -315,7 +315,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                                 <Typography.Paragraph style={{ marginBottom: 0 }}>Second Group</Typography.Paragraph>
                                 <Checkbox.Group value={[]}>
                                     <Flex vertical>
-                                        <Checkbox value="I" >II</Checkbox>
+                                        <Checkbox value="I" >I</Checkbox>
                                         <Checkbox value="II" >II</Checkbox>
                                         <Checkbox value="III" >III</Checkbox>
                                         <Checkbox value="IV" >IV</Checkbox>

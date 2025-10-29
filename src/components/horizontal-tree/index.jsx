@@ -484,9 +484,6 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
         }))
     }, [])
 
-
-    console.log("tooltipState", tooltipState)
-
     return (
         <div
             ref={containerRef}

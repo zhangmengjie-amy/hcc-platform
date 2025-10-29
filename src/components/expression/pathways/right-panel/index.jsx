@@ -164,8 +164,8 @@ const Pathways = () => {
   };
   return (
     <div style={{ padding: 20 }}>{
-      cohortListRef.current?.slice(0, 2).map((item) => {
-        return <Flex vertical style={{ marginBottom: "20px" }}>
+      cohortListRef.current?.slice(0, 2).map((item, index) => {
+        return <Flex key={index} vertical style={{ marginBottom: "20px" }}>
           <Flex style={{ marginBottom: "20px" }}>
             <Typography.Title level={5} style={{ marginBottom: 0, marginRight: "20px" }}>{item.cohort}</Typography.Title><Tag color={LEVEL_COLOR[item.level]}>{item.level}</Tag><Tag color={SOURCE_COLOR[item.source]}>{item.source}</Tag>
             <Tag color={TECH_COLOR[item.tech]}>{item.tech}</Tag>

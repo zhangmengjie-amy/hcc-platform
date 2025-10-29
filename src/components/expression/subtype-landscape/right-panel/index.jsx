@@ -1,16 +1,17 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { Flex, Row, Col, Empty, Spin } from 'antd';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { Flex, Row, Col, Empty, Spin, Dropdown, Space, Typography } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import { getPatientList } from "@/configs/request";
 import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
-import LiverSampleChart from '@/components/liver-sample';
-import Image from 'next/image';
+import PlanetLiverSampleChart from '@/components/planet-liver-sample';
+import DtLiverSampleChart from '@/components/dt-liver-sample';
 import SunburstChart from '@/components/expression/subtype-landscape/right-panel/sunburst';
 import ColumnChart from '@/components/expression/subtype-landscape/right-panel/column';
 import filterSampleByConditions from "@/utils/filter-patient";
 
-const SUBTYPE_COLOR = {
+const PLANET_SUBTYPE_COLOR = {
     "C1": "rgb(79, 151, 121)",
     "C2": "rgb(72, 128, 187)",
     "C3": "rgb(150, 91, 164)",
@@ -18,6 +19,30 @@ const SUBTYPE_COLOR = {
     "C5": "rgb(238, 188, 57)",
     "C6": "rgb(218, 85, 76)",
 }
+
+const DT_SUBTYPE_COLOR = {
+    "Classic": "rgba(225, 229, 144, 1)",
+    "Hybrid": "rgba(90, 155, 219, 1)",
+    "Proliferation": "rgba(232, 139, 173, 1)",
+    "Wnt": "rgba(235, 162, 127, 1)",
+}
+
+const SUBTYPE_DROPDOWN_ITEMS = [{
+    key: "lee",
+    label: "Lee"
+}, {
+    key: "hoshida",
+    label: "Hoshida"
+}, {
+    key: "boyault",
+    label: "Boyault"
+}, {
+    key: "chiang",
+    label: "Chiang"
+}, {
+    key: "subtype",
+    label: "Subtype"
+}]
 
 const HEATMAP_COLORS = {
     "lee": {
@@ -49,6 +74,10 @@ const HEATMAP_COLORS = {
         "C4": "rgb(167, 134, 56)",
         "C5": "rgb(238, 188, 57)",
         "C6": "rgb(218, 85, 76)",
+        "Classic": "rgba(225, 229, 144, 1)",
+        "Hybrid": "rgba(90, 155, 219, 1)",
+        "Proliferation": "rgba(232, 139, 173, 1)",
+        "Wnt": "rgba(235, 162, 127, 1)",
     }
 }
 
@@ -91,6 +120,8 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
     const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
     const [dtTreeLoading, setDtTreeLoading] = useState(false);
     const [planetTreeList, setPlanetTreeList] = useState(null);
+    const [selectedDtSubtype, setSelectedDtSubtype] = useState("subtype");
+    const [selectedPlanetSubtype, setSelectedPlanetSubtype] = useState("subtype");
     const [planetSampleGeneData, setPlanetSampleGeneData] = useState(null);
     const [dtTreeList, setDtTreeList] = useState(null);
     const [dtSampleGeneData, setDtSampleGeneData] = useState(null);
@@ -98,10 +129,12 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
     const [currentDtPatientId, setCurrentDtPatientId] = useState(null);
     const [planetHeatmap, setPlanetHeatmap] = useState(null);
     const [dtHeatmap, setDtHeatmap] = useState(null);
-    const [currentLiverSamples, setCurrentLiverSamples] = useState(null);
+    const [currentPlanetLiverSamples, setCurrentPlanetLiverSamples] = useState(null);
+    const [currentDtLiverSamples, setCurrentDtLiverSamples] = useState(null);
     const patientListRef = useRef(null);
     const [filterdPatientList, setFilterdPatientList] = useState([]);
     const geneListRef = useRef(null);
+
     useEffect(() => {
         conditions["stage"] = Array.from(new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item])));
         const { geneList, ...clinicList } = conditions;
@@ -181,27 +214,65 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
     }, [currentDtPatientId, filterdPatientList, dataType]);
 
     useEffect(() => {
-        buildLiverSamples(currentPlanetPatientId, dataType);
+        buildDtLiverSamples(currentDtPatientId, dataType, selectedDtSubtype);
+    }, [currentDtPatientId, filterdPatientList, dataType, selectedDtSubtype]);
+
+    useEffect(() => {
         buildPlanetHeatMap(currentPlanetPatientId, dataType);
         buildPlanetTreeData(currentPlanetPatientId, dataType);
     }, [currentPlanetPatientId, filterdPatientList, dataType]);
+
+    useEffect(() => {
+        buildPlanetLiverSamples(currentPlanetPatientId, dataType, selectedPlanetSubtype);
+    }, [currentPlanetPatientId, filterdPatientList, dataType, selectedPlanetSubtype]);
 
     function formatLabel(str) {
         return str?.replace(/.*_/, '') ?? str;
     }
 
-    const buildLiverSamples = (planetPatientId, dataType) => {
+    const buildDtLiverSamples = (dtPatientId, dataType, selectedSubType) => {
+        if (dataType == "all" || dataType == "dt") {
+            if (!dtPatientId) {
+                dtPatientId = dtPatientList?.[0]?.patientId;
+            }
+            const currentPatient = dtPatientList?.find((item) => item.patientId === dtPatientId);
+            const currentLiver = currentPatient?.dt_tumors?.[0]?.['RNA'].map((tumor) => {
+                return {
+                    ...tumor,
+                    samples: tumor.samples.map((sample) => {
+                        const subtypesValue = currentPatient.subtypes?.find((sub) => sub.id == sample.sample_id);
+                        return {
+                        ...sample,
+                        color: HEATMAP_COLORS[selectedSubType]?.[subtypesValue?.[selectedSubType]] ?? "#f0f0f0",
+                      }
+                    }),
+                    patientId: dtPatientId
+                }
+            });
+            setCurrentDtLiverSamples(currentLiver);
+        }
+    }
+
+    const buildPlanetLiverSamples = (planetPatientId, dataType, selectedSubType) => {
         if (dataType == "all" || dataType == "planet") {
             if (!planetPatientId) {
                 planetPatientId = planetPatientList?.[0]?.patientId;
             }
-            const currentLiver = planetPatientList?.find((item) => item.patientId === planetPatientId)?.tumors.map((tumor) => {
+            const currentPatient = planetPatientList?.find((item) => item.patientId === planetPatientId);
+            const currentLiver = currentPatient?.planet_tumors.map((tumor) => {
                 return {
-                    ...tumor,
+                     ...tumor,
+                    samples: tumor.samples.map((sample) => {
+                        const subtypesValue = currentPatient.subtypes?.find((sub) => sub.id == sample.sample_id);
+                        return {
+                        ...sample,
+                        color: HEATMAP_COLORS[selectedSubType]?.[subtypesValue?.[selectedSubType]] ?? "#f0f0f0",
+                      }
+                    }),
                     patientId: planetPatientId
                 }
             });
-            setCurrentLiverSamples(currentLiver);
+            setCurrentPlanetLiverSamples(currentLiver);
         }
     }
 
@@ -217,7 +288,6 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
     }
 
     const buildPlanetHeatMap = (planetPatientId, dataType) => {
-        console.log("planetPatientList", planetPatientList, planetPatientId, dataType)
         if (dataType == "all" || dataType == "planet") {
             if (!planetPatientId) {
                 planetPatientId = planetPatientList?.[0]?.patientId;
@@ -271,6 +341,7 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
         return filterdPatientList?.filter((item) => item.type === "PLANET")
     }, [filterdPatientList, dataType])
 
+
     return (
         <>
             {
@@ -301,8 +372,8 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
                                 <Flex vertical style={{ marginLeft: "10px" }}>
                                     <Flex align='center' style={{ marginBottom: "10px" }}>Subtype</Flex>
                                     {
-                                        Object.keys(SUBTYPE_COLOR).map((item) => {
-                                            return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
+                                        Object.keys(PLANET_SUBTYPE_COLOR).map((item) => {
+                                            return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: PLANET_SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
                                         })
                                     }
                                 </Flex>
@@ -337,21 +408,40 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
                             </Col>
                         </Row>
                         <Row>
+                             <Col xs={24} sm={24} md={24} lg={24} style={{ marginBottom: "10px", display: "flex", justifyContent: "flex-end" }}>
+                                <Dropdown
+                                    menu={{
+                                        items: SUBTYPE_DROPDOWN_ITEMS,
+                                        selectable: true,
+                                        onClick: (e) => {
+                                            setSelectedPlanetSubtype(e.key);
+                                        },
+                                        defaultSelectedKeys: ['subtype'],
+                                    }}
+                                >
+                                    <Typography.Link>
+                                        <Space>
+                                            <span style={{color: "#000"}}>Selected: </span>{selectedPlanetSubtype}
+                                            <DownOutlined />
+                                        </Space>
+                                    </Typography.Link>
+                                </Dropdown>
+                            </Col>
                             <Col xs={24} sm={24} md={24} style={{ display: "flex", border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
 
                                 {
                                     planetTreeLoading ?
                                         <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Spin spinning={true} ></Spin></Flex>
-                                        : currentLiverSamples ? <><Flex flex="1" align='center'>
+                                        : currentPlanetLiverSamples ? <><Flex flex="1" align='center'>
                                             {
-                                                currentLiverSamples?.[0] ? <LiverSampleChart data={currentLiverSamples?.[0]}></LiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                                                currentPlanetLiverSamples?.[0] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[0]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
 
                                             }
                                         </Flex>
                                             {
-                                                currentLiverSamples?.[1] && <Flex flex="1" align='center'>
+                                                currentPlanetLiverSamples?.[1] && <Flex flex="1" align='center'>
                                                     {
-                                                        currentLiverSamples?.[1] ? <LiverSampleChart data={currentLiverSamples?.[1]}></LiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                                                        currentPlanetLiverSamples?.[1] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[1]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
                                                     }
                                                 </Flex>
                                             }</> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>
@@ -365,7 +455,7 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
             {
                 (dataType == "all" || dataType == "dt") && <Row>
                     <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                        <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "800px", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "820px", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                             <ColumnChart patientId={currentDtPatientId} data={dtPatientList} handleItemClick={setCurrentDtPatientId}></ColumnChart>
                             <Flex style={{ marginTop: "30px" }}><Flex vertical style={{ marginLeft: "10px" }}>
                                 <Flex align='center' style={{ marginBottom: "10px" }}>Pure or Mixed</Flex>
@@ -386,8 +476,8 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
                                 <Flex vertical style={{ marginLeft: "10px" }}>
                                     <Flex align='center' style={{ marginBottom: "10px" }}>Subtype</Flex>
                                     {
-                                        Object.keys(SUBTYPE_COLOR).map((item) => {
-                                            return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
+                                        Object.keys(DT_SUBTYPE_COLOR).map((item) => {
+                                            return <Flex key={item} align='center'><span style={{ display: "inline-block", width: "20px", height: "12px", marginRight: "5px", backgroundColor: DT_SUBTYPE_COLOR[item] }}></span><span>{item}</span></Flex>
                                         })
                                     }
                                 </Flex>
@@ -421,12 +511,43 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
                             </Col>
                         </Row>
                         <Row>
-                            <Col xs={24} sm={24} md={24} style={{ width: "100%", padding: "10px", height: "320px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
-                                <Flex flex={1} align='center' justify='center'>
-                                    {
-                                        currentDtPatientId ? <Image src={`/images/DNA_${currentDtPatientId}.svg`} width={310} height={310} alt='DT-Tumor'></Image> : <Flex style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>
-                                    }
-                                </Flex>
+                            <Col xs={24} sm={24} md={24} lg={24} style={{ marginBottom: "10px", display: "flex", justifyContent: "flex-end" }}>
+                                <Dropdown
+                                    menu={{
+                                        items: SUBTYPE_DROPDOWN_ITEMS,
+                                        selectable: true,
+                                        onClick: (e) => {
+                                            setSelectedDtSubtype(e.key);
+                                        },
+                                        defaultSelectedKeys: ['subtype'],
+
+                                    }}
+                                >
+                                    <Typography.Link>
+                                        <Space>
+                                            <span style={{color: "#000"}}>Selected: </span>{selectedDtSubtype}
+                                            <DownOutlined />
+                                        </Space>
+                                    </Typography.Link>
+                                </Dropdown>
+                            </Col>
+                            <Col xs={24} sm={24} md={24} style={{ display: "flex", border: "1px solid #f5f5f5", height: "340px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                                {
+                                    dtTreeLoading ?
+                                        <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Spin spinning={true} ></Spin></Flex>
+                                        : currentDtLiverSamples ? <><Flex flex="1" align='center'>
+                                            {
+                                                currentDtLiverSamples?.[0] ? <DtLiverSampleChart data={currentDtLiverSamples?.[0]}></DtLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                                            }
+                                        </Flex>
+                                            {
+                                                currentDtLiverSamples?.[1] && <Flex flex="1" align='center'>
+                                                    {
+                                                        currentDtLiverSamples?.[1] ? <DtLiverSampleChart data={currentDtLiverSamples?.[1]}></DtLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                                                    }
+                                                </Flex>
+                                            }</> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>
+                                }
                             </Col>
                         </Row>
                     </Col>

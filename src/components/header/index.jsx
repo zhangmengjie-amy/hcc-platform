@@ -1,7 +1,7 @@
 "use client";
 import React, {useEffect, useMemo, useState} from 'react';
 import i18n from 'i18next';
-import { Layout, Affix, Menu, Flex, Typography, Button } from 'antd';
+import { Layout, Affix, Menu, Flex, Typography, Button, Tag } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -108,6 +108,7 @@ const HCCHeader = () => {
                         justifyContent: "center"
                     }}
                 />
+                <Tag color="orange">Internal beta</Tag>
                 <Language></Language>
                 {
                     !storageData && <Button><Link href={"/login"}>登录</Link></Button>

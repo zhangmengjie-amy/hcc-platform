@@ -45,6 +45,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
     const [filterValue, setFilterValue] = useState("");
     const [loadMoreLoading, setLoadMoreLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
+    const [filteredList, setFilteredList] = useState([]);
     const [current, setCurrent] = useState(1);
     const [geneList, setGeneList] = useState([]);
     const [clinicList, setClinicList] = useState({
@@ -73,6 +74,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
             clinicalConfigRef.current = clinicConfig;
             geneRef.current = geneData?.records ?? [];
             filteredRef.current = geneData?.records ?? [];
+            setFilteredList(filteredRef.current);
             const driverList = getDriverList();
             const _params = {
                 ...paramsRef.current,
@@ -230,11 +232,13 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         }
     }
 
-    const virtualRow = (({ index, style }) => (
+    const virtualRow = (({ index, style }) => {
+        return (filteredList?.[index] ?
         <List.Item style={style}>{<Checkbox
-            value={filteredRef.current?.[index]?.gene}
-            onChange={onGeneSelection}>{filteredRef.current?.[index]?.gene}</Checkbox>}</List.Item>
-    ));
+            value={filteredList?.[index]?.gene}
+            onChange={onGeneSelection}>{filteredList?.[index]?.gene}</Checkbox>}</List.Item> : null
+        )
+    });
 
     const onPreventMouseDown = event => {
         event.preventDefault();
@@ -422,8 +426,11 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
             setLoadMoreLoading(true);
             getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue ?? "")
                 .then(newData => {
+                    if (newData.records.length === 0) {
+                        return;
+                    }
                     filteredRef.current = [...filteredRef.current, ...newData.records];
-                    // filteredRef.current = geneRef.current;
+                    setFilteredList(filteredRef.current);
                     setCurrent(p => p + 1);
                 })
                 .finally(() => {
@@ -440,6 +447,7 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         getGeneList(1, DEFAULT_PAGE_SIZE, _filterValue)
             .then(newData => {
                 filteredRef.current = newData.records;
+                setFilteredList(filteredRef.current);
                 setCurrent(1);
             })
             .finally(() => {
@@ -466,12 +474,12 @@ const ConditionSelection = forwardRef(({ onITHChange, handleInitChange, showITH 
         return <div className={styles.searchCard}
             variant="borderless">
             {renderSearchInput()}
-            <EmptyLoading loading={fetchLoading} hasData={!!geneRef.current?.length}>
+            <EmptyLoading loading={fetchLoading} hasData={!!filteredList?.length}>
                 <Checkbox.Group style={{ width: '100%' }} value={geneList}>
                     <FixedSizeList
                         ref={listRef}
-                        height={260}
-                        itemCount={geneRef.current?.length ?? 0}
+                        height={(30 * filteredList?.length) < 260 ? 30 * filteredList?.length : 260}
+                        itemCount={filteredList?.length ?? 0}
                         itemSize={30}
                         width="100%"
                         onScroll={handleScroll}
