@@ -11,7 +11,6 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
     const svgRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
     const [tooltipState, setTooltipState] = useState({ visible: false, x: 0, y: 0, data: null });
-    console.log("data", data)
     // 1) 监听容器尺寸
     useEffect(() => {
         const ro = new ResizeObserver(entries => {
@@ -408,7 +407,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
             .attr('x', x0)
             .attr('y', y0 - tickSize)
             .attr('text-anchor', 'start')
-            .attr('dx', '32px') // 稍微向右偏移，具体数值可能需要调整
+            .attr('dx', '28px') // 稍微向右偏移，具体数值可能需要调整
             .text('Scale line: ' + step * scaleFactor);
 
         if (showHeatMap) {
@@ -428,8 +427,9 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
             // 底部字段名
             // 假设你在上面已经计算了 yMaxLeaf（叶子最大 y 值）和 heatmapCellSize
 
-            const secondLastLeaf = leaves[leaves.length - 2];
-            const axisY = secondLastLeaf.y + heatmapCellSize / 2 + 6;
+            // 用最后一个 leaf（yMaxLeaf）来定底部轴线位置，并且用动态 cellHeight
+            const cellHeight = adaptive ? Math.min(dy, heatmapCellSize) : heatmapCellSize;
+            const axisY = yMaxLeaf + cellHeight / 2 + 6;
 
             gHeat
                 .append('g')
@@ -445,7 +445,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                 .attr('transform', 'rotate(90)')
                 .attr('text-anchor', 'start')
                 .attr('dy', '0')
-                .attr('dx', '0')
+                .attr('dx', '-15')
                 .style('font-size', '12px');
 
             // 每个叶子一行
@@ -457,11 +457,11 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                         gHeat
                             .append('rect')
                             .attr('x', xHeat(field))
-                            .attr('y', leaf.y - heatmapCellSize / 2)
+                            .attr('y', leaf.y - cellHeight / 2)
                             .attr('width', xHeat.bandwidth())
-                            .attr('height', heatmapCellSize)
+                            .attr('height', cellHeight)
                             .attr('fill', v.color ?? "#f0f0f0")
-                            .attr('stroke', 'rgb(29, 86, 126)')
+                            .attr('stroke', '#fff')
                             .attr('stroke-width', 1)
                             .append('title')
                             .text(`${field}: ${v.value ?? "None"}`);
@@ -484,9 +484,6 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
         }))
     }, [])
 
-
-    console.log("tooltipState", tooltipState)
-
     return (
         <div
             ref={containerRef}
@@ -502,9 +499,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                     style={{
                         width: "350px",
                         overflowY: "auto",
-                        padding: '10px',
                         maxHeight: "50vh",
-                        border: "2px solid #fff",
                         borderRadius: "8px"
                     }}
                 >

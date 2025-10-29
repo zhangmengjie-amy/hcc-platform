@@ -18,20 +18,25 @@ export default function RootLayout({ children }) {
                         }, components: {
                             Layout: {
                                 headerPadding: "0 20px",
-                                headerHeight: 40,
+                                headerHeight: 50,
+                                headerBg: "#fff",
+                                fontSize: 22,
                                 headerBg: 'linear-gradient(to right, rgb(239, 207, 210),   rgb(129, 216, 208) 50%,rgb(10, 186, 181))', // 直接修改 Header 背景色
                                  // 直接修改 Header 背景色 // 浅蓝绿 'rgb(129, 216, 208)' // 香槟金 #E0BFB8 // #F5F5F5浅灰 // #E0F7FA薄荷绿 // 蓝绿色 #008B8B
                             },
                             Menu: {
                                 itemBg: "transparent",
-                                itemColor: "#fff",
+                                itemColor: "#000",
+                                fontSize: 16,
+                                itemPaddingInline: 20,
+                                itemHoverBorderWidth: 1,
                                 activeBarHeight: "4px",
                                 itemHoverBg: "rgb(10, 186, 181)",
                                 itemSelectedBg: "rgb(10, 186, 181)",
                                 itemSelectedColor: "#fff",
                                 itemHoverColor: "#fff",
                                 itemActiveBg: "rgb(10, 186, 181)",
-                                popupBg: "rgb(129, 216, 208)"
+                                popupBg: "#fff"
                             },
                             Collapse: {
                                 headerPadding: "0px 10px",
@@ -71,7 +76,7 @@ export default function RootLayout({ children }) {
                                 trackBg: "rgb(10, 186, 181)",
                             },
                             Popover: {
-                                colorBgElevated: "#F5F5F5",
+                                colorBgElevated: "#fff",
                                 colorText: "#000"
                             },
                             Segmented: {

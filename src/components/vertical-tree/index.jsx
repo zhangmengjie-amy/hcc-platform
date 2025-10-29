@@ -426,9 +426,7 @@ const VerticalTree = ({
                     style={{
                         width: "350px",
                         overflowY: "auto",
-                        padding: '10px',
                         maxHeight: "50vh",
-                        border: "2px solid #fff",
                         borderRadius: "8px"
                     }}
                 >

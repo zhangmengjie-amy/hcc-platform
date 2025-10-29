@@ -8,7 +8,7 @@ import MutationChart from './mutationChart';
 import SampleChart from "./sampleChart";
 import ChartsLegend from "./chartsLegend";
 
-const DriverLandscape = forwardRef(({ dataType = ["planet"], handleApplyLoading, sampleType = "bySample", conditions }, ref) => {
+const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, sampleType = "bySample", conditions }, ref) => {
     const [sampleMutations, setSampleMutations] = useState(null);
     const [genesMutations, setGenesMutations] = useState(null);
     const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
@@ -18,37 +18,51 @@ const DriverLandscape = forwardRef(({ dataType = ["planet"], handleApplyLoading,
     const [clinicList, setClinicList] = useState(null);
     const [finialGeneList, setFinialGeneList] = useState(null);
     const fullMutationsRef = useRef(null);
-    const dtMutationsRef = useRef(null);
+
 
     useEffect(() => {
         if (!conditions?.geneList) return;
-        handleApplyLoading?.(true);
-        setLoading(true);
+        if (fullMutationsRef.current) {
+            buildMutation()
+        } else {
+            getFullMutations(null).then((results) => {
+                fullMutationsRef.current = results;
+                buildMutation();
+            }
+            )
+        }
+
+    }, [conditions, sampleType, dataType]);
+
+    const buildMutation = () => {
+        handleApplyLoading?.(false);
+        setLoading(false);
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
-                fullMutationsRef.current = results[0];
-                sampleWorker.postMessage({ key: "driverLandscape", data: { sampleType, originalMutations: fullMutationsRef.current, conditions } });
-                sampleWorker.onmessage = (event) => {
-                    const result = event.data;
-                    setSampleMutations(result.sampleMutations);
-                    setGenesMutations(result.genesMutations);
-                    setSampleGenesMutations(result.sampleGenesMutations);
-                    setFinialGeneList(result.finialGeneList);
-                    setClinicList(result.clinicList);
-                    setSampleCategories(result.sampleCategories);
-                    setHeight(result.finialGeneList.length * 8 + 30);
-                };
-                handleApplyLoading?.(false);
-                setLoading(false);
-            });
+            console.log(dataType?.toUpperCase())
+            let fullMutations = fullMutationsRef.current;
+            if (dataType !== "all") fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
+            
+            sampleWorker.postMessage({ key: "driverLandscape", data: { sampleType, originalMutations: fullMutations, conditions } });
+            sampleWorker.onmessage = (event) => {
+                const result = event.data;
+                setSampleMutations(result.sampleMutations);
+                setGenesMutations(result.genesMutations);
+                setSampleGenesMutations(result.sampleGenesMutations);
+                setFinialGeneList(result.finialGeneList);
+                setClinicList(result.clinicList);
+                setSampleCategories(result.sampleCategories);
+                setHeight(result.finialGeneList.length * 8 + 30);
+            };
+            handleApplyLoading?.(false);
+            setLoading(false);
         } catch (error) {
-
+            console.log("error")
         }
         return () => {
             sampleWorker.terminate();
         };
-    }, [conditions, sampleType, dataType]);
+    }
 
     return (
         <div ref={ref} style={{ margin: "0 10px" }}>

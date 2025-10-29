@@ -84,7 +84,7 @@ const Home = () => {
 
     const items = [
         { key: 'mutation', label: 'Genome', bg: "/images/mutation-bg.png" },
-        { key: 'expression', label: 'Transcriptome', bg: "/images/expression-bg.png" },
+        { key: 'expression/subtype', label: 'Transcriptome', bg: "/images/expression-bg.png" },
         { key: 'immune', label: 'Immune' },
         { key: 'clinical', label: 'Clinical' },
     ];
@@ -158,7 +158,7 @@ const Home = () => {
                         return <Col key={index} xs={12} sm={12} md={6} lg={6}>
                             <Link href={`/${item.key}`} onClick={() => { setSelectedSingleModal(item.key) }}>
                             <Flex vertical align={"center"} className={classnames(styles.colFlex, { [item.key]: true })} style={{
-                                backgroundImage: `url('/images/${item.key}-bg.png')`,
+                                backgroundImage: `url('/images/${item.key?.split("/")?.[0]}-bg.png')`,
                                 backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundOrigin: "content-box"
                             }}>
                                 <Title className={styles.singleModalTitle} level={2}

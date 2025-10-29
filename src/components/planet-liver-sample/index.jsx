@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 
-const LiverSampleChart = ({ data }) => {
+const PlanetLiverSampleChart = ({ data }) => {
     const chartRef = useRef(null);
 
     useEffect(() => {
@@ -22,7 +22,8 @@ const LiverSampleChart = ({ data }) => {
             sample_id: sample.sample_id,
             x: parseFloat(sample.X),
             y: parseFloat(sample.Y),
-            r: parseFloat(sample.sample_r)
+            r: parseFloat(sample.sample_r),
+            color: sample.color || "#E95D65"
         }));
 
         // Configuration
@@ -75,7 +76,7 @@ const LiverSampleChart = ({ data }) => {
 
         sampleGroup.append("circle") // Draw the sample circle
             .attr("r", d => xScale(d.r)) // Use xScale to convert radius to pixels
-            .style("fill", "#E95D65");
+            .style("fill", d => d.color) // 根据color值设置颜色
 
         // Add sample ID text beside the circle
         sampleGroup.append("text")
@@ -143,10 +144,10 @@ const LiverSampleChart = ({ data }) => {
     }, [data]);
 
     return (
-        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div id="chart" ref={chartRef} style={{ display: "flex", justifyContent: "center", width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
+        <div style={{ width: '100%', height: '100%' }}>
+            <div id="chart" ref={chartRef} style={{ display: "flex", justifyContent: "center", alignItems: "center", width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}></div>
         </div>
     );
 };
 
-export default LiverSampleChart;
+export default PlanetLiverSampleChart;

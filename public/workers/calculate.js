@@ -17,6 +17,7 @@ const clinicColorConfig = {
         "II": 'rgb(251, 106, 74)',
         "IIIA": "rgb(239, 59, 44)",
         "IIIB": "rgb(203, 24, 29)",
+        "IVA": "rgba(139, 13, 17, 1)"
     },
     age: {
         "<20": "rgb(242, 250, 248)",

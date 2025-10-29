@@ -1,13 +1,14 @@
 "use client";
 import React, { useRef, useEffect, useState } from 'react';
-import { getITHList, getNewick, getPatientList} from "@/configs/request";
+import { getITHList, getNewick, getPatientList } from "@/configs/request";
 import VerticalTree from "@/components/vertical-tree"
 import { getFullPhylogenetic, getFullMutations } from "@/configs/request";
 import {
     Row,
     Col,
     Typography,
-    Flex
+    Flex,
+    Pagination
 } from 'antd';
 import distinctColors from '@/utils/colors';
 import { useTranslation } from "react-i18next";
@@ -16,24 +17,55 @@ import TreeDialog from "@/components/tree-dialog";
 import generateGradientColors from "@/utils/ith-color";
 
 
-const TimingAnalysis = ({ range = [0, 1], dataType=["planet"], conditions }) => {
+const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions }) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [treeList, setTreeList] = useState(null);
     const rangePatientListRef = useRef(null);
     const currentPatientRef = useRef(null);
+    const [start, setStart] = useState(0);
+    const [end, setEnd] = useState(6);
     const [modalOpen, setModalOpen] = useState(false);
+    const patientListRef = useRef(null);
+    const fullMutationsRef = useRef(null);
+    const fullPhylogeneticRef = useRef(null);
 
     useEffect(() => {
-        setLoading(true);
         if (!conditions?.geneList) return;
+        if (!patientListRef.current || !fullMutationsRef.current) {
+            Promise.all([getFullMutations(null), getPatientList(null), getFullPhylogenetic(null)]).then((results) => {
+                const [originalMutations, patientList, fullPhylogenetic] = results;
+                patientListRef.current = patientList;
+                fullMutationsRef.current = originalMutations;
+                fullPhylogeneticRef.current = fullPhylogenetic;
+                let _fullMutations = fullMutationsRef.current;
+                let _patientList = patientListRef.current;
+                if (dataType !== "all") {
+                    _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
+                    _fullMutations = fullMutationsRef.current?.filter((item) => item.type === dataType?.toUpperCase());
+                }
+                buildCharts(_fullMutations, _patientList, fullPhylogeneticRef.current)
+            });
+        } else {
+            let _fullMutations = fullMutationsRef.current;
+            let _patientList = patientListRef.current;
+            if (dataType !== "all") {
+                _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
+                _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
+            }
+            buildCharts(_fullMutations, _patientList, fullPhylogeneticRef.current)
+        }
 
-        const fetchData = async (finialSampleList) => {
-            let [ITHList] = await Promise.all([getPatientList(dataType.length == 2 ? null : dataType[0])]);
-            if (!ITHList) return;
+    }, [range, conditions, dataType])
+
+    const buildCharts = (fullMutations, patientList, fullPhylogenetic) => {
+        const sampleWorker = new Worker('/workers/calculate.js');
+        sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: fullMutations, conditions } });
+        sampleWorker.onmessage = (event) => {
+            const result = event.data;
             const colors = generateGradientColors(100);
-            let _patientList = ITHList?.filter((item) => !!item.newick)?.map((item) => {
-               return {
+            let _patientList = patientList?.filter((item) => !!item.newick)?.map((item) => {
+                return {
                     ...item,
                     itemStyle: { color: colors[item.ith == 0 ? 0 : (Math.round((Number(item.ith)?.toFixed(2) ?? 1) * 100) - 1)] },
                     ith: (Number(item.ith))?.toFixed(2) ?? 1
@@ -41,39 +73,26 @@ const TimingAnalysis = ({ range = [0, 1], dataType=["planet"], conditions }) => 
             })
             _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
             rangePatientListRef.current = getPatientListByRange(_patientList);
-            const treeWorker = new Worker('/workers/full-tree.js');
-            getFullPhylogenetic(dataType.length == 2 ? null : dataType[0]).then((results) => {
-                const treeList = rangePatientListRef.current.filter((item) => finialSampleList?.some((patient) => patient == item.patientId)).map((item) => {
-                    const geneData = results?.filter((sample) => sample?.sampleId?.includes(`${item.patientId}_`))
-                    return {
-                        ...item,
-                        geneData: geneData,
-                    }
-                })
-                treeWorker.postMessage({ treeData: treeList });
-                treeWorker.onmessage = ({ data: { treeList } }) => {
-                    setTreeList(treeList);
-                    setLoading(false);
-                };
-            });
-        }
-        const sampleWorker = new Worker('/workers/calculate.js');
-        try {
-            Promise.all([getFullMutations(dataType.length == 2 ? null : dataType[0])]).then((results) => {
-                sampleWorker.postMessage({ key: "filterGene", data: { originalMutations: results[0], conditions } });
-                sampleWorker.onmessage = (event) => {
-                    const result = event.data;
-                    fetchData(result.finialSampleList);
-                };
-            });
-        } catch (error) {
 
-        }
+            const treeList = rangePatientListRef.current.filter((item) => result.finialSampleList?.some((patient) => patient == item.patientId)).map((item) => {
+                const geneData = fullPhylogenetic?.filter((sample) => sample?.sampleId?.includes(`${item.patientId}_`))
+                return {
+                    ...item,
+                    geneData: geneData,
+                }
+            })
+            const treeWorker = new Worker('/workers/full-tree.js');
+            treeWorker.postMessage({ treeData: treeList });
+            treeWorker.onmessage = ({ data: { treeList } }) => {
+                setTreeList(treeList);
+                setLoading(false);
+            };
+        };
         return () => {
             sampleWorker.terminate();
+            treeWorker.terminate();
         };
-    }, [range, conditions, dataType]);
-
+    }
 
     const getPatientListByRange = (_patientList) => {
         return _patientList?.filter((item) => {
@@ -86,40 +105,56 @@ const TimingAnalysis = ({ range = [0, 1], dataType=["planet"], conditions }) => 
         setModalOpen(true)
     }
 
+    const onPageSizeChange = (page, pageSize) => {
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        setStart(start);
+        setEnd(end);
+    }
+
     return (
         <>
             <EmptyLoading loading={loading} showEmpty={true} hasData={!!treeList?.length}>
-            <Row style={{ width: "100%" }}>
-                {
-                    treeList?.map((item, index) => {
-                        return <Col key={index} xs={12} sm={12} md={12} lg={12} style={{cursor:"pointer"}}>
-                            <EmptyLoading hasData={!!treeList?.length} loading={loading}>
-                                <div style={{ margin: "10px", height: "350px", padding: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, .05)", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
-                                    <Typography.Paragraph style={{ margin: 0, textAlign: "left" }}>
-                                        {"Patient: "} <span style={{ fontWeight: "bold" }}>{item.patientId}</span>  {"ITH:"} <span style={{ fontWeight: "bold" }}> {item.ith}</span>
-                                    </Typography.Paragraph>
-                                    <Flex style={{ height: "300px" }}>
-                                        <VerticalTree
-                                            circleRadius={6} 
-                                            handleClick={() => {handleClick(item.patientId)}}
-                                            color={item.itemStyle?.color}
-                                            showTooltip={false}
-                                            data={item.tree}
-                                            baseline="left" 
-                                            geneList={conditions?.geneList}
-                                        />
-                                    </Flex>
-                                </div>
-                            </EmptyLoading>
-                        </Col>
-                    })
-                }
-            </Row>
-        </EmptyLoading>
-        {
-            modalOpen && <TreeDialog geneList={conditions?.geneList} dataType={dataType} treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
-        }
-        
+                <Row style={{ width: "100%" }}>
+                    {
+                        treeList?.slice(start, end)?.map((item, index) => {
+                            return <Col key={index} xs={12} sm={12} md={12} lg={12} style={{ cursor: "pointer" }}>
+                                <EmptyLoading hasData={!!treeList?.length} loading={loading}>
+                                    <div style={{ margin: "10px", height: "350px", padding: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, .05)", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
+                                        <Typography.Paragraph style={{ margin: 0, textAlign: "left" }}>
+                                            {"Patient: "} <span style={{ fontWeight: "bold" }}>{item.patientId}</span>  {"ITH:"} <span style={{ fontWeight: "bold" }}> {item.ith}</span>
+                                        </Typography.Paragraph>
+                                        <Flex style={{ height: "300px" }}>
+                                            <VerticalTree
+                                                circleRadius={6}
+                                                handleClick={() => { handleClick(item.patientId) }}
+                                                color={item.itemStyle?.color}
+                                                showTooltip={false}
+                                                data={item.tree}
+                                                baseline="left"
+                                                geneList={conditions?.geneList}
+                                            />
+                                        </Flex>
+                                    </div>
+                                </EmptyLoading>
+                            </Col>
+                        })
+                    }
+                </Row>
+                <Flex justify='flex-end' style={{ margin: "20px 0" }}> <Pagination
+                    total={treeList?.length}
+                    showTotal={(total) => `Total ${total} items`}
+                    defaultPageSize={6}
+                    onChange={onPageSizeChange}
+                    defaultCurrent={1}
+                    pageSizeOptions={[6, 10, 20, 50, 100]}
+                />
+                </Flex>
+            </EmptyLoading>
+            {
+                modalOpen && <TreeDialog showTumor geneList={conditions?.geneList} dataType={dataType} treeData={currentPatientRef.current} modalOpen={modalOpen} onclose={() => { setModalOpen(false) }} />
+            }
+
         </>
     )
 }

@@ -71,7 +71,15 @@ export const getITHList = async (type = "planet") => {
     }
 };
 
-
+export const getCohortList = async () => {
+    try {
+        const cohortList = await fetch(`/json/deg.json`);
+        return cohortList?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
 
 export const getFullPhylogenetic = async (type = "planet") => {
     try {

@@ -35,6 +35,8 @@ export const clinicConfig = [
             key: "IIIA",
         }, {
             key: "IIIB",
+        }, {
+            key: "IVA",
         }]
     },
     {
@@ -93,7 +95,8 @@ export const clinicColorConfig = {
         "IB": "rgb(252, 187, 161)",
         "II": 'rgb(251, 106, 74)',
         "IIIA": "rgb(239, 59, 44)",
-        "IIIB": "rgb(203, 24, 29)"
+        "IIIB": "rgb(203, 24, 29)",
+        "IVA": "rgba(133, 19, 23, 1)"
     },
     age: {
         "<20": "rgb(242, 250, 248)",
@@ -138,7 +141,7 @@ export const clinicCountConfig = {
         "II": 'rgb(251, 106, 74)',
         "IIIA": "rgb(239, 59, 44)",
         "IIIB": "rgb(203, 24, 29)",
-        "IVA": "rgba(154, 8, 13, 1)"
+        "IVA": "rgba(139, 13, 17, 1)"
     },
     age: {
         "<20": "rgb(242, 250, 248)",

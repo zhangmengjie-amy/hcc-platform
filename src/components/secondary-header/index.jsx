@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import i18n from 'i18next';
-import { Layout, Affix, Menu, Flex, Typography } from 'antd';
+import { Layout, Affix, Menu, Flex, Typography, Tab } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
