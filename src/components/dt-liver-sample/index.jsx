@@ -246,8 +246,8 @@ const DtLiverSampleChart = ({ data }) => {
             .attr("width", legendBarWidth)
             .attr("height", legendBarHeight)
             .style("fill", "url(#color-gradient)")
-            .style("stroke", "#ccc")
-            .style("stroke-width", 1);
+            // .style("stroke", "#000")
+            // .style("stroke-width", 1);
 
         // 添加色条刻度标签
         const legendScale = d3.scaleLinear()
@@ -257,15 +257,15 @@ const DtLiverSampleChart = ({ data }) => {
         data.legend.forEach(value => {
             const yPos = legendScale(value);
 
-            // 添加白色分割线（贯穿整个色条）
-            legendSvg.append("line")
-                .attr("x1", legendX)
-                .attr("x2", legendX + legendBarWidth)
-                .attr("y1", yPos)
-                .attr("y2", yPos)
-                .style("stroke", "white")
-                .style("stroke-width", 1)
-                .style("opacity", 0.8);
+            // // 添加白色分割线（贯穿整个色条）
+            // legendSvg.append("line")
+            //     .attr("x1", legendX)
+            //     .attr("x2", legendX + legendBarWidth)
+            //     .attr("y1", yPos)
+            //     .attr("y2", yPos)
+            //     .style("stroke", "white")
+            //     .style("stroke-width", 1)
+            //     .style("opacity", 0.8);
             
             legendSvg.append("line")
                 .attr("x1", legendX + legendBarWidth)

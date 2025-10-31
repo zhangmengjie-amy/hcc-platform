@@ -59,13 +59,17 @@ const HEATMAP_COLORS = {
         "G3": "#A1D99B",
         "G4": "#A367B1",
         "G5": "#A9A9A9",
-        "G6": "rgb(252, 199, 55)"
+        "G6": "rgb(252, 199, 55)",
+        "G12": "#FF7F00",
+        "G56": "#FB9A99",
+
     },
     "chiang": {
         "INTERFERON": "#FFBEAED4",
         "UNANNOTATED": "black",
         "POLYSOMY7": "#5C8374",
         "PROLIFERATION": "#FF1E90FF",
+        "CTNNB1": "#A6CEE3",
     },
     "subtype": {
         "C1": "rgb(79, 151, 121)",

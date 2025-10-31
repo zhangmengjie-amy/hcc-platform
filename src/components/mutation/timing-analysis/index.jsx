@@ -56,6 +56,8 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions }) => 
             buildCharts(_fullMutations, _patientList, fullPhylogeneticRef.current)
         }
 
+        setStart(0);
+        setEnd(6);
     }, [range, conditions, dataType])
 
     const buildCharts = (fullMutations, patientList, fullPhylogenetic) => {

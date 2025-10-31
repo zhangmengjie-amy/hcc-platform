@@ -361,6 +361,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
         return <div className={styles.searchCard}
             variant="borderless">
             {cohortListRef.current && <Table
+                rowKey="cohort"  // 或者使用函数
                 pagination={false}
                 size="small"
                 rowSelection={{ type: "checkbox", ...rowSelection }}

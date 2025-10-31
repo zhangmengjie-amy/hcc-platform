@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import VerticalTree from "@/components/vertical-tree"
-import { Modal, Typography, Flex, Button, Spin } from 'antd';
+import { Modal, Typography, Flex, Button, Spin, Empty } from 'antd';
 import styles from "./style.module.scss";
+import DtLiverSampleChart from '@/components/dt-liver-sample';
+import PlanetLiverSampleChart from '@/components/planet-liver-sample';
 import { useTranslation } from "react-i18next";
 import { getFullPhylogenetic } from "@/configs/request";
 const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline = 'left', showTumor = false }) => {
@@ -10,9 +12,13 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
     const [treeList, setTreeList] = useState(null);
     const [clinic, setClinic] = useState(null);
     const [sampleGeneData, setSampleGeneData] = useState(null);
+    const [currentPlanetLiverSamples, setCurrentPlanetLiverSamples] = useState(null);
+    const [currentDtLiverSamples, setCurrentDtLiverSamples] = useState(null);
     const { t } = useTranslation();
     useEffect(() => {
         if (!treeData?.newick || !dataType) return;
+        buildPlanetLiverSamples(treeData.patientId);
+        buildDtLiverSamples(treeData.patientId);
         const treeWorker = new Worker('/workers/tree.js');
         getFullPhylogenetic(dataType).then((results) => {
             const geneData = results?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`))
@@ -26,6 +32,45 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
         });
 
     }, [treeData?.newick, dataType]);
+
+    const buildDtLiverSamples = (dtPatientId) => {
+        if (treeData.type == "DT") {
+            const currentLiver = treeData?.dt_tumors?.[0]?.['DNA'].map((tumor) => {
+                return {
+                    ...tumor,
+                    samples: tumor.samples.map((sample) => {
+                        return {
+                            ...sample,
+                            color: "#E95D65",
+                        }
+                    }),
+                    patientId: dtPatientId
+                }
+            });
+            setCurrentDtLiverSamples(currentLiver);
+        }
+    }
+
+    const buildPlanetLiverSamples = (planetPatientId) => {
+        if (treeData.type == "PLANET") {
+            const currentLiver = treeData?.planet_tumors.map((tumor) => {
+                return {
+                    ...tumor,
+                    samples: tumor.samples.map((sample) => {
+                        return {
+                            ...sample,
+                            color: "#E95D65",
+                        }
+                    }),
+                    patientId: planetPatientId
+                }
+            });
+            console.log("currentLiver", currentLiver)
+            setCurrentPlanetLiverSamples(currentLiver);
+        }
+    }
+
+    console.log(currentDtLiverSamples, currentPlanetLiverSamples)
 
     const renderModalTitle = useMemo(() => {
         return <Flex vertical style={{ height: "50px" }}><Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
@@ -68,7 +113,22 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
                     </Flex>
                 }
                 {
-                    treeData.patientId?.startsWith("DT") && showTumor && <Image src={`/images/DNA_${treeData.patientId}.svg`} width={350} height={350} alt='123'></Image>
+                    treeData.type === "DT" && (currentDtLiverSamples?.[0] ? <DtLiverSampleChart data={currentDtLiverSamples?.[0]}></DtLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>)
+                }
+                {
+                    treeData.type == "PLANET" && (currentPlanetLiverSamples?.length ? <><Flex flex="1" align='center'>
+                        {
+                            currentPlanetLiverSamples?.[0] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[0]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+
+                        }
+                    </Flex>
+                        {
+                            currentPlanetLiverSamples?.[1] && <Flex flex="1" align='center'>
+                                {
+                                    currentPlanetLiverSamples?.[1] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[1]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                                }
+                            </Flex>
+                        }</> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>)
                 }
             </Flex>
         </Modal>
