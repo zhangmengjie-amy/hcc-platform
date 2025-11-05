@@ -354,6 +354,34 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                     }
                 </Flex>
             </Flex>
+        {
+                        groupBy == "gene" &&
+                        <Flex vertical flex={1} style={{ marginTop: "15px", border: "1px solid #f5f5f5", boxShadow: "0 4px 12px #f5f5f5", padding: "15px", borderRadius: "12px" }}>
+                            <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
+                                <Typography.Paragraph >Gene Type</Typography.Paragraph>
+                                <Radio.Group value={geneType} onChange={(e) => { setGeneType(e.target.value); }}>
+                                <Flex vertical>
+                                    <Radio value={"custom"}>Custom</Radio>
+                                    <Radio value={"fixed"}>Fixed Gene</Radio>
+                                </Flex>
+                                </Radio.Group>
+                            </Flex>
+                            <Flex vertical flex={1}>
+                                <Typography.Paragraph >Gene</Typography.Paragraph>
+                                <Radio.Group value={"TP53"}>
+                                    {
+                                        geneType == "custom" ? <Flex vertical>
+                                        <Radio value="TP53" >TP53</Radio>
+                                        <Radio value="CNNTB1" >CNNTB1</Radio>
+                                        <Radio value="APC" >APC</Radio>
+                                        <Radio value="DOCK2" >DOCK2</Radio>
+                                    </Flex> : <Typography.Paragraph style={{ marginBottom: 0 }}>TP53</Typography.Paragraph>
+                                    }
+                                    
+                                </Radio.Group>
+                            </Flex>
+                        </Flex>
+                    }
         </div>
     }
 

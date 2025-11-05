@@ -70,10 +70,8 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
         }
     }
 
-    console.log(currentDtLiverSamples, currentPlanetLiverSamples)
-
     const renderModalTitle = useMemo(() => {
-        return <Flex vertical style={{ height: "50px" }}><Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
+        return <Flex vertical style={{ height: "80px" }}><Flex align='center'><Image src={"/images/patient.svg"} width={30} height={30} alt='patient'></Image><Typography.Paragraph style={{ margin: 0, marginLeft: "10px", fontSize: "24px" }}>
             {treeData?.patientId}
         </Typography.Paragraph>
             <Flex align='baseline'> <span style={{ display: "inline-block", width: "18px", height: "18px", marginLeft: "5px", backgroundColor: treeData?.itemStyle?.color }}></span><span style={{ marginLeft: "5px", fontSize: "24px" }}>{treeData?.ITH}</span></Flex>
@@ -101,35 +99,39 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
             width="90vw"
         >
             <Flex style={{ width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }} >
-                {
-                    treeList ? <VerticalTree
-                        geneList={geneList}
-                        baseline={baseline}
-                        color={treeData?.itemStyle?.color}
-                        data={treeList}
-                        sampleGeneData={sampleGeneData}
-                    /> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
-                        <Spin spinning={true} ></Spin>
-                    </Flex>
-                }
-                {
-                    treeData.type === "DT" && (currentDtLiverSamples?.[0] ? <DtLiverSampleChart data={currentDtLiverSamples?.[0]}></DtLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>)
-                }
-                {
-                    treeData.type == "PLANET" && (currentPlanetLiverSamples?.length ? <><Flex flex="1" align='center'>
-                        {
-                            currentPlanetLiverSamples?.[0] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[0]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                <Flex style={{ width: "calc(100% - 400px)", height: "100%", borderRight: "1px solid #f0f0f0", paddingRight: "10px" }} align='center' justify='center'>
+                    {
+                        treeList ? <VerticalTree
+                            geneList={geneList}
+                            baseline={baseline}
+                            color={treeData?.itemStyle?.color}
+                            data={treeList}
+                            sampleGeneData={sampleGeneData}
+                        /> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}>
+                            <Spin spinning={true} ></Spin>
+                        </Flex>
+                    }
+                </Flex>
+                <Flex style={{ height: "100%", width: "400px", paddingLeft: "10px", alignItems: "center" }} direction='column'>
+                    {
+                        treeData.type === "DT" && (currentDtLiverSamples?.[0] ? <DtLiverSampleChart data={currentDtLiverSamples?.[0]}></DtLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>)
+                    }
+                    {
+                        treeData.type == "PLANET" && (currentPlanetLiverSamples?.length ? <Flex style={{ width: "100%", height: "100%", flexDirection: "column" }} direction='column'><Flex flex="1" align='center'>
+                            {
+                                currentPlanetLiverSamples?.[0] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[0]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
 
-                        }
-                    </Flex>
-                        {
-                            currentPlanetLiverSamples?.[1] && <Flex flex="1" align='center'>
-                                {
-                                    currentPlanetLiverSamples?.[1] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[1]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
-                                }
-                            </Flex>
-                        }</> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>)
-                }
+                            }
+                        </Flex>
+                            {
+                                currentPlanetLiverSamples?.[1] && <Flex flex="1" align='center' height="100%">
+                                    {
+                                        currentPlanetLiverSamples?.[1] ? <PlanetLiverSampleChart data={currentPlanetLiverSamples?.[1]}></PlanetLiverSampleChart> : <Flex style={{ height: "360px" }} align='center' justify='center'><Empty style={{ width: '100%', padding: "20px" }}></Empty> </Flex>
+                                    }
+                                </Flex>
+                            }</Flex> : <Flex align='center' justify='center' style={{ width: "100%", height: "100%" }}><Empty style={{ width: '100%', padding: "20px" }}></Empty></Flex>)
+                    }
+                </Flex>
             </Flex>
         </Modal>
     );

@@ -13,10 +13,12 @@
     height: calc(90vh);
   }
   :global(.ant-modal-body) {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     height: 100%;
     overflow: hidden;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
   }
 }
 .vertlink, .horzlink {

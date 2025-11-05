@@ -351,7 +351,7 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
             {
                 (dataType == "all" || dataType == "planet") && <Row>
                     <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                        <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "700px", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "100%", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                             {
                                 planetTreeLoading ? <Flex align='center' justify='center' style={{ width: "100%", height: "360px" }}>
                                     <Spin spinning={true} ></Spin>
@@ -459,7 +459,7 @@ const RightPanel = ({ conditions, dataType = "planet" }) => {
             {
                 (dataType == "all" || dataType == "dt") && <Row>
                     <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
-                        <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "820px", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
+                        <Flex vertical align='center' style={{ border: "1px solid #f5f5f5", height: "100%", padding: "20px 0", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                             <ColumnChart patientId={currentDtPatientId} data={dtPatientList} handleItemClick={setCurrentDtPatientId}></ColumnChart>
                             <Flex style={{ marginTop: "30px" }}><Flex vertical style={{ marginLeft: "10px" }}>
                                 <Flex align='center' style={{ marginBottom: "10px" }}>Pure or Mixed</Flex>
