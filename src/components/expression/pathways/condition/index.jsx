@@ -200,6 +200,7 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                             <Checkbox value="hbv">HBV</Checkbox>
                             <Checkbox value="hcv">HCV</Checkbox>
                             <Checkbox value="age">Age</Checkbox>
+                            <Checkbox value="race">Race</Checkbox>
                             <Checkbox value="stage">Stage</Checkbox>
                             <Checkbox value="gene">Gene</Checkbox>
                         </Flex>
@@ -237,6 +238,8 @@ const DEGCondition = forwardRef(({ onITHChange, handleInitChange, showITH = true
                             <Radio value={"hcv"}>HCV</Radio>
 
                             <Radio value={"age"}>Age</Radio>
+
+                            <Radio value={"race"}>Race</Radio>
 
                             <Radio value={"stage"}>Stage</Radio>
 

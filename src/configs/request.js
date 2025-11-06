@@ -41,6 +41,17 @@ export const getExpressionSubtypeList = async () => {
     }
 };
 
+export const getVolcanoPlot = async () => {
+    try {
+        const geneData = await fetch(`/json/volcano_GO_api_json.json`);
+        return geneData?.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};
+
+
 export const getImmuneSubtypeList = async () => {
     try {
         const geneData = await fetch(`/json/hcc-immune-subtype.json`);
