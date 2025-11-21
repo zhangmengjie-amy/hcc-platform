@@ -6,7 +6,7 @@ const Biomarkers = () => {
 
   return (
     <div className={styles.biomarkers}>
-            Biomarkers
+    测试保护页面 (应该重定向)
     </div>
   );
 };

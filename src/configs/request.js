@@ -1,5 +1,16 @@
 import { get, post } from "@/utils/api";
 
+
+export const login = async (data) => {
+  try {
+    const response = await fetch(`/json/login.json`, data);
+    return response?.json();
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
+};
+
 export const getGeneList = async (current, size, keywords) => {
   try {
     const geneData = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`); // 获取 public/json/hcc-gene.json 文件
