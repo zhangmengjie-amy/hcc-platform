@@ -54,8 +54,8 @@ const HCCHeader = () => {
             //     height={16} />,
         },
         {
-            label: <Link href="/multi-modal" onClick={handleClick}>{t('home:header.multi-modal')}</Link>,
-            key: '/multi-modal',
+            label: <Link href="/biomarkers" onClick={handleClick}>{t('home:header.biomarkers')}</Link>,
+            key: '/biomarkers',
             //  icon: <Image
             //     src="/images/multi-modal.svg"
             //     alt="multi-modal"

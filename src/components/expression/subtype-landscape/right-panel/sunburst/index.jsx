@@ -67,7 +67,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
             .filter((item) => new Set(item.subtypes?.map((s) => s.subtype)).size > 1)
             .map((item) => ({
                 ...item,
-                subtypes: item.subtypes.sort((a, b) => a.subtype.localeCompare(b.subtype))
+                subtypes: item.subtypes.sort((a, b) => a.subtype?.localeCompare(b.subtype))
             }));
 
 

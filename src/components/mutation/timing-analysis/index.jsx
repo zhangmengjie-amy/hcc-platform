@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState } from 'react';
 import { getITHList, getNewick, getPatientList } from "@/configs/request";
-import VerticalTree from "@/components/vertical-tree"
+import VerticalTree from "@/components/vertical-tree";
 import { getFullPhylogenetic, getFullMutations } from "@/configs/request";
 import {
     Row,

@@ -7,7 +7,7 @@ import DtLiverSampleChart from '@/components/dt-liver-sample';
 import PlanetLiverSampleChart from '@/components/planet-liver-sample';
 import { useTranslation } from "react-i18next";
 import { getFullPhylogenetic } from "@/configs/request";
-const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline = 'left', showTumor = false }) => {
+const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, dnaOrRna = "DNA", baseline = 'left', showTumor = false }) => {
 
     const [treeList, setTreeList] = useState(null);
     const [clinic, setClinic] = useState(null);
@@ -35,7 +35,7 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
 
     const buildDtLiverSamples = (dtPatientId) => {
         if (treeData.type == "DT") {
-            const currentLiver = treeData?.dt_tumors?.[0]?.['DNA'].map((tumor) => {
+            const currentLiver = treeData?.dt_tumors?.[0]?.[dnaOrRna].map((tumor) => {
                 return {
                     ...tumor,
                     samples: tumor.samples.map((sample) => {
@@ -53,7 +53,7 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, baseline 
 
     const buildPlanetLiverSamples = (planetPatientId) => {
         if (treeData.type == "PLANET") {
-            const currentLiver = treeData?.planet_tumors.map((tumor) => {
+            const currentLiver = treeData?.planet_tumors?.[0]?.[dnaOrRna].map((tumor) => {
                 return {
                     ...tumor,
                     samples: tumor.samples.map((sample) => {

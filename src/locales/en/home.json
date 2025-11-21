@@ -8,7 +8,8 @@
     "about": "About",
     "expression": "Transcriptome",
     "immune": "Immune",
-    "clinical": "Clinical"
+    "clinical": "Clinical",
+    "biomarkers": "Biomarkers"
   },
   "banner": {
     "title": "HCC Data Platform",

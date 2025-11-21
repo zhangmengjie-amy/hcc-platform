@@ -24,9 +24,9 @@ const GoBubbleChart = ({
   }, [data]);
 
   // 使用 useMemo 优化数据处理
-  const { bpData, ccData, countRange } = useMemo(() => {
+  const { bpData, ccData, countRange, allDescriptions } = useMemo(() => {
     if (!chartData?.length) {
-      return { bpData: [], ccData: [], countRange: { min: 0, max: 1 } };
+      return { bpData: [], ccData: [], countRange: { min: 0, max: 1 }, allDescriptions };
     }
 
     const bpData = [];
@@ -56,10 +56,24 @@ const GoBubbleChart = ({
         ccData.push(bubbleData);
       }
     });
+    const allDescriptions = chartData.map(item => item.Description).reverse();
 
+    // 为每个描述创建对应的 BP 和 CC 数据
+    allDescriptions.forEach(description => {
+      const bpItem = chartData.find(item => 
+        item.Description === description && item.ONTOLOGY === 'BP'
+      );
+      const ccItem = chartData.find(item => 
+        item.Description === description && item.ONTOLOGY === 'CC'
+      );
+
+      bpData.push(bpItem ? bpItem.Count : 0);
+      ccData.push(ccItem ? ccItem.Count : 0);
+    });
     return { 
       bpData, 
-      ccData, 
+      ccData,
+      allDescriptions,
       countRange: { min: minCount, max: maxCount }
     };
   }, [chartData]);
@@ -108,17 +122,17 @@ const GoBubbleChart = ({
         formatter: (params) => {
           const data = params.data;
           return `
-            <div style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
+            <div style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
               ${data.name}
             </div>
             <div style="line-height: 1.4;">
-              <span style="color: #666;">类别:</span> ${data.ONTOLOGY}<br/>
-              <span style="color: #666;">基因数:</span> <strong>${data.Count}</strong><br/>
-              <span style="color: #666;">富集因子:</span> ${data.RichFactor.toFixed(4)}<br/>
-              <span style="color: #666;">富集倍数:</span> ${data.FoldEnrichment.toFixed(2)}<br/>
+              <span style="color: #666;">ONTOLOGY:</span> ${data.ONTOLOGY}<br/>
+              <span style="color: #666;">Count:</span> <strong>${data.Count}</strong><br/>
+              <span style="color: #666;">RichFactor:</span> ${data.RichFactor.toFixed(4)}<br/>
+              <span style="color: #666;">FoldEnrichment:</span> ${data.FoldEnrichment.toFixed(2)}<br/>
               <span style="color: #666;">p值:</span> ${data.pvalue.toExponential(2)}<br/>
-              <span style="color: #666;">调整p值:</span> ${data.p_adjust.toExponential(2)}<br/>
-              <span style="color: #666;">基因列表:</span> ${data.geneID.replace(/\//g, ', ')}
+              <span style="color: #666;">p_adjust:</span> ${data.p_adjust.toExponential(2)}<br/>
+              <span style="color: #666;">geneID:</span> ${data.geneID.replace(/\//g, ', ')}
             </div>
           `;
         }
@@ -174,46 +188,55 @@ const GoBubbleChart = ({
       },
       yAxis: {
         name: 'GO 功能描述',
-        nameLocation: 'end', // 改为 end，表示在轴的末端（左侧）
+        nameLocation: 'end',
+        nameGap: 20,
         nameTextStyle: {
-          align: 'right',
-          verticalAlign: 'middle',
-          lineHeight: 16,
-          fontWeight: 'bold',
-          color: "#666"
+            align: 'center',
+            lineHeight: 16,
+            fontWeight: 'bold',
+            color: "#666"
         },
         type: 'category',
         axisLine: {
-          show: true,
-          lineStyle: {
+            show: true,
+            lineStyle: {
             color: '#e0e0e0'
-          }
+            }
         },
         axisTick: {
-          show: true,
-          lineStyle: {
+            show: true,
+            lineStyle: {
             color: '#e0e0e0'
-          },
-          alignWithLabel: false
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            type: 'dashed',
-            color: '#e0e0e0'
-          }
+            },
+            alignWithLabel: true
         },
         axisLabel: {
-          width: 180,
-          overflow: 'truncate',
-          ellipsis: '...',
-          fontSize: 10,
-          margin: 8,
-          align: 'right',
-          color: "#666"
+            width: 180,
+            overflow: 'truncate',
+            ellipsis: '...',
+            fontSize: 10,
+            margin: 8,
+            align: 'right',
+            color: "#666",
+            // 添加 tooltip 配置
+            show: true,
+            formatter: function(value) {
+            // 返回截断的文本用于显示
+            if (value.length > 25) {
+                return value.substring(0, 25) + '...';
+            }
+            return value;
+            }
         },
-        boundaryGap: false,
-        data: chartData.map(item => item.Description).reverse()
+        data: allDescriptions,
+        // 添加 tooltip 配置
+        tooltip: {
+            show: true,
+            formatter: function(params) {
+            // 返回完整的文本
+            return params.value;
+            }
+        }
       },
       series: [
         {

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import styles from "./style.module.scss";
 import { useTranslation } from 'react-i18next';
-import Language from "@/components/lng"
+import Language from "@/components/lng";
 
 
 const HCCSecondaryHeader = () => {

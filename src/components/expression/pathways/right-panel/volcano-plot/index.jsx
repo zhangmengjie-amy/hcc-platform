@@ -212,14 +212,16 @@ const VolcanoPlot = ({
           emphasis: { disabled: true },
           label: {
             formatter: `p=-log10(0.05)`,
-            position: 'end'
+            position: 'insideStartTop', // 或者 'insideEndTop'
+            verticalAlign: 'bottom',
+            distance: 5 // 微调距离
           }
         }
       }
     ],
     grid: {
       left: '5%',
-      right: '12%',
+      right: '3%',
       bottom: '5%',
       top: '10%',
       containLabel: true

@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import { useSearchParams } from 'next/navigation';
 import GeneLollipop from "@/components/gene-lollipop";
 import { Layout, Flex, Typography, Input, Button, Carousel } from 'antd';
-import styles from "./style.module.scss"
+import styles from "./style.module.scss";
 import { useRouter, usePathname } from 'next/navigation';
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
