@@ -44,7 +44,7 @@ const Expression = () => {
   const [params, setParams] = useState({});
   const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
   const [rightPanelSize, setRightPanelSize] = useState(
-    DEFAULT_RIGHT_PANEL_WIDTH
+    DEFAULT_RIGHT_PANEL_WIDTH,
   );
   const [fetchLoading, setFetchLoading] = useState(true);
   const [geneList, setGeneList] = useState([]);

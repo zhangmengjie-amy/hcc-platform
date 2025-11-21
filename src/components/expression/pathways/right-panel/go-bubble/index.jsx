@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
-import * as echarts from 'echarts';
+import React, { useState, useEffect, useMemo } from "react";
+import ReactECharts from "echarts-for-react";
+import * as echarts from "echarts";
 
 const GoBubbleChart = ({
   data = [],
-  width = '100%',
-  height = '600px',
-  loadingText = '加载中...',
-  errorText = '加载失败',
-  title = 'GO 富集分析气泡图',
-  showLegend = true
+  width = "100%",
+  height = "600px",
+  loadingText = "加载中...",
+  errorText = "加载失败",
+  title = "GO 富集分析气泡图",
+  showLegend = true,
 }) => {
   const [chartData, setChartData] = useState(data);
   const [loading, setLoading] = useState(!data?.length);
@@ -47,12 +47,12 @@ const GoBubbleChart = ({
         FoldEnrichment: item.FoldEnrichment,
         GeneRatio: item.GeneRatio,
         geneID: item.geneID,
-        ONTOLOGY: item.ONTOLOGY
+        ONTOLOGY: item.ONTOLOGY,
       };
 
-      if (item.ONTOLOGY === 'BP') {
+      if (item.ONTOLOGY === "BP") {
         bpData.push(bubbleData);
-      } else if (item.ONTOLOGY === 'CC') {
+      } else if (item.ONTOLOGY === "CC") {
         ccData.push(bubbleData);
       }
     });
@@ -61,10 +61,10 @@ const GoBubbleChart = ({
     // 为每个描述创建对应的 BP 和 CC 数据
     allDescriptions.forEach(description => {
       const bpItem = chartData.find(item => 
-        item.Description === description && item.ONTOLOGY === 'BP'
+        item.Description === description && item.ONTOLOGY === "BP",
       );
       const ccItem = chartData.find(item => 
-        item.Description === description && item.ONTOLOGY === 'CC'
+        item.Description === description && item.ONTOLOGY === "CC",
       );
 
       bpData.push(bpItem ? bpItem.Count : 0);
@@ -74,7 +74,7 @@ const GoBubbleChart = ({
       bpData, 
       ccData,
       allDescriptions,
-      countRange: { min: minCount, max: maxCount }
+      countRange: { min: minCount, max: maxCount },
     };
   }, [chartData]);
 
@@ -96,28 +96,28 @@ const GoBubbleChart = ({
 
     return {
       grid: {
-        left: '5%',
-        right: '10%',
-        bottom: '5%',
-        top: '15%',
-        containLabel: true
+        left: "5%",
+        right: "10%",
+        bottom: "5%",
+        top: "15%",
+        containLabel: true,
       },
       title: {
         text: title,
-        left: 'center',
+        left: "center",
         top: 10,
         textStyle: {
           fontSize: 14,
-          fontWeight: 'bold'
-        }
+          fontWeight: "bold",
+        },
       },
       tooltip: {
-        trigger: 'item',
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#ddd',
+        trigger: "item",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        borderColor: "#ddd",
         borderWidth: 1,
         textStyle: {
-          color: '#333'
+          color: "#333",
         },
         formatter: (params) => {
           const data = params.data;
@@ -132,15 +132,15 @@ const GoBubbleChart = ({
               <span style="color: #666;">FoldEnrichment:</span> ${data.FoldEnrichment.toFixed(2)}<br/>
               <span style="color: #666;">p值:</span> ${data.pvalue.toExponential(2)}<br/>
               <span style="color: #666;">p_adjust:</span> ${data.p_adjust.toExponential(2)}<br/>
-              <span style="color: #666;">geneID:</span> ${data.geneID.replace(/\//g, ', ')}
+              <span style="color: #666;">geneID:</span> ${data.geneID.replace(/\//g, ", ")}
             </div>
           `;
-        }
+        },
       },
       legend: {
         data: [
-          { name: 'BP', itemStyle: { color: '#ff4d4f' } },
-          { name: 'CC', itemStyle: { color: '#1890ff' } }
+          { name: "BP", itemStyle: { color: "#ff4d4f" } },
+          { name: "CC", itemStyle: { color: "#1890ff" } },
         ],
         top: 40,
         textStyle: {
@@ -150,156 +150,156 @@ const GoBubbleChart = ({
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 10,
-        icon: 'rect' // 设置为方形
+        icon: "rect", // 设置为方形
       },
       xAxis: {
-        name: '基因数量 (Count)',
-        nameLocation: 'center',
+        name: "基因数量 (Count)",
+        nameLocation: "center",
         nameGap: 25,
         nameTextStyle: {
           fontSize: 11,
-          fontWeight: 'bold',
-          color: "#666"
+          fontWeight: "bold",
+          color: "#666",
         },
-        type: 'value',
+        type: "value",
         axisLine: {
           show: true,
           lineStyle: {
-            color: '#e0e0e0'
-          }
+            color: "#e0e0e0",
+          },
         },
         axisTick: {
           show: true,
           lineStyle: {
-            color: '#e0e0e0'
-          }
+            color: "#e0e0e0",
+          },
         },
         axisLabel: {
           fontSize: 10,
-          color: "#666"
+          color: "#666",
         },
         splitLine: {
           show: true,
           lineStyle: {
-            type: 'dashed',
-            color: '#e0e0e0'
-          }
-        }
+            type: "dashed",
+            color: "#e0e0e0",
+          },
+        },
       },
       yAxis: {
-        name: 'GO 功能描述',
-        nameLocation: 'end',
+        name: "GO 功能描述",
+        nameLocation: "end",
         nameGap: 20,
         nameTextStyle: {
-            align: 'center',
-            lineHeight: 16,
-            fontWeight: 'bold',
-            color: "#666"
+          align: "center",
+          lineHeight: 16,
+          fontWeight: "bold",
+          color: "#666",
         },
-        type: 'category',
+        type: "category",
         axisLine: {
-            show: true,
-            lineStyle: {
-            color: '#e0e0e0'
-            }
+          show: true,
+          lineStyle: {
+            color: "#e0e0e0",
+          },
         },
         axisTick: {
-            show: true,
-            lineStyle: {
-            color: '#e0e0e0'
-            },
-            alignWithLabel: true
+          show: true,
+          lineStyle: {
+            color: "#e0e0e0",
+          },
+          alignWithLabel: true,
         },
         axisLabel: {
-            width: 180,
-            overflow: 'truncate',
-            ellipsis: '...',
-            fontSize: 10,
-            margin: 8,
-            align: 'right',
-            color: "#666",
-            // 添加 tooltip 配置
-            show: true,
-            formatter: function(value) {
+          width: 180,
+          overflow: "truncate",
+          ellipsis: "...",
+          fontSize: 10,
+          margin: 8,
+          align: "right",
+          color: "#666",
+          // 添加 tooltip 配置
+          show: true,
+          formatter: function(value) {
             // 返回截断的文本用于显示
             if (value.length > 25) {
-                return value.substring(0, 25) + '...';
+              return value.substring(0, 25) + "...";
             }
             return value;
-            }
+          },
         },
         data: allDescriptions,
         // 添加 tooltip 配置
         tooltip: {
-            show: true,
-            formatter: function(params) {
+          show: true,
+          formatter: function(params) {
             // 返回完整的文本
             return params.value;
-            }
-        }
+          },
+        },
       },
       series: [
         {
-          name: 'BP',
-          type: 'scatter',
+          name: "BP",
+          type: "scatter",
           data: bpData,
           symbolSize: (data) => calculateSymbolSize(data[0]),
           itemStyle: {
-            color: '#ff4d4f',
-            opacity: 0.8
+            color: "#ff4d4f",
+            opacity: 0.8,
           },
           emphasis: {
-            focus: 'series',
+            focus: "series",
             scale: true,
             itemStyle: {
               shadowBlur: 10,
-              shadowColor: 'rgba(255, 77, 79, 0.5)',
+              shadowColor: "rgba(255, 77, 79, 0.5)",
               borderWidth: 2,
-              borderColor: '#fff'
-            }
-          }
+              borderColor: "#fff",
+            },
+          },
         },
         {
-          name: 'CC',
-          type: 'scatter',
+          name: "CC",
+          type: "scatter",
           data: ccData,
           symbolSize: (data) => calculateSymbolSize(data[0]),
           itemStyle: {
-            color: '#1890ff',
-            opacity: 0.8
+            color: "#1890ff",
+            opacity: 0.8,
           },
           emphasis: {
-            focus: 'series',
+            focus: "series",
             scale: true,
             itemStyle: {
               shadowBlur: 10,
-              shadowColor: 'rgba(24, 144, 255, 0.5)',
+              shadowColor: "rgba(24, 144, 255, 0.5)",
               borderWidth: 2,
-              borderColor: '#fff'
-            }
-          }
-        }
+              borderColor: "#fff",
+            },
+          },
+        },
       ],
       visualMap: {
-        type: 'continuous',
+        type: "continuous",
         dimension: 0,
         min: countRange.min,
         max: countRange.max,
         calculable: true,
-        orient: 'vertical',
-        right: '20px',
-        top: 'center',
+        orient: "vertical",
+        right: "20px",
+        top: "center",
         itemWidth: 10,
         itemHeight: 120,
         inRange: {
-          color: ['#440255', '#289B87', '#7AD151', '#FDE725']
+          color: ["#440255", "#289B87", "#7AD151", "#FDE725"],
         },
-        text: ['高', '低'],
+        text: ["高", "低"],
         textStyle: {
-          fontSize: 10
+          fontSize: 10,
         },
-        formatter: (value) => `${Math.round(value)}`
-      }
+        formatter: (value) => `${Math.round(value)}`,
+      },
     };
   }, [chartData, bpData, ccData, countRange, calculateSymbolSize, title, showLegend]);
 
@@ -310,12 +310,12 @@ const GoBubbleChart = ({
         style={{
           width,
           height,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px dashed #ddd',
-          borderRadius: '4px',
-          color: '#999'
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "1px dashed #ddd",
+          borderRadius: "4px",
+          color: "#999",
         }}
       >
         {loadingText}
@@ -330,12 +330,12 @@ const GoBubbleChart = ({
         style={{
           width,
           height,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px dashed #ff4d4f',
-          borderRadius: '4px',
-          color: '#ff4d4f'
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "1px dashed #ff4d4f",
+          borderRadius: "4px",
+          color: "#ff4d4f",
         }}
       >
         {errorText}: {error.message}
@@ -350,12 +350,12 @@ const GoBubbleChart = ({
         style={{
           width,
           height,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px dashed #ddd',
-          borderRadius: '4px',
-          color: '#999'
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "1px dashed #ddd",
+          borderRadius: "4px",
+          color: "#999",
         }}
       >
         暂无数据
@@ -369,8 +369,8 @@ const GoBubbleChart = ({
       option={option}
       style={{ width, height }}
       opts={{ 
-        renderer: 'svg',
-        useDirtyRect: true
+        renderer: "svg",
+        useDirtyRect: true,
       }}
     />
   );

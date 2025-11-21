@@ -223,7 +223,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
 
   useEffect(() => {
     conditions["stage"] = Array.from(
-      new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item]))
+      new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item])),
     );
     const { geneList, ...clinicList } = conditions;
     const filteredData =
@@ -236,10 +236,10 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
     if (patientListRef.current?.length && geneListRef.current?.length) {
       setCurrentPlanetPatientId(
         filterdPatientList?.filter((item) => item.type === "PLANET")[0]
-          ?.patientId
+          ?.patientId,
       );
       setCurrentDtPatientId(
-        filterdPatientList?.filter((item) => item.type === "DT")[0]?.patientId
+        filterdPatientList?.filter((item) => item.type === "DT")[0]?.patientId,
       );
     }
   }, [dataType, filterdPatientList]);
@@ -262,15 +262,15 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
         setFilterdPatientList(patientListRef.current);
         setCurrentPlanetPatientId(
           patientListRef.current?.filter((item) => item.type === "PLANET")[0]
-            ?.patientId
+            ?.patientId,
         );
         setCurrentDtPatientId(
           patientListRef.current?.filter((item) => item.type === "DT")[0]
-            ?.patientId
+            ?.patientId,
         );
         setDtTreeLoading(false);
         setPlanetTreeLoading(false);
-      }
+      },
     );
   }, []);
 
@@ -282,7 +282,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
       const newick = dtPatientList?.find(
-        (item) => item.patientId === dtPatientId
+        (item) => item.patientId === dtPatientId,
       )?.newick;
       if (!newick) return;
       const geneData = geneListRef.current
@@ -305,7 +305,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
       const newick = planetPatientList?.find(
-        (item) => item.patientId === planetPatientId
+        (item) => item.patientId === planetPatientId,
       )?.newick;
       if (!newick) return;
       const geneData = geneListRef.current
@@ -337,7 +337,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
     buildPlanetLiverSamples(
       currentPlanetPatientId,
       dataType,
-      selectedPlanetSubtype
+      selectedPlanetSubtype,
     );
   }, [
     currentPlanetPatientId,
@@ -356,7 +356,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
       const currentPatient = dtPatientList?.find(
-        (item) => item.patientId === dtPatientId
+        (item) => item.patientId === dtPatientId,
       );
       const currentLiver = currentPatient?.dt_tumors?.[0]?.[dnaOrRna].map(
         (tumor) => {
@@ -364,7 +364,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
             ...tumor,
             samples: tumor.samples.map((sample) => {
               const subtypesValue = currentPatient.subtypes?.find(
-                (sub) => sub.id == sample.sample_id
+                (sub) => sub.id == sample.sample_id,
               );
               return {
                 ...sample,
@@ -376,7 +376,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
             }),
             patientId: dtPatientId,
           };
-        }
+        },
       );
       setCurrentDtLiverSamples(currentLiver);
     }
@@ -385,14 +385,14 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   const buildPlanetLiverSamples = (
     planetPatientId,
     dataType,
-    selectedSubType
+    selectedSubType,
   ) => {
     if (dataType == "all" || dataType == "planet") {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
       const currentPatient = planetPatientList?.find(
-        (item) => item.patientId === planetPatientId
+        (item) => item.patientId === planetPatientId,
       );
       const currentLiver = currentPatient?.planet_tumors[0][dnaOrRna].map(
         (tumor) => {
@@ -400,7 +400,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
             ...tumor,
             samples: tumor.samples.map((sample) => {
               const subtypesValue = currentPatient.subtypes?.find(
-                (sub) => sub.id == sample.sample_id
+                (sub) => sub.id == sample.sample_id,
               );
               return {
                 ...sample,
@@ -412,7 +412,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
             }),
             patientId: planetPatientId,
           };
-        }
+        },
       );
       setCurrentPlanetLiverSamples(currentLiver);
     }
@@ -423,9 +423,9 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
-      let subtypes =
+      const subtypes =
         dtPatientList?.find(
-          (subtypeItem) => subtypeItem.patientId == dtPatientId
+          (subtypeItem) => subtypeItem.patientId == dtPatientId,
         )?.subtypes ?? [];
       const _heatmap = buildSubtypes(subtypes);
       setDtHeatmap(_heatmap);
@@ -437,9 +437,9 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
-      let subtypes =
+      const subtypes =
         planetPatientList?.find(
-          (subtypeItem) => subtypeItem.patientId == planetPatientId
+          (subtypeItem) => subtypeItem.patientId == planetPatientId,
         )?.subtypes ?? [];
       const _heatmap = buildSubtypes(subtypes);
       setPlanetHeatmap(_heatmap);
