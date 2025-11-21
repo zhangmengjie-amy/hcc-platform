@@ -6,20 +6,22 @@ const DtLiverSampleChart = ({ data }) => {
     const legendRef = useRef(null);
 
     useEffect(() => {
-        // 绘制主图表
-        const element = chartRef.current;
-        const container = element.parentElement;
-        const containerWidth = container.offsetWidth;
-        const containerHeight = container.offsetHeight;
-
-        // 计算主图表尺寸（占80%宽度）
-        let width = containerWidth * 0.8;
-        let height = containerHeight;
-
-        // 取宽高最小值保持正方形
-        const minSize = Math.min(width, height);
-        width = minSize;
-        height = minSize;
+    const element = chartRef.current;
+    const container = element.parentElement.parentElement; // 获取最外层容器
+    const containerRect = container.getBoundingClientRect();
+    
+    // 基于父容器高度和宽度的最小值
+    const parentWidth = containerRect.width;
+    const parentHeight = containerRect.height;
+    const minSize = Math.min(parentWidth, parentHeight);
+    
+    // 计算主图尺寸（减去色条和间距）
+    const chartSize = Math.min(minSize, parentWidth - 85);
+    const width = chartSize;
+    const height = chartSize;
+    
+    // 设置容器高度
+    element.parentElement.style.height = `${chartSize}px`;
 
         // 从数据中提取肿瘤尺寸和样本信息
         if (!data) return;
@@ -34,7 +36,7 @@ const DtLiverSampleChart = ({ data }) => {
         }));
 
         // Configuration - 保持原来的边距不变
-        const margin = { top: 35, right: 35, bottom: 45, left: 45 };
+        const margin = { top: 35, right: 20, bottom: 45, left: 45 };
         const chartWidth = width - margin.left - margin.right;
         const chartHeight = height - margin.top - margin.bottom;
 
@@ -74,7 +76,7 @@ const DtLiverSampleChart = ({ data }) => {
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
             .style("font-weight", "normal")
-            .text(`${data.patientId}, Tumor: ${tumorWidth}cm × ${tumorHeight}cm, Sample count: ${samples.length}`);
+            .text(`${data.patientId}, Tumor: ${tumorWidth}cm × ${tumorHeight}cm, Sample: ${samples.length}`);
 
         // 添加背景图片
         const imageUrl = `/images/RNA_${data.patientId}.svg`;
@@ -209,7 +211,6 @@ const DtLiverSampleChart = ({ data }) => {
         svg.selectAll(".sample").raise();
 
         // 绘制色条
-        const legendElement = legendRef.current;
         const legendWidth = 80;
         const legendHeight = height;
 
@@ -236,7 +237,7 @@ const DtLiverSampleChart = ({ data }) => {
         // 色条尺寸和位置
         const legendBarWidth = 20;
         const legendBarHeight = legendHeight * 0.6;
-        const legendX = 5;
+        const legendX = 0;
         const legendY = (legendHeight - legendBarHeight) / 2;
 
         // 绘制色条
@@ -246,8 +247,8 @@ const DtLiverSampleChart = ({ data }) => {
             .attr("width", legendBarWidth)
             .attr("height", legendBarHeight)
             .style("fill", "url(#color-gradient)")
-            .style("stroke", "#ccc")
-            .style("stroke-width", 1);
+            // .style("stroke", "#000")
+            // .style("stroke-width", 1);
 
         // 添加色条刻度标签
         const legendScale = d3.scaleLinear()
@@ -257,15 +258,15 @@ const DtLiverSampleChart = ({ data }) => {
         data.legend.forEach(value => {
             const yPos = legendScale(value);
 
-            // 添加白色分割线（贯穿整个色条）
-            legendSvg.append("line")
-                .attr("x1", legendX)
-                .attr("x2", legendX + legendBarWidth)
-                .attr("y1", yPos)
-                .attr("y2", yPos)
-                .style("stroke", "white")
-                .style("stroke-width", 1)
-                .style("opacity", 0.8);
+            // // 添加白色分割线（贯穿整个色条）
+            // legendSvg.append("line")
+            //     .attr("x1", legendX)
+            //     .attr("x2", legendX + legendBarWidth)
+            //     .attr("y1", yPos)
+            //     .attr("y2", yPos)
+            //     .style("stroke", "white")
+            //     .style("stroke-width", 1)
+            //     .style("opacity", 0.8);
             
             legendSvg.append("line")
                 .attr("x1", legendX + legendBarWidth)
@@ -299,19 +300,27 @@ const DtLiverSampleChart = ({ data }) => {
         };
     }, [data]);
 
-    return (
-        <div style={{ 
-            width: '100%', 
-            height: '100%', 
+return (
+    <div style={{ 
+        width: '100%', 
+        height: '100%', 
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }}>
+        <div style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            gap: '5px',
+            height: '100%',
+            width: 'auto',
+            flexShrink: 0
         }}>
             <div 
                 ref={chartRef} 
                 style={{ 
-                    width: '80%', 
                     height: '100%',
+                    aspectRatio: '1 / 1',
                     flexShrink: 0,
                     display: 'flex',
                     justifyContent: 'center',
@@ -324,14 +333,14 @@ const DtLiverSampleChart = ({ data }) => {
                     width: '80px', 
                     height: '100%',
                     flexShrink: 0,
-                    marginLeft: '10px',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}
             />
         </div>
-    );
+    </div>
+);
 };
 
 export default DtLiverSampleChart;

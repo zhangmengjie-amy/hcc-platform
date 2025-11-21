@@ -39,7 +39,7 @@ const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, s
         setLoading(false);
         const sampleWorker = new Worker('/workers/calculate.js');
         try {
-            console.log(dataType?.toUpperCase())
+
             let fullMutations = fullMutationsRef.current;
             if (dataType !== "all") fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
             

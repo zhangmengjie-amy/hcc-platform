@@ -216,7 +216,6 @@ const Expression = () => {
                             <Segmented
                                 options={[{ label: <Link href="/expression/subtype">{'Subtype landscape and tree'}</Link> , value: "subtype" },
                                     { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: 'pathways' },
-                                    { label: <Link href="/expression/biomarkers">{"Biomarkers"}</Link>, value: 'biomarkers' }
                                 ]}
                                 value={ pathname.split("/")[2]}
                             />

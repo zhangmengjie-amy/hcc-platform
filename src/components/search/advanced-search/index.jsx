@@ -9,7 +9,7 @@ import { clinicConfig } from '@/configs/mutation';
 import { useRouter, usePathname } from 'next/navigation';
 import EmptyLoading from "@/components/empty-loading";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from '@ant-design/icons';
-import styles from "./style.module.scss"
+import styles from "./style.module.scss";
 import {
     Card,
     Collapse,

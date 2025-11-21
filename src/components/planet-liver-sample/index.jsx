@@ -20,9 +20,10 @@ const PlanetLiverSampleChart = ({ data }) => {
         const liverDiameter = parseFloat(data.tumor_size); // 假设所有样本的肿瘤大小相同
         const samples = data?.samples.map(sample => ({
             sample_id: sample.sample_id,
-            x: parseFloat(sample.X),
-            y: parseFloat(sample.Y),
+            x: parseFloat(sample.x),
+            y: parseFloat(sample.y),
             r: parseFloat(sample.sample_r),
+            tumor: sample.tumor ?? "",
             color: sample.color || "#E95D65"
         }));
 
@@ -85,7 +86,7 @@ const PlanetLiverSampleChart = ({ data }) => {
             .style("alignment-baseline", "middle") // Vertically align text to the middle
             .style("font-size", "10px")
             .style("fill", "black")
-            .text(d => d.sample_id.split('_').slice(2, 3).join("_"));
+            .text(d => d.tumor);
 
         // Create axes
         const numTicks = 5;

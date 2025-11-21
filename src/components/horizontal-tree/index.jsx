@@ -512,7 +512,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                     <p style={{ marginBottom: '0', fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{
                         tooltipState?.data?.geneData?.driver.map((item, index) => {
                             return (
-                                <><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
+                                <><span key={item} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
                                     <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span></>
                             );
                         })
@@ -522,7 +522,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
                         {
                             tooltipState?.data?.geneData?.nonDriver.map((item, index) => {
                                 return (
-                                    <div><span key={index} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
+                                    <div key={item}><span key={item} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
                                         <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span>)</div>
                                 );
                             })
