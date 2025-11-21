@@ -7,7 +7,8 @@ function formatLabel(str) {
 function parseNewick(newick) {
   const tokens = newick.split(/\s*(;|\(|\)|,|:)\s*/);
   const ancestors = [];
-  const tree = {}, current = tree;
+  const tree = {};
+  let current = tree;
   const nameToNode = Object.create(null);
 
   for (let i = 0; i < tokens.length; i++) {
