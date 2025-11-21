@@ -1,7 +1,7 @@
 import Login from "@/components/Login";
 
 export default function LoginPage() {
-    return (
-        <Login></Login>
-    );
+  return (
+    <Login></Login>
+  );
 }

@@ -73,7 +73,7 @@ const DEGCondition = forwardRef(
       showGeneList = true,
       showClinical = true,
     },
-    ref
+    ref,
   ) => {
     const { t } = useTranslation();
     const paramsRef = useRef(null);
@@ -288,7 +288,7 @@ const DEGCondition = forwardRef(
         console.log(
           `selectedRowKeys: ${selectedRowKeys}`,
           "selectedRows: ",
-          selectedRows
+          selectedRows,
         );
       },
       getCheckboxProps: (record) => ({
@@ -718,7 +718,7 @@ const DEGCondition = forwardRef(
         ></Collapse>
       </div>
     );
-  }
+  },
 );
 
 export default DEGCondition;

@@ -1,16 +1,16 @@
-import { createStore } from 'redux';
+import { createStore } from "redux";
 
 const initialState = {
-    driver_landscape_filter_conditions: [],
+  driver_landscape_filter_conditions: [],
 };
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case 'driver_landscape_filter_conditions':
-            return { ...state, driver_landscape_filter_conditions: action.payload };
-        default:
-            return state;
-    }
+  switch (action.type) {
+  case "driver_landscape_filter_conditions":
+    return { ...state, driver_landscape_filter_conditions: action.payload };
+  default:
+    return state;
+  }
 };
 
 const store = createStore(reducer);

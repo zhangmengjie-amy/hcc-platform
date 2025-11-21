@@ -68,16 +68,16 @@ const Pathways = () => {
             <Flex style={{ marginBottom: "20px", justifyContent: "space-between" }}>
               <Space>
                 <Typography.Title
-                level={5}
-                style={{ marginBottom: 0, marginRight: "20px" }}
-              >
-                {item.cohort}
-              </Typography.Title>
-              <Tag color={LEVEL_COLOR[item.level]}>{item.level}</Tag>
-              <Tag color={CLASSIFY_COLOR[item.classify]}>{item.classify}</Tag>
-              <Tag color={TECHNOLOGY_COLOR[item.techonology]}>
-                {item.techonology}
-              </Tag>
+                  level={5}
+                  style={{ marginBottom: 0, marginRight: "20px" }}
+                >
+                  {item.cohort}
+                </Typography.Title>
+                <Tag color={LEVEL_COLOR[item.level]}>{item.level}</Tag>
+                <Tag color={CLASSIFY_COLOR[item.classify]}>{item.classify}</Tag>
+                <Tag color={TECHNOLOGY_COLOR[item.techonology]}>
+                  {item.techonology}
+                </Tag>
               </Space>
               
               <Dropdown
@@ -98,7 +98,7 @@ const Pathways = () => {
                   defaultSelectedKeys: [cohortListRef.current?.[0]?.cohort],
                 }}
               >
-               <Space>Selected: <Button>{selectedCohort}</Button></Space>
+                <Space>Selected: <Button>{selectedCohort}</Button></Space>
               </Dropdown>
             </Flex>
             <Flex
