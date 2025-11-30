@@ -1,8 +1,7 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
-  Popover,
   Checkbox,
   Button,
   Input,
@@ -16,123 +15,81 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { login, register, getCaptcha } from "@/configs/request";
 
+const { Option } = Select;
+
 function LoginForm({ searchParams }) {
   const { login: authLogin } = useAuth();
   const [messageApi, contextHolder] = message.useMessage();
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [loginEmailError, setLoginEmailError] = useState("");
-  const [loginPasswordError, setLoginPasswordError] = useState("");
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
-  const [registerEmailError, setRegisterEmailError] = useState("");
-  const [registerPasswordError, setRegisterPasswordError] = useState("");
-  const [registerConfirmPasswordError, setRegisterConfirmPasswordError] =
-    useState("");
   const [loading, setLoading] = useState(false);
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   // 验证码相关状态
-  const [loginCaptchaCode, setLoginCaptchaCode] = useState("");
   const [loginCaptchaKey, setLoginCaptchaKey] = useState("");
   const [loginCaptchaImage, setLoginCaptchaImage] = useState("");
-
-  const [userName, setUserName] = useState("");
-  const [userNameError, setUserNameError] = useState("");
-  const [registerCaptchaCode, setRegisterCaptchaCode] = useState("");
   const [registerCaptchaKey, setRegisterCaptchaKey] = useState("");
   const [registerCaptchaImage, setRegisterCaptchaImage] = useState("");
 
-  const [agreeToTerms, setAgreeToTerms] = useState(true);
-  const [userType, setUserType] = useState("");
-
-  const [organization, setOrganization] = useState("");
-  const [realName, setRealName] = useState("");
-  const [researchField, setResearchField] = useState("");
-
-  const validateLoginForm = () => {
-    let isValid = true;
-    const userRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!loginCaptchaCode) {
-      isValid = false;
-    }
-
-    if (!loginEmail) {
-      setLoginEmailError("Email can not be empty.");
-      isValid = false;
-    } else if (!userRegex.test(loginEmail)) {
-      setLoginEmailError("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setLoginEmailError("");
-    }
-
-    if (!loginPassword) {
-      setLoginPasswordError("Password can not be empty.");
-      isValid = false;
-    } else if (!/^\d{6}$/.test(loginPassword)) {
-      setLoginPasswordError("Password must be 6 digits.");
-      isValid = false;
-    } else {
-      setLoginPasswordError("");
-    }
-
-    return isValid;
-  };
-
-  useEffect(() => {
-    if (!loginPassword && !loginEmail) return;
-    validateLoginForm();
-  }, [loginPassword, loginEmail, loginCaptchaCode]);
-
-  useEffect(() => {
-    if (
-      !registerCaptchaCode &&
-      !agreeToTerms &&
-      !userType &&
-      !userName &&
-      !registerEmail &&
-      !registerPassword &&
-      !registerConfirmPassword
-    )
-      return;
-    validateRegisterForm();
-  }, [agreeToTerms, userType, userName, registerCaptchaCode, registerEmail, registerPassword, registerConfirmPassword]);
+  // Form 实例
+  const [loginForm] = Form.useForm();
+  const [registerForm] = Form.useForm();
 
   useEffect(() => {
     const checkedRememberMe = localStorage.getItem("rememberMe");
     const cachedLoginEmail = localStorage.getItem("loginEmail");
     const cachedPassword = localStorage.getItem("loginPassword");
+    
     if (checkedRememberMe && cachedLoginEmail && cachedPassword) {
       setRememberMe(true);
-      setLoginEmail(cachedLoginEmail ?? "");
-      setLoginPassword(cachedPassword ?? "");
+      loginForm.setFieldsValue({
+        email: cachedLoginEmail,
+        password: cachedPassword,
+      });
     }
+    
     fetchLoginCaptcha();
     fetchRegisterCaptcha();
   }, []);
 
-  const handleLogin = useCallback(async () => {
-    if (!validateLoginForm()) return;
+  // 获取验证码
+  const fetchLoginCaptcha = async () => {
+    try {
+      const data = await getCaptcha();
+      setLoginCaptchaKey(data.captchaKey);
+      setLoginCaptchaImage(data.imageBase64);
+    } catch (error) {
+      console.error("获取验证码失败:", error);
+    }
+  };
 
+  const fetchRegisterCaptcha = async () => {
+    try {
+      const data = await getCaptcha();
+      setRegisterCaptchaKey(data.captchaKey);
+      setRegisterCaptchaImage(data.imageBase64);
+    } catch (error) {
+      console.error("获取验证码失败:", error);
+    }
+  };
+
+  // 登录处理
+  const handleLogin = async (values) => {
     setLoading(true);
 
     try {
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true");
-        localStorage.setItem("loginEmail", loginEmail);
-        localStorage.setItem("loginPassword", loginPassword);
+        localStorage.setItem("loginEmail", values.email);
+        localStorage.setItem("loginPassword", values.password);
       }
 
       const result = await login({
-        email: loginEmail,
-        password: loginPassword,
-        captcha: loginCaptchaCode,
+        email: values.email,
+        password: values.password,
+        captcha: values.captcha,
         captchaKey: loginCaptchaKey,
       });
+      
       if (result?.code == 200) {
         if (result?.data?.token) {
           authLogin(result.data.token, result.data.user);
@@ -149,49 +106,37 @@ function LoginForm({ searchParams }) {
           type: "error",
           content: result?.message,
         });
+        fetchLoginCaptcha(); // 刷新验证码
       }
     } catch (error) {
       messageApi.open({
         type: "error",
         content: error.message,
       });
+      fetchLoginCaptcha(); // 刷新验证码
     } finally {
       setLoading(false);
     }
-  }, [
-    loginEmail,
-    loginPassword,
-    rememberMe,
-    loginCaptchaCode,
-    loginCaptchaKey,
-  ]);
+  };
 
-  const handleRegister = useCallback(async () => {
-    if (!validateRegisterForm()) return;
+  // 注册处理
+  const handleRegister = async (values) => {
     setLoading(true);
 
     try {
       const params = {
-        userType: userType,
-        username: userName,
-        email: registerEmail,
-        password: registerPassword,
+        userType: values.userType,
+        username: values.username,
+        email: values.email,
+        password: values.password,
         captchaKey: registerCaptchaKey,
-        captcha: registerCaptchaCode,
-        agreeToTerms: agreeToTerms,
-        researchField: researchField,
-        organization: organization,
-        realName: realName,
+        captcha: values.captcha,
+        agreeToTerms: values.agreeToTerms,
+        researchField: values.researchField,
+        organization: values.organization,
+        realName: values.realName,
       };
-      if (realName) {
-        params.realName = realName;
-      }
-      if (organization) {
-        params.organization = organization;
-      }
-      if (researchField) {
-        params.researchField = researchField;
-      }
+
       const result = await register(params);
 
       if (result?.success == 200) {
@@ -199,114 +144,34 @@ function LoginForm({ searchParams }) {
           type: "success",
           content: result.message ?? "Registration successful! Please login.",
         });
+        // 注册成功后重置表单并切换到登录模式
+        registerForm.resetFields();
+        setIsRegisterMode(false);
       } else {
         messageApi.open({
           type: "error",
           content: result?.message ?? "注册失败！",
         });
+        fetchRegisterCaptcha(); // 刷新验证码
       }
     } catch (error) {
       messageApi.open({
         type: "error",
         content: error.message,
       });
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    userName,
-    userType,
-    agreeToTerms,
-    registerEmail,
-    registerPassword,
-    registerConfirmPassword,
-    registerCaptchaCode,
-    registerCaptchaKey,
-    organization,
-    researchField,
-    realName,
-  ]);
-
-  const validateRegisterForm = () => {
-    const userRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    let isValid = true;
-
-    if (!userName) {
-      setUserNameError("User name can not be empty.");
-      isValid = false;
-    } else {
-      setUserNameError("");
-    }
-
-    if (!agreeToTerms) {
-      isValid = false;
-    }
-
-    if (!userType) {
-      isValid = false;
-    }
-
-    if (!registerCaptchaCode) {
-      isValid = false;
-    }
-
-    if (!registerEmail) {
-      setRegisterEmailError("Email can not be empty.");
-      isValid = false;
-    } else if (!userRegex.test(registerEmail)) {
-      console.log("11111111111");
-      setRegisterEmailError("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setRegisterEmailError("");
-    }
-
-    if (!registerPassword) {
-      setRegisterPasswordError("Please input your password.");
-      isValid = false;
-    } else if (!/^\d{6}$/.test(registerPassword)) {
-      setRegisterPasswordError("Password must be 6 digits.");
-      isValid = false;
-    } else {
-      setRegisterPasswordError("");
-    }
-
-    if (!registerConfirmPassword) {
-      setRegisterConfirmPasswordError("Please confirm your password.");
-      isValid = false;
-    } else if (registerPassword !== registerConfirmPassword) {
-      setRegisterConfirmPasswordError("Passwords do not match.");
-      isValid = false;
-    } else {
-      setRegisterConfirmPasswordError("");
-    }
-    return isValid;
-  };
-
-  // 获取验证码
-  const fetchLoginCaptcha = async () => {
-    setLoading(true);
-    try {
-      const data = await getCaptcha();
-      setLoginCaptchaKey(data.captchaKey);
-      setLoginCaptchaImage(data.imageBase64);
-    } catch (error) {
-      console.error("获取验证码失败:", error);
+      fetchRegisterCaptcha(); // 刷新验证码
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchRegisterCaptcha = async () => {
-    setLoading(true);
-    try {
-      const data = await getCaptcha();
-      setRegisterCaptchaKey(data.captchaKey);
-      setRegisterCaptchaImage(data.imageBase64);
-    } catch (error) {
-      console.error("获取验证码失败:", error);
-    } finally {
-      setLoading(false);
+  // 切换模式时重置表单
+  const handleModeSwitch = (isRegister) => {
+    setIsRegisterMode(isRegister);
+    if (isRegister) {
+      loginForm.resetFields();
+    } else {
+      registerForm.resetFields();
     }
   };
 
@@ -336,68 +201,75 @@ function LoginForm({ searchParams }) {
         </Col>
 
         {/* 右侧表单区域 */}
-        <Col md={18} xs={24} lg={12} 
-          style={{ backgroundColor: "rgb(240,242,245)", display: "flex", alignItems: "center", justifyContent: "center" }}
+        <Col 
+          md={18} 
+          xs={24} 
+          lg={12} 
+          style={{ 
+            backgroundColor: "rgb(240,242,245)", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center" 
+          }}
         >
-          {!isRegisterMode ? (<>
-            <Flex vertical justify="space-between" align="center">
+          {!isRegisterMode ? (
+            // 登录表单
+            <Flex vertical justify="space-between" align="center" style={{ width: "100%", maxWidth: 400 }}>
               <Typography.Title
                 level={1}
                 style={{ letterSpacing: 2, marginBottom: 20 }}
               >
                 Welcome to HCC!
               </Typography.Title>
-              <Flex
-                vertical
-                justify="center"
-                align="center"
+              
+              <Form
+                form={loginForm}
+                onFinish={handleLogin}
+                layout="vertical"
                 style={{ width: "100%" }}
+                disabled={loading}
               >
-                <Flex style={{ width: "100%", marginBottom: 16 }}>
+                <Form.Item
+                  name="email"
+                  rules={[
+                    { required: true, message: "Email can not be empty." },
+                    { type: "email", message: "Please enter a valid email address." }
+                  ]}
+                >
                   <Input
-                    name="loginEmail"
-                    status={loginEmailError ? "error" : ""}
-                    value={loginEmail}
-                    style={{ width: "100%" }}
-                    onChange={(e) => setLoginEmail(e.target.value)}
                     placeholder="Email"
-                    size="middle"
+                    size="large"
+                    style={{ width: "100%" }}
                   />
-                </Flex>
-                <Flex style={{ width: "100%" }}>
+                </Form.Item>
+
+                <Form.Item
+                  name="password"
+                  rules={[
+                    { required: true, message: "Password can not be empty." },
+                    { pattern: /^\d{6}$/, message: "Password must be 6 digits." }
+                  ]}
+                >
                   <Input.Password
-                    name="password"
-                    status={loginPasswordError ? "error" : ""}
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="6-digit password"
-                    size="middle"
+                    size="large"
+                    style={{ width: "100%" }}
                   />
-                </Flex>
+                </Form.Item>
+
                 {loginCaptchaKey && (
-                  <Flex
-                    vertical
-                    style={{ marginBottom: 16, marginTop: 16, width: "100%" }}
+                  <Form.Item
+                    name="captcha"
+                    rules={[{ required: true, message: "Please enter captcha" }]}
                   >
-                    <Flex
-                      style={{ marginBottom: 16, width: "100%" }}
-                      align="center"
-                      justify="space-between"
-                    >
-                      <span style={{ fontSize: "14px", marginRight: 12 }}>
-                        验证码:
-                      </span>
+                    <Flex gap={8} align="center">
                       <Input
                         placeholder="请输入验证码"
-                        value={loginCaptchaCode}
-                        onChange={(e) => {
-                          setLoginCaptchaCode(e.target.value);
-                        }}
                         maxLength={4}
-                        disabled={loading}
-                        style={{ flex: 2, marginRight: 12 }}
+                        style={{ flex: 1 }}
+                        size="large"
                       />
-                      <Flex align="center">
+                      <Flex align="center" gap={8}>
                         <img
                           style={{
                             width: 100,
@@ -408,300 +280,249 @@ function LoginForm({ searchParams }) {
                           }}
                           src={`data:image/png;base64,${loginCaptchaImage}`}
                           alt="验证码"
+                          onClick={fetchLoginCaptcha}
                         />
+                        <Button
+                          type="link"
+                          size="small"
+                          onClick={fetchLoginCaptcha}
+                          style={{ padding: 0, fontSize: 12, height: "auto" }}
+                        >
+                          换一张
+                        </Button>
                       </Flex>
                     </Flex>
-
-                    <Flex
-                      align="center"
-                      justify="space-between"
-                      style={{ marginBottom: 8, width: "100%" }}
-                    >
-                      <p style={{ margin: 0, fontSize: 12, color: "#666" }}>
-                        请输入图中的字符，不区分大小写
-                      </p>
-                      <Button
-                        type="link"
-                        size="small"
-                        onClick={fetchLoginCaptcha}
-                        disabled={loading}
-                        style={{ padding: 0, fontSize: 12, height: "auto" }}
-                      >
-                        看不清，换一张
-                      </Button>
-                    </Flex>
-                  </Flex>
+                    <div style={{ fontSize: 12, color: "#666", marginTop: 4 }}>
+                      请输入图中的字符，不区分大小写
+                    </div>
+                  </Form.Item>
                 )}
 
-                <Flex
-                  align="center"
-                  justify="space-between"
-                  style={{ width: "100%", marginBottom: 36, marginTop: 5 }}
-                >
-                  <Checkbox
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    checked={rememberMe}
+                <Form.Item style={{marginBottom: 5}}>
+                  <Flex
+                    align="center"
+                    justify="space-between"
+                    style={{ width: "100%", marginBottom: 16 }}
                   >
-                    Remember me
-                  </Checkbox>
-                  <Button type="link">Forgot Password?</Button>
-                </Flex>
-                <Button
-                  onClick={handleLogin}
-                  type="primary"
-                  size="large"
-                  style={{ width: "100%" }}
-                  loading={loading}
-                >
-                  Login
-                </Button>
-              </Flex>
-              <Typography.Paragraph style={{ marginTop: 20 }}>
+                    <Checkbox
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      checked={rememberMe}
+                    >
+                      Remember me
+                    </Checkbox>
+                    <Button type="link" style={{ padding: 0 }}>
+                      Forgot Password?
+                    </Button>
+                  </Flex>
+                </Form.Item>
+
+                <Form.Item style={{marginBottom: 5}}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    size="large"
+                    style={{ width: "100%" }}
+                    loading={loading}
+                  >
+                    Login
+                  </Button>
+                </Form.Item>
+              </Form>
+
+              <Typography.Paragraph style={{ marginTop: 20, textAlign: "center" }}>
                 Don't have an account yet?
-                <Button type="link" onClick={() => setIsRegisterMode(true)}>
+                <Button 
+                  type="link" 
+                  onClick={() => handleModeSwitch(true)}
+                  style={{ paddingLeft: 4 }}
+                >
                   Sign Up
                 </Button>
               </Typography.Paragraph>
             </Flex>
-          </>
-
           ) : (
             // 注册表单
-            <Flex vertical justify="space-between" align="center">
-              <Typography.Title
-                level={1}
-                style={{
-                  letterSpacing: 2,
-                  width: "100%",
-                  marginBottom: 0,
-                  textAlign: "left",
-                }}
+            <Flex vertical justify="space-between" align="center" style={{ width: "100%", maxWidth: 600 }}>
+              <div style={{ width: "100%", textAlign: "left", marginBottom: 20 }}>
+                <Typography.Title
+                  level={1}
+                  style={{
+                    letterSpacing: 2,
+                    marginBottom: 0,
+                  }}
+                >
+                  Let's get started!
+                </Typography.Title>
+                <Typography.Paragraph
+                  style={{
+                    marginBottom: 0,
+                    color: "#999",
+                  }}
+                >
+                  Welcome to HCC platform, let's create your account
+                </Typography.Paragraph>
+              </div>
+              
+              <Form
+                form={registerForm}
+                onFinish={handleRegister}
+                layout="vertical"
+                style={{ width: "100%" }}
+                disabled={loading}
               >
-                Let's get started!
-              </Typography.Title>
-              <Typography.Paragraph
-                style={{
-                  marginBottom: 20,
-                  width: "100%",
-                  textAlign: "left",
-                  color: "#999",
-                }}
-              >
-                Welcome to HCC platform, let's create your account
-              </Typography.Paragraph>
-              <Flex
-                vertical
-                justify="center"
-                align="center"
-                style={{
-                  borderTop: "1px solid #d9d9d9",
-                  paddingTop: 45,
-                  width: "100%",
-                }}
-              >
-                <Flex gap={15} style={{ width: "100%", marginBottom: 16 }}>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                    style={{marginBottom: 5}}
+                      name="username"
+                      label="用户名"
+                      rules={[{ required: true, message: "User name can not be empty." }]}
                     >
-                      用户名<span style={{ color: "red" }}>*</span>
-                    </Typography.Paragraph>
-
-                    <Input
-                      status={userNameError ? "error" : ""}
-                      placeholder="请输入用户名"
-                      size="middle"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                    />
-                  </Flex>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      邮箱<span style={{ color: "red" }}>*</span>
-                    </Typography.Paragraph>
-                    <Input
-                      status={registerEmailError ? "error" : ""}
-                      placeholder="请输入邮箱"
-                      size="middle"
-                      value={registerEmail}
-                      onChange={(e) => setRegisterEmail(e.target.value)}
-                    />
-                  </Flex>
-                </Flex>
-                {/* 密码验证 */}
-                <Flex gap={15} style={{ width: "100%" }}>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      密码<span style={{ color: "red" }}>*</span>
-                    </Typography.Paragraph>
-                    <Flex style={{ width: "100%", marginBottom: 16 }}>
-                      <Input.Password
-                        status={registerPasswordError ? "error" : ""}
-                        placeholder="请输入6位数字密码"
-                        size="middle"
-                        value={registerPassword}
-                        onChange={(e) => setRegisterPassword(e.target.value)}
+                      <Input
+                        placeholder="请输入用户名"
+                        size="large"
                       />
-                    </Flex>
-                  </Flex>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      确认密码<span style={{ color: "red" }}>*</span>
-                    </Typography.Paragraph>
-                    <Input.Password
-                      status={registerConfirmPasswordError ? "error" : ""}
-                      placeholder="请输入确认密码"
-                      size="middle"
-                      value={registerConfirmPassword}
-                      onChange={(e) =>
-                        setRegisterConfirmPassword(e.target.value)
-                      }
-                    />
-                  </Flex>
-                </Flex>
-                {/* 真实名字，研究领域 */}
-                <Flex gap={15} style={{ width: "100%", marginBottom: 16 }}>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      真实姓名
-                    </Typography.Paragraph>
-                    <Input
-                      placeholder="请输入真实姓名（选填）"
-                      size="middle"
-                      value={realName}
-                      onChange={(e) => setRealName(e.target.value)}
-                    />
-                  </Flex>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      研究领域
-                    </Typography.Paragraph>
-                    <Input
-                      placeholder="请输入研究领域（选填）"
-                      size="middle"
-                      value={researchField}
-                      onChange={(e) =>
-                        setResearchField(e.target.value)
-                      }
-                    />
-                  </Flex>
-                </Flex>
-                {/* 所属单位，用户类型 */}
-                <Flex gap={15} style={{ width: "100%", marginBottom: 16 }}>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      所属单位
-                    </Typography.Paragraph>
-                    <Input
-                      placeholder="请输入所属单位（选填）"
-                      size="middle"
-                      value={organization}
-                      onChange={(e) => setOrganization(e.target.value)}
-                    />
-                  </Flex>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "left",
-                        color: "#999",
-                      }}
-                    >
-                      用户类型<span style={{ color: "red" }}>*</span>
-                    </Typography.Paragraph>
-                    <Select
-                      placeholder="请选择"
-                      style={{ width: "100%" }}
-                      size="middle"
-                      status={!userType ? "error" : ""}
-                      onChange={setUserType}
-                      options={[
-                        { value: "研究员", label: "研究员" },
-                        { value: "博士生", label: "博士生" },
-                        { value: "硕士生", label: "硕士生" },
-                        { value: "本科生", label: "本科生" },
-                        { value: "博士后", label: "博士后" },
-                        { value: "研究助理", label: "研究助理" },
-                        { value: "医生", label: "医生" },
-                        { value: "其他", label: "其他" },
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      style={{marginBottom: 5}}
+                      name="email"
+                      label="邮箱"
+                      rules={[
+                        { required: true, message: "Email can not be empty." },
+                        { type: "email", message: "Please enter a valid email address." }
                       ]}
-                    />
-                  </Flex>
-                </Flex>
-                {registerCaptchaKey && (
-                  <Flex
-                    vertical
-                    style={{ marginBottom: 16, marginTop: 16, width: "100%" }}
-                  >
-
-                    <Flex
-                      style={{ marginBottom: 16, width: "100%" }}
-                      align="center"
-                      justify="space-between"
                     >
-                      <span style={{ fontSize: "14px", marginRight: 12 }}>
-                        验证码:
-                      </span>
+                      <Input
+                        placeholder="请输入邮箱"
+                        size="large"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      style={{marginBottom: 5}}
+                      name="password"
+                      label="密码"
+                      rules={[
+                        { required: true, message: "Please input your password." },
+                        { pattern: /^\d{6}$/, message: "Password must be 6 digits." }
+                      ]}
+                    >
+                      <Input.Password
+                        placeholder="请输入6位数字密码"
+                        size="large"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      style={{marginBottom: 5}}
+                      name="confirmPassword"
+                      label="确认密码"
+                      rules={[
+                        { required: true, message: "Please confirm your password." },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (!value || getFieldValue('password') === value) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(new Error('Passwords do not match.'));
+                          },
+                        }),
+                      ]}
+                    >
+                      <Input.Password
+                        placeholder="请输入确认密码"
+                        size="large"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      style={{marginBottom: 5}}
+                      name="realName"
+                      label="真实姓名"
+                    >
+                      <Input
+                        placeholder="请输入真实姓名（选填）"
+                        size="large"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      style={{marginBottom: 5}}
+                      name="researchField"
+                      label="研究领域"
+                    >
+                      <Input
+                        placeholder="请输入研究领域（选填）"
+                        size="large"
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      style={{marginBottom: 5}}
+                      name="organization"
+                      label="所属单位"
+                    >
+                      <Input
+                        placeholder="请输入所属单位（选填）"
+                        size="large"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                     style={{marginBottom: 5}}
+                      name="userType"
+                      label="用户类型"
+                      rules={[{ required: true, message: "Please select user type" }]}
+                    >
+                      <Select
+                        placeholder="请选择"
+                        size="large"
+                      >
+                        <Option value="研究员">研究员</Option>
+                        <Option value="博士生">博士生</Option>
+                        <Option value="硕士生">硕士生</Option>
+                        <Option value="本科生">本科生</Option>
+                        <Option value="博士后">博士后</Option>
+                        <Option value="研究助理">研究助理</Option>
+                        <Option value="医生">医生</Option>
+                        <Option value="其他">其他</Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                {registerCaptchaKey && (
+                  <Form.Item
+                    style={{marginBottom: 5}}
+                    name="captcha"
+                    label="验证码"
+                    rules={[{ required: true, message: "Please enter captcha" }]}
+                  >
+                    <Flex gap={8} align="center">
                       <Input
                         placeholder="请输入验证码"
-                        value={registerCaptchaCode}
-                        onChange={(e) => {
-                          setRegisterCaptchaCode(e.target.value);
-                        }}
-                        size="middle"
                         maxLength={4}
-                        disabled={loading}
-                        style={{ flex: 2, marginRight: 12 }}
+                        style={{ flex: 1 }}
+                        size="large"
                       />
-                      <Flex align="center">
+                      <Flex align="center" gap={8}>
                         <img
                           style={{
                             width: 100,
@@ -712,60 +533,63 @@ function LoginForm({ searchParams }) {
                           }}
                           src={`data:image/png;base64,${registerCaptchaImage}`}
                           alt="验证码"
+                          onClick={fetchRegisterCaptcha}
                         />
+                        <Button
+                          type="link"
+                          size="small"
+                          onClick={fetchRegisterCaptcha}
+                          style={{ padding: 0, fontSize: 12, height: "auto" }}
+                        >
+                          看不清，换一张
+                        </Button>
                       </Flex>
                     </Flex>
-
-                    <Flex
-                      align="center"
-                      justify="space-between"
-                      style={{ marginBottom: 8 }}
-                    >
-                      <p style={{ margin: 0, fontSize: 12, color: "#666" }}>
-                        请输入图中的字符，不区分大小写
-                      </p>
-                      <Button
-                        type="link"
-                        size="small"
-                        onClick={fetchRegisterCaptcha}
-                        disabled={loading}
-                        style={{ padding: 0, fontSize: 12, height: "auto" }}
-                      >
-                        看不清，换一张
-                      </Button>
-                    </Flex>
-                  </Flex>
-
+                    <div style={{ fontSize: 12, color: "#666", marginTop: 4 }}>
+                      请输入图中的字符，不区分大小写
+                    </div>
+                  </Form.Item>
                 )}
-                <Flex
-                  align="center"
-                  justify="space-between"
-                  style={{ width: "100%", marginBottom: 36, marginTop: 5 }}
+
+                <Form.Item
+                  style={{marginBottom: 5}}
+                  name="agreeToTerms"
+                  valuePropName="checked"
+                  rules={[
+                    {
+                      validator: (_, value) =>
+                        value ? Promise.resolve() : Promise.reject(new Error('Please agree to the terms')),
+                    },
+                  ]}
                 >
-                  <Checkbox
-                    onChange={(e) => setAgreeToTerms(e.target.checked)}
-                    checked={agreeToTerms}
-                  >
+                  <Checkbox>
                     同意此协议
                   </Checkbox>
-                  <Button type="link">这里是协议</Button>
-                </Flex>
-                <Button
-                  type="primary"
-                  size="large"
-                  style={{ width: "100%" }}
-                  onClick={handleRegister}
-                  loading={loading}
-                >
-                  Sign Up
-                </Button>
-                <Typography.Paragraph style={{ marginTop: 30 }}>
-                  Already have an account?
-                  <Button type="link" onClick={() => setIsRegisterMode(false)}>
-                    Login
+                </Form.Item>
+
+                <Form.Item style={{marginBottom: 5}}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    size="large"
+                    style={{ width: "100%" }}
+                    loading={loading}
+                  >
+                    Sign Up
                   </Button>
-                </Typography.Paragraph>
-              </Flex>
+                </Form.Item>
+              </Form>
+
+              <Typography.Paragraph style={{ marginTop: 20, textAlign: "center" }}>
+                Already have an account?
+                <Button 
+                  type="link" 
+                  onClick={() => handleModeSwitch(false)}
+                  style={{ paddingLeft: 4 }}
+                >
+                  Login
+                </Button>
+              </Typography.Paragraph>
             </Flex>
           )}
         </Col>
