@@ -39,7 +39,7 @@ export default function ActivationPage() {
 
   useEffect(() => {
     if (!token) {
-      setStatus("resend-success");
+      setStatus("error");
       return;
     }
 

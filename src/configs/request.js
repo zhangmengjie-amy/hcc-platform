@@ -11,6 +11,26 @@ export const login = async (data) => {
   }
 };
 
+export const resetPassword = async (data) => {
+  try {
+    const response = await post(`/api/auth/reset-password`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during reset password:", error);
+    throw error;
+  }
+};
+
+export const sendResetEmail = async (data) => {
+  try {
+    const response = await post(`/api/auth/forgot-password`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during forgot password:", error);
+    throw error;
+  }
+};
+
 export const getCaptcha = async (data) => {
   try {
     const response = await get(`/api/captcha/image`, data);
