@@ -25,7 +25,7 @@ const LoginContent = ({
   const [captchaKey, setCaptchaKey] = useState("");
   const [captchaImageState, setCaptchaImageState] = useState("");
 
-  // 初始化验证码
+  // 初始化验证码和记住密码功能
   useEffect(() => {
     const initCaptcha = async () => {
       try {
@@ -36,8 +36,94 @@ const LoginContent = ({
         console.error("获取验证码失败:", error);
       }
     };
+    
+    // 初始化记住密码功能
+    const initRememberMe = () => {
+      // 从localStorage读取记住的账号信息
+      const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+      const savedEmail = localStorage.getItem("loginEmail") || "";
+      const savedPassword = localStorage.getItem("loginPassword") || "";
+      
+      if (savedRememberMe && savedEmail) {
+        setRememberMe(true);
+        // 设置表单初始值
+        loginForm.setFieldsValue({
+          email: savedEmail,
+          password: savedPassword,
+        });
+      } else if (savedEmail) {
+        // 即使没有记住密码，也填充邮箱
+        loginForm.setFieldsValue({
+          email: savedEmail,
+        });
+      }
+    };
+
     initCaptcha();
-  }, [fetchCaptcha]);
+    initRememberMe();
+  }, [fetchCaptcha, loginForm, setRememberMe]);
+
+  // 处理登录表单提交
+  const handleLoginSubmit = async (values) => {
+    // 处理记住密码功能
+    if (rememberMe) {
+      // 如果勾选了记住我，保存邮箱和密码
+      localStorage.setItem("rememberMe", "true");
+      localStorage.setItem("loginEmail", values.email);
+      localStorage.setItem("loginPassword", values.password);
+    } else {
+      // 如果取消记住我，清除密码但保留邮箱
+      localStorage.removeItem("rememberMe");
+      localStorage.removeItem("loginPassword");
+      // 仍然保存邮箱以便下次自动填充
+      localStorage.setItem("loginEmail", values.email);
+    }
+    
+    // 调用父组件的登录逻辑
+    return onLogin(values, captchaKey);
+  };
+
+  // 处理记住我复选框变化
+  const handleRememberMeChange = (e) => {
+    const checked = e.target.checked;
+    setRememberMe(checked);
+    
+    // 如果取消记住我，立即清除保存的密码
+    if (!checked) {
+      localStorage.removeItem("rememberMe");
+      localStorage.removeItem("loginPassword");
+      
+      // 但保留当前输入的邮箱
+      const currentEmail = loginForm.getFieldValue("email");
+      if (currentEmail) {
+        localStorage.setItem("loginEmail", currentEmail);
+      }
+    }
+  };
+
+  // 邮箱输入框失去焦点时保存邮箱
+  const handleEmailBlur = (e) => {
+    const email = e.target.value;
+    if (email) {
+      localStorage.setItem("loginEmail", email);
+    }
+  };
+
+  // 密码输入框获取焦点时，尝试填充保存的密码
+  const handlePasswordFocus = () => {
+    if (rememberMe) {
+      const email = loginForm.getFieldValue("email");
+      const savedEmail = localStorage.getItem("loginEmail");
+      const savedPassword = localStorage.getItem("loginPassword");
+      
+      // 如果邮箱匹配且有保存的密码，自动填充
+      if (email && savedEmail === email && savedPassword) {
+        setTimeout(() => {
+          loginForm.setFieldsValue({ password: savedPassword });
+        }, 50);
+      }
+    }
+  };
 
   return (
     <Flex
@@ -55,10 +141,11 @@ const LoginContent = ({
 
       <Form
         form={loginForm}
-        onFinish={(values) => onLogin(values, captchaKey)}
+        onFinish={handleLoginSubmit}
         layout="vertical"
         style={{ width: "100%" }}
         disabled={loading}
+        autoComplete="on"
       >
         <Form.Item
           name="email"
@@ -71,6 +158,8 @@ const LoginContent = ({
             placeholder="请输入邮箱"
             size="large"
             style={{ width: "100%" }}
+            autoComplete="email"
+            onBlur={handleEmailBlur}
           />
         </Form.Item>
 
@@ -85,6 +174,8 @@ const LoginContent = ({
             placeholder="请输入6位数字密码"
             size="large"
             style={{ width: "100%" }}
+            autoComplete="current-password"
+            onFocus={handlePasswordFocus}
           />
         </Form.Item>
 
@@ -100,6 +191,7 @@ const LoginContent = ({
                   maxLength={4}
                   style={{ flex: 1 }}
                   size="large"
+                  autoComplete="off"
                 />
                 <Flex align="center" gap={8}>
                   <img
@@ -146,7 +238,7 @@ const LoginContent = ({
             style={{ width: "100%", marginBottom: 16 }}
           >
             <Checkbox
-              onChange={(e) => setRememberMe(e.target.checked)}
+              onChange={handleRememberMeChange}
               checked={rememberMe}
             >
               记住我
