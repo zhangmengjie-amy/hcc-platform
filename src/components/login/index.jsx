@@ -1,87 +1,178 @@
 "use client";
-import React, { useState, useCallback } from "react";
-import { Flex,Popover , Alert, Checkbox, Button, Input, Typography } from "antd";
-import { useRouter } from "next/navigation";
-export default function Login() {
+import React, { useState } from "react";
+import {
+  Row,
+  Col,
+  message,
+} from "antd";
+import { useAuth } from "@/contexts/AuthContext";
+import { login, register, getCaptcha, refreshCaptcha } from "@/configs/request";
+import LoginContent from "@/components/login/login-content";
+import RegisterContent from "@/components/login/register-content";
 
-  const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [userNameError, setUserNameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
-
-  const handleLogin = useCallback(() => {
-    const userRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!username) {
-      setUserNameError("Email can not be empty.");
-      return;
-    }
-    if (!userRegex.test(username)) {
-      setUserNameError("Please enter a valid email address.");
-      return;
-    }
-    setUserNameError(""); // Clear any previous errors after successful validation
-    if (!password) {
-      setPasswordError("Password can not be empty.");
-      return;
-    }
-
-    const passwordRegex = /^\d{6}$/;
-    if (!passwordRegex.test(password)) {
-      setPasswordError("Password must be 6 digits.");
-      return;
-    }
-
-    // Placeholder for actual login logic
-    setPasswordError(""); // Clear any previous errors after successful validation
-    router.push("/home");
-    localStorage.setItem("isLoggedIn", "true");
-  }, [username, password, router]);
-
+function LoginForm({ searchParams }) {
+  const { login: authLogin } = useAuth();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [loading, setLoading] = useState(false);
   const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // 登录处理
+  const handleLogin = async (values, captchaKey) => {
+    setLoading(true);
+
+    try {
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+        localStorage.setItem("loginEmail", values.email);
+        localStorage.setItem("loginPassword", values.password);
+      }
+
+      const result = await login({
+        email: values.email,
+        password: values.password,
+        captcha: values.captcha,
+        captchaKey: captchaKey,
+      });
+
+      if (result?.code == 200) {
+        if (result?.data?.token) {
+          authLogin(result.data.token, result.data.user);
+          messageApi.open({
+            type: "success",
+            content: "Login successful!",
+          });
+
+          const redirectUrl = searchParams?.redirect || "/home";
+          window.location.href = redirectUrl;
+        }
+      } else {
+        messageApi.open({
+          type: "error",
+          content: result?.message,
+        });
+      }
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 注册处理
+  const handleRegister = async (values, captchaKey) => {
+    setLoading(true);
+
+    try {
+      const params = {
+        userType: values.userType,
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        captchaKey: captchaKey,
+        captcha: values.captcha,
+        agreeToTerms: values.agreeToTerms,
+        researchField: values.researchField,
+        organization: values.organization,
+        realName: values.realName,
+      };
+
+      const result = await register(params);
+
+      if (result?.success == 200) {
+        messageApi.open({
+          type: "success",
+          content: result.message ?? "Registration successful! Please login.",
+        });
+        setIsRegisterMode(false);
+      } else {
+        messageApi.open({
+          type: "error",
+          content: result?.message ?? "注册失败！",
+        });
+      }
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 忘记密码
+  const handleForgotPassword = () => {
+    window.location.href = "/reset-password";
+  };
+
   return (
-    <Flex style={{ width: "100vw", height: "100vh", backgroundColor: "rgb(240,242,245)" }}>
-      <Flex vertical justify="center" align="center" flex={1}>
-        <div style={{ borderRadius: 20, backgroundColor: "#cce7ee", backgroundRepeat: "no-repeat", backgroundImage: "url('/images/login-left.png')", width: "100%", height: "100%", backgroundSize: "contain", backgroundPosition: "center" }}>
-        </div>
-      </Flex>
-      <Flex vertical justify="center" align="center" flex={1.5} style={{ paddingBottom: 30, backgroundColor: "rgb(240,242,245)" }}>
-        {
-          !isRegisterMode && <Flex vertical justify="space-between" align="center" >
-            <Typography.Title level={1} style={{ letterSpacing: 2, marginBottom: 60 }}>Welcome to HCC!</Typography.Title>
-            <Flex vertical justify="center" align="center" style={{ width: "350px" }}>
-              <Popover open={!!userNameError} content={userNameError} trigger="focus" placement="top">
-                <Input status={userNameError ? "error" : "normal"} value={username} style={{ marginBottom: 16 }} onChange={(e) => setUsername(e.target.value)} placeholder="Email" size="large" />
-              </Popover>
-              <Popover open={!!passwordError} content={passwordError} trigger="focus" placement="top">
-                <Input.Password status={passwordError ? "error" : "normal"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="6-digit password" size="large" />
-              </Popover>
-              <Flex align="center" justify="space-between" style={{ width: "100%", marginBottom: 36, marginTop: 5 }}>
-                <Checkbox>Remember me</Checkbox>
-                <Button type="link">Forgot Password?</Button>
-              </Flex>
-              <Button onClick={handleLogin} type="primary" size="large" style={{ width: "100%" }}>Login</Button>
-            </Flex>
-            <Typography.Paragraph style={{ marginTop: 60 }}>Don't have an account yet? <Button type="link" onClick={() => { setIsRegisterMode(true); }}>Sign Up</Button></Typography.Paragraph>
-          </Flex>
-        }
-        {
-          isRegisterMode && (
-            <Flex vertical justify="space-between" align="center" >
-              <Typography.Title level={1} style={{ letterSpacing: 2, width: "100%", marginBottom: 0, textAlign: "left" }}>Let's started!</Typography.Title>
-              <Typography.Paragraph style={{ marginBottom: 45, width: "100%", textAlign: "left", color: "#999" }}>Welcome to hcc platform, let's create your account</Typography.Paragraph>
-              <Flex vertical justify="center" align="center" style={{ width: "350px", borderTop: "1px solid #d9d9d9", paddingTop: 45 }}>
-                <Input placeholder="Name" size="large" style={{ marginBottom: 16 }} />
-                <Input.Password placeholder="Password" size="large" style={{ marginBottom: 16 }} />
-                <Input.Password placeholder="Confirm Password" size="large" />
-                <Button type="primary" size="large" style={{ width: "100%", marginTop: 60 }}>Sign Up</Button>
-                <Typography.Paragraph style={{ marginTop: 60 }}>Already have an account?<Button type="link" onClick={() => { setIsRegisterMode(false); }}>Login In</Button></Typography.Paragraph>
-              </Flex>
-            </Flex>
-          )
-        }
-      </Flex>
-    </Flex>
+    <>
+      {contextHolder}
+      <Row
+        style={{
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "rgb(240,242,245)",
+        }}
+      >
+        <Col md={6} xs={0} lg={12}>
+          <div
+            style={{
+              borderRadius: 20,
+              backgroundColor: "#cce7ee",
+              backgroundRepeat: "no-repeat",
+              backgroundImage: "url('/images/login-left.png')",
+              width: "100%",
+              height: "100%",
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+            }}
+          />
+        </Col>
+
+        {/* 右侧表单区域 */}
+        <Col
+          md={18}
+          xs={24}
+          lg={12}
+          style={{
+            backgroundColor: "rgb(240,242,245)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {!isRegisterMode ? (
+            <LoginContent
+              loading={loading}
+              rememberMe={rememberMe}
+              setRememberMe={setRememberMe}
+              fetchCaptcha={getCaptcha}
+              refreshCaptcha={refreshCaptcha}
+              onLogin={handleLogin}
+              onSwitchToRegister={() => setIsRegisterMode(true)}
+              onForgotPassword={handleForgotPassword}
+            />
+          ) : (
+            <RegisterContent
+              loading={loading}
+              fetchCaptcha={getCaptcha}
+              refreshCaptcha={refreshCaptcha}
+              onRegister={handleRegister}
+              onSwitchToLogin={() => setIsRegisterMode(false)}
+            />
+          )}
+        </Col>
+      </Row>
+    </>
   );
+}
+
+// 导出包装后的组件
+export default function Login() {
+  return <LoginForm />;
 }

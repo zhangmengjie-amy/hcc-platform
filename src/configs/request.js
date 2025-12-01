@@ -1,9 +1,89 @@
 import { get, post } from "@/utils/api";
 
+
+export const login = async (data) => {
+  try {
+    const response = await post(`/api/auth/login`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (data) => {
+  try {
+    const response = await post(`/api/auth/reset-password`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during reset password:", error);
+    throw error;
+  }
+};
+
+export const sendResetEmail = async (data) => {
+  try {
+    const response = await post(`/api/auth/forgot-password`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during forgot password:", error);
+    throw error;
+  }
+};
+
+export const getCaptcha = async (data) => {
+  try {
+    const response = await get(`/api/captcha/image`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during captcha:", error);
+    throw error;
+  }
+};
+
+export const refreshCaptcha = async (data) => {
+  try {
+    const response = await get(`/api/captcha/refresh`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during refresh captcha:", error);
+    throw error;
+  }
+};
+
+export const register = async (data) => {
+  try {
+    const response = await post(`/api/auth/register`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during register:", error);
+    throw error;
+  }
+};
+
+export const activation = async (data) => {
+  try {
+    const response = await post(`/api/auth/activate`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during activation:", error);
+    throw error;
+  }
+};
+
+export const resendActivation = async (data) => {
+  try {
+    const response = await post(`/api/auth/resend-activation`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during resend activation:", error);
+    throw error;
+  }
+};
+
 export const getGeneList = async (current, size, keywords) => {
   try {
-    const geneData = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`); // 获取 public/json/hcc-gene.json 文件
-    // const geneData = await fetch(`/json/hcc-gene.json`);
+    const geneData = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`);
     return geneData?.data;
   } catch (error) {
     console.error("Error fetching data:", error);

@@ -1,121 +1,131 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import i18n from "i18next";
-import { Layout, Affix, Menu, Flex, Typography, Button, Tag } from "antd";
-import Image from "next/image";
+import React, { useMemo } from "react";
+import { Layout, Menu, Flex, Typography, Button, Tag, Dropdown, Avatar, message } from "antd";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import Language from "@/components/lng";
-
+import { useAuth } from "@/contexts/AuthContext"; // 导入认证上下文
+import { LogoutOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
 
 const HCCHeader = () => {
   const { t } = useTranslation();
-  const router = useRouter();
-  const [storageData, setStorageData] = useState(null);
   const pathname = usePathname();
-  const handleClick = (e) => {
-    
-    if (!storageData) {
-      e.preventDefault();
-      router.push("/login");
-    }
+  const router = useRouter();
+  const { isAuthenticated, user, logout } = useAuth(); // 使用认证上下文
+
+  // 处理退出登录
+  const handleLogout = () => {
+    logout();
+    message.success("已退出登录");
   };
-  useEffect(() => {
 
-    const data = localStorage.getItem("isLoggedIn");
-    setStorageData(data);
-  }, []);
+  // 用户下拉菜单
+  const userMenuItems = [
+    {
+      key: "profile",
+      icon: <UserOutlined />,
+      label: "个人资料",
+    },
+    {
+      key: "settings",
+      icon: <SettingOutlined />,
+      label: "设置",
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: "退出登录",
+      onClick: handleLogout,
+    },
+  ];
 
-  const items = [
+  const menuItems = [
     {
       label: <Link href="/home">{t("home:header.home")}</Link>,
       key: "/home",
-      //  icon: <Image
-      //     src="/images/home.svg"
-      //     alt="home"
-      //     width={16}
-      //     height={16} />,
     },
     {
       label: t("home:header.single-modal"),
       key: "/single-modal",
       children: [
-        { key: "/mutation", label: <Link href="/mutation"  onClick={handleClick}>{t("home:header.mutation")}</Link> },
-        { key: "/expression/subtype", label: <Link href="/expression/subtype"  onClick={handleClick}>{t("home:header.expression")}</Link> },
-        { key: "/immune", label: <Link href="/immune"  onClick={handleClick}>{t("home:header.immune")}</Link> },
-        { key: "/clinical", label: <Link href="/clinical"  onClick={handleClick}>{t("home:header.clinical")}</Link> },
+        { 
+          key: "/mutation", 
+          label: <Link href="/mutation">{t("home:header.mutation")}</Link>, 
+        },
+        { 
+          key: "/expression/subtype", 
+          label: <Link href="/expression/subtype">{t("home:header.expression")}</Link>, 
+        },
+        { 
+          key: "/immune", 
+          label: <Link href="/immune">{t("home:header.immune")}</Link>, 
+        },
+        { 
+          key: "/clinical", 
+          label: <Link href="/clinical">{t("home:header.clinical")}</Link>, 
+        },
       ],
-      //  icon: <Image
-      //     src="/images/single-modal.svg"
-      //     alt="single-modal"
-      //     width={16}
-      //     height={16} />,
     },
     {
-      label: <Link href="/biomarkers" onClick={handleClick}>{t("home:header.biomarkers")}</Link>,
+      label: <Link href="/biomarkers">{t("home:header.biomarkers")}</Link>,
       key: "/biomarkers",
-      //  icon: <Image
-      //     src="/images/multi-modal.svg"
-      //     alt="multi-modal"
-      //     width={16}
-      //     height={16} />,
     },
     {
-      label: <Link href="/help" onClick={handleClick}>{t("home:header.help")}</Link>,
+      label: <Link href="/help">{t("home:header.help")}</Link>,
       key: "/help",
-      //  icon: <Image
-      //     src="/images/help.svg"
-      //     alt="help"
-      //     width={16}
-      //     height={16} />,
     },
     {
-      label: <Link href="/about" onClick={handleClick}>{t("home:header.about")}</Link>,
+      label: <Link href="/about">{t("home:header.about")}</Link>,
       key: "/about",
-      //  icon: <Image
-      //     src="/images/about.svg"
-      //     alt="about"
-      //     width={18}
-      //     height={18} />,
     },
   ];
 
   const selectedKeys = useMemo(() => {
-    if (pathname == "/") {
-      return "/home";
-    } else if (pathname?.split("/")?.[1] == "expression") {
-      return "/single-modal";
-    }
-
+    if (pathname === "/") return "/home";
+    if (pathname?.startsWith("/expression")) return "/single-modal";
     return pathname;
   }, [pathname]);
 
-
-
   return (
     <Layout.Header className={styles.hccHeader}>
-      <Flex align={"center"}>
-        <Typography.Title level={2} style={{ marginBottom: 0, color: "rgb(10, 186, 181)" }}>HCC</Typography.Title>
-        <Menu className={styles.hccMenu} mode="horizontal"
-          triggerSubMenuAction={"hover"}
-          items={items}
-          defaultSelectedKeys={"/home"}
-          selectedKeys={selectedKeys}
-          style={{
-            flex: 1,
-            justifyContent: "center",
-          }}
+      <Flex align="center">
+        <Typography.Title level={2} style={{ marginBottom: 0, color: "rgb(10, 186, 181)" }}>
+          HCC
+        </Typography.Title>
+        
+        <Menu 
+          className={styles.hccMenu} 
+          mode="horizontal"
+          triggerSubMenuAction="hover"
+          items={menuItems}
+          selectedKeys={[selectedKeys]}
+          style={{ flex: 1, justifyContent: "center" }}
         />
+        
         <Tag color="orange">Internal beta</Tag>
-        <Language></Language>
-        {
-          !storageData && <Button><Link href={"/login"}>登录</Link></Button>
-        } 
-        <></>
+        <Language />
+        
+        {/* 根据登录状态显示不同的按钮 */}
+        {isAuthenticated ? (
+          <Flex align="center" gap={8}>
+            {/* 方案A：简单显示退出按钮 */}
+            <Button onClick={handleLogout}>
+              退出登录
+            </Button>
+          </Flex>
+        ) : (
+          <Button>
+            <Link href="/login">登录</Link>
+          </Button>
+        )}
       </Flex>
     </Layout.Header>
   );
 };
+
 export default HCCHeader;
