@@ -1,7 +1,0 @@
-{
-    "code": 200,
-    "data": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwidXNlcklkIjoiMTIzNDU2Iiwicm9sZSI6InVzZXIiLCJleHAiOjE5MDAwMDAwMDAsImlhdCI6MTY3MjU2MDAwMH0.mock_signature_123456",
-        "user": "Test用户"
-    }
-}
