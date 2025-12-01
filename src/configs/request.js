@@ -41,6 +41,16 @@ export const getCaptcha = async (data) => {
   }
 };
 
+export const refreshCaptcha = async (data) => {
+  try {
+    const response = await get(`/api/captcha/refresh`, data);
+    return response;
+  } catch (error) {
+    console.error("Error during refresh captcha:", error);
+    throw error;
+  }
+};
+
 export const register = async (data) => {
   try {
     const response = await post(`/api/auth/register`, data);
