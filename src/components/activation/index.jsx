@@ -29,9 +29,9 @@ export default function ActivationPage() {
   // 获取验证码
   const fetchCaptcha = async () => {
     try {
-      const data = await getCaptcha();
-      setCaptchaKey(data.captchaKey);
-      setCaptchaImage(data.imageBase64);
+      const result = await getCaptcha();
+      setCaptchaKey(result?.data?.captchaKey);
+      setCaptchaImage(result?.data?.imageBase64);
     } catch (error) {
       console.error("获取验证码失败:", error);
     }

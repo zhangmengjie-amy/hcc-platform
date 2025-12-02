@@ -7,7 +7,7 @@ import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import Language from "@/components/lng";
 import { useAuth } from "@/contexts/AuthContext"; // 导入认证上下文
-import { LogoutOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined, SettingOutlined, DownOutlined } from "@ant-design/icons";
 
 const HCCHeader = () => {
   const { t } = useTranslation();
@@ -23,19 +23,6 @@ const HCCHeader = () => {
 
   // 用户下拉菜单
   const userMenuItems = [
-    {
-      key: "profile",
-      icon: <UserOutlined />,
-      label: "个人资料",
-    },
-    {
-      key: "settings",
-      icon: <SettingOutlined />,
-      label: "设置",
-    },
-    {
-      type: "divider",
-    },
     {
       key: "logout",
       icon: <LogoutOutlined />,
@@ -110,17 +97,52 @@ const HCCHeader = () => {
         <Tag color="orange">Internal beta</Tag>
         <Language />
         
-        {/* 根据登录状态显示不同的按钮 */}
+        {/* 根据登录状态显示不同的内容 */}
         {isAuthenticated ? (
           <Flex align="center" gap={8}>
-            {/* 方案A：简单显示退出按钮 */}
-            <Button onClick={handleLogout}>
-              退出登录
-            </Button>
+            {/* 显示用户名下拉菜单 */}
+            <Dropdown 
+              menu={{ 
+                items: userMenuItems,
+              }} 
+              placement="bottomRight"
+            >
+              <Flex 
+                align="center" 
+                gap={4} 
+                style={{ 
+                  cursor: "pointer",
+                  borderRadius: 6,
+                  transition: "all 0.3s",
+                  ":hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                {/* 显示用户头像 */}
+                <Avatar 
+                  size="small" 
+                  icon={<UserOutlined />}
+                  style={{ 
+                    backgroundColor: "#1890ff",
+                    fontSize: 12,
+                  }}
+                />
+                {/* 显示用户名，优先显示 realName，其次是 username，最后是 email */}
+                <span style={{ 
+                  fontSize: 14, 
+                  fontWeight: 500,
+                  color: "#262626",
+                }}>
+                  {user.username ?? "用户"}
+                </span>
+                <DownOutlined style={{ fontSize: 12, color: "#8c8c8c" }} />
+              </Flex>
+            </Dropdown>
           </Flex>
         ) : (
-          <Button>
-            <Link href="/login">登录</Link>
+          <Button type="primary">
+            <Link href="/login">登录/注册</Link>
           </Button>
         )}
       </Flex>

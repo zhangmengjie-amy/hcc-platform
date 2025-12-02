@@ -91,6 +91,16 @@ export const getGeneList = async (current, size, keywords) => {
   }
 };
 
+export const getGeneSetList = async () => {
+  try {
+    const geneData = await get("/hcc/v1/gene-set/list");
+    return geneData?.data;
+  } catch (error) {
+    console.error("Error fetching gene set:", error);
+    throw error;
+  }
+};
+
 export const getValidGeneList = async (data) => {
   try {
     const geneData = await post(`/hcc/v1/verify-gene`, data);

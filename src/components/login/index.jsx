@@ -37,25 +37,35 @@ function LoginForm({ searchParams }) {
 
       if (result?.code == 200) {
         if (result?.data?.token) {
-          authLogin(result.data.token, result.data.user);
+
+          authLogin(result.data.token, {
+            username: result.data?.username,
+            email: result.data?.email,
+          });
           messageApi.open({
             type: "success",
-            content: "Login successful!",
+            content: "登陆成功!",
           });
 
           const redirectUrl = searchParams?.redirect || "/home";
           window.location.href = redirectUrl;
         }
+        return {
+          success: true,
+        };
       } else {
         messageApi.open({
           type: "error",
-          content: result?.message,
+          content: result?.message ?? "登录失败！",
         });
+        return {
+          success: false,
+        };
       }
     } catch (error) {
       messageApi.open({
         type: "error",
-        content: error.message,
+        content: error?.message ?? "登录失败！",
       });
     } finally {
       setLoading(false);
@@ -82,23 +92,31 @@ function LoginForm({ searchParams }) {
 
       const result = await register(params);
 
-      if (result?.success == 200) {
+      if (result?.code == 200) {
         messageApi.open({
           type: "success",
-          content: result.message ?? "Registration successful! Please login.",
+          content: result?.message ?? "Registration successful! Please login.",
         });
-        setIsRegisterMode(false);
+        return {
+          success: true,
+        };
       } else {
         messageApi.open({
           type: "error",
           content: result?.message ?? "注册失败！",
         });
+        return {
+          success: false,
+        };
       }
     } catch (error) {
       messageApi.open({
         type: "error",
         content: error.message,
       });
+      return {
+        success: false,
+      };
     } finally {
       setLoading(false);
     }

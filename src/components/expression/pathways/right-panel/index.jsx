@@ -122,18 +122,6 @@ const Pathways = () => {
                 borderRadius: "12px",
               }}
             >
-              <GoBubbleChart data={goBubbleData}></GoBubbleChart>
-            </Flex>
-            <Flex
-              flex="1"
-              style={{
-                border: "1px solid #f5f5f5",
-                marginTop: "20px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                padding: "15px",
-                borderRadius: "12px",
-              }}
-            >
               <GoBarChart data={goBubbleData}></GoBarChart>
             </Flex>
           </Flex>
