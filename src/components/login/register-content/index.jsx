@@ -35,9 +35,9 @@ const RegisterContent = ({
   useEffect(() => {
     const initCaptcha = async () => {
       try {
-        const data = await fetchCaptcha();
-        setCaptchaKey(data.captchaKey);
-        setCaptchaImage(data.imageBase64);
+        const result = await fetchCaptcha();
+        setCaptchaKey(result?.data?.captchaKey);
+        setCaptchaImage(result?.data?.imageBase64);
       } catch (error) {
         console.error("获取验证码失败:", error);
       }
@@ -48,12 +48,14 @@ const RegisterContent = ({
   // 处理注册提交
   const handleRegisterSubmit = async (values) => {
     const result = await onRegister(values, captchaKey);
-    
     // 如果注册成功，显示成功页面
     if (result?.success) {
       setRegisterSuccess(true);
       setRegisteredEmail(values.email);
     }
+    const refreshCaptcha = await refreshCaptcha();
+    setCaptchaKey(result?.data?.captchaKey);
+    setCaptchaImage(result?.data?.imageBase64);
   };
 
 
@@ -65,9 +67,9 @@ const RegisterContent = ({
     // 重新获取验证码
     const initCaptcha = async () => {
       try {
-        const data = await fetchCaptcha();
-        setCaptchaKey(data.captchaKey);
-        setCaptchaImage(data.imageBase64);
+        const result = await refreshCaptcha();
+        setCaptchaKey(result?.data?.captchaKey);
+        setCaptchaImage(result?.data?.imageBase64);
       } catch (error) {
         console.error("获取验证码失败:", error);
       }
@@ -365,19 +367,14 @@ const RegisterContent = ({
                     }}
                     src={`data:image/png;base64,${captchaImage}`}
                     alt="验证码"
-                    onClick={async () => {
-                      const data = await refreshCaptcha();
-                      setCaptchaKey(data.captchaKey);
-                      setCaptchaImage(data.imageBase64);
-                    }}
                   />
                   <Button
                     type="link"
                     size="small"
                     onClick={async () => {
-                      const data = await refreshCaptcha();
-                      setCaptchaKey(data.captchaKey);
-                      setCaptchaImage(data.imageBase64);
+                      const result = await refreshCaptcha();
+                      setCaptchaKey(result?.data.captchaKey);
+                      setCaptchaImage(result?.data.imageBase64);
                     }}
                     style={{ padding: 0, fontSize: 12, height: "auto" }}
                   >

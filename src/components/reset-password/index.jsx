@@ -58,9 +58,9 @@ export default function ForgotPasswordPage() {
   // 获取验证码
   const fetchCaptcha = async () => {
     try {
-      const data = await getCaptcha();
-      setCaptchaKey(data.captchaKey);
-      setCaptchaImage(data.imageBase64);
+      const result = await getCaptcha();
+      setCaptchaKey(result?.data?.captchaKey);
+      setCaptchaImage(result?.data?.imageBase64);
     } catch (error) {
       console.error("获取验证码失败:", error);
     }
@@ -68,9 +68,9 @@ export default function ForgotPasswordPage() {
 
   const handleRefreshCaptcha = async () => {
     try {
-      const data = await refreshCaptcha();
-      setCaptchaKey(data.captchaKey);
-      setCaptchaImage(data.imageBase64);
+      const result = await refreshCaptcha();
+      setCaptchaKey(result?.data?.captchaKey);
+      setCaptchaImage(result?.data?.imageBase64);
     } catch (error) {
       console.error("获取验证码失败:", error);
     }
@@ -103,7 +103,7 @@ export default function ForgotPasswordPage() {
       });
 
       if (response.code === 200) {
-        messageApi.success("重置邮件已发送，请查收邮箱并点击链接重置密码");
+        messageApi.success(response.message ?? "重置邮件已发送，请查收邮箱并点击链接重置密码");
         setStatus("email-sent");
         setCurrentStep(0); // 停留在第一步，不自动跳转
       } else {

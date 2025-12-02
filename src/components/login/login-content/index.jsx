@@ -14,7 +14,6 @@ const LoginContent = ({
   loading,
   rememberMe,
   setRememberMe,
-  captchaImage,
   fetchCaptcha,
   refreshCaptcha,
   onLogin,
@@ -29,9 +28,9 @@ const LoginContent = ({
   useEffect(() => {
     const initCaptcha = async () => {
       try {
-        const data = await fetchCaptcha();
-        setCaptchaKey(data.captchaKey);
-        setCaptchaImageState(data.imageBase64);
+        const result = await fetchCaptcha();
+        setCaptchaKey(result?.data?.captchaKey);
+        setCaptchaImageState(result?.data?.imageBase64);
       } catch (error) {
         console.error("获取验证码失败:", error);
       }
@@ -79,8 +78,13 @@ const LoginContent = ({
       localStorage.setItem("loginEmail", values.email);
     }
     
-    // 调用父组件的登录逻辑
-    return onLogin(values, captchaKey);
+    const data = await onLogin(values, captchaKey);
+    if (!data.success) {
+      const result = await refreshCaptcha();
+      setCaptchaKey(result?.data?.captchaKey);
+      setCaptchaImageState(result?.data?.imageBase64);
+    }
+
   };
 
   // 处理记住我复选框变化
@@ -204,19 +208,14 @@ const LoginContent = ({
                     }}
                     src={`data:image/png;base64,${captchaImageState}`}
                     alt="验证码"
-                    onClick={async () => {
-                      const data = await refreshCaptcha();
-                      setCaptchaKey(data.captchaKey);
-                      setCaptchaImageState(data.imageBase64);
-                    }}
                   />
                   <Button
                     type="link"
                     size="small"
                     onClick={async () => {
-                      const data = await refreshCaptcha();
-                      setCaptchaKey(data.captchaKey);
-                      setCaptchaImageState(data.imageBase64);
+                      const result = await refreshCaptcha();
+                      setCaptchaKey(result?.data?.captchaKey);
+                      setCaptchaImageState(result?.data?.imageBase64);
                     }}
                     style={{ padding: 0, fontSize: 12, height: "auto" }}
                   >
