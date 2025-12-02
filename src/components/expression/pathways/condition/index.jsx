@@ -8,7 +8,11 @@ import React, {
   forwardRef,
 } from "react";
 import { usePDF } from "react-to-pdf";
-import { getGeneList, getValidGeneList } from "@/configs/request";
+import {
+  getGeneList,
+  getValidGeneList,
+  getGeneSetList,
+} from "@/configs/request";
 import {
   CaretRightOutlined,
   LinkOutlined,
@@ -47,6 +51,7 @@ import {
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { getITHList, getCohortList } from "@/configs/request";
+import { FixedSizeList } from "react-window";
 import styles from "./style.module.scss";
 const CLASSIFY_COLOR = {
   Tissue: "purple",
@@ -84,11 +89,18 @@ const DEGCondition = forwardRef(
     const [fixedGeneType, setFixedGeneType] = useState("h");
     const [geneType, setGeneType] = useState("custom");
     const cohortListRef = useRef(null);
+    const [geneSetList, setGeneSetList] = useState([]);
     const [cohortList, setCohortList] = useState([]);
+    const geneSetlistRef = useRef(null);
     useEffect(() => {
       getCohortList().then((data) => {
         cohortListRef.current = data;
         setCohortList(data);
+      });
+
+      getGeneSetList().then((data) => {
+        setGeneSetList(data);
+        console.log(" geneSetList", data);
       });
     }, []);
 
@@ -177,6 +189,27 @@ const DEGCondition = forwardRef(
         return paramsRef.current;
       },
     }));
+
+    const virtualRow = useCallback(({ index, style }) => {
+      const item = geneSetList[index];
+      
+      return (
+        <div style={style}>
+          <Radio 
+            value={item.gsName} 
+            style={{ 
+              width: "100%",
+              padding: "6px 12px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {item.gsName}
+          </Radio>
+        </div>
+      );
+    }, [geneSetList]);
 
     const cohortCollapseTitle = () => {
       return (
@@ -415,7 +448,8 @@ const DEGCondition = forwardRef(
                   <Radio value={"race"}>Race</Radio>
 
                   <Radio value={"stage"}>Stage</Radio>
-
+                </Flex>
+                <Flex vertical>
                   <Radio value={"gene"}>Gene</Radio>
                 </Flex>
               </Radio.Group>
@@ -618,12 +652,16 @@ const DEGCondition = forwardRef(
                             onChange={setFixedGeneType}
                           />
                         </Space>
-                        <Flex vertical>
-                          <Radio value="TP53">TP53</Radio>
-                          <Radio value="CNNTB1">CNNTB1</Radio>
-                          <Radio value="APC">APC</Radio>
-                          <Radio value="DOCK2">DOCK2</Radio>
-                        </Flex>
+
+                         
+                        <FixedSizeList
+                          height={260}
+                          itemCount={geneSetList?.length ?? 0}
+                          itemSize={30}
+                          width="100%"
+                        >
+                          {virtualRow}
+                        </FixedSizeList>
                       </>
                     ) : (
                       <Flex vertical align="center">
