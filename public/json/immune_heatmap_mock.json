@@ -1,0 +1,142 @@
+{
+  "title": "Cibersort Heatmap",
+  "method": "cibersort",
+  "Heatmap_Body": [
+    {
+      "terms": "B_cells_memory",
+      "terms_order": 16,
+      "sampleid_order": 1,
+      "value": -0.2526,
+      "TMEcluster": "TME1"
+    },
+    {
+      "terms": "B_cells_memory",
+      "terms_order": 16,
+      "sampleid_order": 2,
+      "value": -0.2526,
+      "TMEcluster": "TME2"
+    },
+    {
+      "terms": "B_cells_memory",
+      "terms_order": 16,
+      "sampleid_order": 3,
+      "value": -0.2526,
+      "TMEcluster": "TME3"
+    }
+  ],
+  "terms_order_name": [
+    {
+      "terms_order": 16,
+      "terms": "B_cells_memory",
+      "boxplotLine": [
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME1",
+          "cluster2": "TME2",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        },
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME2",
+          "cluster2": "TME3",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        },
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME1",
+          "cluster2": "TME3",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        }
+      ]
+    },
+    {
+      "terms_order": 9,
+      "terms": "B_cells_naive",
+      "boxplotLine": [
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME1",
+          "cluster2": "TME2",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        },
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME2",
+          "cluster2": "TME3",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        },
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME1",
+          "cluster2": "TME3",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        }
+      ]
+    },
+    {
+      "terms_order": 14,
+      "terms": "Dendritic_cells_activated",
+      "boxplotLine": [
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME1",
+          "cluster2": "TME2",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        },
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME2",
+          "cluster2": "TME3",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        },
+        {
+          "terms": "B_cells_memory",
+          "cluster1": "TME1",
+          "cluster2": "TME3",
+          "statistic": 2.0938,
+          "df": 181.1772,
+          "p_raw": 0.0377,
+          "p_adj": 0.1
+        }
+      ]
+    }
+  ],
+  "sampleid_order_name": [
+    {
+      "sampleid_order": 1,
+      "TMEcluster": "TME1"
+    },
+    {
+      "sampleid_order": 2,
+      "TMEcluster": "TME2"
+    },
+    {
+      "sampleid_order": 3,
+      "TMEcluster": "TME3"
+    }
+  ]
+}

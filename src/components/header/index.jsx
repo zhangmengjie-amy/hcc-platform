@@ -80,72 +80,70 @@ const HCCHeader = () => {
 
   return (
     <Layout.Header className={styles.hccHeader}>
-      <Flex align="center">
-        <Typography.Title level={2} style={{ marginBottom: 0, color: "rgb(10, 186, 181)" }}>
-          HCC
-        </Typography.Title>
-        
-        <Menu 
-          className={styles.hccMenu} 
-          mode="horizontal"
-          triggerSubMenuAction="hover"
-          items={menuItems}
-          selectedKeys={[selectedKeys]}
-          style={{ flex: 1, justifyContent: "center" }}
-        />
-        
-        <Tag color="orange">Internal beta</Tag>
-        <Language />
-        
-        {/* 根据登录状态显示不同的内容 */}
-        {isAuthenticated ? (
-          <Flex align="center" gap={8}>
-            {/* 显示用户名下拉菜单 */}
-            <Dropdown 
-              menu={{ 
-                items: userMenuItems,
-              }} 
-              placement="bottomRight"
+      
+      <Typography.Title level={2} style={{ marginBottom: 0, color: "rgb(10, 186, 181)" }}>
+        HCC
+      </Typography.Title>
+      <Menu 
+        className={styles.hccMenu} 
+        mode="horizontal"
+        triggerSubMenuAction="hover"
+        items={menuItems}
+        selectedKeys={[selectedKeys]}
+        style={{ flex: 1, minWidth: 0 }}
+      />
+      
+      <Tag color="orange">Internal beta</Tag>
+      <Language />
+      
+      {/* 根据登录状态显示不同的内容 */}
+      {isAuthenticated ? (
+        <Flex align="center" gap={8}>
+          {/* 显示用户名下拉菜单 */}
+          <Dropdown 
+            menu={{ 
+              items: userMenuItems,
+            }} 
+            placement="bottomRight"
+          >
+            <Flex 
+              align="center" 
+              gap={4} 
+              style={{ 
+                cursor: "pointer",
+                borderRadius: 6,
+                transition: "all 0.3s",
+                ":hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
             >
-              <Flex 
-                align="center" 
-                gap={4} 
+              {/* 显示用户头像 */}
+              <Avatar 
+                size="small" 
+                icon={<UserOutlined />}
                 style={{ 
-                  cursor: "pointer",
-                  borderRadius: 6,
-                  transition: "all 0.3s",
-                  ":hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.04)",
-                  },
+                  backgroundColor: "#1890ff",
+                  fontSize: 12,
                 }}
-              >
-                {/* 显示用户头像 */}
-                <Avatar 
-                  size="small" 
-                  icon={<UserOutlined />}
-                  style={{ 
-                    backgroundColor: "#1890ff",
-                    fontSize: 12,
-                  }}
-                />
-                {/* 显示用户名，优先显示 realName，其次是 username，最后是 email */}
-                <span style={{ 
-                  fontSize: 14, 
-                  fontWeight: 500,
-                  color: "#262626",
-                }}>
-                  {user.username ?? "用户"}
-                </span>
-                <DownOutlined style={{ fontSize: 12, color: "#8c8c8c" }} />
-              </Flex>
-            </Dropdown>
-          </Flex>
-        ) : (
-          <Button type="primary">
-            <Link href="/login">登录/注册</Link>
-          </Button>
-        )}
-      </Flex>
+              />
+              {/* 显示用户名，优先显示 realName，其次是 username，最后是 email */}
+              <span style={{ 
+                fontSize: 14, 
+                fontWeight: 500,
+                color: "#262626",
+              }}>
+                {user.username ?? "用户"}
+              </span>
+              <DownOutlined style={{ fontSize: 12, color: "#8c8c8c" }} />
+            </Flex>
+          </Dropdown>
+        </Flex>
+      ) : (
+        <Button type="primary">
+          <Link href="/login">登录/注册</Link>
+        </Button>
+      )}
     </Layout.Header>
   );
 };

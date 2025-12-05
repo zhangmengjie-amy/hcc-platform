@@ -143,6 +143,16 @@ export const getExpressionSubtypeList = async () => {
   }
 };
 
+export const getMutationHeatmapList = async () => {
+  try {
+    const geneData = await fetch(`/json/immune-heatmap.json`);
+    return geneData?.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 export const getVolcanoPlot = async () => {
   try {
     const geneData = await fetch(`/json/volcano_GO_api_json.json`);

@@ -6,6 +6,7 @@ import React, {
   useState,
   useCallback,
   forwardRef,
+  useMemo,
 } from "react";
 import { usePDF } from "react-to-pdf";
 import {
@@ -20,6 +21,7 @@ import {
   ApartmentOutlined,
   BranchesOutlined,
 } from "@ant-design/icons";
+import GeneSetUpload from "./gene-set-upload";
 import { debounce, set } from "lodash";
 import EmptyLoading from "@/components/empty-loading";
 import {
@@ -50,9 +52,10 @@ import {
 } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import { getITHList, getCohortList } from "@/configs/request";
+import { getCohortList } from "@/configs/request";
 import { FixedSizeList } from "react-window";
 import styles from "./style.module.scss";
+import { use } from "react";
 const CLASSIFY_COLOR = {
   Tissue: "purple",
   Celllines: "green",
@@ -85,13 +88,24 @@ const DEGCondition = forwardRef(
     const [selectedClinical, setSelectedClinical] = useState([]);
     const [selectedClassify, setSelectedClassify] = useState("");
     const [selectedTechnology, setSelectedTechnology] = useState([]);
-    const [groupBy, setGroupBy] = useState("nt");
+    const [queryType, setQueryType] = useState("nt");
     const [fixedGeneType, setFixedGeneType] = useState("h");
     const [geneType, setGeneType] = useState("custom");
     const cohortListRef = useRef(null);
-    const [geneSetList, setGeneSetList] = useState([]);
+    const [selectedGeneSet, setSelectedGeneSet] = useState("");
     const [cohortList, setCohortList] = useState([]);
+    const [firstGroup, setFirstGroup] = useState([]);
+    const [secondGroup, setSecondGroup] = useState([]);
+    const [selectedCohortKeys, setSelectedCohortKeys] = useState([]);
     const geneSetlistRef = useRef(null);
+    const [validatedGenesFromChild, setValidatedGenesFromChild] = useState([]);
+
+    // 这个函数将作为 prop 传递给 GeneUpload
+    const handleGenesValidated = (genes) => {
+      console.log("父组件收到合法的基因列表:", genes);
+      setValidatedGenesFromChild(genes);
+    };
+
     useEffect(() => {
       getCohortList().then((data) => {
         cohortListRef.current = data;
@@ -99,8 +113,7 @@ const DEGCondition = forwardRef(
       });
 
       getGeneSetList().then((data) => {
-        setGeneSetList(data);
-        console.log(" geneSetList", data);
+        geneSetlistRef.current = data;
       });
     }, []);
 
@@ -109,7 +122,7 @@ const DEGCondition = forwardRef(
         const matchClinical =
           selectedClinical.length == 0 ||
           selectedClinical.every((clinical) => {
-            return item[clinical] === "true";
+            return item[clinical] === "Yes";
           });
         const matchClassify =
           selectedClassify == "" ||
@@ -124,10 +137,18 @@ const DEGCondition = forwardRef(
 
       setCohortList(filteredCohort);
     }, [selectedClassify, selectedClinical, selectedTechnology]);
+
+    const geneSetList = useMemo(() => {
+      if (fixedGeneType === "h") {
+        return geneSetlistRef.current?.filter((item) => item.gsCat === "H");
+      } else {
+        return geneSetlistRef.current?.filter((item) => item.gsCat === "C2");
+      }
+    }, [fixedGeneType]);
     const columns = [
       {
         title: "Cohort",
-        dataIndex: "cohort",
+        dataIndex: "number",
         render: (text) => <a>{text}</a>,
       },
       {
@@ -190,26 +211,29 @@ const DEGCondition = forwardRef(
       },
     }));
 
-    const virtualRow = useCallback(({ index, style }) => {
-      const item = geneSetList[index];
-      
-      return (
-        <div style={style}>
-          <Radio 
-            value={item.gsName} 
-            style={{ 
-              width: "100%",
-              padding: "6px 12px",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {item.gsName}
-          </Radio>
-        </div>
-      );
-    }, [geneSetList]);
+    const virtualRow = useCallback(
+      ({ index, style }) => {
+        const item = geneSetList[index];
+
+        return (
+          <div style={style}>
+            <Radio
+              value={item.gsName}
+              style={{
+                width: "100%",
+                padding: "6px 12px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {item.gsName}
+            </Radio>
+          </div>
+        );
+      },
+      [geneSetList],
+    );
 
     const cohortCollapseTitle = () => {
       return (
@@ -323,12 +347,65 @@ const DEGCondition = forwardRef(
           "selectedRows: ",
           selectedRows,
         );
+        setSelectedCohortKeys(selectedRowKeys);
+
       },
       getCheckboxProps: (record) => ({
         disabled: record.name === "Disabled User", // Column configuration not to be checked
         name: record.name,
       }),
     };
+
+    useEffect(() => {
+      const numbers = selectedCohortKeys;
+      let geneList = validatedGenesFromChild;
+      let geneSet = selectedGeneSet;
+      let _firstGroup = firstGroup;
+      let _secondGroup = secondGroup;
+      let _geneType = geneType;
+      const _queryType = queryType;
+
+      if (queryType !== "gene") {
+        geneList = null;
+        geneSet = null;
+        _geneType = null;
+        if (queryType === "nt") {
+          _firstGroup = ["normal"];
+          _secondGroup = ["tumor"];
+        } else if (queryType === "hbv" || queryType === "hcv") {
+          _firstGroup = ["positive"];
+          _secondGroup = ["negative"];
+        }
+      } else {
+        if (geneType === "custom") {
+          geneSet = null;
+        } else if (geneType === "pathway") {
+          geneList = null;
+        }
+        _firstGroup = null;
+        _secondGroup = null;
+      }
+
+      paramsRef.current = {
+        numbers,
+        geneList,
+        geneSet,
+        secondGroup: _secondGroup,
+        firstGroup: _firstGroup,
+        geneType: _geneType,
+        queryType: _queryType,
+      };
+      console.log({
+        numbers,
+        geneList,
+        geneSet,
+        secondGroup: _secondGroup,
+        firstGroup: _firstGroup,
+        geneType: _geneType,
+        queryType: _queryType,
+      });
+    }, [selectedCohortKeys, queryType, firstGroup, secondGroup, geneType, selectedGeneSet, validatedGenesFromChild]);
+
 
     const cohortCollapseContent = () => {
       return (
@@ -431,26 +508,22 @@ const DEGCondition = forwardRef(
             >
               <Typography.Paragraph>Group By</Typography.Paragraph>
               <Radio.Group
-                value={groupBy}
+                value={queryType}
                 onChange={(e) => {
-                  setGroupBy(e.target.value);
+                  setQueryType(e.target.value);
                 }}
               >
-                <Flex vertical>
-                  <Radio value={"nt"}>N/T</Radio>
-
-                  <Radio value={"hbv"}>HBV</Radio>
-
-                  <Radio value={"hcv"}>HCV</Radio>
-
-                  <Radio value={"age"}>Age</Radio>
-
-                  <Radio value={"race"}>Race</Radio>
-
-                  <Radio value={"stage"}>Stage</Radio>
-                </Flex>
-                <Flex vertical>
-                  <Radio value={"gene"}>Gene</Radio>
+                <Flex>
+                  <Flex vertical flex={1}>
+                    <Radio value={"nt"}>N/T</Radio>
+                    <Radio value={"hbv"}>HBV</Radio>
+                    <Radio value={"hcv"}>HCV</Radio>
+                    <Radio value={"age"}>Age</Radio>
+                    <Radio value={"stage"}>Stage</Radio>
+                  </Flex>
+                  <Flex vertical flex={1}>
+                    <Radio value={"gene"}>Gene</Radio>
+                  </Flex>
                 </Flex>
               </Radio.Group>
             </Flex>
@@ -465,29 +538,30 @@ const DEGCondition = forwardRef(
                 borderRadius: "12px",
               }}
             >
-              {groupBy == "nt" && (
-                <Checkbox.Group value={["normal", "tumor"]}>
+              {queryType == "nt" && (
+                <Checkbox.Group>
                   <Flex vertical>
                     <Flex vertical style={{ marginBottom: "10px" }}>
                       <Typography.Paragraph style={{ marginBottom: 0 }}>
                         First Group
                       </Typography.Paragraph>
-                      <Checkbox value="normal" disabled>
-                        Normal
+                      <Checkbox value="tumor" disabled>
+                        Tumor
                       </Checkbox>
                     </Flex>
                     <Flex vertical>
                       <Typography.Paragraph style={{ marginBottom: 0 }}>
                         Second Group
                       </Typography.Paragraph>
-                      <Checkbox value="tumor" disabled>
-                        Tumor
+
+                      <Checkbox value="normal" disabled>
+                        Normal
                       </Checkbox>
                     </Flex>
                   </Flex>
                 </Checkbox.Group>
               )}
-              {(groupBy == "hbv" || groupBy == "hcv") && (
+              {(queryType == "hbv" || queryType == "hcv") && (
                 <Checkbox.Group value={["positive", "negative"]}>
                   <Flex vertical>
                     <Flex vertical style={{ marginBottom: "10px" }}>
@@ -509,75 +583,41 @@ const DEGCondition = forwardRef(
                   </Flex>
                 </Checkbox.Group>
               )}
-              {groupBy == "age" && (
-                <Checkbox.Group value={["positive", "negative"]}>
-                  <Flex vertical flex={1} style={{ marginBottom: "10px" }}>
-                    <Typography.Paragraph style={{ marginBottom: 0 }}>
+              {queryType == "age" && (
+                <Flex>
+                  <Flex vertical flex={1} >
+                    <Typography.Paragraph style={{ marginBottom: "10px" }}>
                       First Group
                     </Typography.Paragraph>
-                    <Checkbox value="<20">{"<20"}</Checkbox>
-                    <Checkbox value="<=40">{"<40"}</Checkbox>
-                    <Checkbox value="<=60">{"<60"}</Checkbox>
-                    <Checkbox value="<=80">{"<80"}</Checkbox>
-                    <Checkbox value=">80">{">80"}</Checkbox>
+                    <Checkbox.Group value={firstGroup} onChange={setFirstGroup}>
+                      <Checkbox value="<20">{"<20"}</Checkbox>
+                      <Checkbox value="<=40">{"<40"}</Checkbox>
+                      <Checkbox value="<=60">{"<60"}</Checkbox>
+                      <Checkbox value="<=80">{"<80"}</Checkbox>
+                      <Checkbox value=">80">{">80"}</Checkbox>
+                    </Checkbox.Group>
                   </Flex>
                   <Flex vertical flex={1}>
-                    <Typography.Paragraph style={{ marginBottom: 0 }}>
+                    <Typography.Paragraph style={{ marginBottom: "10px" }}>
                       Second Group
                     </Typography.Paragraph>
-                    <Checkbox value="<20">{"<20"}</Checkbox>
-                    <Checkbox value="<=40">{"<40"}</Checkbox>
-                    <Checkbox value="<=60">{"<60"}</Checkbox>
-                    <Checkbox value="<=80">{"<80"}</Checkbox>
-                    <Checkbox value=">80">{">80"}</Checkbox>
+                    <Checkbox.Group value={secondGroup} onChange={setSecondGroup}>
+                      <Checkbox value="<20">{"<20"}</Checkbox>
+                      <Checkbox value="<=40">{"<40"}</Checkbox>
+                      <Checkbox value="<=60">{"<60"}</Checkbox>
+                      <Checkbox value="<=80">{"<80"}</Checkbox>
+                      <Checkbox value=">80">{">80"}</Checkbox>
+                    </Checkbox.Group>
                   </Flex>
-                </Checkbox.Group>
+                </Flex>
               )}
-              {groupBy == "race" && (
-                <Checkbox.Group value={["positive", "negative"]}>
-                  <Flex vertical flex={1} style={{ marginBottom: "10px" }}>
-                    <Typography.Paragraph style={{ marginBottom: 0 }}>
-                      First Group
-                    </Typography.Paragraph>
-                    <Checkbox value="Asian">{"Asian"}</Checkbox>
-                    <Checkbox value="Caucasian">{"Caucasian"}</Checkbox>
-                    <Checkbox value="Cambodia">{"Cambodia"}</Checkbox>
-                    <Checkbox value="Chinese">{"Chinese"}</Checkbox>
-                    <Checkbox value="Filipino">{"Filipino"}</Checkbox>
-                    <Checkbox value="Indian">{"Indian"}</Checkbox>
-                    <Checkbox value="Indonesian">{"Indonesian"}</Checkbox>
-                    <Checkbox value="Malay">{"Malay"}</Checkbox>
-                    <Checkbox value="Sikh">{"Sikh"}</Checkbox>
-                    <Checkbox value="Thai">{"Thai"}</Checkbox>
-                    <Checkbox value="Vietnamese">{"Vietnamese"}</Checkbox>
-                    <Checkbox value="Others">{"Others"}</Checkbox>
-                  </Flex>
-                  <Flex vertical flex={1}>
-                    <Typography.Paragraph style={{ marginBottom: 0 }}>
-                      Second Group
-                    </Typography.Paragraph>
-                    <Checkbox value="Asian">{"Asian"}</Checkbox>
-                    <Checkbox value="Caucasian">{"Caucasian"}</Checkbox>
-                    <Checkbox value="Cambodia">{"Cambodia"}</Checkbox>
-                    <Checkbox value="Chinese">{"Chinese"}</Checkbox>
-                    <Checkbox value="Filipino">{"Filipino"}</Checkbox>
-                    <Checkbox value="Indian">{"Indian"}</Checkbox>
-                    <Checkbox value="Indonesian">{"Indonesian"}</Checkbox>
-                    <Checkbox value="Malay">{"Malay"}</Checkbox>
-                    <Checkbox value="Sikh">{"Sikh"}</Checkbox>
-                    <Checkbox value="Thai">{"Thai"}</Checkbox>
-                    <Checkbox value="Vietnamese">{"Vietnamese"}</Checkbox>
-                    <Checkbox value="Others">{"Others"}</Checkbox>
-                  </Flex>
-                </Checkbox.Group>
-              )}
-              {groupBy == "stage" && (
+              {queryType == "stage" && (
                 <Flex>
                   <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
                       First Group
                     </Typography.Paragraph>
-                    <Checkbox.Group value={[]}>
+                    <Checkbox.Group value={firstGroup} onChange={setFirstGroup}>
                       <Flex vertical>
                         <Checkbox value="I">II</Checkbox>
                         <Checkbox value="II">II</Checkbox>
@@ -590,7 +630,7 @@ const DEGCondition = forwardRef(
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
                       Second Group
                     </Typography.Paragraph>
-                    <Checkbox.Group value={[]}>
+                    <Checkbox.Group value={secondGroup} onChange={setSecondGroup}>
                       <Flex vertical>
                         <Checkbox value="I">I</Checkbox>
                         <Checkbox value="II">II</Checkbox>
@@ -601,7 +641,7 @@ const DEGCondition = forwardRef(
                   </Flex>
                 </Flex>
               )}
-              {groupBy == "gene" && (
+              {queryType == "gene" && (
                 <Flex vertical>
                   <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
                     <Typography.Paragraph>Gene Type</Typography.Paragraph>
@@ -613,7 +653,7 @@ const DEGCondition = forwardRef(
                     >
                       <Flex vertical>
                         <Radio value={"custom"}>Custom</Radio>
-                        <Radio value={"fixed"}>Fixed Gene</Radio>
+                        <Radio value={"pathway"}>Pathway</Radio>
                       </Flex>
                     </Radio.Group>
                   </Flex>
@@ -621,7 +661,7 @@ const DEGCondition = forwardRef(
               )}
             </Flex>
           </Flex>
-          {groupBy == "gene" && (
+          {queryType == "gene" && (
             <Flex
               vertical
               flex={1}
@@ -634,49 +674,56 @@ const DEGCondition = forwardRef(
               }}
             >
               <Flex vertical flex={1}>
-                <Space>
-                  <Typography.Paragraph>Gene List</Typography.Paragraph>
-                </Space>
+                <Radio.Group
+                  value={selectedGeneSet}
+                  onChange={(e) => {
+                    setSelectedGeneSet(e.target.value);
+                  }}
+                >
+                  {geneType == "pathway" ? (
+                    <>
+                      <Segmented
+                        options={[
+                          { label: "H", value: "h" },
+                          { label: "C2", value: "c2" },
+                        ]}
+                        value={fixedGeneType}
+                        onChange={setFixedGeneType}
+                      />
+                      <FixedSizeList
+                        height={260}
+                        itemCount={geneSetList?.length ?? 0}
+                        itemSize={30}
+                        width="100%"
+                      >
+                        {virtualRow}
+                      </FixedSizeList>
+                    </>
+                  ) : (
+                    <Flex vertical align="center">
+                      <div className="App" style={{ padding: 20 }}>
+                        <GeneSetUpload onGenesValidated={handleGenesValidated} />
 
-                <Space>
-                  <Radio.Group value={"TP53"}>
-                    {geneType == "fixed" ? (
-                      <>
-                        <Space style={{ marginBottom: 10 }}>
-                          <Segmented
-                            options={[
-                              { label: "H", value: "h" },
-                              { label: "C2", value: "c2" },
-                            ]}
-                            value={fixedGeneType}
-                            onChange={setFixedGeneType}
-                          />
-                        </Space>
-
-                         
-                        <FixedSizeList
-                          height={260}
-                          itemCount={geneSetList?.length ?? 0}
-                          itemSize={30}
-                          width="100%"
-                        >
-                          {virtualRow}
-                        </FixedSizeList>
-                      </>
-                    ) : (
-                      <Flex vertical align="center">
-                        <Upload
-                          name="file"
-                          action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                        >
-                          <Button icon={<UploadOutlined />}>
-                            Click to Upload
-                          </Button>
-                        </Upload>
-                      </Flex>
-                    )}
-                  </Radio.Group>
-                </Space>
+                        <div style={{ marginTop: 20, borderTop: "1px dashed #ccc", paddingTop: 20 }}>
+                          <Typography.Title level={4}>基因列表:</Typography.Title>
+                          {validatedGenesFromChild.length > 0 ? (
+                            <Space size={[0, 8]} wrap>
+                              {validatedGenesFromChild.map((gene, index) => (
+                                <Tag key={index} color="blue">
+                                  {gene}
+                                </Tag>
+                              ))}
+                            </Space>
+                          ) : (
+                            <Typography.Text type="secondary">
+                              暂无合法基因列表，请上传并验证文件。
+                            </Typography.Text>
+                          )}
+                        </div>
+                      </div>
+                    </Flex>
+                  )}
+                </Radio.Group>
               </Flex>
             </Flex>
           )}
@@ -689,7 +736,7 @@ const DEGCondition = forwardRef(
         <div className={styles.searchCard} variant="borderless">
           {
             <Table
-              rowKey="cohort" // 或者使用函数
+              rowKey="number" // 或者使用函数
               pagination={{ size: 10 }}
               size="small"
               rowSelection={{ type: "checkbox", ...rowSelection }}

@@ -7,6 +7,7 @@ import EChartsReact from "echarts-for-react";
 import { Flex, Tag, Typography, Dropdown, Space, Button } from "antd";
 import GoBubbleChart from "./go-bubble";
 import GoBarChart from "./go-column";
+import BoxPlot from "@/components/expression/pathways/right-panel/boxplot";
 
 const CLASSIFY_COLOR = {
   Tissue: "purple",
@@ -122,7 +123,8 @@ const Pathways = () => {
                 borderRadius: "12px",
               }}
             >
-              <GoBarChart data={goBubbleData}></GoBarChart>
+              <BoxPlot></BoxPlot>
+              {/* <GoBarChart data={goBubbleData}></GoBarChart> */}
             </Flex>
           </Flex>
         );

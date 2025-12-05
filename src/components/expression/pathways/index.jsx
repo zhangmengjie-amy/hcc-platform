@@ -84,6 +84,7 @@ const Pathways = () => {
   };
 
   const handleApply = useCallback(() => {
+    console.log(111111111111111, conditionSelectionRef.current?.getParams());
     setParams(conditionSelectionRef.current?.getParams());
   }, []);
 
