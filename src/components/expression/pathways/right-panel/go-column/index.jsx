@@ -24,14 +24,24 @@ const GoBarChart = ({
   }, [data]);
 
   // 使用 useMemo 优化数据处理
-  const { bpData, ccData, allDescriptions } = useMemo(() => {
+  const { bpData, ccData, allDescriptions, allGeneRatios, bpWithDescription, ccWithDescription } = useMemo(() => {
     if (!chartData?.length) {
-      return { bpData: [], ccData: [], allDescriptions: [] };
+      return { 
+        bpData: [], 
+        ccData: [], 
+        allDescriptions: [], 
+        allGeneRatios: [],
+        bpWithDescription: [],
+        ccWithDescription: [],
+      };
     }
 
     const bpData = [];
     const ccData = [];
     const allDescriptions = chartData.map(item => item.Description).reverse();
+    const allGeneRatios = [];
+    const bpWithDescription = [];
+    const ccWithDescription = [];
 
     // 为每个描述创建对应的 BP 和 CC 数据
     allDescriptions.forEach(description => {
@@ -42,11 +52,30 @@ const GoBarChart = ({
         item.Description === description && item.ONTOLOGY === "CC",
       );
 
-      bpData.push(bpItem ? bpItem.Count : 0); // 使用ID
-      ccData.push(ccItem ? ccItem.Count : 0);
+      const bpValue = bpItem ? bpItem.Count : 0;
+      const ccValue = ccItem ? ccItem.Count : 0;
+      
+      bpData.push(bpValue);
+      ccData.push(ccValue);
+      
+      // 存储带描述的BP数据（用于在柱子上显示描述）
+      bpWithDescription.push({
+        value: bpValue,
+        description: description,
+      });
+      
+      // 存储带描述的CC数据
+      ccWithDescription.push({
+        value: ccValue,
+        description: description,
+      });
+      
+      // 获取 GeneRatio 值（优先使用 BP 的 GeneRatio，如果没有则使用 CC 的）
+      const ratioItem = bpItem || ccItem;
+      allGeneRatios.push(ratioItem ? ratioItem.GeneRatio : "0");
     });
 
-    return { bpData, ccData, allDescriptions };
+    return { bpData, ccData, allDescriptions, allGeneRatios, bpWithDescription, ccWithDescription };
   }, [chartData]);
 
   // 配置项
@@ -81,28 +110,44 @@ const GoBarChart = ({
         textStyle: {
           color: "#333",
         },
-        // formatter: (params) => {
-        //   let result = `<div style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
-        //     ${params[0].name}
-        //   </div>`;
+        formatter: (params) => {
+          let result = `<div style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
+            ${params[0].name}
+          </div>`;
           
-        //   params.forEach(param => {
-        //     if (param.value > 0) {
-        //       result += `
-        //         <div style="line-height: 1.4; margin-bottom: 4px;">
-        //           <span style="color: ${param.color}; font-weight: bold;">${param.seriesName}:</span> ${param.value}<br/>
-        //         </div>
-        //       `;
-        //     }
-        //   });
+          params.forEach(param => {
+            if (param.value > 0) {
+              const dataItem = chartData.find(item => 
+                item.Description === params[0].name && 
+                item.ONTOLOGY === param.seriesName,
+              );
+              const geneRatio = dataItem ? dataItem.GeneRatio : "0";
+              
+              result += `
+                <div style="line-height: 1.4; margin-bottom: 4px;">
+                  <span style="color: ${param.color}; font-weight: bold;">${param.seriesName}:</span><br/>
+                  基因数量: ${param.value}<br/>
+                  GeneRatio: ${geneRatio}
+                </div>
+              `;
+            }
+          });
           
-        //   const total = params.reduce((sum, param) => sum + param.value, 0);
-        //   result += `<div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid #eee; font-weight: bold;">
-        //     总计: ${total}
-        //   </div>`;
+          const totalCount = params.reduce((sum, param) => sum + param.value, 0);
           
-        //   return result;
-        // }
+          // 计算总的 GeneRatio（使用当前项对应的 GeneRatio）
+          const currentData = chartData.find(item => 
+            item.Description === params[0].name,
+          );
+          const totalGeneRatio = currentData ? currentData.GeneRatio : "0";
+          
+          result += `<div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid #eee; font-weight: bold;">
+            总计基因数: ${totalCount}<br/>
+            总 GeneRatio: ${totalGeneRatio}
+          </div>`;
+          
+          return result;
+        },
       },
       legend: showLegend ? {
         data: ["BP", "CC"],
@@ -150,7 +195,7 @@ const GoBarChart = ({
         },
       },
       yAxis: {
-        name: "GO 功能描述",
+        name: "GeneRatio",
         nameLocation: "end",
         nameGap: 20,
         nameTextStyle: {
@@ -174,48 +219,27 @@ const GoBarChart = ({
           alignWithLabel: true,
         },
         axisLabel: {
-          overflow: "truncate",
-          ellipsis: "...",
           fontSize: 10,
-          margin: 8,
-          align: "left",
           color: "#000",
-          // 关键设置：让标签显示在坐标系内部
-          inside: true, // 标签显示在坐标系内侧
-          // 添加背景色提高可读性
-          // backgroundColor: 'rgba(255, 255, 255, 0.7)',
-          padding: [2, 4, 2, 4],
-          borderRadius: 2,
-          // 调整位置
-          verticalAlign: "middle",
-          // 限制宽度
-
-          formatter: function(value) {
-            if (value.length > 200) {
-              return value.substring(0, 200) + "...";
-            }
-            return value;
+          fontWeight: "bold",
+          // 直接显示 GeneRatio
+          formatter: function(value, index) {
+            // 从 allGeneRatios 数组中获取对应的 GeneRatio
+            const geneRatio = allGeneRatios[index] || "0";
+            return geneRatio;
           },
         },
-        // 关键：减小y轴占用的空间
-        boundaryGap: [0.1, 0.1], // 调整边界间隔
-        // 调整网格位置，为标签腾出空间
+        boundaryGap: [0.1, 0.1],
         offset: 0,
         z: 10,
-        data: allDescriptions,
-        tooltip: {
-          show: true,
-          formatter: function(params) {
-            return params.value;
-          },
-        },
+        data: allDescriptions, // 这里仍然存储 descriptions 用于内部映射
       },
       series: [
         {
           name: "BP",
           type: "bar",
           stack: "total",
-          data: bpData,
+          data: bpWithDescription, // 使用带描述的数据
           itemStyle: {
             color: "#ff4d4f",
             opacity: 0.8,
@@ -227,23 +251,38 @@ const GoBarChart = ({
               shadowColor: "rgba(255, 77, 79, 0.5)",
             },
           },
+          // 在柱子上显示 description
           label: {
             show: true,
-            position: "left",
-            formatter: (params) => {
-              // 只在数值足够大时显示，避免小数值重叠
-              return params.value > 0 ? params.value : "";
-            },
-            fontSize: 9,
-            color: "#000",  
+            position: "insideLeft", // 在柱子内部左侧显示
+            verticalAlign: "middle", // 垂直居中
+            align: "left",
+            color: "#000", // 白色文字
+            fontSize: 12,
             fontWeight: "bold",
+            // textShadowColor: "rgba(255, 255, 255, 0.5)",
+            // textShadowBlur: 2,
+            textShadowOffsetX: 1,
+            textShadowOffsetY: 1,
+            // 显示 description
+            formatter: function(params) {
+              if (params.data.value > 0) {
+                const description = params.data.description;
+                // 限制显示长度，避免文字溢出
+                if (description.length > 100) {
+                  return description.substring(0, 100) + "...";
+                }
+                return description;
+              }
+              return "";
+            },
           },
         },
         {
           name: "CC",
           type: "bar",
           stack: "total",
-          data: ccData,
+          data: ccWithDescription, // 使用带描述的数据
           itemStyle: {
             color: "#1890ff",
             opacity: 0.8,
@@ -255,21 +294,36 @@ const GoBarChart = ({
               shadowColor: "rgba(24, 144, 255, 0.5)",
             },
           },
+          // 在柱子上显示 description
           label: {
             show: true,
-            position: "left",
-            formatter: (params) => {
-              // 只在数值足够大时显示
-              return params.value > 0 ? params.value : "";
-            },
-            fontSize: 9,
-            color: "#000",
+            position: "insideLeft", // 在柱子内部左侧显示
+            verticalAlign: "middle",
+            align: "left",
+            color: "#000", // 白色文字
+            fontSize: 12,
             fontWeight: "bold",
+            // textShadowColor: "rgba(0, 0, 0, 0.5)",
+            // textShadowBlur: 2,
+            textShadowOffsetX: 1,
+            textShadowOffsetY: 1,
+            // 显示 description
+            formatter: function(params) {
+              if (params.data.value > 0) {
+                const description = params.data.description;
+                // 限制显示长度，避免文字溢出
+                if (description.length > 100) {
+                  return description.substring(0, 100) + "...";
+                }
+                return description;
+              }
+              return "";
+            },
           },
         },
       ],
     };
-  }, [chartData, bpData, ccData, allDescriptions, title, showLegend]);
+  }, [chartData, bpWithDescription, ccWithDescription, allGeneRatios, title, showLegend]);
 
   // 加载状态
   if (loading) {

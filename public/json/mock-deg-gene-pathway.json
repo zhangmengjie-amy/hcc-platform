@@ -1,0 +1,9 @@
+{
+    "cohort": ["TCGA-LIHC", "PKU_tissue"],
+    "groupBy": "gene",
+    "geneType": "pathway",
+    "geneSet": "ABBUD_LIF_SIGNALING_1_DN",
+    "firstGroup": null,
+    "secondGroup": null,
+    "geneList": null
+}

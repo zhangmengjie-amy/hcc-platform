@@ -10,7 +10,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DEGCondition from "@/components/expression/pathways/condition";
 import ConditionSelection from "@/components/condition-selection";
-import RightPanel from "./right-panel";
+import Immune1 from "./immune1";
+import Immune2 from "./immune2";
 import {
   Collapse,
   Radio,
@@ -40,7 +41,7 @@ const Expression = () => {
   const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
   const [applyLoading, setApplyLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [immune, setImmuneType] = useState("immune");
+  const [immuneType, setImmuneType] = useState("immune");
   const [params, setParams] = useState({});
   const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
   const [rightPanelSize, setRightPanelSize] = useState(
@@ -264,9 +265,12 @@ const Expression = () => {
               { value: "immune", label: "Immune" },
               { value: "immune1", label: "immune 1" },
             ]}
-            value={immune}
+            value={immuneType}
           />
-          <RightPanel dataType={dataType} conditions={params}></RightPanel>
+          {
+            immuneType === "immune1" ? <Immune2 dataType={dataType} conditions={params}></Immune2> :<Immune1 dataType={dataType} conditions={params}></Immune1>
+          }
+          
         </Panel>
       </Splitter>
     </>
