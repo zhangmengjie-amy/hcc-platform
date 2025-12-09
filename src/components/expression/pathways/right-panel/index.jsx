@@ -123,8 +123,8 @@ const Pathways = () => {
                 borderRadius: "12px",
               }}
             >
-              <BoxPlot></BoxPlot>
-              {/* <GoBarChart data={goBubbleData}></GoBarChart> */}
+              {/* <BoxPlot></BoxPlot> */}
+              <GoBarChart data={goBubbleData}></GoBarChart>
             </Flex>
           </Flex>
         );

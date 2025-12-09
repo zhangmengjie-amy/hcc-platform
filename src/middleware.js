@@ -19,16 +19,17 @@ const pathConfig = {
   ],
   
   // 需要认证的路径
-  protected: [
-    "/mutation",
-    "/expression",
-    "/immune",
-    "/clinical", 
-    "/biomarkers",
-    "/dashboard",
-    "/profile",
-    "/user",
-  ],
+  protected: [],
+  // protected: [
+  //   "/mutation",
+  //   "/expression",
+  //   "/immune",
+  //   "/clinical", 
+  //   "/biomarkers",
+  //   "/dashboard",
+  //   "/profile",
+  //   "/user",
+  // ],
 };
 
 export function middleware(request) {

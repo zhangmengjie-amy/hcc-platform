@@ -218,7 +218,7 @@ const HeatmapChart = ({ data, height = 600 }) => {
         type: "category",
         data: xAxisData,
         axisLabel: {
-          show: true, // 不显示横坐标标签
+          show: false, // 不显示横坐标标签
           fontSize: 12,
           color: "#333",
           fontWeight: "bold",
@@ -252,6 +252,10 @@ const HeatmapChart = ({ data, height = 600 }) => {
         axisLabel: {
           fontSize: 11,
           color: "#333",
+          width: 100, // 固定宽度
+          overflow: "truncate", // 超出截断
+          ellipsis: "...", // 显示省略号
+          interval: 0, // 显示所有标签
         },
         axisTick: {
           show: false,
