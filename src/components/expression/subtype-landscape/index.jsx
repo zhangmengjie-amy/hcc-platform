@@ -4,8 +4,7 @@ import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DEGCondition from "@/components/expression/pathways/condition";
-import ConditionSelection from "@/components/condition-selection";
+import ConditionSelection from "@/components/clinical-selection";
 import RightPanel from "@/components/expression/subtype-landscape/right-panel";
 import {
   Collapse,

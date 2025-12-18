@@ -8,8 +8,8 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DEGCondition from "@/components/expression/pathways/condition";
-import ConditionSelection from "@/components/condition-selection";
+import ClinicalCondition from "@/components/clinical-selection";
+import CohortCondition from "@/components/cohort-condition";
 import Immune1 from "./immune1";
 import Immune2 from "./immune2";
 import {
@@ -41,7 +41,7 @@ const Expression = () => {
   const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
   const [applyLoading, setApplyLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [immuneType, setImmuneType] = useState("immune");
+  const [immuneType, setImmuneType] = useState("immune1");
   const [params, setParams] = useState({});
   const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
   const [rightPanelSize, setRightPanelSize] = useState(
@@ -49,7 +49,7 @@ const Expression = () => {
   );
   const [fetchLoading, setFetchLoading] = useState(true);
   const [geneList, setGeneList] = useState([]);
-  const conditionSelectionRef = useRef(null);
+  const clinicalConditionRef = useRef(null);
   const [clinicList, setClinicList] = useState({
     gender: [],
     age: [],
@@ -59,6 +59,7 @@ const Expression = () => {
   });
   const geneRef = useRef(null);
   const paramsRef = useRef(null);
+  const cohortConditionRef = useRef(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -95,8 +96,13 @@ const Expression = () => {
   };
 
   const handleApply = useCallback(() => {
-    setParams(conditionSelectionRef.current?.getParams());
-  }, []);
+    if (immuneType == "immune1") {
+      setParams(clinicalConditionRef.current?.getParams());
+    } else {
+      console.log("2222222222222222222222222");
+      setParams(cohortConditionRef.current?.getParams());
+    }
+  }, [immuneType]);
 
   const onPanelChange = (sizes) => {
     setLeftPanelSize(sizes[0]);
@@ -113,74 +119,9 @@ const Expression = () => {
     }
   };
 
-  const rightPanelFullScreen = () => {
-    if (leftPanelSize == "0") {
-      setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
-      setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
-    } else {
-      setLeftPanelSize("100%");
-      setRightPanelSize("0");
-    }
-  };
-
   useEffect(() => {
     setParams({});
   }, [mutationTypeTab]);
-
-  const dataTypeCollapseTitle = () => {
-    return (
-      <Flex justify={"space-between"} align={"center"}>
-        <Typography.Paragraph
-          ellipsis={{
-            rows: 1,
-            expandable: false,
-          }}
-          style={{ margin: 0, color: "#fff", fontWeight: "500" }}
-        >
-          Filter By Cohort
-        </Typography.Paragraph>
-
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
-          <Button
-            color="default"
-            onClick={(event) => {
-              handleDriverReload(event);
-            }}
-            variant="text"
-            style={{ color: "#fff", padding: 0 }}
-          >
-            <Image
-              src={RELOAD_ICON}
-              alt="reload"
-              width={16}
-              height={16}
-              tooltip={t("common:reload")}
-            />
-          </Button>
-        </Tooltip>
-      </Flex>
-    );
-  };
-
-  const onDataTypeChange = (e) => {
-    setDataType(e.target.value);
-  };
-
-  const dataTypeCollapseContent = () => {
-    return (
-      <div className={styles.searchCard} variant="borderless">
-        <Radio.Group
-          value={dataType}
-          onChange={onDataTypeChange}
-          options={[
-            { value: "planet", label: "PLANET" },
-            { value: "dt", label: "DT" },
-            { value: "all", label: "All" },
-          ]}
-        />
-      </div>
-    );
-  };
 
   return (
     <>
@@ -204,7 +145,6 @@ const Expression = () => {
             <Button
               color="default"
               size="middle"
-              disabled={!geneList?.length}
               icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />}
               loading={applyLoading}
               onClick={handleApply}
@@ -231,44 +171,29 @@ const Expression = () => {
               />
             </Button>
           </Flex>
-          <Collapse
-            defaultActiveKey={"dataType"}
-            className={styles.searchCollapse}
-            expandIcon={({ isActive }) => (
-              <CaretRightOutlined
-                style={{ fontSize: 14 }}
-                rotate={isActive ? 90 : 0}
-              />
-            )}
-            items={[
-              {
-                key: "dataType",
-                label: dataTypeCollapseTitle(),
-                children: dataTypeCollapseContent(),
-              },
-            ]}
-          ></Collapse>
-          {(
-            <ConditionSelection
-              ref={conditionSelectionRef}
-              handleInitChange={handleApply}
-              showDriverGeneList={false}
-              showITH={false}
-              showGeneList={false}
-            ></ConditionSelection>
-          )}
+          {
+            immuneType === "immune1" ? (
+              <ClinicalCondition
+                ref={clinicalConditionRef}
+                handleInitChange={handleApply}
+                showDriverGeneList={false}
+                showITH={false}
+                showGeneList={false}
+              ></ClinicalCondition>
+            ) : <CohortCondition module={"IMMUNE"} ref={cohortConditionRef}></CohortCondition>
+          }
         </Panel>
         <Panel size={rightPanelSize} min={"50%"} max="80%">
           <Segmented
             onChange={setImmuneType}
             options={[
-              { value: "immune", label: "Immune" },
-              { value: "immune1", label: "immune 1" },
+              { value: "immune1", label: "Immune1" },
+              { value: "immune2", label: "immune2" },
             ]}
             value={immuneType}
           />
           {
-            immuneType === "immune1" ? <Immune2 dataType={dataType} conditions={params}></Immune2> :<Immune1 dataType={dataType} conditions={params}></Immune1>
+            immuneType === "immune2" ? <Immune2 conditions={params}></Immune2> :<Immune1 conditions={params}></Immune1>
           }
           
         </Panel>

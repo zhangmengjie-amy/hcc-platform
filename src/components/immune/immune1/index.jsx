@@ -141,6 +141,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "DNA" }) => {
   const geneListRef = useRef(null);
 
   useEffect(() => {
+    if (!conditions) return;
     conditions["stage"] = Array.from(new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item])));
     const { geneList, ...clinicList } = conditions;
     const filteredData = filterSampleByConditions(patientListRef.current, clinicList, geneList) ?? [];
