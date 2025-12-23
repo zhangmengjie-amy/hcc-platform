@@ -80,8 +80,8 @@ const HeatmapPage = ({ conditions }) => {
     return (
       <div style={{ padding: 24, textAlign: "center" }}>
         <Alert
-          message="参数不完整"
-          description="请确保已选择队列和方法参数"
+          message="暂无数据"
+          description="请检查筛选条件或稍后重试"
           type="warning"
           showIcon
         />

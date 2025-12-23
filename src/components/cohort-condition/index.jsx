@@ -78,7 +78,7 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
   const [selectedClinical, setSelectedClinical] = useState([]);
   const [selectedClassify, setSelectedClassify] = useState("");
   const [selectedTechnology, setSelectedTechnology] = useState([]);
-  const [queryType, setQueryType] = useState("nt");
+  const [queryType, setQueryType] = useState("NT");
   const [method, setMethod] = useState("");
   const [fixedGeneType, setFixedGeneType] = useState("h");
   const [geneType, setGeneType] = useState("custom");
@@ -396,12 +396,17 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
       geneList = null;
       geneSet = null;
       _geneType = null;
-      if (queryType === "nt") {
-        _firstGroup = ["normal"];
-        _secondGroup = ["tumor"];
-      } else if (queryType === "hbv" || queryType === "hcv") {
+      if (queryType === "NT") {
+        _firstGroup = ["Normal"];
+        _secondGroup = ["Tumor"];
+      } else if (queryType === "HBV" || queryType === "HCV") {
         _firstGroup = ["positive"];
         _secondGroup = ["negative"];
+      } else if (queryType === "Age") {
+        if (!firstGroup) {
+
+        }
+
       }
     } else {
       if (geneType === "custom") {
@@ -439,6 +444,28 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
     validatedGenesFromChild,
     method,
   ]);
+
+  useEffect(() => {
+    if (firstGroup && secondGroup) {
+      if (queryType === "NT") {
+        setFirstGroup("Tumor");
+        setSecondGroup("Normal");
+      }
+      if (queryType === "HBV" || queryType === "HCV") {
+        setFirstGroup("Positive");
+        setSecondGroup("Negative");
+      }
+      if (queryType === "Age") {
+        setFirstGroup(["<20", "20-40", "40-60"]);
+        setSecondGroup(["60-80", ">=80"]);
+      }
+      if (queryType === "Stage") {
+        setFirstGroup(["I", "II"]);
+        setSecondGroup(["III", "IV"]);
+      }
+    }
+
+  }, [queryType]);
 
   const cohortCollapseContent = () => {
     return (
@@ -548,14 +575,14 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
             >
               <Flex>
                 <Flex vertical flex={1}>
-                  <Radio value={"nt"}>N/T</Radio>
-                  <Radio value={"hbv"}>HBV</Radio>
-                  <Radio value={"hcv"}>HCV</Radio>
-                  <Radio value={"age"}>Age</Radio>
-                  <Radio value={"stage"}>Stage</Radio>
+                  <Radio value={"NT"}>N/T</Radio>
+                  <Radio value={"HBV"}>HBV</Radio>
+                  <Radio value={"HCV"}>HCV</Radio>
+                  <Radio value={"Age"}>Age</Radio>
+                  <Radio value={"Stage"}>Stage</Radio>
                 </Flex>
                 <Flex vertical flex={1}>
-                  <Radio value={"gene"}>Gene</Radio>
+                  <Radio value={"Gene"}>Gene</Radio>
                 </Flex>
               </Flex>
             </Radio.Group>
@@ -571,14 +598,14 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
               borderRadius: "12px",
             }}
           >
-            {queryType == "nt" && (
-              <Checkbox.Group>
+            {queryType == "NT" && (
+              <Checkbox.Group value={["Tumor", "Normal"]}>
                 <Flex vertical>
                   <Flex vertical style={{ marginBottom: "10px" }}>
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
                       First Group
                     </Typography.Paragraph>
-                    <Checkbox value="tumor" disabled>
+                    <Checkbox value="Tumor" disabled>
                       Tumor
                     </Checkbox>
                   </Flex>
@@ -587,14 +614,14 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
                       Second Group
                     </Typography.Paragraph>
 
-                    <Checkbox value="normal" disabled>
+                    <Checkbox value="Normal" disabled>
                       Normal
                     </Checkbox>
                   </Flex>
                 </Flex>
               </Checkbox.Group>
             )}
-            {(queryType == "hbv" || queryType == "hcv") && (
+            {(queryType == "HBV" || queryType == "HCV") && (
               <Checkbox.Group value={["positive", "negative"]}>
                 <Flex vertical>
                   <Flex vertical style={{ marginBottom: "10px" }}>
@@ -616,18 +643,20 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
                 </Flex>
               </Checkbox.Group>
             )}
-            {queryType == "age" && (
+            {queryType == "Age" && (
               <Flex>
                 <Flex vertical flex={1}>
                   <Typography.Paragraph style={{ marginBottom: "10px" }}>
                     First Group
                   </Typography.Paragraph>
                   <Checkbox.Group value={firstGroup} onChange={setFirstGroup}>
-                    <Checkbox value="<20">{"<20"}</Checkbox>
-                    <Checkbox value="<=40">{"<40"}</Checkbox>
-                    <Checkbox value="<=60">{"<60"}</Checkbox>
-                    <Checkbox value="<=80">{"<80"}</Checkbox>
-                    <Checkbox value=">80">{">80"}</Checkbox>
+                    <Flex vertical>
+                      <Checkbox value="<20">{"<20"}</Checkbox>
+                      <Checkbox value="20-40">{"20-40"}</Checkbox>
+                      <Checkbox value="40-60">{"<60"}</Checkbox>
+                      <Checkbox value="60-80">{"<80"}</Checkbox>
+                      <Checkbox value=">=80">{">=80"}</Checkbox>
+                    </Flex>
                   </Checkbox.Group>
                 </Flex>
                 <Flex vertical flex={1}>
@@ -635,16 +664,18 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
                     Second Group
                   </Typography.Paragraph>
                   <Checkbox.Group value={secondGroup} onChange={setSecondGroup}>
-                    <Checkbox value="<20">{"<20"}</Checkbox>
-                    <Checkbox value="<=40">{"<40"}</Checkbox>
-                    <Checkbox value="<=60">{"<60"}</Checkbox>
-                    <Checkbox value="<=80">{"<80"}</Checkbox>
-                    <Checkbox value=">80">{">80"}</Checkbox>
+                    <Flex vertical>
+                      <Checkbox value="<20">{"<20"}</Checkbox>
+                      <Checkbox value="20-40">{"20-40"}</Checkbox>
+                      <Checkbox value="40-60">{"<60"}</Checkbox>
+                      <Checkbox value="60-80">{"<80"}</Checkbox>
+                      <Checkbox value=">=80">{">=80"}</Checkbox>
+                    </Flex>
                   </Checkbox.Group>
                 </Flex>
               </Flex>
             )}
-            {queryType == "stage" && (
+            {queryType == "Stage" && (
               <Flex>
                 <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
                   <Typography.Paragraph style={{ marginBottom: 0 }}>

@@ -5,6 +5,36 @@ import { Row, Col, Card, Typography } from "antd";
 const { Title } = Typography;
 
 const BoxplotChart = ({ data, height = 600 }) => {
+  // 定义每个cluster的颜色和显示顺序
+  const clusterOrder = ["TME1", "TME2", "TME3", "TME4"];
+  const clusterColors = {
+    "TME1": "#FF6B6B",  // 红色
+    "TME2": "#4ECDC4",  // 绿色
+    "TME3": "#FFD166",  // 蓝色
+    "TME4": "#06D6A0",  // 黄色
+    "TME5": "#118AB2",
+    "TME6": "#073B4C",
+    "TME7": "#EF476F",
+    "TME8": "#FF9A00",
+    "TME9": "#7209B7",
+    "TME10": "#3A86FF",
+
+  };
+  
+  // 如果没有具体的TME名称，使用默认颜色
+  const defaultColors = [
+    "#FF6B6B", // 红色 - TME1
+    "#4ECDC4", // 青色 - TME2
+    "#FFD166", // 黄色 - TME3
+    "#7209B7", // 绿色
+    "#118AB2", // 蓝色
+    "#073B4C", // 深蓝色
+    "#EF476F", // 粉色
+    "#FF9A00", // 橙色
+    "#06D6A0", // 紫色
+    "#3A86FF", // 亮蓝色
+  ];
+
   const boxplotData = useMemo(() => {
     if (!data || !data.Heatmap_Body || data.Heatmap_Body.length === 0) {
       return null;
@@ -15,10 +45,24 @@ const BoxplotChart = ({ data, height = 600 }) => {
       (a, b) => a.terms_order - b.terms_order,
     );
 
-    // 2. 获取所有唯一的TMEcluster
-    const uniqueClusters = [
-      ...new Set(data.sampleid_order_name.map((item) => item.TMEcluster)),
-    ];
+    // 2. 获取所有唯一的TMEcluster并按照指定顺序排序
+    const rawClusters = [...new Set(data.sampleid_order_name.map((item) => item.TMEcluster))];
+    
+    // 按照 clusterOrder 的顺序排序，确保 TME1, TME2, TME3, TME4 的顺序
+    const uniqueClusters = clusterOrder.filter(cluster => rawClusters.includes(cluster));
+    
+    // 添加其他不在预定义顺序中的cluster
+    rawClusters.forEach(cluster => {
+      if (!uniqueClusters.includes(cluster)) {
+        uniqueClusters.push(cluster);
+      }
+    });
+
+    // 为每个cluster分配颜色
+    const clusterColorMap = {};
+    uniqueClusters.forEach((cluster, index) => {
+      clusterColorMap[cluster] = clusterColors[cluster] || defaultColors[index % defaultColors.length];
+    });
 
     // 3. 构建数据结构：每个term在不同cluster下的原始value数组
     const termClusterData = {};
@@ -50,10 +94,12 @@ const BoxplotChart = ({ data, height = 600 }) => {
       const termName = term.terms;
       const clusterData = uniqueClusters.map((cluster) => {
         const values = termClusterData[termName][cluster] || [];
+        const color = clusterColorMap[cluster];
 
         if (values.length === 0) {
           return {
             cluster,
+            color,
             values: [],
             outliers: [],
             stats: {
@@ -101,6 +147,7 @@ const BoxplotChart = ({ data, height = 600 }) => {
 
         return {
           cluster,
+          color,
           values: normalValues, // 正常值
           outliers: outliers, // 异常值
           stats: {
@@ -121,6 +168,7 @@ const BoxplotChart = ({ data, height = 600 }) => {
       return {
         term: termName,
         clusterData,
+        clusterColorMap,
       };
     });
 
@@ -143,12 +191,13 @@ const BoxplotChart = ({ data, height = 600 }) => {
       termStats,
       uniqueClusters,
       sortedTerms,
+      clusterColorMap,
     };
   }, [data]);
 
   // 生成单个term的箱体图option
   const getTermOption = (termData, termName) => {
-    const { clusterData } = termData;
+    const { clusterData, clusterColorMap } = termData;
 
     // 准备箱体图数据
     const boxplotSeriesData = [];
@@ -158,25 +207,42 @@ const BoxplotChart = ({ data, height = 600 }) => {
     clusterData.forEach((item, index) => {
       const cluster = item.cluster;
       const stats = item.stats;
+      const color = item.color || clusterColorMap[cluster];
 
       categories.push(cluster);
 
       if (stats.count > 0) {
         // 箱体图数据：[min, Q1, median, Q3, max]
-        boxplotSeriesData.push([
-          stats.min,
-          stats.q1,
-          stats.median,
-          stats.q3,
-          stats.max,
-        ]);
+        boxplotSeriesData.push({
+          value: [stats.min, stats.q1, stats.median, stats.q3, stats.max],
+          itemStyle: {
+            color: color,
+            borderColor: "#333",
+            borderWidth: 2,
+          },
+        });
 
         // 异常值数据
         item.outliers.forEach((outlier) => {
-          outlierSeriesData.push([index, outlier]);
+          outlierSeriesData.push({
+            name: cluster,
+            value: [index, outlier],
+            itemStyle: {
+              color: color,
+              borderColor: "#333",
+              borderWidth: 1,
+            },
+          });
         });
       } else {
-        boxplotSeriesData.push([0, 0, 0, 0, 0]);
+        boxplotSeriesData.push({
+          value: [0, 0, 0, 0, 0],
+          itemStyle: {
+            color: "#e0e0e0", // 灰色表示无数据
+            borderColor: "#ccc",
+            borderWidth: 1,
+          },
+        });
       }
     });
 
@@ -205,23 +271,24 @@ const BoxplotChart = ({ data, height = 600 }) => {
         },
         formatter: function (params) {
           if (params.seriesType === "scatter") {
-            const cluster = categories[params.value[0]];
+            const cluster = params.data.name || categories[params.value[0]];
             const value = params.value[1];
             return `
-              <div style="font-weight: bold; margin-bottom: 5px;">${cluster} - Outlier</div>
+              <div style="font-weight: bold; margin-bottom: 5px; color: ${params.color}">${cluster} - Outlier</div>
               <div style="margin: 2px 0;">Value: ${formatValue(value)}</div>
             `;
           } else if (params.seriesType === "boxplot") {
             const index = params.dataIndex;
             const cluster = categories[index];
             const stats = clusterData[index].stats;
+            const color = clusterData[index].color;
 
             if (stats.count === 0) {
               return `<div style="font-weight: bold;">${cluster}</div><div>No data</div>`;
             }
 
             return `
-              <div style="font-weight: bold; margin-bottom: 5px;">${cluster}</div>
+              <div style="font-weight: bold; margin-bottom: 5px; color: ${color}">${cluster}</div>
               <div style="margin: 2px 0;">Min: ${formatValue(stats.min)}</div>
               <div style="margin: 2px 0;">Q1: ${formatValue(stats.q1)}</div>
               <div style="margin: 2px 0; font-weight: bold;">Median: ${formatValue(stats.median)}</div>
@@ -252,26 +319,30 @@ const BoxplotChart = ({ data, height = 600 }) => {
         data: categories,
         axisLabel: {
           fontSize: 10,
-          color: "#333",
           fontWeight: "bold",
+          color: function (value, index) {
+            // 直接返回对应cluster的颜色
+            const color = clusterData[index]?.color || "#333";
+            return color;
+          },
         },
         axisTick: {
           show: true,
           alignWithLabel: true,
           lineStyle: {
-            color: "#fff", // 白色刻度线
+            color: "#fff",
           },
         },
         axisLine: {
           show: true,
           lineStyle: {
-            color: "#fff", // 白色坐标轴线
+            color: "#fff",
           },
         },
         splitLine: {
-          show: true, // 显示横坐标网格线
+          show: true,
           lineStyle: {
-            color: "#fff", // 白色网格线
+            color: "#fff",
             width: 1,
             type: "solid",
           },
@@ -287,20 +358,20 @@ const BoxplotChart = ({ data, height = 600 }) => {
         axisTick: {
           show: true,
           lineStyle: {
-            color: "#fff", // 白色刻度线
+            color: "#fff",
           },
         },
         axisLine: {
           show: true,
           lineStyle: {
-            color: "#fff", // 白色坐标轴线
+            color: "#fff",
           },
         },
         splitLine: {
           show: true,
           lineStyle: {
-            type: "solid", // 实线
-            color: "#fff", // 白色网格线
+            type: "solid",
+            color: "#fff",
             width: 1,
           },
         },
@@ -311,14 +382,6 @@ const BoxplotChart = ({ data, height = 600 }) => {
           name: "Boxplot",
           type: "boxplot",
           data: boxplotSeriesData,
-          // 箱体图配置
-          itemStyle: {
-            // 箱体颜色
-            color: "#F8766D",
-            // 箱体边框
-            borderColor: "#333",
-            borderWidth: 2,
-          },
           // 中位线配置
           lineStyle: {
             color: "#333",
@@ -332,12 +395,14 @@ const BoxplotChart = ({ data, height = 600 }) => {
           name: "Outliers",
           type: "scatter",
           data: outlierSeriesData,
-          symbolSize: 6,
+          symbolSize: function (value) {
+            return 6;
+          },
           itemStyle: {
             color: function (params) {
-              const clusterIndex = params.value[0];
-              const colors = ["#F8766D", "#00BA38", "#619CFF"];
-              return colors[clusterIndex] || "#000";
+              // 返回对应cluster的颜色
+              const clusterIndex = categories.indexOf(params.data.name);
+              return clusterData[clusterIndex]?.color || "#000";
             },
             borderColor: "#333",
             borderWidth: 1,
