@@ -6,7 +6,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // 创建 Axios 实例
 const request = axios.create({
   baseURL: apiUrl, // 设置 baseURL 为项目的根目录
-  timeout: 20000, // 请求超时设置
+  // timeout: 20000, // 请求超时设置
   headers: {
     "Content-Type": "application/json",
   },

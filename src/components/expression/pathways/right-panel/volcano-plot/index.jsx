@@ -25,12 +25,12 @@ const VolcanoPlot = ({
     
     data?.forEach(item => {
       const point = {
-        name: item.gene_name,
+        name: item.geneName,
         value: [item.logFC, item["log10_adj.P.Val"]],
         itemStyle: {
-          color: COLOR_MAP[item.Significance] || COLOR_MAP["Not Significant"],
+          color: COLOR_MAP[item.significance] || COLOR_MAP["Not Significant"],
         },
-        significance: item.Significance,
+        significance: item.significance ?? "Not Significant",
         adjPVal: item["adj.P.Val"],
         logFC: item.logFC,
       };
@@ -38,13 +38,13 @@ const VolcanoPlot = ({
       all.push(point);
       
       // 只对显著性的点标记需要显示标签
-      if (item.Significance === "UP Significant" || item.Significance === "DOWN Significant") {
+      if (item.significance === "UP Significant" || item.significance === "DOWN Significant") {
         significant.push({
           ...point,
           // 为标签添加特殊标记
           label: {
             show: true,
-            formatter: item.gene_name,
+            formatter: item.geneName,
           },
         });
       }

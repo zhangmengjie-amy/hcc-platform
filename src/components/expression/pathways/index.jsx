@@ -4,8 +4,7 @@ import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DEGCondition from "@/components/expression/pathways/condition";
-import ConditionSelection from "@/components/condition-selection";
+import CohortCondition from "@/components/cohort-condition";
 import RightPanel from "@/components/expression/pathways/right-panel";
 import {
   Collapse,
@@ -36,7 +35,7 @@ const Pathways = () => {
   const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
   const [applyLoading, setApplyLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [params, setParams] = useState({});
+  const [params, setParams] = useState(null);
   const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
   const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
   const [fetchLoading, setFetchLoading] = useState(true);
@@ -64,7 +63,7 @@ const Pathways = () => {
         geneList: getGeneListWithIsDeriverGene(driverList),
       };
       setGeneList(driverList);
-      setParams(_params);
+      setParams(null);
       paramsRef.current = _params;
       setFetchLoading(false);
     });
@@ -84,7 +83,6 @@ const Pathways = () => {
   };
 
   const handleApply = useCallback(() => {
-    console.log(111111111111111, conditionSelectionRef.current?.getParams());
     setParams(conditionSelectionRef.current?.getParams());
   }, []);
 
@@ -114,7 +112,8 @@ const Pathways = () => {
   };
 
   useEffect(() => {
-    setParams({});
+    setParams(null);
+    console.log("params", params);
   }, [mutationTypeTab]);
 
 
@@ -170,10 +169,7 @@ const Pathways = () => {
               />
             </Button>
           </Flex>
-
-
-          <DEGCondition ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></DEGCondition>
-
+          <CohortCondition ref={conditionSelectionRef} handleInitChange={handleApply} module={"DEG"}></CohortCondition>
         </Panel>
         <Panel size={rightPanelSize} min={"20%"} max="80%">
           <Flex justify="space-between" align="center" style={{ height: "40px", paddingRight: 10 }}>
@@ -193,6 +189,7 @@ const Pathways = () => {
                 options={[{ label: <Link href="/expression/subtype">{"Subtype landscape and tree"}</Link>, value: "subtype" },
                   { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: "pathways" },
                 ]}
+                onChange={setMutationTypeTab}
                 value={pathname.split("/")[2]}
               />
             </Flex>

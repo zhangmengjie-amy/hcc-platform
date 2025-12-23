@@ -4,7 +4,7 @@ import { usePDF } from "react-to-pdf";
 import { getGeneList, getValidGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
-import ConditionSelection from "@/components/condition-selection";
+import ConditionSelection from "@/components/clinical-selection";
 import {
   Card,
   Collapse,

@@ -1,139 +1,199 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Alert, Space, Typography, Select } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Alert,
+  Space,
+  Typography,
+  Select,
+  Flex,
+  Spin,
+} from "antd";
 import HeatmapChart from "./heatmap";
-import { getMutationHeatmapList } from "@/configs/request";
+import BoxPlot from "./boxplot";
+import { getMutationHeatmapList, getHeatmapBoxplot } from "@/configs/request";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-// 示例数据（实际使用时会从API获取）
-
-const HeatmapPage = () => {
-  const [data, setData] = useState(null);
+const HeatmapPage = ({ conditions }) => {
+  const [data1, setData1] = useState(null); // method: conditions.method
+  const [data2, setData2] = useState(null); // method: "hallmarks"
+  const [data3, setData3] = useState(null); // method: "markergenes"
   const [loading, setLoading] = useState(false);
-  const [chartHeight, setChartHeight] = useState(600);
+  const [chartHeight, setChartHeight] = useState(400);
+  const [error, setError] = useState(null);
 
-  // 模拟API数据加载
+  // 并发请求三个接口
   const fetchData = async () => {
     setLoading(true);
+    setError(null);
+
     try {
-      // 这里可以替换为实际的API调用
-      const response = await getMutationHeatmapList();
-      setData(response);
+      // 构建三个请求的参数
+      const request1 = {
+        method: conditions?.method,
+        tmeGroupBy: conditions?.method,
+        cohort: conditions?.numbers?.[0],
+      };
+
+      const request2 = {
+        method: "hallmarks",
+        tmeGroupBy: "cibersort",
+        cohort: conditions?.numbers?.[0],
+      };
+
+      const request3 = {
+        method: "markergenes",
+        tmeGroupBy: "cibersort",
+        cohort: conditions?.numbers?.[0],
+      };
+
+      // 并发发送三个POST请求
+      const [response1, response2, response3] = await Promise.all([
+        getHeatmapBoxplot(request1),
+        getHeatmapBoxplot(request2),
+        getHeatmapBoxplot(request3),
+      ]);
+
+      // 分别设置数据
+      setData1(response1);
+      setData2(response2);
+      setData3(response3);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setError("数据加载失败，请稍后重试");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (conditions?.numbers?.[0] && conditions?.method) {
+      fetchData();
+    }
+  }, [conditions]);
 
+  // 如果参数不完整，显示提示
+  if (!conditions?.numbers?.[0] || !conditions?.method) {
+    return (
+      <div style={{ padding: 24, textAlign: "center" }}>
+        <Alert
+          message="暂无数据"
+          description="请检查筛选条件或稍后重试"
+          type="warning"
+          showIcon
+        />
+      </div>
+    );
+  }
+
+  // 加载中状态
+  if (loading) {
+    return (
+      <Flex align="center" justify="center" style={{ height: "500px" }}>
+        <Spin size="large" tip="加载中..." />
+      </Flex>
+    );
+  }
+
+  // 错误状态
+  if (error) {
+    return (
+      <div style={{ padding: 24, textAlign: "center" }}>
+        <Alert
+          message="加载失败"
+          description={error}
+          type="error"
+          showIcon
+          action={
+            <button
+              onClick={fetchData}
+              style={{ marginTop: 8, padding: "4px 12px", cursor: "pointer" }}
+            >
+              重试
+            </button>
+          }
+        />
+      </div>
+    );
+  }
+
+  // 数据加载完成，渲染图表
   return (
     <div style={{ padding: 24 }}>
       <Row gutter={[16, 16]}>
+        {/* Hallmarks 热图 */}
         <Col span={24}>
-          <Card>
-            <Space direction="vertical" style={{ width: "100%" }}>
-              <Title level={3}>热图可视化</Title>
-              <Text type="secondary">
-                展示三种term的数据，使用共同的纵坐标，横坐标按TMEcluster分组
-              </Text>
-
-              <Alert
-                message="热图说明"
-                description={
-                  <ul>
-                    <li>纵坐标: terms（按terms_order排序）</li>
-                    <li>横坐标: sampleid（按TMEcluster分组）</li>
-                    <li>颜色: 红色表示正值，蓝色表示负值</li>
-                    <li>垂直线: 分隔不同的TMEcluster</li>
-                  </ul>
-                }
-                type="info"
-                showIcon
-              />
-            </Space>
-          </Card>
+          {data2 ? (
+            <HeatmapChart data={data2} height={chartHeight} />
+          ) : (
+            <div
+              style={{
+                // height: chartHeight,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text type="secondary">暂无数据</Text>
+            </div>
+          )}
         </Col>
 
+        {/* Markergenes 热图 */}
         <Col span={24}>
-          <Card
-            title="图表设置"
-            extra={
-              <Select
-                value={chartHeight}
-                onChange={setChartHeight}
-                style={{ width: 120 }}
-              >
-                <Option value={400}>400px</Option>
-                <Option value={500}>500px</Option>
-                <Option value={600}>600px</Option>
-                <Option value={800}>800px</Option>
-              </Select>
-            }
-          >
-            <HeatmapChart data={data} height={chartHeight} loading={loading} />
-          </Card>
+          {data3 ? (
+            <HeatmapChart data={data3} height={chartHeight} />
+          ) : (
+            <div
+              style={{
+                // height: chartHeight,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text type="secondary">暂无数据</Text>
+            </div>
+          )}
         </Col>
 
-        <Col span={12}>
-          <Card title="数据统计">
-            <Space direction="vertical">
-              <Text>Terms数量: {data?.terms_order_name.length}</Text>
-              <Text>样本数量: {data?.sampleid_order_name.length}</Text>
-              <Text>
-                TMEcluster数量:{" "}
-                {
-                  new Set(data?.sampleid_order_name.map((s) => s.TMEcluster))
-                    .size
-                }
-              </Text>
-              <Text>数据点数量: {data?.Heatmap_Body.length}</Text>
-            </Space>
-          </Card>
+        {/* 主要方法热图 */}
+        <Col span={24}>
+          {data1 ? (
+            <HeatmapChart data={data1} height={chartHeight} />
+          ) : (
+            <div
+              style={{
+                height: chartHeight,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text type="secondary">暂无数据</Text>
+            </div>
+          )}
         </Col>
 
-        <Col span={12}>
-          <Card title="图例说明">
-            <Space direction="vertical">
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: "#d73027",
-                    marginRight: 8,
-                  }}
-                />
-                <Text>高正值</Text>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: "#ffffbf",
-                    marginRight: 8,
-                  }}
-                />
-                <Text>零值附近</Text>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: "#313695",
-                    marginRight: 8,
-                  }}
-                />
-                <Text>高负值</Text>
-              </div>
-            </Space>
-          </Card>
+        {/* 箱体图（使用data1的数据） */}
+        <Col span={24}>
+          {data1 ? (
+            <BoxPlot data={data1} height={chartHeight} />
+          ) : (
+            <div
+              style={{
+                height: chartHeight,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text type="secondary">暂无数据</Text>
+            </div>
+          )}
         </Col>
       </Row>
     </div>

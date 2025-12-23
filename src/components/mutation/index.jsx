@@ -8,7 +8,7 @@ import { debounce } from "lodash";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import TimingAnalysis from "@/components/mutation/timing-analysis";
-import ConditionSelection from "@/components/condition-selection";
+import ConditionSelection from "@/components/clinical-selection";
 import ExportPdfButton from "@/components/export-pdf";
 import {
   Collapse,
