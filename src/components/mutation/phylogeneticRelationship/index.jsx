@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Flex, Typography, Alert, Row, Button } from "antd";
 import styles from "./style.module.scss";
 import TreeDialog from "@/components/tree-dialog";
-import TreeList from "@/components/mutation/phylogeneticRelationship/treeList";
+import TreeList from "@/components/mutation/phylogeneticRelationship/phylogeneticTree";
 import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
 
