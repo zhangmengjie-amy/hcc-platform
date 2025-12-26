@@ -183,6 +183,16 @@ export const getDEGResultList = async (id) => {
   }
 };
 
+export const download = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/immune/downloadCSV`, data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 
 export const getVolcanoPlot = async () => {
   try {

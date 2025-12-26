@@ -1,11 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ConditionSelection from "@/components/clinical-selection";
-import RightPanel from "@/components/expression/subtype-landscape/right-panel";
 import {
   Collapse,
   Radio,
@@ -29,7 +25,7 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
 const RELOAD_ICON = "/images/reload.svg";
 
-const Expression = () => {
+const Split = ({ leftContent, rightContent, leftAction, rightAction }) => {
   const { t } = useTranslation();
   const [dataType, setDataType] = useState("planet");
   const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
@@ -52,35 +48,7 @@ const Expression = () => {
   const paramsRef = useRef(null);
   const pathname = usePathname();
 
-  useEffect(() => {
-    setFetchLoading(true);
-    getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
-      geneRef.current = results?.records ?? [];
-      const driverList = getDriverList();
-      const _params = {
-        ...paramsRef.current,
-        ...clinicList,
-        geneList: getGeneListWithIsDeriverGene(driverList),
-      };
-      setGeneList(driverList);
-      setParams(_params);
-      paramsRef.current = _params;
-      setFetchLoading(false);
-    });
-  }, []);
 
-  const getGeneListWithIsDeriverGene = (list) => {
-    return list.map((gene) => {
-      return {
-        gene,
-        isDriverGene: !!geneRef.current.find((item) => item.gene == gene)?.isDriverGene,
-      };
-    });
-  };
-
-  const getDriverList = () => {
-    return geneRef.current?.filter((item) => !!item.isDriverGene).map((item) => item.gene);
-  };
 
   const handleApply = useCallback(() => {
     setParams(conditionSelectionRef.current?.getParams());
@@ -116,50 +84,11 @@ const Expression = () => {
   }, [mutationTypeTab]);
 
     
-  const dataTypeCollapseTitle = () => {
-    return <Flex justify={"space-between"} align={"center"}>
-      <Typography.Paragraph
-        ellipsis={{
-          rows: 1,
-          expandable: false,
-        }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>Filter By Cohort</Typography.Paragraph>
-
-      <Tooltip placement="bottom" title={t("common:reset-selection")}>
-        <Button color="default" onClick={(event) => {
-          handleDriverReload(event);
-        }} variant="text"
-        style={{ color: "#fff", padding: 0 }}>
-          <Image
-            src={RELOAD_ICON}
-            alt="reload"
-            width={16}
-            height={16}
-            tooltip={t("common:reload")}
-          />
-        </Button>
-      </Tooltip>
-    </Flex>;
-  };
 
   const onDataTypeChange = (e) => {
     setDataType(e.target.value);
   };
 
-  const dataTypeCollapseContent = () => {
-    return <div className={styles.searchCard}
-      variant="borderless">
-      <Radio.Group
-        value={dataType}
-        onChange={onDataTypeChange}
-        options={[
-          { value: "planet", label: "PLANET" },
-          { value: "dt", label: "DT" },
-          { value: "all", label: "All" },
-        ]}
-      />
-    </div>;
-  };
 
   return (
     <>
@@ -167,10 +96,7 @@ const Expression = () => {
       <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
         <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
           <Flex justify="space-between" align="center" style={{ paddingLeft: "10px", height: "40px" }}>
-            <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary"
-              style={{ color: "#fff", background: geneList?.length ? "rgb(237, 108, 116)" : "gray" }}>
-              {t("common:apply")}
-            </Button>
+            {leftAction}
                         
             <Button color="default" variant="text"
               onClick={leftPanelFullScreen}
@@ -183,22 +109,9 @@ const Expression = () => {
               />
             </Button>
           </Flex>
-          <Collapse
-            defaultActiveKey={"dataType"}
-            className={styles.searchCollapse}
-            expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
-            items={[{
-              key: "dataType",
-              label: dataTypeCollapseTitle(),
-              children: dataTypeCollapseContent(),
-
-            }]}>
-          </Collapse>
-          {
-            pathname.split("/")[2] == "clinical" && <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
-          }
+          {leftContent}
         </Panel>
-        <Panel size={rightPanelSize} min={"50%"} max="80%">
+        <Panel size={rightPanelSize} min={"20%"} max="80%">
           <Flex justify="space-between" align="center" style={{ height: "40px", paddingRight: 10 }}>
             <Flex align="center">
               <Button color="default" variant="text"
@@ -211,21 +124,14 @@ const Expression = () => {
                   height={30}
                 />
               </Button>
-
-              <Segmented
-                options={[{ label: <Link href="/expression/subtype">{"Subtype landscape and tree"}</Link> , value: "subtype" },
-                  { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: "pathways" },
-                ]}
-                value={ pathname.split("/")[2]}
-              />
+              {rightAction}
             </Flex>
           </Flex>
-          <RightPanel dataType={dataType} conditions={params}></RightPanel>
-
+          {rightContent}
         </Panel>
       </Splitter>
     </>
   );
 };
 
-export default Expression;
+export default Split;
