@@ -19,8 +19,12 @@ import {
   message,
 } from "antd";
 import { useTranslation } from "react-i18next";
+import CohortMulti from "@/components/condition-selector/cohort-multi";
+import FilterCohort from "@/components/condition-selector/filter-cohort";
+import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 import Image from "next/image";
 const { Panel } = Splitter;
+
 const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
 const DEFAULT_LEFT_PANEL_WIDTH = "25%";
@@ -41,10 +45,31 @@ const LeftContent = () => {
   const [geneList, setGeneList] = useState([]);
   const geneRef = useRef(null);
   const paramsRef = useRef(null);
+  const [selectedClinical, setSelectedClinical] = useState([]);
+  const [selectedClassify, setSelectedClassify] = useState("all");
+  const [selectedTechnology, setSelectedTechnology] = useState("all");
+
+  const onFilterCohortSelection = useCallback((result) => {
+    setSelectedClinical(result.selectedClinical),
+    setSelectedClassify(result.selectedClassify),
+    setSelectedTechnology(result.selectedTechnology)
+  }, []);
+
+  const onCohortSelection = useCallback((result) => {
+      console.log(result)
+  }, []);
+
+  const onGeneSelection = useCallback((result) => {
+    console.log(result)
+  }, [])
 
   return (
     <>
-      leftContent
+      {<FilterCohort onChange={onFilterCohortSelection}></FilterCohort>}
+      {<CohortMulti selectedClassify={selectedClassify}
+        selectedClinical={selectedClinical}
+        selectedTechnology={selectedTechnology} onChange={onCohortSelection} ></CohortMulti>}
+      {<BiomarkersGene onChange={onGeneSelection}></BiomarkersGene>}
     </>
   );
 };

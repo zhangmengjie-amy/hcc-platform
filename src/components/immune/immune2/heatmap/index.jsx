@@ -1,9 +1,10 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useCallback, useRef } from "react";
 import ReactECharts from "echarts-for-react";
 import { Card, Button, Dropdown, Menu } from "antd";
 import { DownloadOutlined, DownOutlined } from "@ant-design/icons";
+import { download } from "@/configs/request";
 
-const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
+const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
   const chartRef = useRef(null);
 
   const { chartData, dynamicHeight, clusterColors, clusterValues } = useMemo(() => {
@@ -514,6 +515,56 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
     );
   }
 
+// utils/downloadUtils.ts
+const downloadBase64CSV = (base64String, filename = 'data.csv') => {
+  try {
+    // Base64解码
+    const binaryString = window.atob(base64String);
+    
+    // 转换为Blob
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    
+    const blob = new Blob([bytes], { type: 'text/csv;charset=utf-8;' });
+    
+    // 创建下载链接
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.href = url;
+    link.download = filename;
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+    
+    return true;
+  } catch (error) {
+    console.error('Base64解码失败:', error);
+    return false;
+  }
+};
+  
+    const downloadCSV = useCallback(async () => {
+      try {
+        // 调用后端接口获取CSV数据
+        const response = await download(params);
+        
+        if (response.code == 200) {
+          downloadBase64CSV(response?.data?.content, response?.data?.fileName);
+        }
+       
+      } catch (error) {
+        console.error("下载失败:", error);
+        // message.error("下载失败");
+      }
+    }, [params]);
+
   return (
     <Card
       style={{
@@ -533,6 +584,7 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
             导出 <DownOutlined />
           </Button>
         </Dropdown>
+        <Button onClick={downloadCSV}>下载CSV</Button>
       </div>
 
       <ReactECharts

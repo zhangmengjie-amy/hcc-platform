@@ -50,7 +50,7 @@ import {
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { getCohortList } from "@/configs/request";
-import styles from "./style.module.scss";
+import styles from "../style.module.scss";
 import { use } from "react";
 const CLASSIFY_COLOR = {
   Tissue: "purple",
@@ -68,13 +68,11 @@ const TECHNOLOGY_COLOR = {
   Sequencing: "magenta",
 };
 const RELOAD_ICON = "/images/reload.svg";
-const CohortCondition = forwardRef(({ selectedClinical=null, selectedClassify=null, selectedTechnology=null }, ref) => {
+const CohortMulti = forwardRef(({onChange, selectedClinical=null, selectedClassify=null, selectedTechnology=null }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
   const cohortListRef = useRef(null);
   const [cohortList, setCohortList] = useState([]);
-  const [selectedCohortKeys, setSelectedCohortKeys] = useState([]);
-
   const handleDriverReload = () => {};
 
   useEffect(() => {
@@ -209,15 +207,10 @@ const CohortCondition = forwardRef(({ selectedClinical=null, selectedClassify=nu
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows,
-      );
-      setSelectedCohortKeys(selectedRowKeys);
+      onChange(selectedRows);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.name === "Disabled User", // Column configuration not to be checked
+      disabled: false,
       name: record.name,
     }),
   };
@@ -262,4 +255,4 @@ const CohortCondition = forwardRef(({ selectedClinical=null, selectedClassify=nu
   );
 });
 
-export default CohortCondition;
+export default CohortMulti;

@@ -1,0 +1,228 @@
+"use client";
+import React, {
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+  useCallback,
+  forwardRef,
+  useMemo,
+} from "react";
+import { usePDF } from "react-to-pdf";
+import {
+  getGeneList,
+  getValidGeneList,
+  getGeneSetList,
+} from "@/configs/request";
+import {
+  CaretRightOutlined,
+  LinkOutlined,
+  UploadOutlined,
+  ApartmentOutlined,
+  BranchesOutlined,
+} from "@ant-design/icons";
+
+
+import {
+  Card,
+  Collapse,
+  Radio,
+  Table,
+  Row,
+  Col,
+  Tag,
+  Tooltip,
+  Space,
+  List,
+  Checkbox,
+  Button,
+  Affix,
+  Spin,
+  Flex,
+  Input,
+  Splitter,
+  Typography,
+  Select,
+  Timeline,
+  Slider,
+  message,
+  Upload,
+  Segmented,
+} from "antd";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
+import { FixedSizeList } from "react-window";
+import styles from "../style.module.scss";
+import { use } from "react";
+
+
+const RELOAD_ICON = "/images/reload.svg";
+const FilterCohort = forwardRef(({ onChange }, ref) => {
+  const { t } = useTranslation();
+  const paramsRef = useRef(null);
+  const [selectedClinical, setSelectedClinical] = useState([]);
+  const [selectedClassify, setSelectedClassify] = useState("all");
+  const [selectedTechnology, setSelectedTechnology] = useState("all");
+
+  const handleDriverReload = () => {};
+
+  useImperativeHandle(ref, () => ({
+    getParams: () => {
+      return paramsRef.current;
+    },
+  }));
+
+  useEffect(() => {
+    onChange({
+        selectedClassify,
+        selectedClinical,
+        selectedTechnology
+    })
+
+  }, [selectedClassify, selectedClinical, selectedTechnology]);
+
+  const cohortCollapseTitle = () => {
+    return (
+      <Flex justify={"space-between"} align={"center"}>
+        <Typography.Paragraph
+          ellipsis={{
+            rows: 1,
+            expandable: false,
+          }}
+          style={{ margin: 0, color: "#fff", fontWeight: "500" }}
+        >
+          Filter Cohort
+        </Typography.Paragraph>
+
+        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+          <Button
+            color="default"
+            onClick={(event) => {
+              handleDriverReload(event);
+            }}
+            variant="text"
+            style={{ color: "#fff", padding: 0 }}
+          >
+            <Image
+              src={RELOAD_ICON}
+              alt="reload"
+              width={16}
+              height={16}
+              tooltip={t("common:reload")}
+            />
+          </Button>
+        </Tooltip>
+      </Flex>
+    );
+  };
+
+  const cohortCollapseContent = () => {
+    return (
+      <div className={styles.searchCard} variant="borderless">
+        <Flex>
+          <Flex
+            vertical
+            flex={1}
+            style={{
+              border: "1px solid #f5f5f5",
+              boxShadow: "0 4px 12px #f5f5f5",
+              padding: "15px",
+              borderRadius: "12px",
+            }}
+          >
+            <Typography.Title level={5}>Clinical</Typography.Title>
+            <Checkbox.Group
+              onChange={setSelectedClinical}
+              value={selectedClinical}
+            >
+              <Flex vertical>
+                <Checkbox value="nt">N/T</Checkbox>
+                <Checkbox value="hbv">HBV</Checkbox>
+                <Checkbox value="hcv">HCV</Checkbox>
+                <Checkbox value="age">Age</Checkbox>
+                <Checkbox value="race">Race</Checkbox>
+                <Checkbox value="stage">Stage</Checkbox>
+                <Checkbox value="gene">Gene</Checkbox>
+              </Flex>
+            </Checkbox.Group>
+          </Flex>
+          <Flex
+            vertical
+            flex={1}
+            style={{
+              marginLeft: "15px",
+              border: "1px solid #f5f5f5",
+              boxShadow: "0 4px 12px #f5f5f5",
+              padding: "15px",
+              borderRadius: "12px",
+            }}
+          >
+            <Typography.Title level={5}>Classify</Typography.Title>
+            <Radio.Group
+              onChange={(e) => {
+                setSelectedClassify(e.target.value);
+              }}
+              value={selectedClassify}
+            >
+              <Flex vertical>
+                <Radio value="Tissue">Tissue</Radio>
+                <Radio value="Celllines">Celllines</Radio>
+                <Radio value="all">All</Radio>
+              </Flex>
+            </Radio.Group>
+          </Flex>
+          <Flex
+            vertical
+            flex={1}
+            style={{
+              marginLeft: "15px",
+              border: "1px solid #f5f5f5",
+              boxShadow: "0 4px 12px #f5f5f5",
+              padding: "15px",
+              borderRadius: "12px",
+            }}
+          >
+            <Typography.Title level={5}>Technology</Typography.Title>
+            <Radio.Group
+              onChange={(e) => {
+                setSelectedTechnology(e.target.value);
+              }}
+              value={selectedTechnology}
+            >
+              <Flex vertical>
+                <Radio value="Sequencing">Sequence</Radio>
+                <Radio value="Micro array">Micro Array</Radio>
+                <Radio value="all">All</Radio>
+              </Flex>
+            </Radio.Group>
+          </Flex>
+        </Flex>
+      </div>
+    );
+  };
+
+  
+  return (
+    <div className={styles.cohortCondition}>
+      <Collapse
+        defaultActiveKey={"cohort"}
+        className={styles.searchCollapse}
+        expandIcon={({ isActive }) => (
+          <CaretRightOutlined
+            style={{ fontSize: 14 }}
+            rotate={isActive ? 90 : 0}
+          />
+        )}
+        items={[
+          {
+            key: "cohort",
+            label: cohortCollapseTitle(),
+            children: cohortCollapseContent(),
+          },
+        ]}
+      ></Collapse>
+    </div>
+  );
+});
+
+export default FilterCohort;
