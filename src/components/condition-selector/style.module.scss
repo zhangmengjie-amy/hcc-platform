@@ -1,12 +1,7 @@
 .cohortCondition {
   .searchCollapse {
-    margin: 10px !important;
+    margin-top: 10px;
     overflow: hidden;
-
-    :global(.ant-collapse-header) {
-      display: flex;
-      align-items: center;
-    }
 
     :global(.ant-card-head) {
       padding: 0 10px;
@@ -14,12 +9,10 @@
     }
 
     :global(.ant-collapse-header) {
-      color: #fff !important;
-    }
-
-    :global(.ant-collapse-header) {
       display: flex;
       align-items: center !important;
+      color: #fff !important;
+      height: 32px;
     }
   }
 }

@@ -14,10 +14,7 @@ import {
   getBiomarkersSingleGene,
 } from "@/configs/request";
 import GeneUpload from "@/components/condition-selector/gene-upload";
-import {
-  CaretRightOutlined,
-} from "@ant-design/icons";
-
+import { CaretRightOutlined } from "@ant-design/icons";
 
 import {
   Card,
@@ -51,17 +48,16 @@ import { FixedSizeList } from "react-window";
 import styles from "../style.module.scss";
 import { use } from "react";
 
-
 const RELOAD_ICON = "/images/reload.svg";
 const BiomarkersGene = forwardRef(({ onChange }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
-   const [singleGeneList, setSingleGeneList] = useState([]);
+  const [singleGeneList, setSingleGeneList] = useState([]);
   const [geneList, setGeneList] = useState([]);
   const [selectedGeneType, setSelectedGeneType] = useState("singleGene");
   const [selectedCustomizedGeneList, setSelectedCustomizedGeneList] = useState([]);
   const [selectedSingleGene, setSelectedSingleGene] = useState("");
-    const [selectedGeneList, setSelectedGeneList] = useState("");
+  const [selectedGeneSet, setSelectedGeneSet] = useState("");
 
   const handleDriverReload = () => {};
 
@@ -73,27 +69,33 @@ const BiomarkersGene = forwardRef(({ onChange }, ref) => {
 
   useEffect(() => {
     // setFetchLoading(true);
-    Promise.all([getBiomarkersSingleGene(), getBiomarkersGeneList()]).then((results) => {
-      const [singleGeneListResult, geneListResult] = results;
-      setSingleGeneList(singleGeneListResult?.data);
-      setSelectedSingleGene(singleGeneListResult?.data[0]?.geneName)
-      setGeneList(geneListResult?.data);
-      setSelectedGeneList(geneListResult?.data[0]?.geneListName)
-      // setFetchLoading(false);
-    }).catch(() => {
-      // setFetchLoading(false);
-    });
-  }, [])
+    Promise.all([getBiomarkersSingleGene(), getBiomarkersGeneList()])
+      .then((results) => {
+        const [singleGeneListResult, geneListResult] = results;
+        setSingleGeneList(singleGeneListResult?.data);
+        setSelectedSingleGene(singleGeneListResult?.data[0]?.geneName);
+        setGeneList(geneListResult?.data);
+        setSelectedGeneSet(geneListResult?.data[0]?.geneListName);
+        // setFetchLoading(false);
+      })
+      .catch(() => {
+        // setFetchLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     onChange({
       selectedGeneType,
       selectedSingleGene,
-      selectedGeneList,
-      selectedCustomizedGeneList
-    })
-
-  }, [selectedGeneType, selectedSingleGene, selectedGeneList, selectedCustomizedGeneList])
+      selectedGeneSet,
+      selectedCustomizedGeneList,
+    });
+  }, [
+    selectedGeneType,
+    selectedSingleGene,
+    selectedGeneSet,
+    selectedCustomizedGeneList,
+  ]);
 
   const biomarkersCollapseTitle = () => {
     return (
@@ -145,8 +147,8 @@ const BiomarkersGene = forwardRef(({ onChange }, ref) => {
             }}
           >
             <Typography.Title level={5}>Gene Type</Typography.Title>
-             <Radio.Group
-                           onChange={(e) => {
+            <Radio.Group
+              onChange={(e) => {
                 setSelectedGeneType(e.target.value);
               }}
               value={selectedGeneType}
@@ -156,85 +158,86 @@ const BiomarkersGene = forwardRef(({ onChange }, ref) => {
                 <Radio value="geneList">Gene List</Radio>
                 <Radio value="customized">Customized</Radio>
               </Flex>
-             </Radio.Group>
-          </Flex>
-          {
-          selectedGeneType == "singleGene" && <Flex
-            vertical
-            flex={1}
-            style={{
-              marginLeft: "15px",
-              border: "1px solid #f5f5f5",
-              boxShadow: "0 4px 12px #f5f5f5",
-              padding: "15px",
-              borderRadius: "12px",
-            }}
-          >
-            <Typography.Title level={5}>Single Gene</Typography.Title>
-            <Radio.Group
-              onChange={(e) => {
-                setSelectedSingleGene(e.target.value);
-              }}
-              value={selectedSingleGene}
-            >
-              <Flex vertical>
-                {
-                  singleGeneList.map((item) => {
-                    return <Radio key={item.geneName} value={item.geneName}>{item.geneName}</Radio>
-                  })
-                }
-                
-              </Flex>
             </Radio.Group>
           </Flex>
-          }
-          {
-            selectedGeneType == "geneList" && <Flex
-            vertical
-            flex={1}
-            style={{
-              marginLeft: "15px",
-              border: "1px solid #f5f5f5",
-              boxShadow: "0 4px 12px #f5f5f5",
-              padding: "15px",
-              borderRadius: "12px",
-            }}
-          >
-            <Typography.Title level={5}>Gene List</Typography.Title>
-            <Radio.Group
-              onChange={(e) => {
-                setSelectedSingleGene(e.target.value);
+          {selectedGeneType == "singleGene" && (
+            <Flex
+              vertical
+              flex={1}
+              style={{
+                marginLeft: "15px",
+                border: "1px solid #f5f5f5",
+                boxShadow: "0 4px 12px #f5f5f5",
+                padding: "15px",
+                borderRadius: "12px",
               }}
-              value={selectedGeneList}
             >
-              <Flex vertical>
-                {
-                  geneList.map((item) => {
-                    return <Radio key={item.geneListName} value={item.geneListName}>{item.geneListName}</Radio>
-                  })
-                }
-                
-              </Flex>
-            </Radio.Group>
-          </Flex>
-          }
-                    {
-            selectedGeneType == "customized" && <Flex
-            vertical
-            flex={1}
-            style={{
-              marginLeft: "15px",
-              border: "1px solid #f5f5f5",
-              boxShadow: "0 4px 12px #f5f5f5",
-              padding: "15px",
-              borderRadius: "12px",
-            }}
-          >
-            <Typography.Title level={5}>Customized</Typography.Title>
-            <GeneUpload onChange={setSelectedCustomizedGeneList}></GeneUpload>
-          </Flex>
-          }
-
+              <Typography.Title level={5}>Single Gene</Typography.Title>
+              <Radio.Group
+                onChange={(e) => {
+                  setSelectedSingleGene(e.target.value);
+                }}
+                value={selectedSingleGene}
+              >
+                <Flex vertical>
+                  {singleGeneList.map((item) => {
+                    return (
+                      <Radio key={item.geneName} value={item.geneName}>
+                        {item.geneName}
+                      </Radio>
+                    );
+                  })}
+                </Flex>
+              </Radio.Group>
+            </Flex>
+          )}
+          {selectedGeneType == "geneList" && (
+            <Flex
+              vertical
+              flex={1}
+              style={{
+                marginLeft: "15px",
+                border: "1px solid #f5f5f5",
+                boxShadow: "0 4px 12px #f5f5f5",
+                padding: "15px",
+                borderRadius: "12px",
+              }}
+            >
+              <Typography.Title level={5}>Gene List</Typography.Title>
+              <Radio.Group
+                onChange={(e) => {
+                  setSelectedGeneSet(e.target.value);
+                }}
+                value={selectedGeneSet}
+              >
+                <Flex vertical>
+                  {geneList.map((item) => {
+                    return (
+                      <Radio key={item.geneListName} value={item.geneListName}>
+                        {item.geneListName}
+                      </Radio>
+                    );
+                  })}
+                </Flex>
+              </Radio.Group>
+            </Flex>
+          )}
+          {selectedGeneType == "customized" && (
+            <Flex
+              vertical
+              flex={1}
+              style={{
+                marginLeft: "15px",
+                border: "1px solid #f5f5f5",
+                boxShadow: "0 4px 12px #f5f5f5",
+                padding: "15px",
+                borderRadius: "12px",
+              }}
+            >
+              <Typography.Title level={5}>Customized</Typography.Title>
+              <GeneUpload onChange={setSelectedCustomizedGeneList}></GeneUpload>
+            </Flex>
+          )}
         </Flex>
       </div>
     );

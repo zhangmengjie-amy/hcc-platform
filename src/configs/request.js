@@ -203,9 +203,29 @@ export const getDEGTaskIds = async (data) => {
   }
 };
 
-export const getDEGResultList = async (id) => {
+export const getDEGResultByTaskId = async (id) => {
   try {
     const response = await post(`/hcc/v1/deg/result/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getBiomarkersTaskIds = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/biomarker/submit`, data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getBiomarkersResultByTaskId = async (id) => {
+  try {
+    const response = await post(`/hcc/v1/biomarker/result/${id}`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);

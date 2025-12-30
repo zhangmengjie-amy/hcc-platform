@@ -151,7 +151,7 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
       </Paragraph>
 
       <Upload {...uploadProps}>
-        <Button icon={<UploadOutlined />} disabled={uploading || processing}>
+        <Button size="small" icon={<UploadOutlined />} disabled={uploading || processing}>
           选择 TXT 文件
         </Button>
       </Upload>

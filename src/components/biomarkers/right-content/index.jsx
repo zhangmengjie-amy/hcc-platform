@@ -42,7 +42,7 @@ const RightContent = () => {
   const [xmlLink, setXMLLink] = useState(null);
 
   useEffect(() => {
-    const fetchXML = async() => {
+    const fetchXML = async () => {
       try {
         // 调用后端接口获取CSV数据
         const response = await getXML();
@@ -50,16 +50,16 @@ const RightContent = () => {
         if (response) {
           setXMLLink(response);
         }
-       
       } catch (error) {
         console.error("下载失败:", error);
         // message.error("下载失败");
       }
-    }
+    };
     fetchXML();
-  }, [])
+  }, []);
   return (
- <div 
+    <div
+      style={{ textAlign: "center" }}
       className="svg-container"
       dangerouslySetInnerHTML={{ __html: xmlLink }}
     />

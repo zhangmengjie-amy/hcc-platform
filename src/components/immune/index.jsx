@@ -148,12 +148,7 @@ const Expression = () => {
               icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />}
               loading={applyLoading}
               onClick={handleApply}
-              type="primary"
-              style={{
-                color: "#fff",
-                background: geneList?.length ? "rgb(237, 108, 116)" : "gray",
-              }}
-            >
+              type="primary">
               {t("common:apply")}
             </Button>
 

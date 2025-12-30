@@ -127,11 +127,15 @@ const HeatmapPage = ({ conditions }) => {
         {/* Hallmarks 热图 */}
         <Col span={24}>
           {data2 ? (
-            <HeatmapChart params={{
-        method: "hallmarks",
-        tmeGroupBy: "cibersort",
-        cohort: conditions?.numbers?.[0],
-      }} data={data2} height={chartHeight} />
+            <HeatmapChart
+              params={{
+                method: "hallmarks",
+                tmeGroupBy: "cibersort",
+                cohort: conditions?.numbers?.[0],
+              }}
+              data={data2}
+              height={chartHeight}
+            />
           ) : (
             <div
               style={{
@@ -149,13 +153,15 @@ const HeatmapPage = ({ conditions }) => {
         {/* Markergenes 热图 */}
         <Col span={24}>
           {data3 ? (
-            <HeatmapChart params={
-              {
-        method: "markergenes",
-        tmeGroupBy: "cibersort",
-        cohort: conditions?.numbers?.[0],
-      }
-            } data={data3} height={chartHeight} />
+            <HeatmapChart
+              params={{
+                method: "markergenes",
+                tmeGroupBy: "cibersort",
+                cohort: conditions?.numbers?.[0],
+              }}
+              data={data3}
+              height={chartHeight}
+            />
           ) : (
             <div
               style={{
@@ -173,11 +179,15 @@ const HeatmapPage = ({ conditions }) => {
         {/* 主要方法热图 */}
         <Col span={24}>
           {data1 ? (
-            <HeatmapChart params={{
-                      method: conditions?.method,
-                      tmeGroupBy: conditions?.method,
-                      cohort: conditions?.numbers?.[0],
-            }} data={data1} height={chartHeight} />
+            <HeatmapChart
+              params={{
+                method: conditions?.method,
+                tmeGroupBy: conditions?.method,
+                cohort: conditions?.numbers?.[0],
+              }}
+              data={data1}
+              height={chartHeight}
+            />
           ) : (
             <div
               style={{

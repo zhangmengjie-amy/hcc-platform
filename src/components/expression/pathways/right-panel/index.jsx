@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   getCohortList,
   getDEGTaskIds,
-  getDEGResultList,
+  getDEGResultByTaskId,
 } from "@/configs/request";
 import VolcanoPlot from "@/components/expression/pathways/right-panel/volcano-plot";
 import {
@@ -118,7 +118,7 @@ const Pathways = ({ conditions }) => {
       const cohortPromises = Object.entries(taskList).map(
         async ([cohortKey, taskId]) => {
           try {
-            const result = await getDEGResultList(taskId);
+            const result = await getDEGResultByTaskId(taskId);
 
             const cohortInfo = cohortListRef.current?.find(
               (cohort) => cohort.number === cohortKey,
