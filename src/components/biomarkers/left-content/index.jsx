@@ -5,6 +5,7 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
+  useLayoutEffect,
 } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -12,7 +13,7 @@ import CohortSelection from "@/components/condition-selector/cohort-selection";
 import FilterCohort from "@/components/condition-selector/filter-cohort";
 import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 
-const LeftContent = forwardRef(( {}, ref) => {
+const LeftContent = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
   const [selectedClinical, setSelectedClinical] = useState([]);
@@ -31,19 +32,21 @@ const LeftContent = forwardRef(( {}, ref) => {
     setSelectedTechnology(result.selectedTechnology);
   }, []);
 
-  const onCohortSelection = useCallback((result) => {
+  const onSelection = useCallback((result) => {
     paramsRef.current = {
       ...paramsRef.current,
       ...result,
     };
   }, []);
 
-  const onGeneSelection = useCallback((result) => {
+
+  const onReady = (result) => {
     paramsRef.current = {
       ...paramsRef.current,
       ...result,
     };
-  }, []);
+    handleOnReady(paramsRef.current);
+  };
 
   return (
     <>
@@ -53,10 +56,11 @@ const LeftContent = forwardRef(( {}, ref) => {
           selectedClassify={selectedClassify}
           selectedClinical={selectedClinical}
           selectedTechnology={selectedTechnology}
-          onChange={onCohortSelection}
+          onChange={onSelection}
+          onReady={onReady}
         ></CohortSelection>
       }
-      {<BiomarkersGene onChange={onGeneSelection}></BiomarkersGene>}
+      {<BiomarkersGene onChange={onSelection} onReady={onReady}></BiomarkersGene>}
     </>
   );
 });

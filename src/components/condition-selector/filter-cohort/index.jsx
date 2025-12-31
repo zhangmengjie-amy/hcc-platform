@@ -74,10 +74,10 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
 
   useEffect(() => {
     onChange({
-        selectedClassify,
-        selectedClinical,
-        selectedTechnology
-    })
+      selectedClassify,
+      selectedClinical,
+      selectedTechnology,
+    });
 
   }, [selectedClassify, selectedClinical, selectedTechnology]);
 

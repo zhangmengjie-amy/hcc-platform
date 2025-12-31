@@ -73,6 +73,7 @@ const CohortSelection = forwardRef(
     {
       selectionType = "checkbox",
       onChange,
+      onReady,
       selectedClinical = null,
       selectedClassify = null,
       selectedTechnology = null,
@@ -82,13 +83,16 @@ const CohortSelection = forwardRef(
     const { t } = useTranslation();
     const paramsRef = useRef(null);
     const cohortListRef = useRef(null);
+    const [loading, setLoading] = useState(true);
     const [cohortList, setCohortList] = useState([]);
-    const handleDriverReload = () => {};
 
     useEffect(() => {
+      setLoading(true);
       getCohortList().then((data) => {
         cohortListRef.current = data;
         setCohortList(data);
+        setLoading(false);
+        onReady({ selectedRows: [data[0]] });
       });
     }, []);
 
@@ -117,7 +121,7 @@ const CohortSelection = forwardRef(
       {
         title: "Cohort",
         dataIndex: "number",
-        render: (text) => <a>{text}</a>,
+        render: (text) => <a style={{ fontSize: "16px" }}>{text}</a>,
       },
       {
         title: "Level",
@@ -159,10 +163,7 @@ const CohortSelection = forwardRef(
         title: "DOI",
         dataIndex: "doi",
         render: (text) => (
-          <Tooltip
-            title={`https://doi.org/${text}`}
-            placement="top"
-          >
+          <Tooltip title={`https://doi.org/${text}`} placement="top">
             <Tag>
               <a href={`https://doi.org/${text}`} target="_blank">
                 <LinkOutlined />
@@ -235,16 +236,25 @@ const CohortSelection = forwardRef(
     const tableCollapseContent = () => {
       return (
         <div className={styles.searchCard} variant="borderless">
-          {
+          {loading ? (
+            <Flex align="center" justify="center">
+              <Spin></Spin>
+            </Flex>
+          ) : (
             <Table
               rowKey="number" // 或者使用函数
               pagination={{ size: 10 }}
               size="small"
-              rowSelection={{ type: selectionType, ...rowSelection }}
+              loading={loading}
+              rowSelection={{
+                type: selectionType,
+                defaultSelectedRowKeys: [cohortList[0]?.number],
+                ...rowSelection,
+              }}
               columns={columns}
               dataSource={cohortList}
             />
-          }
+          )}
         </div>
       );
     };
