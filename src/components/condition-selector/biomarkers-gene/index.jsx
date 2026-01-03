@@ -168,7 +168,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
             >
               <Flex vertical>
                 <Radio value="singleGene">Single Gene</Radio>
-                <Radio value="geneList">Gene List</Radio>
+                <Radio value="geneLists">Gene List</Radio>
                 <Radio value="customized">Customized</Radio>
               </Flex>
             </Radio.Group>
@@ -211,10 +211,10 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                     value={selectedSingleGene}
                   >
                     <Flex vertical>
-                      {singleGeneList.map((item) => {
+                      {singleGeneList?.map((item) => {
                         return (
-                          <div style={{ marginBottom: "5px" }}>
-                            <Radio key={item.geneName} value={item.geneName}>
+                          <div style={{ marginBottom: "5px" }} key={item.geneName}>
+                            <Radio value={item.geneName}>
                               {item.geneName}
                             </Radio>
                             <Tag style={{ float: "right" }} color={GENE_SET_COLOR[item.label]}>{item.label}</Tag>
@@ -225,7 +225,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                   </Radio.Group>
                 </Flex>
               )}
-              {selectedGeneType == "geneList" && (
+              {selectedGeneType == "geneLists" && (
                 <Flex
                   vertical
                   flex={2}

@@ -92,7 +92,7 @@ const CohortSelection = forwardRef(
         cohortListRef.current = data;
         setCohortList(data);
         setLoading(false);
-        onReady({ selectedRows: [data[0]] });
+        onReady({ selectedRows: [data?.[0], data?.[1]] });
       });
     }, []);
 
@@ -248,7 +248,7 @@ const CohortSelection = forwardRef(
               loading={loading}
               rowSelection={{
                 type: selectionType,
-                defaultSelectedRowKeys: [cohortList[0]?.number],
+                defaultSelectedRowKeys: [cohortList?.[0]?.number, cohortList?.[1]?.number,],
                 ...rowSelection,
               }}
               columns={columns}

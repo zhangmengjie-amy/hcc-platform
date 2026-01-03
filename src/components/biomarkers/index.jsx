@@ -16,8 +16,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getBiomarkers } from "@/configs/request";
 import SplitBar from "@/components/split-bar";
-import LeftContent from "@/components/biomarkers/left-content";
-import RightContent from "@/components/biomarkers/right-content";
+import PollingManager from "@/components/polling-manager";
+import ClinicalContent from "./right-content/clinical";
+import ClinicalCondition from "./left-content/clinical"
+import Biomarkers2Content from "./right-content/biomarkers2";
 import {
   Collapse,
   Radio,
@@ -46,10 +48,12 @@ const Biomarkers = () => {
   const [contentType, setContentType] = useState("clinical");
   const [applyLoading, setApplyLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const leftContentRef = useRef(null);
+  const [pollingData, setPollingData] = useState(null);
+  const [pollingResultData, setPollingResultData] = useState(null);
+  const clinicalConditionRef = useRef(null);
 
   const handleApply = useCallback(async () => {
-    const params = leftContentRef.current?.getParams();
+    const params = clinicalConditionRef.current?.getParams();
     applyMethod(params);
 
   }, [applyLoading]);
@@ -74,7 +78,7 @@ const Biomarkers = () => {
     }
     setApplyLoading(false);
     const taskIds = await fetchTaskIds(params);
-    setTaskIdsWithCohort(taskIds);
+    setTaskIdsWithCohort(taskIds?.data);
   };
 
   const handleOnReady = useCallback(async (params) => {
@@ -83,11 +87,13 @@ const Biomarkers = () => {
 
   useEffect(() => {
     if (!taskIdsWithCohort) return;
-    const fetchResult = async () => {
-      const results = await fetchBiomarkersData(taskIdsWithCohort);
-      console.log("results", results);
-    };
-    fetchResult();
+    setPollingData({
+        taskIds: taskIdsWithCohort,
+        cohortInfo: clinicalConditionRef.current?.getParams()?.selectedRows?.reduce((acc, row) => {
+          acc[row.number] = { name: row.name || `Cohort ${row.number}` };
+          return acc;
+        }, {})
+      });
     
   }, [taskIdsWithCohort]);
 
@@ -152,7 +158,7 @@ const Biomarkers = () => {
         customizedGenes: [],
       };
 
-    case "geneList":
+    case "geneLists":
       return {
         ...baseParams,
         biomarkerName: selectedGeneSet || "",
@@ -184,6 +190,12 @@ const Biomarkers = () => {
     );
   }, []);
 
+   const handlePollingComplete = useCallback((results) => {
+    console.log("All polling results:", results);
+    // 这里可以将结果传递给 RightContent 组件
+    setPollingResultData(results);
+  }, []);
+
   const rightAction = useMemo(() => {
     return (
       <Segmented
@@ -208,12 +220,28 @@ const Biomarkers = () => {
         rightAction={rightAction}
         leftContent={
           <>
-            <LeftContent ref={leftContentRef} handleOnReady={handleOnReady}></LeftContent>
+            {
+              contentType === "clinical" ? 
+              <ClinicalCondition ref={clinicalConditionRef} handleOnReady={handleOnReady}></ClinicalCondition>
+              : null
+            }
           </>
         }
         rightContent={
           <>
-            <RightContent></RightContent>
+            <PollingManager 
+                pollingData={pollingData} 
+                onComplete={handlePollingComplete}
+            />
+          {
+            
+            contentType === "clinical" ? <>
+
+              <ClinicalContent pollingResults={pollingResultData}></ClinicalContent>
+            </> : <Biomarkers2Content>
+
+            </Biomarkers2Content>
+          }
           </>
         }
       ></SplitBar>

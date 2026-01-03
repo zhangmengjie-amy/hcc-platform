@@ -28,9 +28,9 @@ import styles from "../style.module.scss";
 import { use } from "react";
 
 const RELOAD_ICON = "/images/reload.svg";
-const DEGMethod = forwardRef(({ module = "DEG" }, ref) => {
+const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
     const { t } = useTranslation();
-    const [method, setMethod] = useState("");
+    const [method, setMethod] = useState("cibersort");
     const handleDriverReload = () => { };
     const methodCollapseTitle = () => {
         return (

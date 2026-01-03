@@ -9,11 +9,11 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import CohortSelection from "@/components/condition-selector/cohort-selection";
+import CohortSelection from "@/components/condition-selector/cohort-table";
 import FilterCohort from "@/components/condition-selector/filter-cohort";
 import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 
-const LeftContent = forwardRef(( { handleOnReady }, ref) => {
+const Clinical = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
   const [selectedClinical, setSelectedClinical] = useState([]);
@@ -65,4 +65,4 @@ const LeftContent = forwardRef(( { handleOnReady }, ref) => {
   );
 });
 
-export default LeftContent;
+export default Clinical;
