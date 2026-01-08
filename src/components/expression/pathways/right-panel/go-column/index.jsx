@@ -72,7 +72,7 @@ const GoBarChart = ({
       
       // 获取 GeneRatio 值（优先使用 BP 的 GeneRatio，如果没有则使用 CC 的）
       const ratioItem = bpItem || ccItem;
-      allGeneRatios.push(ratioItem ? ratioItem.ID : "");
+      allGeneRatios.push(ratioItem ? ratioItem.id : "");
     });
 
     return { bpData, ccData, allDescriptions, allGeneRatios, bpWithDescription, ccWithDescription };
@@ -121,7 +121,7 @@ const GoBarChart = ({
                 item.description === params[0].name && 
                 item.ontology === param.seriesName,
               );
-              const geneRatio = dataItem ? dataItem.ID : "";
+              const geneRatio = dataItem ? dataItem.id : "";
               
               result += `
                 <div style="line-height: 1.4; margin-bottom: 4px;">
@@ -139,7 +139,7 @@ const GoBarChart = ({
           const currentData = chartData.find(item => 
             item.description === params[0].name,
           );
-          const totalGeneRatio = currentData ? currentData.ID : "";
+          const totalGeneRatio = currentData ? currentData.id : "";
           
           result += `<div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid #eee; font-weight: bold;">
             总计基因数: ${totalCount}<br/>

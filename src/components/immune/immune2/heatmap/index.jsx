@@ -1,123 +1,130 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useCallback, useRef } from "react";
 import ReactECharts from "echarts-for-react";
 import { Card, Button, Dropdown, Menu } from "antd";
 import { DownloadOutlined, DownOutlined } from "@ant-design/icons";
+import { download } from "@/configs/request";
 
-const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
+const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
   const chartRef = useRef(null);
 
-  const { chartData, dynamicHeight, clusterColors, clusterValues } = useMemo(() => {
-    if (!data || !data.Heatmap_Body || data.Heatmap_Body.length === 0) {
-      return { chartData: null, dynamicHeight: 400, clusterColors: {}, clusterValues: {} };
-    }
+  const { chartData, dynamicHeight, clusterColors, clusterValues } =
+    useMemo(() => {
+      if (!data || !data.Heatmap_Body || data.Heatmap_Body.length === 0) {
+        return {
+          chartData: null,
+          dynamicHeight: 400,
+          clusterColors: {},
+          clusterValues: {},
+        };
+      }
 
-    // 1. 按terms_order排序纵坐标
-    const sortedTerms = [...data.terms_order_name].sort(
-      (a, b) => a.terms_order - b.terms_order,
-    );
+      // 1. 按terms_order排序纵坐标
+      const sortedTerms = [...data.terms_order_name].sort(
+        (a, b) => a.terms_order - b.terms_order,
+      );
 
-    // 2. 获取所有唯一的TMEcluster并按照数字排序（TME1, TME2, TME3...）
-    const uniqueClusters = [
-      ...new Set(data.sampleid_order_name.map((item) => item.TMEcluster)),
-    ].sort((a, b) => {
-      // 提取数字部分进行排序
-      const numA = parseInt(a.replace(/\D/g, "")) || 0;
-      const numB = parseInt(b.replace(/\D/g, "")) || 0;
-      return numA - numB;
-    });
+      // 2. 获取所有唯一的TMEcluster并按照数字排序（TME1, TME2, TME3...）
+      const uniqueClusters = [
+        ...new Set(data.sampleid_order_name.map((item) => item.TMEcluster)),
+      ].sort((a, b) => {
+        // 提取数字部分进行排序
+        const numA = parseInt(a.replace(/\D/g, "")) || 0;
+        const numB = parseInt(b.replace(/\D/g, "")) || 0;
+        return numA - numB;
+      });
 
-    // 3. 为每个cluster分配不同的颜色和数值
-    const colorPalette = [
-      "#FF6B6B", // 红色 - TME1
-      "#4ECDC4", // 青色 - TME2
-      "#FFD166", // 黄色 - TME3
-      "#06D6A0", // 绿色
-      "#118AB2", // 蓝色
-      "#073B4C", // 深蓝色
-      "#EF476F", // 粉色
-      "#FF9A00", // 橙色
-      "#7209B7", // 紫色
-      "#3A86FF", // 亮蓝色
-    ];
+      // 3. 为每个cluster分配不同的颜色和数值
+      const colorPalette = [
+        "#FF6B6B", // 红色 - TME1
+        "#4ECDC4", // 青色 - TME2
+        "#FFD166", // 黄色 - TME3
+        "#06D6A0", // 绿色
+        "#118AB2", // 蓝色
+        "#073B4C", // 深蓝色
+        "#EF476F", // 粉色
+        "#FF9A00", // 橙色
+        "#7209B7", // 紫色
+        "#3A86FF", // 亮蓝色
+      ];
 
-    const clusterColors = {};
-    const clusterValues = {}; // 为每个cluster分配一个数值，用于visualMap映射
-    uniqueClusters.forEach((cluster, index) => {
-      clusterColors[cluster] = colorPalette[index % colorPalette.length];
-      clusterValues[cluster] = index + 1; // 从1开始，TME1=1, TME2=2, TME3=3
-    });
+      const clusterColors = {};
+      const clusterValues = {}; // 为每个cluster分配一个数值，用于visualMap映射
+      uniqueClusters.forEach((cluster, index) => {
+        clusterColors[cluster] = colorPalette[index % colorPalette.length];
+        clusterValues[cluster] = index + 1; // 从1开始，TME1=1, TME2=2, TME3=3
+      });
 
-    // 4. 按照cluster分组，并按照sampleid_order排序
-    const clusterSamples = {};
-    const clusterData = {};
+      // 4. 按照cluster分组，并按照sampleid_order排序
+      const clusterSamples = {};
+      const clusterData = {};
 
-    // 初始化数据结构
-    uniqueClusters.forEach((cluster) => {
-      clusterSamples[cluster] = [];
-      clusterData[cluster] = [];
-    });
+      // 初始化数据结构
+      uniqueClusters.forEach((cluster) => {
+        clusterSamples[cluster] = [];
+        clusterData[cluster] = [];
+      });
 
-    // 5. 按cluster分组并排序
-    uniqueClusters.forEach((cluster) => {
-      // 获取该cluster的所有样本，按sampleid_order从小到大排序
-      const samples = data.sampleid_order_name
-        .filter((item) => item.TMEcluster === cluster)
-        .sort((a, b) => a.sampleid_order - b.sampleid_order);
+      // 5. 按cluster分组并排序
+      uniqueClusters.forEach((cluster) => {
+        // 获取该cluster的所有样本，按sampleid_order从小到大排序
+        const samples = data.sampleid_order_name
+          .filter((item) => item.TMEcluster === cluster)
+          .sort((a, b) => a.sampleid_order - b.sampleid_order);
 
-      clusterSamples[cluster] = samples;
-    });
+        clusterSamples[cluster] = samples;
+      });
 
-    // 6. 为每个cluster构建热图数据
-    uniqueClusters.forEach((cluster) => {
-      const samples = clusterSamples[cluster];
-      const sampleIds = samples.map((s) => s.sampleid_order);
+      // 6. 为每个cluster构建热图数据
+      uniqueClusters.forEach((cluster) => {
+        const samples = clusterSamples[cluster];
+        const sampleIds = samples.map((s) => s.sampleid_order);
 
-      sortedTerms.forEach((term, termIndex) => {
-        const termName = term.terms;
+        sortedTerms.forEach((term, termIndex) => {
+          const termName = term.terms;
 
-        sampleIds.forEach((sampleId, sampleIndex) => {
-          // 查找对应的数据点
-          const point = data.Heatmap_Body.find(
-            (item) =>
-              item.terms === termName &&
-              item.sampleid_order === sampleId &&
-              item.TMEcluster === cluster,
-          );
+          sampleIds.forEach((sampleId, sampleIndex) => {
+            // 查找对应的数据点
+            const point = data.Heatmap_Body.find(
+              (item) =>
+                item.terms === termName &&
+                item.sampleid_order === sampleId &&
+                item.TMEcluster === cluster,
+            );
 
-          if (point) {
-            // y+1：为cluster行留出位置，热图数据从第二行开始
-            clusterData[cluster].push([
-              sampleIndex, // 该cluster内的x索引
-              termIndex + 1, // 全局的y索引，+1为cluster行留位置
-              parseFloat(point.value),
-            ]);
-          } else {
-            // 如果没有数据，填充0
-            clusterData[cluster].push([sampleIndex, termIndex + 1, 0]);
-          }
+            if (point) {
+              // y+1：为cluster行留出位置，热图数据从第二行开始
+              clusterData[cluster].push([
+                sampleIndex, // 该cluster内的x索引
+                termIndex + 1, // 全局的y索引，+1为cluster行留位置
+                parseFloat(point.value),
+              ]);
+            } else {
+              // 如果没有数据，填充0
+              clusterData[cluster].push([sampleIndex, termIndex + 1, 0]);
+            }
+          });
         });
       });
-    });
 
-    // 7. 计算动态高度：基于cellSize和术语数量 + 1行cluster条
-    const totalTerms = sortedTerms.length;
-    const dynamicHeight = (totalTerms + 1) * cellSize + heightPadding; // +1 为新增的cluster行
+      // 7. 计算动态高度：基于cellSize和术语数量 + 1行cluster条
+      const totalTerms = sortedTerms.length;
+      const dynamicHeight = (totalTerms + 1) * cellSize + heightPadding; // +1 为新增的cluster行
 
-    return {
-      chartData: {
-        termNames: sortedTerms.map((term) => term.terms),
-        clusterData,
-        clusterSamples,
-        uniqueClusters,
+      return {
+        chartData: {
+          termNames: sortedTerms.map((term) => term.terms),
+          clusterData,
+          clusterSamples,
+          uniqueClusters,
+          clusterValues,
+          absMax: 3, // 至少3
+          totalTerms: sortedTerms.length,
+        },
+        dynamicHeight,
+        clusterColors,
         clusterValues,
-        absMax: 3, // 至少3
-        totalTerms: sortedTerms.length,
-      },
-      dynamicHeight,
-      clusterColors,
-      clusterValues,
-    };
-  }, [data, cellSize, heightPadding]);
+      };
+    }, [data, cellSize, heightPadding]);
 
   // 使用ECharts的getDataURL方法实现导出
   const handleExport = (type) => {
@@ -125,19 +132,19 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
 
     try {
       const echartsInstance = chartRef.current.getEchartsInstance();
-      
+
       // 构建导出配置
       const exportConfig = {
         type,
         pixelRatio: 2,
         excludeComponents: ["toolbox"],
       };
-      
+
       // 只为JPG格式设置白色背景
       if (type === "jpg") {
         exportConfig.backgroundColor = "#ffffff";
       }
-      
+
       // 获取数据URL
       const dataUrl = echartsInstance.getDataURL(exportConfig);
 
@@ -283,7 +290,9 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
     const yAxisData = ["Cluster", ...termNames];
 
     // 5. 为cluster颜色条创建独立的visualMap
-    const clusterColorRange = uniqueClusters.map(cluster => clusterColors[cluster]);
+    const clusterColorRange = uniqueClusters.map(
+      (cluster) => clusterColors[cluster],
+    );
 
     // 6. 构建完整的echarts配置
     const option = {
@@ -317,7 +326,7 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
           }
           return name;
         },
-        data: uniqueClusters.map(cluster => ({
+        data: uniqueClusters.map((cluster) => ({
           name: cluster,
           itemStyle: {
             color: clusterColors[cluster],
@@ -514,6 +523,55 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
     );
   }
 
+  // utils/downloadUtils.ts
+  const downloadBase64CSV = (base64String, filename = "data.csv") => {
+    try {
+      // Base64解码
+      const binaryString = window.atob(base64String);
+
+      // 转换为Blob
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      const blob = new Blob([bytes], { type: "text/csv;charset=utf-8;" });
+
+      // 创建下载链接
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+
+      link.href = url;
+      link.download = filename;
+      link.style.visibility = "hidden";
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+
+      return true;
+    } catch (error) {
+      console.error("Base64解码失败:", error);
+      return false;
+    }
+  };
+
+  const downloadCSV = useCallback(async () => {
+    try {
+      // 调用后端接口获取CSV数据
+      const response = await download(params);
+
+      if (response.code == 200) {
+        downloadBase64CSV(response?.data?.csvContent, response?.data?.fileName);
+      }
+    } catch (error) {
+      console.error("下载失败:", error);
+      // message.error("下载失败");
+    }
+  }, [params]);
+
   return (
     <Card
       style={{
@@ -533,6 +591,7 @@ const HeatmapChart = ({ data, cellSize = 10, heightPadding = 150 }) => {
             导出 <DownOutlined />
           </Button>
         </Dropdown>
+        <Button onClick={downloadCSV}>下载CSV</Button>
       </div>
 
       <ReactECharts

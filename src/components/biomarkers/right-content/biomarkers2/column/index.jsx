@@ -15,44 +15,27 @@ const SUBTYPE_COLOR = {
   "Wnt": "rgba(235, 162, 127, 1)",
 };
 
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-  "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-  "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-  "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
-  "C1,C2,C3,C4,C5,C6",
-];
-
 const MIXED_PURE = {
   "Pure": "rgb(106, 194, 165)",
   "Mixed": "rgb(158, 153, 197)",
 };
 
-const MIXED_PURE_BG = {
-  "Pure": "rgb(239, 249, 247)",
-  "Mixed": "rgb(247, 240, 247)",
-};
 
 const STAGE_COLOR = {
   "I": "rgb(250, 213, 120)",
   "II": "rgb(245, 138, 66)",
   "III": "rgb(224, 36, 40)",
 };
-
-const defaultValue = 1;
-const spaceValue = 0.2;
-const spaceValue_lg = 0.2;
-const ColumnChart = ({ data, patientId, handleItemClick }) => {
+const ColumnChart = ({ data, patientId, handleItemClick, biomarkerMode = true, biomarkerColorMap }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);
 
   const [currentPatientId, setCurrentPatientId] = useState(null);
-
   useEffect(() => {
     if (!data) return;
     const _option = buildOption(data);
     setOption(_option);
-  }, [data, currentPatientId]);
+  }, [data, currentPatientId, biomarkerColorMap, biomarkerMode]);
   const filterPatients = (data) => {
     return data?.filter((item) => !!item.subtypes);
   };
@@ -73,9 +56,10 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
             custom: {
               patientId: patient.patientId,
               PURE_MIXED: isPure ? "Pure" : "Mixed",
-              sampleId: item.sampleId,
+              sampleId: item.id,
               stage: patient.stage,
               subtype: item.subtype,
+              score: biomarkerColorMap?.[item.id]?.score,
             },
             itemStyle: {
               color: MIXED_PURE[isPure ? "Pure" : "Mixed"],
@@ -88,9 +72,10 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
             custom: {
               patientId: patient.patientId,
               PURE_MIXED: isPure ? "Pure" : "Mixed",
-              sampleId: item.sampleId,
+              sampleId: item.id,
               stage: patient.stage,
               subtype: item.subtype,
+              score: biomarkerColorMap?.[item.id]?.score,
             },
             itemStyle: {
               color: STAGE_COLOR[patient.stage],
@@ -104,15 +89,15 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
           custom: {
             patientId: patient.patientId,
             PURE_MIXED: isPure ? "Pure" : "Mixed",
-            sampleId: item.sampleId,
+            id: item.id,
             stage: patient.stage,
             subtype: item.subtype,
+            score: biomarkerColorMap?.[item.id]?.score,
           },
           itemStyle: {
-            color: SUBTYPE_COLOR[item.subtype],
+            color: biomarkerMode ? (biomarkerColorMap?.[item.id]?.color ?? "#fff") : SUBTYPE_COLOR[item.subtype],
             borderWidth: 2, // 设置边框宽度
             borderColor: "#fff", // 设置边框颜色
-
           },
         });
       });
@@ -165,7 +150,7 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
               fontWeight: "bold",
             },
           },
-          rotate: 0, // 倾斜45度
+          rotate: 45, // 倾斜45度
           interval: 0, // 显示所有标签
           margin: 10, // 标签与坐标轴的间距
         },
@@ -177,8 +162,9 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
         formatter: (event) => {
           return `<div>
                     ${event?.data?.custom?.patientId ? `<div style="color: #000"><span>Patient ID: </span><span style="color: #666">${event?.data?.custom?.patientId}</span></div>` : ""}
-                     <div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${event.color}"></span>Subtype: <span style="color: #666">${event?.data?.custom?.subtype}</span></div>
-                    ${event?.data?.custom?.sampleId ? `<div style="color: #000"><span>Sample ID: </span><span style="color: #666">${event?.data?.custom?.sampleId}</span></div>` : ""} 
+                    ${event?.data?.custom?.id ? `<div style="color: #000"><span>Sample ID: </span><span style="color: #666">${event?.data?.custom?.id}</span></div>` : ""} 
+                    ${!biomarkerMode ? <div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${event.color}"></span>Subtype: <span style="color: #666">${event?.data?.custom?.subtype}</span></div> : ""}
+                    ${event?.data?.custom?.score && biomarkerMode ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${event.color}"></span>Biomarkers Score: <span style="color: #666">${event?.data?.custom?.score}</span></div>` : ""} 
                     ${event?.data?.custom?.stage ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${STAGE_COLOR[event?.data?.custom?.stage]}"></span><span>Stage: </span><span style="color: #666">${event?.data?.custom?.stage}</span></div>` : ""}
                     ${event?.data?.custom?.PURE_MIXED ? `<div style="color: #000"><span style="margin-right: 5px; display: inline-block; width: 10px; height: 10px; background-color: ${MIXED_PURE[event?.data?.custom?.PURE_MIXED]}"></span><span>RNA Mixed or Pure: </span><span style="color: #666">${event?.data?.custom?.PURE_MIXED}</span></div>` : ""} 
                     </div>`;

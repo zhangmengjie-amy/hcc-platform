@@ -186,7 +186,6 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
       render: (text) => (
         <Tooltip
           title={`https://doi.org/${text}`}
-          color={"rgb(10, 186, 181)"}
           placement="top"
         >
           <Tag>

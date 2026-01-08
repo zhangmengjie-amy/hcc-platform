@@ -163,6 +163,37 @@ export const getMutationHeatmapList = async () => {
   }
 };
 
+export const getBiomarkersSingleGene = async () => {
+  try {
+    const response = await post(`/hcc/v1/single-genes`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getBiomarkersGeneList = async () => {
+  try {
+    const response = await post(`/hcc/v1/gene-lists`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getBiomarkersScore = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/biomarker/genesScore`, data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+  
+
 export const getDEGTaskIds = async (data) => {
   try {
     const response = await post(`/hcc/v1/deg/submit`, data);
@@ -173,9 +204,39 @@ export const getDEGTaskIds = async (data) => {
   }
 };
 
-export const getDEGResultList = async (id) => {
+export const getDEGResultByTaskId = async (id) => {
   try {
     const response = await post(`/hcc/v1/deg/result/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getBiomarkersTaskIds = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/biomarker/submit`, data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getBiomarkersResultByTaskId = async (id) => {
+  try {
+    const response = await post(`/hcc/v1/biomarker/result/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const download = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/immune/downloadCSV`, data);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);

@@ -61,7 +61,7 @@ const HCCFooter = () => {
           </Paragraph>
         </Col>
       </Row>
-      <Row style={{ backgroundColor: "rgb(10, 186, 181)", padding: "15px 0" }}>
+      <Row style={{ borderTop: "1px solid #ccc", padding: "15px 0" }}>
         <Col xs={24} sm={24} md={24} lg={24}
           style={{
             textAlign: "center",

@@ -26,7 +26,7 @@ const VolcanoPlot = ({
     data?.forEach(item => {
       const point = {
         name: item.geneName,
-        value: [item.logFC, item["log10_adj.P.Val"]],
+        value: [item.logFC, item["log10AdjPVal"]],
         itemStyle: {
           color: COLOR_MAP[item.significance] || COLOR_MAP["Not Significant"],
         },

@@ -42,7 +42,7 @@ const STAGE_COLOR = {
 
 const defaultValue = 1;
 const spaceValue = 0.2;
-const SunburstChart = ({ data, patientId, handleItemClick }) => {
+const SunburstChart = ({ data, patientId, handleItemClick, biomarkerMode = true, biomarkerColorMap }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);
 
@@ -50,9 +50,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     if (!data) return;
     const _option = buildOption();
     setOption(_option);
-  }, [data, patientId]);
-
-
+  }, [data, patientId, biomarkerColorMap]);
 
   const sortedPatientById = (patientList) => {
     return patientList?.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1]);
@@ -176,7 +174,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
       },
       itemStyle: {
         borderWidth: color ? 1 : 0,
-        color: color ?? MIXED_PURE_BG[PURE_MIXED],
+        color: biomarkerMode ? (biomarkerColorMap?.[sampleId]?.color ?? MIXED_PURE_BG[PURE_MIXED]) : (color ?? MIXED_PURE_BG[PURE_MIXED]),
       },
       children: buildChildren(sampleLength - 1, patient, PURE_MIXED),
     });

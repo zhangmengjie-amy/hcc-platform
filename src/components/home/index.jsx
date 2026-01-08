@@ -113,7 +113,7 @@ const Home = () => {
               expandable: false,
             }}
             style={{ marginBottom: 0, fontSize: "54px", color: "rgb(10, 186, 181)", fontWeight: "bold" }}>
-              <span style={{ fontWeight: "bold", marginRight: "20px", display: "inline-block", fontSize: "54px", color: "rgb(237, 108, 116)" }}>HCC</span><span>{"Data Platform"}</span>
+              <span style={{ fontWeight: "bold", marginRight: "20px", display: "inline-block", fontSize: "54px", color: "rgb(10, 186, 181)" }}>HCC</span><span>{"Data Platform"}</span>
             </Typography.Title></div>
             <Typography.Paragraph ellipsis={{
               rows: 1,
@@ -127,7 +127,7 @@ const Home = () => {
               {t("home:banner.description")}
             </Typography.Paragraph>
 
-            <Flex align="center" justify="space-between" style={{ marginTop: "20px" }}>
+            {/* <Flex align="center" justify="space-between" style={{ marginTop: "20px" }}>
               <Input.Search
                 // loading
                 className={styles.hccSearch}
@@ -137,7 +137,7 @@ const Home = () => {
                 onSearch={onSearch}
               />
               <Button size="large" onClick={handleAdvanceSearch} style={{ marginLeft: "10px", lineHeight: "40px", borderColor: "rgb(10, 186, 181)", backgroundColor: "rgb(10, 186, 181)" }}>Advanced Search</Button>
-            </Flex>
+            </Flex> */}
 
             {/* <Image src={"/images/water-fall.jpg"} width={350} height={200} alt="water-fall"></Image>
                         <Image src={"/images/rainbow.jpg"} width={350} height={200} alt='rainbow'></Image> */}

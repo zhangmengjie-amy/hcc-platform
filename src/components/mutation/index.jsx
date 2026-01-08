@@ -139,8 +139,7 @@ const Mutation = () => {
       <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
         <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
           <Flex justify="space-between" align="center" style={{ paddingLeft: "10px", height: "40px" }}>
-            <Button color="default" size="middle" disabled={applyLoading} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary"
-              style={{ color: "#fff", background: !applyLoading ? "rgb(237, 108, 116)" : "gray" }}>
+            <Button color="default" size="middle" disabled={applyLoading} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary">
               {t("common:apply")}
             </Button>
             <Button color="default" variant="text"
