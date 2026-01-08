@@ -84,7 +84,8 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
   const cohortCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>
-        <Typography.Paragraph
+        <Typography.Title
+          level={5}
           ellipsis={{
             rows: 1,
             expandable: false,
@@ -92,7 +93,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
           Filter Cohort
-        </Typography.Paragraph>
+        </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
           <Button
@@ -203,7 +204,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
 
   
   return (
-    <div className={styles.cohortCondition}>
+    <div className={styles.condition}>
       <Collapse
         defaultActiveKey={"cohort"}
         className={styles.searchCollapse}

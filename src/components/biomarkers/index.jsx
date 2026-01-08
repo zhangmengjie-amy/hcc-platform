@@ -6,7 +6,11 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { getBiomarkersResultByTaskId, getBiomarkersTaskIds, getGeneList } from "@/configs/request";
+import {
+  getBiomarkersResultByTaskId,
+  getBiomarkersTaskIds,
+  getGeneList,
+} from "@/configs/request";
 import {
   CaretRightOutlined,
   LoadingOutlined,
@@ -17,8 +21,9 @@ import { usePathname } from "next/navigation";
 import { getBiomarkers } from "@/configs/request";
 import SplitBar from "@/components/split-bar";
 import PollingManager from "@/components/polling-manager";
-import ClinicalContent from "./right-content/clinical";
-import ClinicalCondition from "./left-content/clinical"
+import Biomarkers1Content from "./right-content/biomarkers1";
+import Biomarkers1Condition from "./left-content/biomarkers1";
+import Biomarkers2Condition from "./left-content/biomarkers2";
 import Biomarkers2Content from "./right-content/biomarkers2";
 import {
   Collapse,
@@ -45,21 +50,42 @@ const RELOAD_ICON = "/images/reload.svg";
 const Biomarkers = () => {
   const { t } = useTranslation();
   const [taskIdsWithCohort, setTaskIdsWithCohort] = useState(null);
-  const [contentType, setContentType] = useState("clinical");
-  const [applyLoading, setApplyLoading] = useState(false);
+  const [contentType, setContentType] = useState("biomarkers1");
+  const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
   const [pollingData, setPollingData] = useState(null);
   const [pollingResultData, setPollingResultData] = useState(null);
-  const clinicalConditionRef = useRef(null);
+  const [biomarkers2Conditions, setBiomarkers2Conditions] = useState(null);
+  const biomarkers1ConditionRef = useRef(null);
 
-  const handleApply = useCallback(async () => {
-    const params = clinicalConditionRef.current?.getParams();
-    applyMethod(params);
+  const biomarkers2ConditionRef = useRef(null);
 
-  }, [applyLoading]);
+  const handleApply = useCallback(() => {
+    if (contentType === "biomarkers1") {
+      const params = biomarkers1ConditionRef.current?.getParams();
+      applyMethod(params);
+    }
+    if (contentType === "biomarkers2") {
+      const params = biomarkers2ConditionRef.current?.getParams();
+      const requestParamsArray = {
+        clinicalConditions: params.clinicalConditions,
+        selectedCohortType: params.selectedCohortType,
+        biomarkers: generateBiomarkers2RequestParams(params),
+      };
+      if (params.selectedGeneType === "customized") {
+        if (!params.selectedCustomizedGeneList?.length) {
+          messageApi.open({
+            type: "warning",
+            content: "请上传自定义基因txt",
+          });
+          return;
+        }
+      }
+      setBiomarkers2Conditions(requestParamsArray);
+    }
+  }, [contentType]);
 
   const applyMethod = async (params) => {
-    setApplyLoading(true);
     if (!params.selectedRows) return;
     if (!params.selectedRows?.length) {
       messageApi.open({
@@ -67,58 +93,63 @@ const Biomarkers = () => {
         content: "请至少选择一个cohort",
       });
       return;
-    } else if (params.selectedGeneType === "customized") {
+    }
+    if (params.selectedGeneType === "customized") {
       if (!params.selectedCustomizedGeneList?.length) {
         messageApi.open({
           type: "warning",
           content: "请上传自定义基因txt",
         });
+        return;
       }
-      return;
     }
-    setApplyLoading(false);
     const taskIds = await fetchTaskIds(params);
     setTaskIdsWithCohort(taskIds?.data);
   };
 
   const handleOnReady = useCallback(async (params) => {
-    applyMethod(params);
-  }, []);
+    if (contentType === "biomarkers1") {
+      applyMethod(params);
+    }
+    if (contentType === "biomarkers2") {
+      const requestParamsArray = {
+        clinicalConditions: params.clinicalConditions,
+        selectedCohortType: params.selectedCohortType,
+        biomarkers: generateBiomarkers2RequestParams(params),
+      };
+      if (params.selectedGeneType === "customized") {
+        if (!params.selectedCustomizedGeneList?.length) {
+          messageApi.open({
+            type: "warning",
+            content: "请上传自定义基因txt",
+          });
+          return;
+        }
+      }
+      setBiomarkers2Conditions(requestParamsArray);
+    }
+  }, [contentType]);
 
   useEffect(() => {
     if (!taskIdsWithCohort) return;
     setPollingData({
-        taskIds: taskIdsWithCohort,
-        cohortInfo: clinicalConditionRef.current?.getParams()?.selectedRows?.reduce((acc, row) => {
+      taskIds: taskIdsWithCohort,
+      cohortInfo: biomarkers1ConditionRef.current
+        ?.getParams()
+        ?.selectedRows?.reduce((acc, row) => {
           acc[row.number] = { name: row.name || `Cohort ${row.number}` };
           return acc;
-        }, {})
-      });
-    
+        }, {}),
+    });
   }, [taskIdsWithCohort]);
 
   const fetchTaskIds = async (params) => {
-    const requestParamsArray = generateRequestParams(params);
+    const requestParamsArray = generateBiomarkers1RequestParams(params);
     return await getBiomarkersTaskIds(requestParamsArray);
   };
 
-  const fetchBiomarkersData = async (taskIds) => {
-    try {
-      if (Object.values(taskIds)) {
-        const dataWithMetadata = Object.values(taskIds.data).map(async (taskId) => ( await getBiomarkersResultByTaskId(taskId)));
-        const results = await Promise.all(dataWithMetadata);    
-        return results;
-      } else {
-        return [];
-      }
-    } catch (error) {
-      console.error("批量请求失败:", error);
-      throw error;
-    }
-  };
-
   // 根据 params 生成请求参数数组
-  const generateRequestParams = (params) => {
+  const generateBiomarkers1RequestParams = (params) => {
     const {
       selectedGeneType,
       selectedSingleGene,
@@ -127,15 +158,6 @@ const Biomarkers = () => {
       selectedRows,
     } = params;
 
-    // 验证必要参数
-    if (
-      !selectedRows ||
-      !Array.isArray(selectedRows) ||
-      selectedRows.length === 0
-    ) {
-      return [];
-    }
-
     // 根据 taskType 生成参数
     const baseParams = {
       numbers: selectedRows.map((item) => item.number), // 从 selectedRows 的 number 字段获取
@@ -143,6 +165,52 @@ const Biomarkers = () => {
     };
 
     // 根据 taskType 填充不同的参数
+    switch (selectedGeneType) {
+    case "customized":
+
+      return {
+        ...baseParams,
+        biomarkerName: null,
+        customizedGenes: selectedCustomizedGeneList || [],
+      };
+
+    case "singleGene":
+      return {
+        ...baseParams,
+        biomarkerName: selectedSingleGene || "",
+        customizedGenes: [],
+      };
+
+    case "geneLists":
+      return {
+        ...baseParams,
+        biomarkerName: selectedGeneSet || "",
+        customizedGenes: [],
+      };
+
+    default:
+      return {
+        ...baseParams,
+        biomarkerName: null,
+        customizedGenes: [],
+      };
+    }
+  };
+  
+  const generateBiomarkers2RequestParams = (params) => {
+    const {
+      selectedGeneType,
+      selectedSingleGene,
+      selectedGeneSet,
+      selectedCustomizedGeneList,
+      selectedCohortType,
+    } = params;
+
+    const baseParams = {
+      cohortName: selectedCohortType == "PLANET" ? "cohort2" : (selectedCohortType == "DT") ? "cohort1" : "all",
+      taskType: selectedGeneType,
+    };
+
     switch (selectedGeneType) {
     case "customized":
       return {
@@ -166,7 +234,6 @@ const Biomarkers = () => {
       };
 
     default:
-      console.warn(`未知的 taskType: ${selectedGeneType}`);
       return {
         ...baseParams,
         biomarkerName: null,
@@ -174,7 +241,7 @@ const Biomarkers = () => {
       };
     }
   };
-
+  
   const leftAction = useMemo(() => {
     return (
       <Button
@@ -188,27 +255,35 @@ const Biomarkers = () => {
         {t("common:apply")}
       </Button>
     );
+  }, [applyLoading, contentType]);
+
+  const handlePollingComplete = useCallback((results) => {
+    setPollingResultData(results);
+    setApplyLoading(false);
   }, []);
 
-   const handlePollingComplete = useCallback((results) => {
-    console.log("All polling results:", results);
-    // 这里可以将结果传递给 RightContent 组件
-    setPollingResultData(results);
+  const handleContentTypeChange = useCallback((value) => {
+    setContentType(value);
+    setApplyLoading(true);
   }, []);
 
   const rightAction = useMemo(() => {
     return (
       <Segmented
         size="large"
-        onChange={setContentType}
+        onChange={handleContentTypeChange}
         options={[
-          { value: "clinical", label: "clinical" },
-          { value: "biomarker2", label: "biomarker2" },
+          { value: "biomarkers1", label: "biomarkers1" },
+          { value: "biomarkers2", label: "biomarkers2" },
         ]}
         value={contentType}
       />
     );
   }, [contentType]);
+
+  const handleBiomarker2Complete = useCallback(() => {
+    setApplyLoading(false);
+  }, []);
 
   return (
     <>
@@ -220,28 +295,30 @@ const Biomarkers = () => {
         rightAction={rightAction}
         leftContent={
           <>
-            {
-              contentType === "clinical" ? 
-              <ClinicalCondition ref={clinicalConditionRef} handleOnReady={handleOnReady}></ClinicalCondition>
-              : null
-            }
+            {contentType === "biomarkers1" ? (
+              <Biomarkers1Condition
+                ref={biomarkers1ConditionRef}
+                handleOnReady={handleOnReady}
+              ></Biomarkers1Condition>
+            ) : <Biomarkers2Condition ref={biomarkers2ConditionRef} handleOnReady={handleOnReady}></Biomarkers2Condition>}
           </>
         }
         rightContent={
           <>
-            <PollingManager 
-                pollingData={pollingData} 
-                onComplete={handlePollingComplete}
-            />
-          {
             
-            contentType === "clinical" ? <>
-
-              <ClinicalContent pollingResults={pollingResultData}></ClinicalContent>
-            </> : <Biomarkers2Content>
-
-            </Biomarkers2Content>
-          }
+            {contentType === "biomarkers1" ? (
+              <>
+                <PollingManager
+                  pollingData={pollingData}
+                  onComplete={handlePollingComplete}
+                />
+                <Biomarkers1Content
+                  pollingResults={pollingResultData}
+                ></Biomarkers1Content>
+              </>
+            ) : (
+              <Biomarkers2Content biomarkers={biomarkers2Conditions?.biomarkers} conditions={biomarkers2Conditions?.clinicalConditions} dataType={biomarkers2Conditions?.selectedCohortType} onComplete={handleBiomarker2Complete}></Biomarkers2Content>
+            )}
           </>
         }
       ></SplitBar>

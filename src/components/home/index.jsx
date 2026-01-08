@@ -113,7 +113,7 @@ const Home = () => {
               expandable: false,
             }}
             style={{ marginBottom: 0, fontSize: "54px", color: "rgb(10, 186, 181)", fontWeight: "bold" }}>
-              <span style={{ fontWeight: "bold", marginRight: "20px", display: "inline-block", fontSize: "54px", color: "#fff" }}>HCC</span><span>{"Data Platform"}</span>
+              <span style={{ fontWeight: "bold", marginRight: "20px", display: "inline-block", fontSize: "54px", color: "rgb(10, 186, 181)" }}>HCC</span><span>{"Data Platform"}</span>
             </Typography.Title></div>
             <Typography.Paragraph ellipsis={{
               rows: 1,

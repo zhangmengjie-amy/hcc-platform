@@ -190,7 +190,6 @@ const Expression = () => {
           {
             immuneType === "immune2" ? <Immune2 conditions={params}></Immune2> :<Immune1 conditions={params}></Immune1>
           }
-          
         </Panel>
       </Splitter>
     </>

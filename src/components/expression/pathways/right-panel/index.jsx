@@ -138,9 +138,9 @@ const Pathways = ({ conditions }) => {
 
             // 检查是否有有效数据
             const hasVolcanoData =
-              result?.data[0]?.deg_results && result.data[0].deg_results.length > 0;
+              result?.data[0]?.DEGResults && result.data[0].DEGResults.length > 0;
             const hasGoData =
-              result?.data[0]?.["go.res"] && result.data[0]["go.res"].length > 0;
+              result?.data[0]?.["GORes"] && result.data[0]["GORes"].length > 0;
 
             if (!hasVolcanoData && !hasGoData) {
               const errorMsg =
@@ -152,8 +152,8 @@ const Pathways = ({ conditions }) => {
               cohortKey,
               data: {
                 taskId,
-                volcanoData: result?.data[0]?.deg_results || [],
-                goBubbleData: result?.data[0]?.["go.res"] || [],
+                volcanoData: result?.data[0]?.DEGResults || [],
+                goBubbleData: result?.data[0]?.["GORes"] || [],
                 cohortInfo: cohortInfo || {
                   cohort: cohortKey.replace("cohort", ""),
                 },

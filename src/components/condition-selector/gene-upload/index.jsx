@@ -1,5 +1,5 @@
 // components/GeneUpload.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Upload, Button, message, Tag, Spin, Space, Typography } from "antd";
 import { UploadOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types"; // 导入 PropTypes
@@ -143,6 +143,13 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
     maxCount: 1,
   };
 
+  useEffect(() => {
+    // 每当 validGenes 变化时，调用 onChange 通知父组件
+    if (onChange) {
+      onChange([]);
+    }
+  }, []);
+
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
       <Typography.Title level={5}>上传基因列表 (TXT)</Typography.Title>
@@ -168,17 +175,14 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
 
       {(validGenes.length > 0 || invalidGenes.length > 0 || (totalGenesCount > 0 && !processing)) && (
         <div style={{ marginTop: 24, borderTop: "1px solid #eee", paddingTop: 24 }}>
-          <Typography.Title level={4}>验证结果</Typography.Title>
           {processing ? (
             <Spin tip="正在处理文件并验证基因..."></Spin>
           ) : (
             <>
-              <Paragraph>
-                总共识别到 <strong>{totalGenesCount}</strong> 个基因名字。
-              </Paragraph>
-              <Paragraph>
-                合法的基因名字 ({validGenes.length} 个):
-              </Paragraph>
+              <Typography.Title level={5}>
+                共识别<strong>{totalGenesCount}</strong>个基因，合法的基因{validGenes.length}个:
+              </Typography.Title>
+
               <Space size={[0, 8]} wrap>
                 {validGenes.length > 0 ? (
                   validGenes.map((gene, index) => (

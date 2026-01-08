@@ -38,9 +38,9 @@ const GoBubbleChart = ({
     chartData.forEach(item => {
       const bubbleData = {
         name: item.Description,
-        value: [item.Count, item.Description, item["log10_p.adjust"]],
+        value: [item.Count, item.Description, item["log10AdjPVal"]],
         Count: item.Count,
-        log10_padjust: item["log10_p.adjust"],
+        log10_padjust: item["log10AdjPVal"],
         pvalue: item.pvalue,
         p_adjust: item["p.adjust"],
         RichFactor: item.RichFactor,

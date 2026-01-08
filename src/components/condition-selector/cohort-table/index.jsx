@@ -52,20 +52,21 @@ import Image from "next/image";
 import { getCohortList } from "@/configs/request";
 import styles from "../style.module.scss";
 import { use } from "react";
+import { set } from "lodash";
 const CLASSIFY_COLOR = {
-  Tissue: "purple",
-  Celllines: "green",
+  "Tissue": "purple",
+  "Celllines": "green",
 };
 
 const LEVEL_COLOR = {
-  Intra: "cyan",
-  Inter: "blue",
+  "Intra": "cyan",
+  "Inter": "blue",
   "Inter+Intra": "lime",
 };
 
 const TECHNOLOGY_COLOR = {
   "Micro array": "orange",
-  Sequencing: "magenta",
+  "Sequencing": "magenta",
 };
 const RELOAD_ICON = "/images/reload.svg";
 const CohortSelection = forwardRef(
@@ -85,6 +86,7 @@ const CohortSelection = forwardRef(
     const cohortListRef = useRef(null);
     const [loading, setLoading] = useState(true);
     const [cohortList, setCohortList] = useState([]);
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     useEffect(() => {
       setLoading(true);
@@ -92,6 +94,7 @@ const CohortSelection = forwardRef(
         cohortListRef.current = data;
         setCohortList(data);
         setLoading(false);
+        setSelectedRowKeys([data?.[0]?.number, data?.[1]?.number]);
         onReady({ selectedRows: [data?.[0], data?.[1]] });
       });
     }, []);
@@ -121,7 +124,7 @@ const CohortSelection = forwardRef(
       {
         title: "Cohort",
         dataIndex: "number",
-        render: (text) => <a style={{ fontSize: "16px" }}>{text}</a>,
+        render: (text) => text,
       },
       {
         title: "Level",
@@ -179,10 +182,15 @@ const CohortSelection = forwardRef(
       },
     }));
 
+    const handleReload = () => {
+      
+    };
+
     const tableCollapseTitle = () => {
       return (
         <Flex justify={"space-between"} align={"center"}>
-          <Typography.Paragraph
+          <Typography.Title
+            level={5}
             ellipsis={{
               rows: 1,
               expandable: false,
@@ -190,6 +198,15 @@ const CohortSelection = forwardRef(
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
             Cohort List
+          </Typography.Title>
+          <Typography.Paragraph
+            ellipsis={{
+              rows: 1,
+              expandable: false,
+            }}
+            style={{ margin: 0, color: "#fff", fontWeight: "500" }}
+          >
+            至多选择5个
           </Typography.Paragraph>
           <Typography.Paragraph
             ellipsis={{
@@ -198,13 +215,13 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            至多选择10个
+            已选择 { selectedRowKeys.length ?? 0 }个  
           </Typography.Paragraph>
-          {/* <Tooltip placement="bottom" title={t("common:reset-selection")}>
+          <Tooltip placement="bottom" title={t("common:reset-selection")}>
             <Button
               color="default"
               onClick={(event) => {
-                handleDriverReload(event);
+                handleReload(event);
               }}
               variant="text"
               style={{ color: "#fff", padding: 0 }}
@@ -217,14 +234,15 @@ const CohortSelection = forwardRef(
                 tooltip={t("common:reload")}
               />
             </Button>
-          </Tooltip> */}
+          </Tooltip>
         </Flex>
       );
     };
 
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        if (selectedRows?.length > 10) return;
+        if (selectedRows?.length > 5) return;
+        setSelectedRowKeys(selectedRowKeys);
         onChange({ selectedRows });
       },
       getCheckboxProps: (record) => ({
@@ -248,7 +266,8 @@ const CohortSelection = forwardRef(
               loading={loading}
               rowSelection={{
                 type: selectionType,
-                defaultSelectedRowKeys: [cohortList?.[0]?.number, cohortList?.[1]?.number,],
+                defaultSelectedRowKeys: selectedRowKeys,
+                selectedRowKeys: selectedRowKeys,
                 ...rowSelection,
               }}
               columns={columns}
@@ -260,7 +279,7 @@ const CohortSelection = forwardRef(
     };
 
     return (
-      <div className={styles.cohortCondition}>
+      <div className={styles.condition}>
         <Collapse
           defaultActiveKey={"table"}
           className={styles.searchCollapse}

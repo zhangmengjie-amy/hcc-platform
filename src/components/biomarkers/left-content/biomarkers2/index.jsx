@@ -12,25 +12,18 @@ import { useTranslation } from "react-i18next";
 import CohortSelection from "@/components/condition-selector/cohort-table";
 import FilterCohort from "@/components/condition-selector/filter-cohort";
 import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
+import DTPlanet from "@/components/condition-selector/dt-planet";
+import ClinicalSelector from "@/components/condition-selector/clinical";
 
 const Clinical = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
-  const [selectedClinical, setSelectedClinical] = useState([]);
-  const [selectedClassify, setSelectedClassify] = useState("all");
-  const [selectedTechnology, setSelectedTechnology] = useState("all");
 
   useImperativeHandle(ref, () => ({
     getParams: () => {
       return paramsRef.current;
     },
   }));
-
-  const onFilterCohortSelection = useCallback((result) => {
-    setSelectedClinical(result.selectedClinical),
-    setSelectedClassify(result.selectedClassify),
-    setSelectedTechnology(result.selectedTechnology);
-  }, []);
 
   const onSelection = useCallback((result) => {
     paramsRef.current = {
@@ -41,26 +34,15 @@ const Clinical = forwardRef(( { handleOnReady }, ref) => {
 
 
   const onReady = (result) => {
-    paramsRef.current = {
-      ...paramsRef.current,
-      ...result,
-    };
-    handleOnReady(paramsRef.current);
+    onSelection(result);
+    handleOnReady?.(paramsRef.current);
   };
 
   return (
     <>
-      {<FilterCohort onChange={onFilterCohortSelection}></FilterCohort>}
-      {
-        <CohortSelection
-          selectedClassify={selectedClassify}
-          selectedClinical={selectedClinical}
-          selectedTechnology={selectedTechnology}
-          onChange={onSelection}
-          onReady={onReady}
-        ></CohortSelection>
-      }
-      {<BiomarkersGene onChange={onSelection} onReady={onReady}></BiomarkersGene>}
+      <DTPlanet onChange={onSelection} onReady={onReady}></DTPlanet>
+      <ClinicalSelector onChange={onSelection}></ClinicalSelector>
+      <BiomarkersGene onChange={onSelection} onReady={onReady}></BiomarkersGene>
     </>
   );
 });

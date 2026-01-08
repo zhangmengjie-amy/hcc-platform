@@ -509,14 +509,15 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
           <p style={{ marginBottom: "10px" }}><span style={{ fontWeight: "lighter" }}>Sample:</span> <span style={{ lineHeight: "24px", fontWeight: "bold", fontSize: "16px" }}> {tooltipState?.data?.samples?.join(", ") ?? "None"}</span></p>
           <p style={{ marginBottom: "0" }}><span style={{ fontWeight: "lighter" }}>Protein-coding region mutations:</span><span style={{ fontWeight: "bold" }}> {(tooltipState?.data?.geneData?.driver?.length ?? 0) + (tooltipState?.data?.geneData?.nonDriver?.length ?? 0)}</span></p>
           <p style={{ marginBottom: "0" }}><span style={{ fontWeight: "lighter" }}>Driver Gene: </span><span style={{ fontWeight: "bold" }}> {tooltipState?.data?.geneData?.driver?.length ?? 0} </span></p>
-          <p style={{ marginBottom: "0", fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{
+          <div style={{ marginBottom: "0", fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>{
             tooltipState?.data?.geneData?.driver.map((item, index) => {
               return (
-                <><span key={item} style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
-                  <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span></>
+                <div key={item}><span style={{ color: "#000", fontWeight: "bold" }}>{item.split("/")[0]}</span>
+                  <span key={index + 1} style={{ color: "#666" }}>({item.split("/")[1]})</span>
+                </div>
               );
             })
-          }</p>
+          }</div>
           <div style={{ marginBottom: "0" }}><span style={{ fontWeight: "lighter" }}>None Driver Gene: </span><span style={{ fontWeight: "bold" }}> {tooltipState?.data?.geneData?.nonDriver?.length ?? 0} </span></div>
           <div style={{ fontSize: "14px", overflowY: "auto", wordBreak: "break-word", lineHeight: "24px", marginBottom: 0 }}>
             {

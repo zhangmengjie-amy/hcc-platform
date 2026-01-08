@@ -113,7 +113,8 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
   const biomarkersCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>
-        <Typography.Paragraph
+        <Typography.Title
+          level={5}
           ellipsis={{
             rows: 1,
             expandable: false,
@@ -121,7 +122,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
           Biomarkers Method
-        </Typography.Paragraph>
+        </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
           <Button
@@ -148,7 +149,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
   const biomarkersCollapseContent = () => {
     return (
       <div className={styles.searchCard} variant="borderless">
-        <Flex>
+        <Flex vertical>
           <Flex
             vertical
             flex={1}
@@ -178,9 +179,9 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               vertical
               align="center"
               justify="center"
-              flex={2}
+              flex={3}
               style={{
-                marginLeft: "15px",
+                marginTop: "15px",
                 border: "1px solid #f5f5f5",
                 boxShadow: "0 4px 12px #f5f5f5",
                 padding: "15px",
@@ -194,9 +195,8 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               {selectedGeneType == "singleGene" && (
                 <Flex
                   vertical
-                  flex={2}
                   style={{
-                    marginLeft: "15px",
+                    marginTop: "15px",
                     border: "1px solid #f5f5f5",
                     boxShadow: "0 4px 12px #f5f5f5",
                     padding: "15px",
@@ -228,9 +228,8 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               {selectedGeneType == "geneLists" && (
                 <Flex
                   vertical
-                  flex={2}
                   style={{
-                    marginLeft: "15px",
+                    marginTop: "15px",
                     border: "1px solid #f5f5f5",
                     boxShadow: "0 4px 12px #f5f5f5",
                     padding: "15px",
@@ -275,9 +274,8 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               {selectedGeneType == "customized" && (
                 <Flex
                   vertical
-                  flex={2}
                   style={{
-                    marginLeft: "15px",
+                    marginTop: "15px",
                     border: "1px solid #f5f5f5",
                     boxShadow: "0 4px 12px #f5f5f5",
                     padding: "15px",
@@ -298,7 +296,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
   };
 
   return (
-    <div className={styles.cohortCondition}>
+    <div className={styles.condition}>
       <Collapse
         defaultActiveKey={"biomarkers"}
         className={styles.searchCollapse}

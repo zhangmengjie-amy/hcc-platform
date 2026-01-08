@@ -183,15 +183,16 @@ export const getBiomarkersGeneList = async () => {
   }
 };
 
-export const getXML = async () => {
+export const getBiomarkersScore = async (data) => {
   try {
-    const response = await fetch(`/svg/response_1766455973736.xml`);
-    return response.text();
+    const response = await post(`/hcc/v1/biomarker/genesScore`, data);
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
   }
 };
+  
 
 export const getDEGTaskIds = async (data) => {
   try {

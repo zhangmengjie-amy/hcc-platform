@@ -47,6 +47,11 @@
       align-items: center;
     }
   }
+
+  /* 或者分开写 */
+  :global(.ant-segmented) :global(.ant-segmented-item:not(.ant-segmented-item-selected)) a {
+    color: #fff !important;
+  }
 }
 
 

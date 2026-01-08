@@ -1,20 +1,25 @@
 // components/biomarkers/polling-manager.js
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Flex, Progress, Alert, List, Tag } from 'antd';
-import { 
-  SyncOutlined, 
-  CheckCircleOutlined, 
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Flex, Progress, Alert, List, Tag } from "antd";
+import {
+  SyncOutlined,
+  CheckCircleOutlined,
   CloseCircleOutlined,
-  UpOutlined
-} from '@ant-design/icons';
-import { getBiomarkersResultByTaskId } from '@/configs/request';
+  UpOutlined,
+} from "@ant-design/icons";
+import { getBiomarkersResultByTaskId } from "@/configs/request";
 
 const POLLING_INTERVAL = 3000;
 const MAX_POLLING_TIME = 300000; // 5分钟
 
 const PollingManager = ({ pollingData, onComplete }) => {
   const [tasks, setTasks] = useState([]);
-  const [stats, setStats] = useState({ total: 0, success: 0, failed: 0, running: 0 });
+  const [stats, setStats] = useState({
+    total: 0,
+    success: 0,
+    failed: 0,
+    running: 0,
+  });
   const [isExpanded, setIsExpanded] = useState(true);
   const pollingRef = useRef(null);
   const isPollingRef = useRef(false);
@@ -37,19 +42,19 @@ const PollingManager = ({ pollingData, onComplete }) => {
 
     const taskIds = pollingData.taskIds;
     const cohortInfo = pollingData.cohortInfo || {};
-    
-    if (typeof taskIds !== 'object' || taskIds === null) return;
-    
+
+    if (typeof taskIds !== "object" || taskIds === null) return;
+
     const taskEntries = Object.entries(taskIds);
     if (taskEntries.length === 0) return;
-    
+
     const newTasks = taskEntries.map(([cohortId, taskId]) => ({
       taskId: String(taskId),
       cohortId,
       cohortName: cohortInfo[cohortId]?.name || `Cohort ${cohortId}`,
-      status: 'running',
+      status: "running",
       result: null,
-      message: '开始轮询...',
+      message: "开始轮询...",
       startTime: Date.now(),
       lastCheckTime: Date.now(),
     }));
@@ -67,9 +72,9 @@ const PollingManager = ({ pollingData, onComplete }) => {
   const updateStats = useCallback((taskList) => {
     const stats = {
       total: taskList.length,
-      success: taskList.filter(t => t.status === 'success').length,
-      failed: taskList.filter(t => t.status === 'failed').length,
-      running: taskList.filter(t => t.status === 'running').length,
+      success: taskList.filter((t) => t.status === "success").length,
+      failed: taskList.filter((t) => t.status === "failed").length,
+      running: taskList.filter((t) => t.status === "running").length,
     };
     setStats(stats);
     return stats;
@@ -77,38 +82,38 @@ const PollingManager = ({ pollingData, onComplete }) => {
 
   // 检查是否完成
   const checkAllCompleted = useCallback((taskList) => {
-    return taskList.every(task => task.status !== 'running');
+    return taskList.every((task) => task.status !== "running");
   }, []);
 
   // 轮询单个任务
   const pollSingleTask = useCallback(async (task) => {
     try {
       const response = await getBiomarkersResultByTaskId(task.taskId);
-      
-      let updatedTask = { 
-        ...task, 
+
+      const updatedTask = {
+        ...task,
         lastCheckTime: Date.now(),
       };
 
       if (response.code === 202) {
-        updatedTask.status = 'running';
-        updatedTask.message = response.message || '任务运行中...';
+        updatedTask.status = "running";
+        updatedTask.message = response.message || "任务运行中...";
       } else if (response.code === 200) {
-        updatedTask.status = 'success';
+        updatedTask.status = "success";
         updatedTask.result = response.data;
-        updatedTask.message = '任务完成';
+        updatedTask.message = "任务完成";
       } else {
-        updatedTask.status = 'failed';
-        updatedTask.message = response.message || '任务执行失败';
+        updatedTask.status = "failed";
+        updatedTask.message = response.message || "任务执行失败";
       }
-      
+
       return updatedTask;
     } catch (error) {
-      return { 
-        ...task, 
+      return {
+        ...task,
         lastCheckTime: Date.now(),
-        status: 'failed', 
-        message: '请求失败'
+        status: "failed",
+        message: "请求失败",
       };
     }
   }, []);
@@ -124,18 +129,18 @@ const PollingManager = ({ pollingData, onComplete }) => {
       return;
     }
 
-    const runningTasks = currentTasks.filter(t => t.status === 'running');
+    const runningTasks = currentTasks.filter((t) => t.status === "running");
     if (runningTasks.length === 0) {
       stopPolling();
       const allCompleted = checkAllCompleted(currentTasks);
       if (allCompleted) {
         const finalResults = currentTasks
-          .filter(t => t.status === 'success')
-          .map(t => ({ 
-            cohortId: t.cohortId, 
-            cohortName: t.cohortName, 
+          .filter((t) => t.status === "success")
+          .map((t) => ({
+            cohortId: t.cohortId,
+            cohortName: t.cohortName,
             result: t.result,
-            taskId: t.taskId 
+            taskId: t.taskId,
           }));
         setIsExpanded(false);
         onComplete?.(finalResults);
@@ -145,21 +150,23 @@ const PollingManager = ({ pollingData, onComplete }) => {
 
     // 检查超时
     const now = Date.now();
-    const timeoutTasks = runningTasks.filter(t => now - t.startTime > MAX_POLLING_TIME);
-    
-    let updatedTasks = currentTasks.map(task => {
-      if (timeoutTasks.some(t => t.taskId === task.taskId)) {
-        return { 
-          ...task, 
-          status: 'failed', 
-          message: '任务执行超时',
-          lastCheckTime: now
+    const timeoutTasks = runningTasks.filter(
+      (t) => now - t.startTime > MAX_POLLING_TIME,
+    );
+
+    const updatedTasks = currentTasks.map((task) => {
+      if (timeoutTasks.some((t) => t.taskId === task.taskId)) {
+        return {
+          ...task,
+          status: "failed",
+          message: "任务执行超时",
+          lastCheckTime: now,
         };
       }
       return task;
     });
 
-    const activeTasks = updatedTasks.filter(t => t.status === 'running');
+    const activeTasks = updatedTasks.filter((t) => t.status === "running");
     if (activeTasks.length === 0) {
       setTasks(updatedTasks);
       updateStats(updatedTasks);
@@ -167,24 +174,28 @@ const PollingManager = ({ pollingData, onComplete }) => {
     }
 
     try {
-      const pollingPromises = activeTasks.map(task => pollSingleTask(task));
+      const pollingPromises = activeTasks.map((task) => pollSingleTask(task));
       const results = await Promise.allSettled(pollingPromises);
-      
+
       results.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
+        if (result.status === "fulfilled") {
           const updatedTask = result.value;
-          const taskIndex = updatedTasks.findIndex(t => t.taskId === activeTasks[index].taskId);
+          const taskIndex = updatedTasks.findIndex(
+            (t) => t.taskId === activeTasks[index].taskId,
+          );
           if (taskIndex !== -1) {
             updatedTasks[taskIndex] = updatedTask;
           }
         } else {
-          const taskIndex = updatedTasks.findIndex(t => t.taskId === activeTasks[index].taskId);
+          const taskIndex = updatedTasks.findIndex(
+            (t) => t.taskId === activeTasks[index].taskId,
+          );
           if (taskIndex !== -1) {
             updatedTasks[taskIndex] = {
               ...activeTasks[index],
-              status: 'failed',
-              message: '轮询异常',
-              lastCheckTime: now
+              status: "failed",
+              message: "轮询异常",
+              lastCheckTime: now,
             };
           }
         }
@@ -192,16 +203,16 @@ const PollingManager = ({ pollingData, onComplete }) => {
 
       setTasks(updatedTasks);
       const newStats = updateStats(updatedTasks);
-      
+
       if (checkAllCompleted(updatedTasks)) {
         stopPolling();
         const finalResults = updatedTasks
-          .filter(t => t.status === 'success')
-          .map(t => ({ 
-            cohortId: t.cohortId, 
-            cohortName: t.cohortName, 
+          .filter((t) => t.status === "success")
+          .map((t) => ({
+            cohortId: t.cohortId,
+            cohortName: t.cohortName,
             result: t.result,
-            taskId: t.taskId 
+            taskId: t.taskId,
           }));
         setIsExpanded(false);
         onComplete?.(finalResults);
@@ -214,18 +225,18 @@ const PollingManager = ({ pollingData, onComplete }) => {
   // 开始轮询
   const startPolling = useCallback(() => {
     if (isPollingRef.current) return;
-    
+
     isPollingRef.current = true;
-    
+
     if (pollingRef.current) {
       clearInterval(pollingRef.current);
       pollingRef.current = null;
     }
-    
+
     pollingRef.current = setInterval(() => {
       pollTasks();
     }, POLLING_INTERVAL);
-    
+
     setTimeout(() => {
       pollTasks();
     }, 100);
@@ -243,9 +254,9 @@ const PollingManager = ({ pollingData, onComplete }) => {
   // 渲染状态图标
   const renderStatusIcon = (status) => {
     const icons = {
-      running: <SyncOutlined spin style={{ color: '#1890ff' }} />,
-      success: <CheckCircleOutlined style={{ color: '#52c41a' }} />,
-      failed: <CloseCircleOutlined style={{ color: '#ff4d4f' }} />,
+      running: <SyncOutlined spin style={{ color: "#1890ff" }} />,
+      success: <CheckCircleOutlined style={{ color: "#52c41a" }} />,
+      failed: <CloseCircleOutlined style={{ color: "#ff4d4f" }} />,
     };
     return icons[status] || null;
   };
@@ -256,102 +267,183 @@ const PollingManager = ({ pollingData, onComplete }) => {
   }
 
   return (
-    <div style={{ 
-      background: '#fafafa', 
-      borderRadius: 8,
-      marginTop: 10,
-      overflow: "hidden",
-      border: '1px solid #d9d9d9'
-    }}>
+    <div
+      style={{
+        background: "#fafafa",
+        borderRadius: 8,
+        marginTop: 10,
+        overflow: "hidden",
+        border: "1px solid #d9d9d9",
+      }}
+    >
       {/* 标题栏 - 始终显示 */}
-      <div 
-        style={{ 
-          padding: '10px 16px',
-          borderBottom: isExpanded ? '1px solid #d9d9d9' : 'none',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          cursor: 'pointer',
-          backgroundColor: '#fff',
-          userSelect: 'none',
+      <div
+        style={{
+          padding: "10px 16px",
+          borderBottom: isExpanded ? "1px solid #d9d9d9" : "none",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          cursor: "pointer",
+          backgroundColor: "#fff",
+          userSelect: "none",
         }}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <UpOutlined style={{ 
-            color: '#666', 
-            transform: isExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
-            transition: 'transform 0.3s ease'
-          }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <UpOutlined
+            style={{
+              color: "#666",
+              transform: isExpanded ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "transform 0.3s ease",
+            }}
+          />
           <span style={{ fontWeight: 500 }}>
             任务执行状态
-            {checkAllCompleted(tasks) && stats.failed === 0 && ' (已完成)'}
-            {checkAllCompleted(tasks) && stats.failed > 0 && ' (部分失败)'}
+            {checkAllCompleted(tasks) && stats.failed === 0 && " (已完成)"}
+            {checkAllCompleted(tasks) && stats.failed > 0 && " (部分失败)"}
           </span>
         </div>
-        <div style={{ display: 'flex', gap: 20 }}>
+        <div style={{ display: "flex", gap: 20 }}>
           <Flex align="center">
-            <span style={{ fontSize: 16, fontWeight: 'bold', marginRight: "5px", color: '#1890ff' }}>{stats.total}</span>
-            <span style={{ fontSize: 12, color: '#666' }}>总数</span>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                marginRight: "5px",
+                color: "#1890ff",
+              }}
+            >
+              {stats.total}
+            </span>
+            <span style={{ fontSize: 14, color: "#666" }}>总数</span>
           </Flex>
           <Flex align="center">
-            <span style={{ fontSize: 16, fontWeight: 'bold', marginRight: "5px", color: '#52c41a' }}>{stats.success}</span>
-            <span style={{ fontSize: 12, color: '#666' }}>成功</span>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                marginRight: "5px",
+                color: "#52c41a",
+              }}
+            >
+              {stats.success}
+            </span>
+            <span style={{ fontSize: 14, color: "#666" }}>成功</span>
           </Flex>
           <Flex align="center">
-            <span style={{ fontSize: 16, fontWeight: 'bold', marginRight: "5px", color: '#ff4d4f' }}>{stats.failed}</span>
-            <span style={{ fontSize: 12, color: '#666' }}>失败</span>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                marginRight: "5px",
+                color: "#ff4d4f",
+              }}
+            >
+              {stats.failed}
+            </span>
+            <span style={{ fontSize: 14, color: "#666" }}>失败</span>
           </Flex>
           <Flex align="center">
-            <span style={{ fontSize: 16, fontWeight: 'bold', marginRight: "5px", color: '#faad14' }}>{stats.running}</span>
-            <span style={{ fontSize: 12, color: '#666' }}>运行中</span>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                marginRight: "5px",
+                color: "#faad14",
+              }}
+            >
+              {stats.running}
+            </span>
+            <span style={{ fontSize: 14, color: "#666" }}>运行中</span>
           </Flex>
         </div>
       </div>
 
       {/* 展开的内容 */}
-      <div style={{ 
-        maxHeight: isExpanded ? '500px' : '0',
-        overflow: 'hidden',
-        transition: 'max-height 0.3s ease-in-out'
-      }}>
+      <div
+        style={{
+          maxHeight: isExpanded ? "500px" : "0",
+          overflow: "hidden",
+          transition: "max-height 0.3s ease-in-out",
+        }}
+      >
         <div style={{ padding: "10px 16px" }}>
-          <Progress 
-            percent={stats.total > 0 ? Math.round(((stats.success + stats.failed) / stats.total) * 100) : 0}
-            success={{ percent: stats.total > 0 ? Math.round((stats.success / stats.total) * 100) : 0 }}
-            status={stats.running > 0 ? 'active' : 'normal'}
+          <Progress
+            percent={
+              stats.total > 0
+                ? Math.round(
+                  ((stats.success + stats.failed) / stats.total) * 100,
+                )
+                : 0
+            }
+            success={{
+              percent:
+                stats.total > 0
+                  ? Math.round((stats.success / stats.total) * 100)
+                  : 0,
+            }}
+            status={stats.running > 0 ? "active" : "normal"}
           />
 
           {tasks.length === 0 ? (
-            <Alert 
-              message="正在初始化任务..." 
-              type="info" 
-              showIcon 
+            <Alert
+              message="正在初始化任务..."
+              type="info"
+              showIcon
               description="请等待任务数据加载"
             />
           ) : (
             <List
               size="small"
               dataSource={tasks}
-              renderItem={task => (
+              renderItem={(task) => (
                 <List.Item>
-                  <div style={{ width: '100%' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ width: "100%" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <div>
                         {renderStatusIcon(task.status)}
-                        <span style={{ marginLeft: 8, marginRight: 8, fontWeight: 500 }}>{task.cohortName}</span>
-                        <Tag color={task.status === 'success' ? 'success' : task.status === 'failed' ? 'error' : 'processing'}>
-                          {task.status === 'running' ? '运行中' : task.status === 'success' ? '成功' : '失败'}
+                        <span
+                          style={{
+                            marginLeft: 8,
+                            marginRight: 8,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {task.cohortName}
+                        </span>
+                        <Tag
+                          color={
+                            task.status === "success"
+                              ? "success"
+                              : task.status === "failed"
+                                ? "error"
+                                : "processing"
+                          }
+                        >
+                          { task.status === "running"
+                            ? "运行中"
+                            : task.status === "success"
+                              ? "成功"
+                              : "失败" }
                         </Tag>
                       </div>
                     </div>
                     {task.message && (
-                      <div style={{ 
-                        marginTop: 4, 
-                        fontSize: 12, 
-                        color: task.status === 'failed' ? '#ff4d4f' : '#666',
-                        marginLeft: 24
-                      }}>
+                      <div
+                        style={{
+                          marginTop: 4,
+                          fontSize: 12,
+                          color: task.status === "failed" ? "#ff4d4f" : "#666",
+                          marginLeft: 24,
+                        }}
+                      >
                         {task.message}
                       </div>
                     )}
