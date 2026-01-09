@@ -21,7 +21,7 @@ const RELOAD_ICON = "/images/reload.svg";
 const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
   const [method, setMethod] = useState("cibersort");
-  const handleDriverReload = () => {};
+  const handleReload = () => {};
   const methodCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>
@@ -40,7 +40,7 @@ const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
           <Button
             color="default"
             onClick={(event) => {
-              handleDriverReload(event);
+              handleReload(event);
             }}
             variant="text"
             style={{ color: "#fff", padding: 0 }}
@@ -58,6 +58,20 @@ const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
     );
   };
 
+  const onSelection = useCallback((e) => {
+    setMethod(e.target.value);
+    onChange({
+      selectedMethod: e.target.value,
+    });
+  }, []);
+
+  useEffect(() => {
+    onReady &&
+      onReady({
+        selectedMethod: method,
+      });
+  }, []);
+
   const methodCollapseContent = () => {
     return (
       <div className={styles.searchCard} variant="borderless">
@@ -73,9 +87,7 @@ const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
         >
           <Radio.Group
             value={method}
-            onChange={(e) => {
-              setMethod(e.target.value);
-            }}
+            onChange={onSelection}
           >
             <Flex vertical flex={1}>
               <Radio value={"cibersort"}>cibersort</Radio>
