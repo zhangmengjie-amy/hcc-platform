@@ -27,7 +27,7 @@ import ClinicalSelector from "@/components/condition-selector/clinical";
 
 const Immune1Condition = forwardRef(({}, ref) => {
   const { t } = useTranslation();
-  const paramsRef = useRef();
+  const paramsRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
     getParams: () => {
@@ -35,17 +35,17 @@ const Immune1Condition = forwardRef(({}, ref) => {
     },
   }));
 
-  const onSelection = (result) => {
+  const onSelection = useCallback((result) => {
     paramsRef.current = {
       ...paramsRef.current,
       ...result,
     };
-  };
+  }, []);
 
   return (
     <>
       <CohortType onChange={onSelection} onReady={onSelection}></CohortType>
-      <ClinicalSelector onChange={onSelection}></ClinicalSelector>
+      <ClinicalSelector onChange={onSelection} onReady={onSelection}></ClinicalSelector>
     </>
   );
 });

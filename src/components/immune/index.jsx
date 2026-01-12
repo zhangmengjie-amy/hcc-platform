@@ -49,12 +49,10 @@ const RELOAD_ICON = "/images/reload.svg";
 
 const Biomarkers = () => {
   const { t } = useTranslation();
-  const [taskIdsWithCohort, setTaskIdsWithCohort] = useState(null);
   const [contentType, setContentType] = useState("immune1");
   const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
-  const [pollingData, setPollingData] = useState(null);
-  const [pollingResultData, setPollingResultData] = useState(null);
+  const [immune1Conditions, setImmune1Conditions] = useState(null);
   const [immune2Conditions, setImmune2Conditions] = useState(null);
   const immune1ConditionRef = useRef(null);
 
@@ -63,7 +61,7 @@ const Biomarkers = () => {
   const handleApply = useCallback(() => {
     if (contentType === "immune1") {
       const params = immune1ConditionRef.current?.getParams();
-
+      setImmune1Conditions(params);
     }
     if (contentType === "immune2") {
       const params = immune2ConditionRef.current?.getParams();
@@ -74,10 +72,10 @@ const Biomarkers = () => {
 
   const handleOnReady = useCallback(async (params) => {
     if (contentType === "immune1") {
-
+      setImmune2Conditions(params);
     }
-    if (contentType === "immune2") {
 
+    if (contentType === "immune2") {
       setImmune2Conditions(params);
     }
   }, [contentType]);
@@ -98,14 +96,8 @@ const Biomarkers = () => {
     );
   }, [applyLoading, contentType]);
 
-  const handlePollingComplete = useCallback((results) => {
-    setPollingResultData(results);
-    setApplyLoading(false);
-  }, []);
-
   const handleContentTypeChange = useCallback((value) => {
     setContentType(value);
-    setApplyLoading(true);
   }, []);
 
   const rightAction = useMemo(() => {
@@ -122,7 +114,7 @@ const Biomarkers = () => {
     );
   }, [contentType]);
 
-  const handleBiomarker2Complete = useCallback(() => {
+  const handleComplete = useCallback(() => {
     setApplyLoading(false);
   }, []);
 
@@ -130,8 +122,8 @@ const Biomarkers = () => {
     <>
       {contextHolder}
       <SplitBar
-        initialLeftWidth={"40%"}
-        initialRightWidth={"60%"}
+        initialLeftWidth={"30%"}
+        initialRightWidth={"70%"}
         leftAction={leftAction}
         rightAction={rightAction}
         leftContent={
@@ -149,8 +141,8 @@ const Biomarkers = () => {
             
             {contentType === "immune1" ? (
               <>
-                <Immune1Content
-                ></Immune1Content>
+                <Immune1Content conditions={immune1Conditions} dataType={immune1Conditions?.selectedCohortType} onComplete={handleComplete}>
+                </Immune1Content>
               </>
             ) : (
               <Immune2Content></Immune2Content>
