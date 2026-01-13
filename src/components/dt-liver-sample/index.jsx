@@ -4,41 +4,49 @@ import * as d3 from "d3";
 const DtLiverSampleChart = ({ data }) => {
   const chartRef = useRef(null);
   const legendRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const element = chartRef.current;
-    const container = element.parentElement.parentElement; // 获取最外层容器
+    if (!data || !containerRef.current) return;
+    
+    const container = containerRef.current;
     const containerRect = container.getBoundingClientRect();
+    const containerWidth = containerRect.width;
+    const containerHeight = containerRect.height;
     
-    // 基于父容器高度和宽度的最小值
-    const parentWidth = containerRect.width;
-    const parentHeight = containerRect.height;
-    const minSize = Math.min(parentWidth, parentHeight);
+    // 计算主图表尺寸（减去色条和间距）
+    const legendWidth = 80; // 图例固定宽度
+    const gap = 5; // 图例与图表之间的间距
+    const availableWidth = containerWidth - legendWidth - gap;
+    const chartSize = Math.min(availableWidth, containerHeight);
     
-    // 计算主图尺寸（减去色条和间距）
-    const chartSize = Math.min(minSize, parentWidth - 85);
-    const width = chartSize;
-    const height = chartSize;
+    // 确保图表不会太小
+    const minChartSize = 300;
+    const finalChartSize = Math.max(chartSize, minChartSize);
     
-    // 设置容器高度
-    element.parentElement.style.height = `${chartSize}px`;
+    // 如果最终图表尺寸太大，需要重新计算
+    const maxChartSize = Math.min(containerHeight, availableWidth);
+    const actualChartSize = Math.min(finalChartSize, maxChartSize);
+
+    // 设置图表容器尺寸
+    const chartContainer = chartRef.current;
+    chartContainer.style.width = `${actualChartSize}px`;
+    chartContainer.style.height = `${actualChartSize}px`;
 
     // 从数据中提取肿瘤尺寸和样本信息
-    if (!data) return;
-        
     const tumorWidth = parseFloat(data.width)?.toFixed(2);
     const tumorHeight = parseFloat(data.height)?.toFixed(2);
     const samples = data?.samples.map(sample => ({
       sample_id: sample.sample_id,
       x: parseFloat(sample.x),
       y: parseFloat(sample.y),
-      color: sample.color || "#E95D65", // 添加color字段
+      color: sample.color || "#E95D65",
     }));
 
     // Configuration - 保持原来的边距不变
     const margin = { top: 35, right: 20, bottom: 45, left: 45 };
-    const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom;
+    const chartWidth = actualChartSize - margin.left - margin.right;
+    const chartHeight = actualChartSize - margin.top - margin.bottom;
 
     // Scales
     const xScale = d3.scaleLinear()
@@ -52,7 +60,6 @@ const DtLiverSampleChart = ({ data }) => {
     // 使用固定的样本半径
     const sampleRadius = Math.min(chartWidth, chartHeight) * 0.04;
 
-
     // 定义渐变颜色
     const gradientColors = [
       "#9E0142", "#D53E4F", "#F46D43", "#FDAE61", 
@@ -60,12 +67,15 @@ const DtLiverSampleChart = ({ data }) => {
       "#66C2A5", "#3288BD", "#5E4FA2",
     ];
 
+    // 清理现有SVG
+    d3.select(chartRef.current).select("svg").remove();
+    d3.select(legendRef.current).select("svg").remove();
 
     // Create SVG container
     const svg = d3.select(chartRef.current)
       .append("svg")
-      .attr("width", width)
-      .attr("height", height)
+      .attr("width", actualChartSize)
+      .attr("height", actualChartSize)
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -188,8 +198,8 @@ const DtLiverSampleChart = ({ data }) => {
     // 绘制样本圆圈 - 根据color值设置颜色
     sampleGroup.append("circle")
       .attr("r", sampleRadius)
-      .style("fill", d => d.color) // 根据color值设置颜色
-      .style("stroke", "#fff")
+      .style("fill", d => d.color)
+      .style("stroke", "#000")
       .style("stroke-width", 1);
 
     // 在圆圈中心添加样本ID文本
@@ -211,8 +221,7 @@ const DtLiverSampleChart = ({ data }) => {
     svg.selectAll(".sample").raise();
 
     // 绘制色条
-    const legendWidth = 80;
-    const legendHeight = height;
+    const legendHeight = actualChartSize;
 
     const legendSvg = d3.select(legendRef.current)
       .append("svg")
@@ -247,8 +256,6 @@ const DtLiverSampleChart = ({ data }) => {
       .attr("width", legendBarWidth)
       .attr("height", legendBarHeight)
       .style("fill", "url(#color-gradient)");
-    // .style("stroke", "#000")
-    // .style("stroke-width", 1);
 
     // 添加色条刻度标签
     const legendScale = d3.scaleLinear()
@@ -257,16 +264,6 @@ const DtLiverSampleChart = ({ data }) => {
 
     data.legend.forEach(value => {
       const yPos = legendScale(value);
-
-      // // 添加白色分割线（贯穿整个色条）
-      // legendSvg.append("line")
-      //     .attr("x1", legendX)
-      //     .attr("x2", legendX + legendBarWidth)
-      //     .attr("y1", yPos)
-      //     .attr("y2", yPos)
-      //     .style("stroke", "white")
-      //     .style("stroke-width", 1)
-      //     .style("opacity", 0.8);
             
       legendSvg.append("line")
         .attr("x1", legendX + legendBarWidth)
@@ -294,48 +291,62 @@ const DtLiverSampleChart = ({ data }) => {
       .style("font-weight", "normal")
       .text("ITH");
 
+    // 添加窗口大小变化监听
+    const handleResize = () => {
+      // 在清理阶段会重新执行useEffect
+    };
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
+      window.removeEventListener("resize", handleResize);
       d3.select(chartRef.current).select("svg").remove();
       d3.select(legendRef.current).select("svg").remove();
     };
   }, [data]);
 
   return (
-    <div style={{ 
-      width: "100%", 
-      height: "100%", 
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    }}>
+    <div 
+      ref={containerRef}
+      style={{ 
+        width: "100%", 
+        height: "100%", 
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+        boxSizing: "border-box",
+      }}
+    >
       <div style={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         gap: "5px",
         height: "100%",
-        width: "auto",
-        flexShrink: 0,
+        width: "100%",
+        boxSizing: "border-box",
       }}>
         <div 
           ref={chartRef} 
           style={{ 
-            height: "100%",
-            aspectRatio: "1 / 1",
             flexShrink: 0,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            minWidth: "300px",
+            boxSizing: "border-box",
           }}
         />
         <div 
           ref={legendRef} 
           style={{ 
             width: "80px", 
-            height: "100%",
             flexShrink: 0,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            boxSizing: "border-box",
           }}
         />
       </div>

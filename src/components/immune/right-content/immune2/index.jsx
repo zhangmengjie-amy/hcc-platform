@@ -17,7 +17,7 @@ import { getMutationHeatmapList, getHeatmapBoxplot } from "@/configs/request";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const HeatmapPage = ({ conditions }) => {
+const Immune2Content = ({ conditions }) => {
   const [data1, setData1] = useState(null); // method: conditions.method
   const [data2, setData2] = useState(null); // method: "hallmarks"
   const [data3, setData3] = useState(null); // method: "markergenes"
@@ -224,4 +224,4 @@ const HeatmapPage = ({ conditions }) => {
   );
 };
 
-export default HeatmapPage;
+export default Immune2Content;

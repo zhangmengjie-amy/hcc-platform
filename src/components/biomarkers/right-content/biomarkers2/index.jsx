@@ -295,7 +295,7 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
 
     // 目标颜色
     const blueColor = "#313695"; // RGB: 49, 54, 149
-    const whiteColor = "#ffffff"; // RGB: 255, 255, 255
+    const whiteColor = "#f9e9cd"; // RGB: 255, 255, 255
     const redColor = "#d73027"; // RGB: 215, 48, 39
 
     // 解析目标颜色
@@ -514,9 +514,11 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
               return {
                 ...sample,
                 color:
-                  HEATMAP_COLORS[selectedSubType]?.[
-                    subtypesValue?.[selectedSubType]
-                  ] ?? "#f0f0f0",
+                  selectedSubType === "biomarker"
+                    ? (biomarkerScoreData?.[sample.sample_id]?.color ?? "#f0f0f0")
+                    : HEATMAP_COLORS[selectedSubType]?.[
+                      subtypesValue?.[selectedSubType]
+                    ] ?? "#f0f0f0",
               };
             }),
             patientId: planetPatientId,

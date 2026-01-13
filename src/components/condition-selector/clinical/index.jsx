@@ -1,60 +1,35 @@
 "use client";
 import React, {
   useRef,
-  useMemo,
   useEffect,
-  useImperativeHandle,
   useState,
   useCallback,
   forwardRef,
 } from "react";
-import { usePDF } from "react-to-pdf";
 import {
-  getGeneList,
-  getValidGeneList,
   getClinicalConfig,
 } from "@/configs/request";
 import {
   CaretRightOutlined,
-  LoadingOutlined,
-  AppstoreOutlined,
-  ApartmentOutlined,
-  BranchesOutlined,
 } from "@ant-design/icons";
-import { debounce } from "lodash";
-import EmptyLoading from "@/components/empty-loading";
 import {
-  Card,
   Collapse,
   Row,
   Col,
-  Tag,
   Tooltip,
-  Space,
-  List,
   Checkbox,
   Button,
-  Affix,
   Spin,
   Flex,
-  Input,
-  Splitter,
   Typography,
-  Select,
   Timeline,
-  Upload,
-  Slider,
-  message,
-  Radio,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import styles from "../style.module.scss";
 const RELOAD_ICON = "/images/reload.svg";
-const DEFAULT_PAGE_SIZE = 100;
 const ConditionSelection = forwardRef(({ onChange }, ref) => {
   const { t } = useTranslation();
-  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [clinicList, setClinicList] = useState({
     gender: [],
     age: [],
@@ -63,7 +38,6 @@ const ConditionSelection = forwardRef(({ onChange }, ref) => {
     viralStatus: [],
   });
   const [loading, setLoading] = useState(false);
-  const filteredRef = useRef(null);
   const clinicalConfigRef = useRef(null);
 
   useEffect(() => {
@@ -107,19 +81,6 @@ const ConditionSelection = forwardRef(({ onChange }, ref) => {
       clinicalConditions: params,
     });
   };
-  const handleSearchGene = debounce((_filterValue) => {
-    if (loadMoreLoading) return;
-    setLoadMoreLoading(true);
-    getGeneList(1, DEFAULT_PAGE_SIZE, _filterValue)
-      .then((newData) => {
-        filteredRef.current = newData.records;
-        setFilteredList(filteredRef.current);
-        setCurrent(1);
-      })
-      .finally(() => {
-        setLoadMoreLoading(false);
-      });
-  }, 300);
 
   const clinicCollapseTitle = () => {
     return (
