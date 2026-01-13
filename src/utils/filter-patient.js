@@ -9,7 +9,7 @@ const filterSampleByConditions = (originalSamples, clinicList, geneList) => {
     };
   }).filter((clinic) => {
     return Object.keys(clinicList).every((condition) => {
-      if (!clinicList[condition].length) return true;
+      if (!clinicList?.[condition]?.length) return true;
       let realValue = clinic[condition];
       if (condition === "age") {
         if (clinic["age"] < 20) {

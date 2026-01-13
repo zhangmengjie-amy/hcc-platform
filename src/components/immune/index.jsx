@@ -61,22 +61,41 @@ const Biomarkers = () => {
   const handleApply = useCallback(() => {
     if (contentType === "immune1") {
       const params = immune1ConditionRef.current?.getParams();
-      setImmune1Conditions(params);
+      const requestParamsArray = {
+        clinicalConditions: params.clinicalConditions,
+        selectedCohortType: params.selectedCohortType,
+      };
+      setImmune1Conditions(requestParamsArray);
     }
     if (contentType === "immune2") {
       const params = immune2ConditionRef.current?.getParams();
-      setImmune2Conditions(params);
+      console.log("Immune2 Params", params);
+      const requestParamsArray = {
+        method: params.selectedMethod,
+        numbers: params.selectedRows?.map((item) => item.number),
+      };
+      setImmune2Conditions(requestParamsArray);
     }
   }, [contentType]);
 
 
   const handleOnReady = useCallback(async (params) => {
     if (contentType === "immune1") {
-      setImmune2Conditions(params);
+      const params = immune1ConditionRef.current?.getParams();
+      const requestParamsArray = {
+        clinicalConditions: params.clinicalConditions,
+        selectedCohortType: params.selectedCohortType,
+      };
+      setImmune1Conditions(requestParamsArray);
     }
 
     if (contentType === "immune2") {
-      setImmune2Conditions(params);
+      const params = immune2ConditionRef.current?.getParams();
+      const requestParamsArray = {
+        method: params.selectedMethod,
+        numbers: params.selectedRows?.map((item) => item.number),
+      };
+      setImmune2Conditions(requestParamsArray);
     }
   }, [contentType]);
 
@@ -141,11 +160,11 @@ const Biomarkers = () => {
             
             {contentType === "immune1" ? (
               <>
-                <Immune1Content conditions={immune1Conditions} dataType={immune1Conditions?.selectedCohortType} onComplete={handleComplete}>
+                <Immune1Content conditions={immune1Conditions?.clinicalConditions} dataType={immune1Conditions?.selectedCohortType} onComplete={handleComplete}>
                 </Immune1Content>
               </>
             ) : (
-              <Immune2Content></Immune2Content>
+              <Immune2Content conditions={immune2Conditions}></Immune2Content>
             )}
           </>
         }

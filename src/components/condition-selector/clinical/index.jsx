@@ -63,7 +63,7 @@ const ConditionSelection = forwardRef(({ onChange }, ref) => {
     });
   };
 
-  const onClinicChange = useCallback((value, parent) => {
+  const onClinicChange = (value, parent) => {
     // if (value?.length === 0) {
     //     messageApi.open({
     //         type: 'warning',
@@ -80,7 +80,7 @@ const ConditionSelection = forwardRef(({ onChange }, ref) => {
     onChange({
       clinicalConditions: params,
     });
-  }, []);
+  };
 
   const clinicCollapseTitle = () => {
     return (
