@@ -1,6 +1,17 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import { Layout, Flex, Row, Col, Card, Menu, FloatButton, Button, Input, Typography } from "antd";
+import {
+  Layout,
+  Flex,
+  Row,
+  Col,
+  Card,
+  Menu,
+  FloatButton,
+  Button,
+  Input,
+  Typography,
+} from "antd";
 import styles from "./style.module.scss";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,113 +28,165 @@ const Home = () => {
   const onSearch = (value) => {
     router.push(`/search?query=${!!value ? value : "TP53,CNNTB1,AXIN1"}`);
   };
-  const dataStaticList = [{
-    icon: "/images/total-patients.svg",
-    title: 12345,
-    key: "patient",
-    textColor: "#2a5ca1",
-    text: t("home:totalPatients"),
-  }, {
-    icon: "/images/samples-analyzed.svg",
-    title: 12345,
-    key: "sample",
-    textColor: "#a3584c",
-    text: t("home:samplesAnalyzed"),
-  }, {
-    icon: "/images/identified-mutations.svg",
-    title: 12345,
-    key: "gene-mutation",
-    textColor: "#729863",
-    text: t("home:identifiedMutations"),
-  }, {
-    icon: "/images/published-papers.svg",
-    title: 12345,
-    key: "papers",
-    textColor: "#476eaa",
-    text: t("home:publishedPapers"),
-  }];
-
-  const researchHighlight = [{
-    image: "/images/body.png",
-    title: "Mutation Signatures in HCC",
-    text: "Identifying novel mutation patterns in hepatocellular carcinoma patients.",
-    width: 1024,
-    height: 768,
-  }, {
-    image: "/images/cell.jpg",
-    title: "Immune Microenvironment",
-    text: "Characterizing the immune landscape of liver cancer progression.",
-    width: 800,
-    height: 549,
-  }, {
-    image: "/images/gene.png",
-    title: "Clinical Outcomes",
-    text: "Analyzing treatment responses and survival patterns.",
-    width: 406,
-    height: 405,
-  }];
-  const researchOverviewList = [{
-    image: "/images/advanced-analysis.svg",
-    textColor: "rgb(204,91,126)",
-    bgColor: "rgb(255, 235, 242)",
-    title: t("home:researchOverview.list.advancedAnalysis.title"),
-    text: t("home:researchOverview.list.advancedAnalysis.description"),
-  }, {
-    image: "/images/data-integration.svg",
-    textColor: "rgb(99,83,160)",
-    bgColor: "rgb(236, 236, 255)",
-    title: t("home:researchOverview.list.dataIntegration.title"),
-    text: t("home:researchOverview.list.dataIntegration.description"),
-  }, {
-    image: "/images/mutation-mapping.svg",
-    textColor: "rgb(63,122,128)",
-    bgColor: "rgb(226, 247, 252)",
-    title: t("home:researchOverview.list.mutationMapping.title"),
-    text: t("home:researchOverview.list.mutationMapping.description"),
-  }];
-
-  const items = [
-    { key: "mutation", label: "Genome", bg: "/images/mutation-bg.png" },
-    { key: "expression/subtype", label: "Transcriptome", bg: "/images/expression-bg.png" },
-    { key: "immune", label: "Immune" },
-    { key: "clinical", label: "Clinical" },
+  const dataStaticList = [
+    {
+      icon: "/images/total-patients.svg",
+      title: "6,068",
+      key: "patient",
+      textColor: "#2a5ca1",
+      text: t("home:totalPatients"),
+    },
+    {
+      icon: "/images/samples-analyzed.svg",
+      title: "8,284",
+      key: "sample",
+      textColor: "#a3584c",
+      text: t("home:samplesAnalyzed"),
+    },
+    {
+      icon: "/images/identified-mutations.svg",
+      title: 45,
+      key: "gene-mutation",
+      textColor: "#729863",
+      text: t("home:identifiedMutations"),
+    },
+    {
+      icon: "/images/published-papers.svg",
+      title: "Multi-sectors",
+      key: "papers",
+      textColor: "#476eaa",
+      text: t("home:publishedPapers"),
+    },
   ];
 
-  const handleAdvanceSearch = () => {
-    router.push(`/search/advanced`);
-  };
+  const researchOverviewList = [
+    {
+      image: "/images/advanced-analysis.svg",
+      textColor: "rgb(204,91,126)",
+      bgColor: "rgb(255, 235, 242)",
+      title: t("home:researchOverview.list.advancedAnalysis.title"),
+      text: t("home:researchOverview.list.advancedAnalysis.description"),
+    },
+    {
+      image: "/images/data-integration.svg",
+      textColor: "rgb(99,83,160)",
+      bgColor: "rgb(236, 236, 255)",
+      title: t("home:researchOverview.list.dataIntegration.title"),
+      text: t("home:researchOverview.list.dataIntegration.description"),
+    },
+    {
+      image: "/images/mutation-mapping.svg",
+      textColor: "rgb(63,122,128)",
+      bgColor: "rgb(226, 247, 252)",
+      title: t("home:researchOverview.list.mutationMapping.title"),
+      text: t("home:researchOverview.list.mutationMapping.description"),
+    },
+  ];
 
-
-  const singleModalContent = useMemo(() => {
-    if (seletedSingleModal == "mutation") {
-      return <>
-        <Image src={"/images/mutation-list1.png"} width={400} height={240} alt="water-fall"></Image></>;
-    } else {
-      return <><Image src={"/images/subtype.jpg"} width={250} height={200} alt="subtype"></Image></>;
-    }
-  }, [seletedSingleModal]);
+  const items = [
+    {
+      key: "driver-landscape",
+      title: "Driver landscape",
+      textColor: "rgb(63,122,128)",
+      bgColor: "rgb(226, 247, 252)",
+      url: "/images/driver-landscape.png",
+      description:
+        "Oncoprint plot shows genetic alterations in driver genes (or genes of interests from the user) across samples and patients.",
+    },
+    {
+      key: "timing-analysis",
+      title: "Timing analysis",
+      textColor: "rgb(63,122,128)",
+      bgColor: "rgb(226, 247, 252)",
+      url: "/images/timing-analysis.png",
+      description:
+        "Timing analysis allows users to trace the timing of the mutated genes by mapping them onto the phylogenetic tree.",
+    },
+    {
+      key: "differential-expression-analysis",
+      title: "Differential expression analysis",
+      textColor: "#7b1fa2",
+      bgColor: "#f3eafa",
+      url: "/images/differential-expression-analysis.png",
+      description:
+        "Differential gene expression analysis discovers differentially expressed genes (DEGs) between different subgroups (e.g. grouping by clinical information or molecular features) of samples.",
+    },
+    {
+      key: "transcriptomic-heterogeneity",
+      title: "Transcriptomic heterogeneity",
+      textColor: "#7b1fa2",
+      bgColor: "#f3eafa",
+      url: "/images/transcriptomic-heterogeneity.png",
+      description:
+        "This module explores how transcriptomic subtypes distribute across spatial samples within and between patients.",
+    },
+    {
+      key: "microenvironment-deconvolution",
+      title: "Microenvironment deconvolution",
+      textColor: "#2e7d32",
+      bgColor: "#e8f7f0",
+      url: "/images/microenvironment-deconvolution.png",
+      description:
+        "Microenvironment deconvolution aims to characterize the immune or stroma cell distribution and classify the tumor microenvironment within and between tumors. ",
+    },
+    {
+      key: "microenvironment-spatial-heterogeneity",
+      title: "Microenvironment spatial heterogeneity",
+      textColor: "#2e7d32",
+      bgColor: "#e8f7f0",
+      url: "/images/microenvironment-spatial-heterogeneity.png",
+      description:
+        "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients.",
+    },
+    {
+      key: "survival-analysis",
+      title: "Survival analysis",
+      textColor: "#c2185b",
+      bgColor: "#fdeaea",
+      url: "/images/survival-analysis.png",
+      description:
+        "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients. ",
+    },
+    {
+      key: "multi-modal-joint-analysis",
+      title: "Multi-modal joint analysis",
+      textColor: "#c2185b",
+      bgColor: "#fdeaea",
+      url: "/images/multi-modal-joint-analysis.png",
+      description:
+        "This module allows multi-modal information to be jointly displayed and analyzed. ",
+    },
+  ];
 
   return (
     <Layout style={{ background: "#fff" }} className={styles.homeContainer}>
       <Row justify="center" className={styles.main}>
         <Col xs={24} sm={24} md={12} lg={12}>
           <Flex vertical className={styles.colFlex}>
-            <div><Typography.Title ellipsis={{
-              rows: 1,
-              expandable: false,
-            }}
-            style={{ marginBottom: 0, fontSize: "54px", color: "rgb(10, 186, 181)", fontWeight: "bold" }}>
-              <span style={{ fontWeight: "bold", marginRight: "20px", display: "inline-block", fontSize: "54px", color: "rgb(10, 186, 181)" }}>HCC</span><span>{"Data Platform"}</span>
-            </Typography.Title></div>
-            <Typography.Paragraph ellipsis={{
-              rows: 1,
-              expandable: false,
-            }}
-            style={{ marginTop: "20px", fontSize: "18px", marginBottom: 0, color: "rgba(182, 55, 106)" }}>
-              {"Comprehensive Analysis of Hepatocellular Carcinoma"}
-            </Typography.Paragraph>
+            <div>
+              <Typography.Title
+                ellipsis={{
+                  rows: 1,
+                  expandable: false,
+                }}
+                style={{
+                  marginBottom: 0,
+                  fontSize: "54px",
+                  color: "rgb(10, 186, 181)",
+                  fontWeight: "bold",
+                }}
+              >
+                <span>{"Welcome to LIGOR!"}</span>
+              </Typography.Title>
+            </div>
             <Typography.Paragraph
-              style={{ marginTop: "20px", fontSize: "16px", marginBottom: 0, color: "#555" }}>
+              style={{
+                marginTop: "20px",
+                fontSize: "18px",
+                marginBottom: 0,
+                color: "#555",
+              }}
+            >
               {t("home:banner.description")}
             </Typography.Paragraph>
 
@@ -143,62 +206,134 @@ const Home = () => {
                         <Image src={"/images/rainbow.jpg"} width={350} height={200} alt='rainbow'></Image> */}
           </Flex>
         </Col>
-        <Col xs={24} sm={24} md={12} lg={12} >
-          <div className={styles.bannerImage}>
-          </div>
+        <Col xs={24} sm={24} md={12} lg={12}>
+          <div className={styles.bannerImage}></div>
         </Col>
       </Row>
 
-
-      <Row justify="center" className={styles.singleModalList}>
+      <Row justify="center" className={styles.singleModalList} gutter={[20, 20]}>
         <Col xs={24} sm={24} md={24} lg={24}>
-          <Title className={styles.subTitle} level={3} style={{ marginLeft: 15 }}>Single Modal</Title></Col>
-        {
-          items.map((item, index) => {
-            return <Col key={index} xs={12} sm={12} md={6} lg={6}>
-              <Link href={`/${item.key}`} onClick={() => { setSelectedSingleModal(item.key); }}>
-                <Flex vertical align={"center"} className={classnames(styles.colFlex, { [item.key]: true })} style={{
-                  backgroundImage: `url('/images/${item.key?.split("/")?.[0]}-bg.png')`,
-                  backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundOrigin: "content-box",
-                }}>
-                  <Title className={styles.singleModalTitle} level={2}
-                  >
-                    <span className={styles.capital}>{item.label?.slice(0, 1)}</span><span className={styles.remaining}>{item.label?.slice(1, item.label.length)}</span>
-                  </Title>
-                </Flex></Link>
-                            
-            </Col>;
-          })
-        }
+          <Title
+            className={styles.subTitle}
+            level={3}
+            style={{ marginLeft: 15 }}
+          >
+            Single Modal
+          </Title>
+        </Col>
+        {items.map((item, index) => {
+          return (
+            <Col key={index} xs={12} sm={12} md={6} lg={6}>
+              <Flex
+                vertical
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15)",
+                  padding: "15px 15px 20px",
+                  borderRadius: "12px",
+                  backgroundColor: item.bgColor,
+                }}
+              >
+                <div style={{ height: "200px", borderRadius: "12px", marginBottom: "20px", backgroundColor: "#fff", backgroundImage: `url('${item.url}')`, backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}></div>
+                <Title
+                  level={4}
+                  align={"center"}
+                  style={{ color: item.textColor }}
+                  ellipsis={{
+                    rows: 2,
+                    expandable: false,
+                  }}
+                >
+                  {item.title}
+                </Title>
+                <Paragraph
+                  align={"left"}
+                  className={styles.description}
+                  ellipsis={{
+                    rows: 5,
+                    expandable: false,
+                  }}
+                  style={{
+                    marginBottom: 0,
+                    marginTop: 20,
+                    color: "rgb(20, 40, 80)",
+                  }}
+                >
+                  {item.description}
+                </Paragraph>
+                <Flex justify="flex-end" style={{ marginTop: "auto" }}>
+                  <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff" }}>EXPLORE</Button>
+                </Flex>
+              </Flex>
+            </Col>
+          );
+        })}
       </Row>
-      <Row justify="center" className={styles.overview}>
-        <Col xs={8} sm={8} md={8} lg={8}>
-          <Title className={styles.subTitle} level={3}>Data Static</Title>
-          <Row gutter={[20, 10]} style={{ margin: 0 }} className={styles.dataStaticList}>
-            {
-              dataStaticList.map((item) => {
-                return <Col key={item.key} className={styles.colFlex} span={12} style={{
-                  width: "calc(50%)",  height: "100px", backgroundImage: `url('/images/${item.key}-bg.png')`,
-                  backgroundSize: "cover", backgroundPosition: "bottom right", backgroundRepeat: "no-repeat", backgroundOrigin: "content-box",
-                }}>
-                  <Typography.Paragraph level={5} style={{ marginTop: "10px", color: item.textColor }}>{item.text}</Typography.Paragraph>
-                  <Title level={3} style={{ marginTop: "20px", color: item.textColor }}>{item.title}</Title>
-                </Col>;
-              })
-            }
-
+      <Row justify="center" className={styles.overview} gutter={[10, 10]}>
+        <Col xs={24} sm={24} md={8} lg={8}>
+          <Title className={styles.subTitle} level={3}>
+            Data Static
+          </Title>
+          <Row
+            gutter={[15, 15]}
+            style={{ margin: 0 }}
+            className={styles.dataStaticList}
+          >
+            {dataStaticList.map((item) => {
+              return (
+                <Col
+                  key={item.key}
+                  xs={12} sm={12} md={12} lg={12}
+                  style={{
+                    height: 112,
+                    backgroundImage: `url('/images/${item.key}-bg.png')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "bottom right",
+                    backgroundRepeat: "no-repeat",
+                    backgroundOrigin: "content-box",
+                  }}
+                >
+                  <Typography.Paragraph
+                    level={5}
+                    style={{ margin: "15px", color: item.textColor }}
+                  >
+                    {item.text}
+                  </Typography.Paragraph>
+                  <Title
+                    level={3}
+                    style={{ margin: "10px", color: item.textColor }}
+                  >
+                    {item.title}
+                  </Title>
+                </Col>
+              );
+            })}
           </Row>
         </Col>
-        <Col xs={16} sm={16} md={16} lg={16}>
-          <Title className={styles.subTitle} level={3} style={{ marginLeft: 10 }}>Search Overview</Title>
-          <Row justify="center" className={styles.researchHighlight}>
-                                        
-            {
-              researchOverviewList.map((item, index) => {
-                return <Col key={index} xs={24} sm={24} md={8} lg={8} >
-                  <Flex vertical align={"center"} className={styles.colFlex} >
+        <Col xs={24} sm={24} md={16} lg={16}>
+          <Title
+            className={styles.subTitle}
+            level={3}
+            style={{ marginLeft: 10 }}
+          >
+            Search Overview
+          </Title>
+          <Row
+            gutter={[15, 15]}
+            justify="center"
+            className={styles.researchHighlight}
+          >
+            {researchOverviewList.map((item, index) => {
+              return (
+                <Col key={index} xs={24} sm={24} md={8} lg={8}>
+                  <Flex vertical align={"center"} className={styles.colFlex}>
                     <Card
-                      style={{ height: "210px", paddingTop: 15, backgroundColor: item.bgColor }}
+                      style={{
+                        width: "100%",
+                        paddingTop: 15,
+                        backgroundColor: item.bgColor,
+                      }}
                       cover={
                         <Image
                           alt="example"
@@ -208,31 +343,40 @@ const Home = () => {
                         />
                       }
                     >
-                      <Title level={4} align={"center"} style={{ color: item.textColor }} ellipsis={{
-                        rows: 1,
-                        expandable: false,
-                      }}>
+                      <Title
+                        level={4}
+                        align={"center"}
+                        style={{ color: item.textColor }}
+                        ellipsis={{
+                          rows: 1,
+                          expandable: false,
+                        }}
+                      >
                         {item.title}
                       </Title>
-                      <Paragraph align={"left"} className={styles.description} ellipsis={{
-                        rows: 2,
-                        expandable: false,
-                      }} style={{
-                        marginBottom: 0,
-                        marginTop: 20,
-                        color: "rgb(20, 40, 80)",
-                      }}>{item.text}</Paragraph>
-
+                      <Paragraph
+                        align={"left"}
+                        className={styles.description}
+                        ellipsis={{
+                          rows: 3,
+                          expandable: false,
+                        }}
+                        style={{
+                          marginBottom: 0,
+                          marginTop: 20,
+                          color: "rgb(20, 40, 80)",
+                        }}
+                      >
+                        {item.text}
+                      </Paragraph>
                     </Card>
                   </Flex>
-                </Col>;
-              })
-            }
+                </Col>
+              );
+            })}
           </Row>
         </Col>
       </Row>
-
-
     </Layout>
   );
 };

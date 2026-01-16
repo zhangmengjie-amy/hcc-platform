@@ -48,8 +48,8 @@
   },
   "footer" : {
     "aboutHccPlatform": {
-      "title": "关于Hcc平台",
-      "description": "肝细胞癌多模态异质性分析的先进研究平台"
+      "title": "LIGOR",
+      "description": "Integrating geospatial and temporal multi-omic information to provide a comprehensive platform, accelerating precision medicine in hepatocellular carcinoma."
     },
     "quickLinks": {
       "title": "快速链接"
@@ -60,6 +60,6 @@
     "contact": {
       "title": "联系"
     },
-    "copyright": "肝癌数据平台版权所有"
+    "copyright": "版权所有"
   }
 }

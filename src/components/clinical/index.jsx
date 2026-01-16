@@ -1,212 +1,168 @@
 "use client";
-import React, { useRef, useEffect, useState, useCallback } from "react";
-import { usePDF } from "react-to-pdf";
-import { getGeneList, getValidGeneList } from "@/configs/request";
-import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from "@ant-design/icons";
-import { debounce } from "lodash";
-import ConditionSelection from "@/components/clinical-selection";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import {
-  Card,
+  getBiomarkersResultByTaskId,
+  getBiomarkersTaskIds,
+  getGeneList,
+} from "@/configs/request";
+import {
+  CaretRightOutlined,
+  LoadingOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { getBiomarkers } from "@/configs/request";
+import SplitBar from "@/components/split-bar";
+import Overall from "@/components/overall";
+import ClinicalConditions from "@/components/condition-selector/clinical";
+import {
   Collapse,
-  Row,
-  Col,
-  Tag,
+  Radio,  
   Tooltip,
-  Space,
-  List,
-  Checkbox,
   Button,
-  Affix,
-  Spin,
-  Alert,
   Flex,
-  Input,
   Splitter,
   Typography,
-  Select,
-  Timeline,
-  Upload,
   Segmented,
-  Slider,
   message,
+  Alert,
 } from "antd";
-import DriverLandscape from "@/components/mutation/driverLandscape";
-import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import Overall from "@/components/overall";
-import styles from "./style.module.scss";
-import { clinicConfig } from "@/configs/mutation";
 const { Panel } = Splitter;
-const RELOAD_ICON = "/images/reload.svg";
-const SEARCH_SRC = "/images/search.svg";
 const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const IMPORT_SRC = "/images/import.svg";
-const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
 const DEFAULT_LEFT_PANEL_WIDTH = "25%";
 const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
+const RELOAD_ICON = "/images/reload.svg";
 
-
-const Clinical = () => {
+const Biomarkers = () => {
   const { t } = useTranslation();
-  const [treeType, setTreeType] = useState("overview");
-  const [driverList, setDriverList] = useState(["driver", "not-driver"]);
-  const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
-  const [sampleType, setSampleType] = useState("bySample");
-  const [applyLoading, setApplyLoading] = useState(false);
-  const [sliderValue, setSliderValue] = useState([0, 1]);
+  const [taskIdsWithCohort, setTaskIdsWithCohort] = useState(null);
+  const [contentType, setContentType] = useState("biomarkers1");
+  const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
-  const [showSearchInput, setShowSearchInput] = useState(false);
-  const [params, setParams] = useState({});
-  const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
-  const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
-  const [filterValue, setFilterValue] = useState("");
-  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
-  const [fetchLoading, setFetchLoading] = useState(true);
-  const [current, setCurrent] = useState(1);
-  const [geneList, setGeneList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const conditionSelectionRef = useRef(null);
-  const [clinicList, setClinicList] = useState({
-    gender: [],
-    age: [],
-    race: [],
-    stage: [],
-    viralStatus: [],
-  });
-  const geneRef = useRef(null);
-  const paramsRef = useRef(null);
-  const overAllRef = useRef(null);
-  useEffect(() => {
-    setFetchLoading(true);
-    getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
-      geneRef.current = results?.records ?? [];
-      const driverList = getDriverList();
-      const _params = {
-        ...paramsRef.current,
-        ...clinicList,
-        sampleType: "bySample",
-        geneList: getGeneListWithIsDeriverGene(driverList),
-      };
-      setGeneList(driverList);
-      setParams(_params);
-      paramsRef.current = _params;
-      setFetchLoading(false);
-    });
+  const [pollingData, setPollingData] = useState(null);
+  const [pollingResultData, setPollingResultData] = useState(null);
+  const [conditions, setConditions] = useState(null);
+  const biomarkers1ConditionRef = useRef(null);
 
-  }, []);
-
-  const getGeneListWithIsDeriverGene = (list) => {
-    return list.map((gene) => {
-      return {
-        gene,
-        isDriverGene: !!geneRef.current.find((item) => item.gene == gene)?.isDriverGene,
-      };
-    });
-  };
-
-  const getDriverList = () => {
-    return geneRef.current?.filter((item) => !!item.isDriverGene).map((item) => item.gene);
-  };
-
+  const biomarkers2ConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
-    setParams(conditionSelectionRef.current.getParams());
-    overAllRef.current?.setApplyLoading();
+    if (contentType === "biomarkers1") {
+      const params = biomarkers1ConditionRef.current?.getParams();
+      applyMethod(params);
+    }
+    if (contentType === "biomarkers2") {
+      const params = biomarkers2ConditionRef.current?.getParams();
+      const requestParamsArray = {
+        clinicalConditions: params.clinicalConditions,
+        selectedCohortType: params.selectedCohortType,
+        biomarkers: generateBiomarkers2RequestParams(params),
+      };
+      if (params.selectedGeneType === "customized") {
+        if (!params.selectedCustomizedGeneList?.length) {
+          messageApi.open({
+            type: "warning",
+            content: "请上传自定义基因txt",
+          });
+          return;
+        }
+      }
+      setBiomarkers2Conditions(requestParamsArray);
+    }
+  }, [contentType]);
+
+  useEffect(() => {
+    if (!taskIdsWithCohort) return;
+    setPollingData({
+      taskIds: taskIdsWithCohort,
+      cohortInfo: biomarkers1ConditionRef.current
+        ?.getParams()
+        ?.selectedRows?.reduce((acc, row) => {
+          acc[row.number] = { name: row.name || `Cohort ${row.number}` };
+          return acc;
+        }, {}),
+    });
+  }, [taskIdsWithCohort]);
+
+  const leftAction = useMemo(() => {
+    return (
+      <Button
+        color="default"
+        size="large"
+        icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />}
+        loading={applyLoading}
+        onClick={handleApply}
+        type="primary"
+      >
+        {t("common:apply")}
+      </Button>
+    );
+  }, [applyLoading, contentType]);
+
+  const handleContentTypeChange = useCallback((value) => {
+    setContentType(value);
+    setApplyLoading(true);
   }, []);
 
-  const onPanelChange = (sizes) => {
-    setLeftPanelSize(sizes[0]);
-    setRightPanelSize(sizes[1]);
-  };
+  const rightAction = useMemo(() => {
+    return (
+      <Segmented
+        size="large"
+        onChange={handleContentTypeChange}
+        options={[
+          { value: "biomarkers1", label: "biomarkers1" },
+          { value: "biomarkers2", label: "biomarkers2" },
+        ]}
+        value={contentType}
+      />
+    );
+  }, [contentType]);
 
-  const leftPanelFullScreen = () => {
-    if (rightPanelSize == "0") {
-      setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
-      setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
+  const leftContent = useMemo(() => {
+    return (
+      <ClinicalConditions>
 
-    } else {
-      setLeftPanelSize("0");
-      setRightPanelSize("100%");
-    }
-  };
+      </ClinicalConditions>
+    );
+  }, [contentType]);
 
-  const rightPanelFullScreen = () => {
-    if (leftPanelSize == "0") {
-      setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
-      setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
-
-    } else {
-      setLeftPanelSize("100%");
-      setRightPanelSize("0");
-    }
-  };
-
-  const handleSearchGene = debounce((_filterValue) => {
-    if (loadMoreLoading) return;
-    setLoadMoreLoading(true);
-    getGeneList(1, DEFAULT_PAGE_SIZE, _filterValue)
-      .then(newData => {
-        geneRef.current = newData.records;
-        setCurrent(1);
-      })
-      .finally(() => {
-        setLoadMoreLoading(false);
-      });
-  }, 300);
-
-  const handleApplyLoading = (loading) => {
-    setApplyLoading(loading);
-  };
+  const rightContent = useMemo(() => {
+    return (
+      <>
+        <Alert
+          style={{ margin: "0 10px" }}
+          message="In this genomic modal, you will be able to explore the driver status (“Driver Landscape”) as well as Phylogenetic Relationship of the PLANet and Ditan cohort."
+        ></Alert>
+        <Overall conditions={conditions}></Overall>
+      </>
+    );
+  }, [contentType]);
 
   return (
     <>
       {contextHolder}
-      <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
-        <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
-          <Flex justify="space-between" align="center" style={{ paddingLeft: "10px" }}>
-            <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary">
-              {t("common:apply")}
-            </Button>  
-            <Button color="default" variant="text"
-              onClick={leftPanelFullScreen}
-              style={{ color: "#fff", padding: 0 }}>
-              <Image
-                src={LEFT_SQUARE_SRC}
-                alt="import"
-                width={30}
-                height={30}
-              />
-            </Button>
-          </Flex>
-          <ConditionSelection ref={conditionSelectionRef} showClinical showITH={false} showGeneList={false}></ConditionSelection>
-
-        </Panel>
-        <Panel size={rightPanelSize} min={"50%"} max="80%">
-          <Flex justify="space-between" align="center" style={{ height: "40px", paddingRight: 10 }}>
-            <Flex align="center">
-              <Button color="default" variant="text"
-                style={{ color: "#fff", padding: 0, marginRight: 5 }}
-                onClick={rightPanelFullScreen}>
-                <Image
-                  src={RIGHT_SQUARE_SRC}
-                  alt="import"
-                  width={30}
-                  height={30}
-                />
-              </Button>
-            </Flex>
-                        
-          </Flex>
-          <Alert style={{ margin: "0 10px" }} message="In this genomic modal, you will be able to explore the driver status (“Driver Landscape”) as well as Phylogenetic Relationship of the PLANet and Ditan cohort."></Alert>
-          <Overall conditions={params} handleApplyLoading={handleApplyLoading}></Overall>
-        </Panel>
-      </Splitter>
+      <SplitBar
+        initialLeftWidth={"40%"}
+        initialRightWidth={"60%"}
+        leftAction={null}
+        rightAction={null}
+        leftContent={leftContent}
+        rightContent={rightContent}
+      ></SplitBar>
     </>
   );
 };
 
-export default Clinical;
+export default Biomarkers;

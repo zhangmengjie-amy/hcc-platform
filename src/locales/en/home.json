@@ -12,31 +12,30 @@
     "biomarkers": "Biomarkers"
   },
   "banner": {
-    "title": "HCC Data Platform",
-    "subTitle": "Comprehensive Analysis of Hepatocellular Carcinoma",
-    "description": "A cutting-edge platform for analyzing multimodal heterogeneity in hepatocellular carcinoma cohort data. Integrating mutation profiles, expression patterns, immune signatures, and clinical outcomes to advance liver cancer research and treatment strategies."
+    "title": "LIGOR",
+    "description": "Liver Cancer Geospatial Omics Resource (LIGOR) is a comprehensive database designed to characterize the spatial intra-tumor heterogeneity(sITH) of hepatocellular carcinoma based on multi-omics data collected from spatially informed tumor sectors. It enables the exploration of multi-omic information across cohorts, characterizing spatial and temporal patterns of molecular changes, facilitating the discovery of biomarkers of clinical relevance."
   },
   "search": {
     "placeholder": "Search for mutated gene names, TP53, CTNNB1 AXIN1, etc."
   },
   "totalPatients": "Total Patients",
   "samplesAnalyzed": "Samples Analyzed",
-  "identifiedMutations": "Identified Mutations",
-  "publishedPapers": "Published Papers",
+  "identifiedMutations": "Total Cohorts",
+  "publishedPapers": "Data Types",
   "researchOverview": {
     "title": "Research Overview",
     "list": {
       "advancedAnalysis": {
-        "title": "Advanced Analysis",
-        "description": "Comprehensive genomic profiling using state-of-the-art sequencing technologies"
+        "title": "Geospatial analysis",
+        "description": "Visualize multi-modal heterogeneity of molecular features within and between a large group of HCC patients."
       },
       "dataIntegration" : {
-        "title": "Data Integration",
-        "description": "Multi-dimensional data analysis combining clinical and molecular information"
+        "title": "Temporal analysis",
+        "description": "Timing multi-modal changes by mapping them onto the phylogenetic tree."
       },
       "mutationMapping" : {
-        "title": "Mutation Mapping",
-        "description": "Detailed mapping of genetic alterations and their clinical implications"
+        "title": "Custom analysis",
+        "description": "Support user-defined subgrouping analysis in gene expression, biomarker and survival analysis."
       }
     }
   },
@@ -48,8 +47,8 @@
   },
   "footer" : {
     "aboutHccPlatform": {
-      "title": "About Hcc Platform",
-      "description": "Advanced research platform for hepatocellular carcinoma multimodal heterogeneity analysis"
+      "title": "LIGOR",
+      "description": "Integrating geospatial and temporal multi-omic information to provide a comprehensive platform, accelerating precision medicine in hepatocellular carcinoma."
     },
     "quickLinks": {
       "title": "Quick Links"
@@ -60,6 +59,6 @@
     "contact": {
       "title": "Contact"
     },
-    "copyright": "HCC Data Platform. All rights reserved."
+    "copyright": "All rights reserved."
   }
 }
