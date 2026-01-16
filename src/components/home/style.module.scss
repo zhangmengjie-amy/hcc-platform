@@ -1,5 +1,6 @@
   .homeContainer {
     min-height: 100vh;
+    overflow: hidden;
   }
 
   .singleModalList {
@@ -10,7 +11,6 @@
       margin: 15px;
       height: 120px;
       background: rgba(239, 207, 210, .5);
-      padding: 10px 0 25px 0;
       border-radius: 12px;
       border: 1px solid transparent;
 
@@ -88,6 +88,7 @@
   .main {
     // background-color: rgb(254, 242, 244);
     .colFlex {
+      height: 100%;
       padding: 20px 50px;
       border-radius: 12px;
     }
@@ -112,15 +113,15 @@
           transform: scale(1.1);
           transition: all ease 0.3s;
         }
-
       }
     }
 
     .researchHighlight {
       .colFlex {
+        height: 100%;
         padding: 0;
         overflow: hidden;
-        margin: 0px 10px;
+
 
         border-radius: 12px;
                 &:hover {
@@ -128,7 +129,9 @@
         }
 
       }
-
+      :global(.ant-card) {
+        height: 100%;
+      }
       :global(.ant-card-cover) {
         max-height: 150px;
         overflow: hidden;
@@ -145,13 +148,14 @@
   .subTitle {
     position: relative;
     padding-left: 10px;
+    padding-top: 20px;
     color:rgb(10, 186, 181) !important;
 
     &:before {
       content: "";
       position: absolute;
       left: 0;
-      top: 5px;
+      top: 25px;
       width: 5px;
       height: 25px;
       bottom: 11px;

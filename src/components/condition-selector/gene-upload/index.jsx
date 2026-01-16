@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Upload, Button, message, Tag, Spin, Space, Typography } from "antd";
 import { UploadOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { validGene } from "@/configs/request";
 import PropTypes from "prop-types"; // 导入 PropTypes
 
 const { Paragraph } = Typography;
@@ -81,9 +82,11 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
       }
 
       try {
-        const response = await mockValidateGenesAPI(rawGeneNames);
-        if (response.success) {
-          const validated = response.data;
+        console.log("rawGeneNames:", rawGeneNames);
+        const response = await validGene(rawGeneNames);
+        if (response.code == 200) {
+          const validated = response.data?.map(item => item.name);
+
           const invalid = rawGeneNames.filter(name => !validated.includes(name));
           setValidGenes(validated);
           setInvalidGenes(invalid);

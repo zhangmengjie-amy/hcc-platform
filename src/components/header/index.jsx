@@ -13,6 +13,7 @@ import {
   Affix,
 } from "antd";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
@@ -101,9 +102,8 @@ const HCCHeader = () => {
   return (
     <Affix>
       <Layout.Header className={styles.hccHeader}>
-        <Typography.Title level={2} style={{ marginBottom: 0, color: "#fff" }}>
-          HCC
-        </Typography.Title>
+        <Image src="/images/logo.png" alt="Logo" width={100} height={30}>
+        </Image>
         <Menu
           theme="dark"
           className={styles.hccMenu}

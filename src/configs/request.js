@@ -204,6 +204,18 @@ export const getDEGTaskIds = async (data) => {
   }
 };
 
+export const validGene = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/gene/search`, data);
+    return response?.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+
+
 export const getDEGResultByTaskId = async (id) => {
   try {
     const response = await post(`/hcc/v1/deg/result/${id}`);

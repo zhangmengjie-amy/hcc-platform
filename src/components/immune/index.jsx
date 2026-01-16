@@ -125,8 +125,8 @@ const Biomarkers = () => {
         size="large"
         onChange={handleContentTypeChange}
         options={[
-          { value: "immune1", label: "immune1" },
-          { value: "immune2", label: "immune2" },
+          { value: "immune1", label: "Immune subtype" },
+          { value: "immune2", label: "Microenvironment deconvolution" },
         ]}
         value={contentType}
       />

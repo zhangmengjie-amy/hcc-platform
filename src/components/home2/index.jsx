@@ -38,25 +38,6 @@ const Home = () => {
     text: t("home:publishedPapers"),
   }];
 
-  const researchHighlight = [{
-    image: "/images/body.png",
-    title: "Mutation Signatures in HCC",
-    text: "Identifying novel mutation patterns in hepatocellular carcinoma patients.",
-    width: 1024,
-    height: 768,
-  }, {
-    image: "/images/cell.jpg",
-    title: "Immune Microenvironment",
-    text: "Characterizing the immune landscape of liver cancer progression.",
-    width: 800,
-    height: 549,
-  }, {
-    image: "/images/gene.png",
-    title: "Clinical Outcomes",
-    text: "Analyzing treatment responses and survival patterns.",
-    width: 406,
-    height: 405,
-  }];
   const researchOverviewList = [{
     image: "/images/advanced-analysis.svg",
     textColor: "rgb(204,91,126)",
@@ -194,7 +175,7 @@ const Home = () => {
                 return <Col key={index} xs={24} sm={24} md={8} lg={8} >
                   <Flex vertical align={"center"} className={styles.colFlex} >
                     <Card
-                      style={{ height: "210px", paddingTop: 15, backgroundColor: item.bgColor }}
+                      style={{ height: "230px", paddingTop: 15, backgroundColor: item.bgColor }}
                       cover={
                         <Image
                           alt="example"
