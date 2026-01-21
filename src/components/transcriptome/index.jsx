@@ -2,8 +2,8 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import SubtypeLandscape from "@/components/expression/subtype-landscape";
-import Pathways from "@/components/expression/pathways";
+import SubtypeLandscape from "@/components/transcriptome/subtype-landscape";
+import Pathways from "@/components/transcriptome/pathways";
 import {
   Collapse,
   Radio,
@@ -18,7 +18,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 
-const Expression = () => {
+const Transcriptome = () => {
   const { t } = useTranslation();
   const [dataType, setDataType] = useState("planet");
   const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
@@ -39,4 +39,4 @@ const Expression = () => {
   );
 };
 
-export default Expression;
+export default Transcriptome;

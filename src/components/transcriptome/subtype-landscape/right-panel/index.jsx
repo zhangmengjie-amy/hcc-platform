@@ -7,8 +7,8 @@ import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/planet-liver-sample";
 import DtLiverSampleChart from "@/components/dt-liver-sample";
-import SunburstChart from "@/components/expression/subtype-landscape/right-panel/sunburst";
-import ColumnChart from "@/components/expression/subtype-landscape/right-panel/column";
+import SunburstChart from "@/components/transcriptome/subtype-landscape/right-panel/sunburst";
+import ColumnChart from "@/components/transcriptome/subtype-landscape/right-panel/column";
 import filterSampleByConditions from "@/utils/filter-patient";
 
 const PLANET_SUBTYPE_COLOR = {

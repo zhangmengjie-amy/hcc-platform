@@ -5,7 +5,7 @@ import {
   getDEGTaskIds,
   getDEGResultByTaskId,
 } from "@/configs/request";
-import VolcanoPlot from "@/components/expression/pathways/right-panel/volcano-plot";
+import VolcanoPlot from "@/components/transcriptome/pathways/right-panel/volcano-plot";
 import {
   Flex,
   Spin,

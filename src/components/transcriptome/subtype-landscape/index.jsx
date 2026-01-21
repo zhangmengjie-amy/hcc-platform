@@ -4,8 +4,8 @@ import { getGeneList } from "@/configs/request";
 import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import CohortCondition from "@/components/cohort-condition";
-import RightPanel from "@/components/expression/pathways/right-panel";
+import ConditionSelection from "@/components/clinical-selection";
+import RightPanel from "@/components/transcriptome/subtype-landscape/right-panel";
 import {
   Collapse,
   Radio,
@@ -23,19 +23,19 @@ import styles from "./style.module.scss";
 const { Panel } = Splitter;
 const LEFT_SQUARE_SRC = "/images/left-square.svg";
 const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const DEFAULT_LEFT_PANEL_WIDTH = "40%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "60%";
+const DEFAULT_LEFT_PANEL_WIDTH = "25%";
+const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 100;
 const RELOAD_ICON = "/images/reload.svg";
 
-const Pathways = () => {
+const SubtypeLandscape = () => {
   const { t } = useTranslation();
   const [dataType, setDataType] = useState("planet");
   const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
   const [applyLoading, setApplyLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [params, setParams] = useState(null);
+  const [params, setParams] = useState({});
   const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
   const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
   const [fetchLoading, setFetchLoading] = useState(true);
@@ -63,7 +63,7 @@ const Pathways = () => {
         geneList: getGeneListWithIsDeriverGene(driverList),
       };
       setGeneList(driverList);
-      setParams(null);
+      setParams(_params);
       paramsRef.current = _params;
       setFetchLoading(false);
     });
@@ -112,11 +112,10 @@ const Pathways = () => {
   };
 
   useEffect(() => {
-    setParams(null);
-    console.log("params", params);
+    setParams({});
   }, [mutationTypeTab]);
 
-
+    
   const dataTypeCollapseTitle = () => {
     return <Flex justify={"space-between"} align={"center"}>
       <Typography.Paragraph
@@ -124,7 +123,7 @@ const Pathways = () => {
           rows: 1,
           expandable: false,
         }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.driver")}</Typography.Paragraph>
+        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>Filter By Cohort</Typography.Paragraph>
 
       <Tooltip placement="bottom" title={t("common:reset-selection")}>
         <Button color="default" onClick={(event) => {
@@ -147,16 +146,31 @@ const Pathways = () => {
     setDataType(e.target.value);
   };
 
+  const dataTypeCollapseContent = () => {
+    return <div className={styles.searchCard}
+      variant="borderless">
+      <Radio.Group
+        value={dataType}
+        onChange={onDataTypeChange}
+        options={[
+          { value: "planet", label: "PLANET" },
+          { value: "dt", label: "DT" },
+          { value: "all", label: "All" },
+        ]}
+      />
+    </div>;
+  };
+
   return (
     <>
       {contextHolder}
       <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
-        <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="80%">
+        <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
           <Flex justify="space-between" align="center" style={{ paddingLeft: "10px", height: "40px" }}>
             <Button color="default" size="middle" disabled={!geneList?.length} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary">
               {t("common:apply")}
             </Button>
-
+                        
             <Button color="default" variant="text"
               onClick={leftPanelFullScreen}
               style={{ color: "#fff", padding: 0 }}>
@@ -168,9 +182,22 @@ const Pathways = () => {
               />
             </Button>
           </Flex>
-          <CohortCondition ref={conditionSelectionRef} handleInitChange={handleApply} module={"DEG"}></CohortCondition>
+          <Collapse
+            defaultActiveKey={"dataType"}
+            className={styles.searchCollapse}
+            expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
+            items={[{
+              key: "dataType",
+              label: dataTypeCollapseTitle(),
+              children: dataTypeCollapseContent(),
+
+            }]}>
+          </Collapse>
+          {
+            pathname.split("/")[2] == "subtype" && <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} showDriverGeneList={false} showITH={false} showGeneList={false} ></ConditionSelection>
+          }
         </Panel>
-        <Panel size={rightPanelSize} min={"20%"} max="80%">
+        <Panel size={rightPanelSize} min={"50%"} max="80%">
           <Flex justify="space-between" align="center" style={{ height: "40px", paddingRight: 10 }}>
             <Flex align="center">
               <Button color="default" variant="text"
@@ -185,11 +212,10 @@ const Pathways = () => {
               </Button>
 
               <Segmented
-                options={[{ label: <Link href="/expression/subtype">{"Subtype landscape and tree"}</Link>, value: "subtype" },
-                  { label: <Link href="/expression/pathways">{"Customized DEGs and pathways"}</Link>, value: "pathways" },
+                options={[{ label: <Link href="/transcriptome/subtype">{"Subtype landscape and tree"}</Link> , value: "subtype" },
+                  { label: <Link href="/transcriptome/pathways">{"Customized DEGs and pathways"}</Link>, value: "pathways" },
                 ]}
-                onChange={setMutationTypeTab}
-                value={pathname.split("/")[2]}
+                value={ pathname.split("/")[2]}
               />
             </Flex>
           </Flex>
@@ -201,4 +227,4 @@ const Pathways = () => {
   );
 };
 
-export default Pathways;
+export default SubtypeLandscape;

@@ -21,10 +21,10 @@ import { usePathname } from "next/navigation";
 import { getBiomarkers } from "@/configs/request";
 import SplitBar from "@/components/split-bar";
 import PollingManager from "@/components/polling-manager";
-import Biomarkers1Content from "./right-content/biomarkers1";
-import Biomarkers1Condition from "./left-content/biomarkers1";
-import Biomarkers2Condition from "./left-content/biomarkers2";
-import Biomarkers2Content from "./right-content/biomarkers2";
+import SurvivalAnalysisContent from "./right-content/survival-analysis";
+import SurvivalAnalysisCondition from "./left-content/survival-analysis";
+import MultiModalJointAnalysisCondition from "./left-content/multi-modal-joint-analysis";
+import MultiModalJointAnalysisContent from "./right-content/multiModalJointAnalysis";
 import {
   Collapse,
   Radio,
@@ -55,18 +55,18 @@ const Biomarkers = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [pollingData, setPollingData] = useState(null);
   const [pollingResultData, setPollingResultData] = useState(null);
-  const [biomarkers2Conditions, setBiomarkers2Conditions] = useState(null);
-  const biomarkers1ConditionRef = useRef(null);
+  const [multiModalJointAnalysisConditions, setMultiModalJointAnalysisConditions] = useState(null);
+  const survivalAnalysisConditionRef = useRef(null);
 
-  const biomarkers2ConditionRef = useRef(null);
+  const MultiModalJointAnalysisConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
     if (contentType === "survivalAnalysis") {
-      const params = biomarkers1ConditionRef.current?.getParams();
+      const params = survivalAnalysisConditionRef.current?.getParams();
       applyMethod(params);
     }
     if (contentType === "multiModalJointAnalysis") {
-      const params = biomarkers2ConditionRef.current?.getParams();
+      const params = MultiModalJointAnalysisConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
         selectedCohortType: params.selectedCohortType,
@@ -81,7 +81,7 @@ const Biomarkers = () => {
           return;
         }
       }
-      setBiomarkers2Conditions(requestParamsArray);
+      setMultiModalJointAnalysisConditions(requestParamsArray);
     }
   }, [contentType]);
 
@@ -126,7 +126,7 @@ const Biomarkers = () => {
           return;
         }
       }
-      setBiomarkers2Conditions(requestParamsArray);
+      setMultiModalJointAnalysisConditions(requestParamsArray);
     }
   }, [contentType]);
 
@@ -134,7 +134,7 @@ const Biomarkers = () => {
     if (!taskIdsWithCohort) return;
     setPollingData({
       taskIds: taskIdsWithCohort,
-      cohortInfo: biomarkers1ConditionRef.current
+      cohortInfo: survivalAnalysisConditionRef.current
         ?.getParams()
         ?.selectedRows?.reduce((acc, row) => {
           acc[row.number] = { name: row.name || `Cohort ${row.number}` };
@@ -296,11 +296,11 @@ const Biomarkers = () => {
         leftContent={
           <>
             {contentType === "survivalAnalysis" ? (
-              <Biomarkers1Condition
-                ref={biomarkers1ConditionRef}
+              <SurvivalAnalysisCondition
+                ref={survivalAnalysisConditionRef}
                 handleOnReady={handleOnReady}
-              ></Biomarkers1Condition>
-            ) : <Biomarkers2Condition ref={biomarkers2ConditionRef} handleOnReady={handleOnReady}></Biomarkers2Condition>}
+              ></SurvivalAnalysisCondition>
+            ) : <MultiModalJointAnalysisCondition ref={MultiModalJointAnalysisConditionRef} handleOnReady={handleOnReady}></MultiModalJointAnalysisCondition>}
           </>
         }
         rightContent={
@@ -312,12 +312,12 @@ const Biomarkers = () => {
                   pollingData={pollingData}
                   onComplete={handlePollingComplete}
                 />
-                <Biomarkers1Content
+                <SurvivalAnalysisContent
                   pollingResults={pollingResultData}
-                ></Biomarkers1Content>
+                ></SurvivalAnalysisContent>
               </>
             ) : (
-              <Biomarkers2Content biomarkers={biomarkers2Conditions?.biomarkers} conditions={biomarkers2Conditions?.clinicalConditions} dataType={biomarkers2Conditions?.selectedCohortType} onComplete={handleBiomarker2Complete}></Biomarkers2Content>
+              <MultiModalJointAnalysisContent biomarkers={multiModalJointAnalysisConditions?.biomarkers} conditions={multiModalJointAnalysisConditions?.clinicalConditions} dataType={multiModalJointAnalysisConditions?.selectedCohortType} onComplete={handleBiomarker2Complete}></MultiModalJointAnalysisContent>
             )}
           </>
         }
