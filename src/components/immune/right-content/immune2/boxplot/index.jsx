@@ -460,9 +460,11 @@ const BoxplotChart = ({ data, height = 600 }) => {
         borderRadius: 4,
         border: "1px solid #e8e8e8",
       }}
-      bodyStyle={{
-        padding: 5,
-        height: "100%",
+      styles={{
+        body: {
+          padding: 5,
+          height: "100%",
+        },
       }}
     >
       <Row gutter={[10, 10]}>
@@ -473,7 +475,7 @@ const BoxplotChart = ({ data, height = 600 }) => {
                 height: 300,
                 borderRadius: 8,
               }}
-              bodyStyle={{ padding: 0, height: "100%" }}
+              styles={{ body: { padding: 0, height: "100%" } }}
             >
               <div style={{ height: "100%" }}>
                 <div style={{ height: "100%" }}>

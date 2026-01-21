@@ -1,28 +1,17 @@
 "use client";
 import React, {
   useRef,
-  useEffect,
   useState,
   useCallback,
   useMemo,
 } from "react";
 import {
-  getBiomarkersResultByTaskId,
-  getBiomarkersTaskIds,
-  getGeneList,
-} from "@/configs/request";
-import {
-  CaretRightOutlined,
   LoadingOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { getBiomarkers } from "@/configs/request";
 import SplitBar from "@/components/split-bar";
-import PollingManager from "@/components/polling-manager";
-import Immune1Condition from "./left-content/immune1";
-import Immune2Condition from "./left-content/immune2";
+import ImmuneSubtypeCondition from "./left-content/immune-subtype";
+import Immune2Condition from "./left-content/microenvironment-deconvolution";
 import Immune1Content from "./right-content/immune1";
 import Immune2Content from "./right-content/immune2";
 import {
@@ -49,53 +38,52 @@ const RELOAD_ICON = "/images/reload.svg";
 
 const Biomarkers = () => {
   const { t } = useTranslation();
-  const [contentType, setContentType] = useState("immune1");
+  const [contentType, setContentType] = useState("immune-subtype");
   const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
-  const [immune1Conditions, setImmune1Conditions] = useState(null);
-  const [immune2Conditions, setImmune2Conditions] = useState(null);
-  const immune1ConditionRef = useRef(null);
+  const [immuneSubtypeConditions, setImmuneSubtypeConditions] = useState(null);
+  const [microenvironmentDeconvolutionCondition, setMicroenvironmentDeconvolutionCondition] = useState(null);
+  const ImmuneSubtypeConditionRef = useRef(null);
 
   const immune2ConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
-    if (contentType === "immune1") {
-      const params = immune1ConditionRef.current?.getParams();
+    if (contentType === "immune-subtype") {
+      const params = ImmuneSubtypeConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
         selectedCohortType: params.selectedCohortType,
       };
-      setImmune1Conditions(requestParamsArray);
+      setImmuneSubtypeConditions(requestParamsArray);
     }
-    if (contentType === "immune2") {
+    if (contentType === "microenvironment-deconvolution") {
       const params = immune2ConditionRef.current?.getParams();
-      console.log("Immune2 Params", params);
       const requestParamsArray = {
         method: params.selectedMethod,
         numbers: params.selectedRows?.map((item) => item.number),
       };
-      setImmune2Conditions(requestParamsArray);
+      setMicroenvironmentDeconvolutionCondition(requestParamsArray);
     }
   }, [contentType]);
 
 
   const handleOnReady = useCallback(async (params) => {
-    if (contentType === "immune1") {
-      const params = immune1ConditionRef.current?.getParams();
+    if (contentType === "immune-subtype") {
+      const params = ImmuneSubtypeConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
         selectedCohortType: params.selectedCohortType,
       };
-      setImmune1Conditions(requestParamsArray);
+      setImmuneSubtypeConditions(requestParamsArray);
     }
 
-    if (contentType === "immune2") {
+    if (contentType === "microenvironment-deconvolution") {
       const params = immune2ConditionRef.current?.getParams();
       const requestParamsArray = {
         method: params.selectedMethod,
         numbers: params.selectedRows?.map((item) => item.number),
       };
-      setImmune2Conditions(requestParamsArray);
+      setMicroenvironmentDeconvolutionCondition(requestParamsArray);
     }
   }, [contentType]);
 
@@ -125,8 +113,8 @@ const Biomarkers = () => {
         size="large"
         onChange={handleContentTypeChange}
         options={[
-          { value: "immune1", label: "Immune subtype" },
-          { value: "immune2", label: "Microenvironment deconvolution" },
+          { value: "immune-subtype", label: "Immune subtype" },
+          { value: "microenvironment-deconvolution", label: "Microenvironment deconvolution" },
         ]}
         value={contentType}
       />
@@ -147,24 +135,24 @@ const Biomarkers = () => {
         rightAction={rightAction}
         leftContent={
           <>
-            {contentType === "immune1" ? (
-              <Immune1Condition
-                ref={immune1ConditionRef}
+            {contentType === "immune-subtype" ? (
+              <ImmuneSubtypeCondition
+                ref={ImmuneSubtypeConditionRef}
                 handleOnReady={handleOnReady}
-              ></Immune1Condition>
+              ></ImmuneSubtypeCondition>
             ) : <Immune2Condition ref={immune2ConditionRef} handleOnReady={handleOnReady}></Immune2Condition>}
           </>
         }
         rightContent={
           <>
             
-            {contentType === "immune1" ? (
+            {contentType === "immune-subtype" ? (
               <>
-                <Immune1Content conditions={immune1Conditions?.clinicalConditions} dataType={immune1Conditions?.selectedCohortType} onComplete={handleComplete}>
+                <Immune1Content conditions={immuneSubtypeConditions?.clinicalConditions} dataType={immuneSubtypeConditions?.selectedCohortType} onComplete={handleComplete}>
                 </Immune1Content>
               </>
             ) : (
-              <Immune2Content conditions={immune2Conditions}></Immune2Content>
+              <Immune2Content conditions={microenvironmentDeconvolutionCondition}></Immune2Content>
             )}
           </>
         }

@@ -50,7 +50,7 @@ const RELOAD_ICON = "/images/reload.svg";
 const Biomarkers = () => {
   const { t } = useTranslation();
   const [taskIdsWithCohort, setTaskIdsWithCohort] = useState(null);
-  const [contentType, setContentType] = useState("biomarkers1");
+  const [contentType, setContentType] = useState("survivalAnalysis");
   const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
   const [pollingData, setPollingData] = useState(null);
@@ -61,11 +61,11 @@ const Biomarkers = () => {
   const biomarkers2ConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
-    if (contentType === "biomarkers1") {
+    if (contentType === "survivalAnalysis") {
       const params = biomarkers1ConditionRef.current?.getParams();
       applyMethod(params);
     }
-    if (contentType === "biomarkers2") {
+    if (contentType === "multiModalJointAnalysis") {
       const params = biomarkers2ConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
@@ -108,10 +108,10 @@ const Biomarkers = () => {
   };
 
   const handleOnReady = useCallback(async (params) => {
-    if (contentType === "biomarkers1") {
+    if (contentType === "survivalAnalysis") {
       applyMethod(params);
     }
-    if (contentType === "biomarkers2") {
+    if (contentType === "multiModalJointAnalysis") {
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
         selectedCohortType: params.selectedCohortType,
@@ -273,8 +273,8 @@ const Biomarkers = () => {
         size="large"
         onChange={handleContentTypeChange}
         options={[
-          { value: "biomarkers1", label: "biomarkers1" },
-          { value: "biomarkers2", label: "biomarkers2" },
+          { value: "survivalAnalysis", label: "Survival Analysis" },
+          { value: "multiModalJointAnalysis", label: "Multi-modal joint analysis" },
         ]}
         value={contentType}
       />
@@ -295,7 +295,7 @@ const Biomarkers = () => {
         rightAction={rightAction}
         leftContent={
           <>
-            {contentType === "biomarkers1" ? (
+            {contentType === "survivalAnalysis" ? (
               <Biomarkers1Condition
                 ref={biomarkers1ConditionRef}
                 handleOnReady={handleOnReady}
@@ -306,7 +306,7 @@ const Biomarkers = () => {
         rightContent={
           <>
             
-            {contentType === "biomarkers1" ? (
+            {contentType === "survivalAnalysis" ? (
               <>
                 <PollingManager
                   pollingData={pollingData}

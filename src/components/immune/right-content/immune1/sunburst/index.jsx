@@ -8,12 +8,6 @@ import {
 import { set } from "lodash";
 
 const SUBTYPE_COLOR = {
-  "C1": "rgb(79, 151, 121)",
-  "C2": "rgb(72, 128, 187)",
-  "C3": "rgb(150, 91, 164)",
-  "C4": "rgb(167, 134, 56)",
-  "C5": "rgb(238, 188, 57)",
-  "C6": "rgb(218, 85, 76)",
   "Wound healing": "rgb(251, 154, 153)",
   "IFN-g dominant": "rgb(253, 191, 111)",
   "Inflammatory": "rgb(178, 223, 138)",
@@ -61,7 +55,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     const purePatientList = [];
     let mixedPatientList = [];
     const patientWithGroupSubtype = patientList
-      .filter((item) => new Set(item.subtypes?.map((s) => s.subtype)).size > 1)
+      .filter((item) => new Set(item.subtypes?.map((s) => s.immuneSubtype)).size > 1)
       .map((item) => ({
         ...item,
         subtypes: item.subtypes.sort((a, b) => a.id?.localeCompare(b.id)),
@@ -75,9 +69,9 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     //     mixedPatientList.push(...patient);
     // })
     mixedPatientList = patientWithGroupSubtype.sort((a, b) => a.stage.length - b.stage.length);
-    const patientWithSingleSubtype = patientList.filter((item) => new Set(item.subtypes?.map((item) => item.subtype)).size == 1);
+    const patientWithSingleSubtype = patientList.filter((item) => new Set(item.subtypes?.map((item) => item.immuneSubtype)).size == 1);
     Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-      const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.subtypes[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
+      const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.subtypes[0].immuneSubtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
       purePatientList.push(...patientWithSameSubtype);
     });
 
@@ -160,7 +154,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
         }],
       },
     ];
-    const subtype = patient.subtypes[sampleLength - 1]?.subtype;
+    const subtype = patient.subtypes[sampleLength - 1]?.immuneSubtype;
     const sampleId = patient.subtypes[sampleLength - 1]?.id;
     const color = SUBTYPE_COLOR[subtype];
     children.push({
@@ -198,14 +192,14 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     let pureTotalSpace = 0;
     let mixedTotalSpace = 0;
     const mixedPatientsLength = sortedPatient.filter((item) => {
-      return new Set(item.subtypes.map((item) => item.subtype)).size > 1;
+      return new Set(item.subtypes.map((item) => item.immuneSubtype)).size > 1;
     })?.length;
     const purePatientsLength = sortedPatient.filter((item) => {
-      return new Set(item.subtypes.map((item) => item.subtype)).size == 1;
+      return new Set(item.subtypes.map((item) => item.immuneSubtype)).size == 1;
     })?.length;
 
     sortedPatient.forEach((patient, index) => {
-      const isPure = new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
+      const isPure = new Set(patient.subtypes.map((item) => item.immuneSubtype)).size == 1;
       const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
       if (isPure) {
         if (!initialPureSubtype && !!mixedPatientsLength) {
@@ -223,7 +217,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
             children: [],
           });
         }
-        if (initialPureSubtype !== patient.subtypes[0].subtype && mixedPatientsLength) {
+        if (initialPureSubtype !== patient.subtypes[0].immuneSubtype && mixedPatientsLength) {
           pureTotalSpace += 1;
           pureChildren.push({
             value: spaceValue,
@@ -236,9 +230,9 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
           });
         }
 
-        initialPureSubtype = patient.subtypes[0].subtype;
+        initialPureSubtype = patient.subtypes[0].immuneSubtype;
         pureChildren.push(...result);
-        if (new Set(sortedPatient[index + 1]?.subtypes.map((item) => item.subtype)).size > 1) {
+        if (new Set(sortedPatient[index + 1]?.subtypes.map((item) => item.immuneSubtype)).size > 1) {
           pureChildren.push({
             value: defaultValue,
             name: "Pure",
@@ -255,7 +249,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
         }
 
       } else {
-        const currentMixedSubtype = Array.from(new Set(patient.subtypes.map((sample) => sample.subtype))).join(",");
+        const currentMixedSubtype = Array.from(new Set(patient.subtypes.map((sample) => sample.immuneSubtype))).join(",");
         if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype && !!purePatientsLength) {
           mixedTotalSpace += 1;
           mixedChildren.push({

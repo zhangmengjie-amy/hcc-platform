@@ -5,8 +5,6 @@ import {
   Empty,
   Flex,
 } from "antd";
-import { set } from "lodash";
-import { ticks } from "d3";
 
 const SUBTYPE_COLOR = {
   "Classic": "rgba(225, 229, 144, 1)",
@@ -20,22 +18,9 @@ const SUBTYPE_COLOR = {
   "TGF-b dominant": "rgb(202, 178, 214)",
 };
 
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-  "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-  "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-  "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
-  "C1,C2,C3,C4,C5,C6",
-];
-
 const MIXED_PURE = {
   "Pure": "rgb(106, 194, 165)",
   "Mixed": "rgb(158, 153, 197)",
-};
-
-const MIXED_PURE_BG = {
-  "Pure": "rgb(239, 249, 247)",
-  "Mixed": "rgb(247, 240, 247)",
 };
 
 const STAGE_COLOR = {
@@ -44,9 +29,6 @@ const STAGE_COLOR = {
   "III": "rgb(224, 36, 40)",
 };
 
-const defaultValue = 1;
-const spaceValue = 0.2;
-const spaceValue_lg = 0.2;
 const ColumnChart = ({ data, patientId, handleItemClick }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);

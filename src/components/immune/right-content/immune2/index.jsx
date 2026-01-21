@@ -12,7 +12,7 @@ import {
 } from "antd";
 import HeatmapChart from "./heatmap";
 import BoxPlot from "./boxplot";
-import { getMutationHeatmapList, getHeatmapBoxplot } from "@/configs/request";
+import { getHeatmapBoxplot } from "@/configs/request";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -93,7 +93,7 @@ const Immune2Content = ({ conditions }) => {
   if (loading) {
     return (
       <Flex align="center" justify="center" style={{ height: "500px" }}>
-        <Spin size="large" tip="加载中..." />
+        <Spin size="large" />
       </Flex>
     );
   }
@@ -124,6 +124,31 @@ const Immune2Content = ({ conditions }) => {
   return (
     <div style={{ padding: 24 }}>
       <Row gutter={[16, 16]}>
+        {/* 主要方法热图 */}
+        <Col span={24}>
+          {data1 ? (
+            <HeatmapChart
+              params={{
+                method: conditions?.method,
+                tmeGroupBy: conditions?.method,
+                cohort: conditions?.numbers?.[0],
+              }}
+              data={data1}
+              height={chartHeight}
+            />
+          ) : (
+            <div
+              style={{
+                height: chartHeight,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text type="secondary">暂无数据</Text>
+            </div>
+          )}
+        </Col>
         {/* Hallmarks 热图 */}
         <Col span={24}>
           {data2 ? (
@@ -166,32 +191,6 @@ const Immune2Content = ({ conditions }) => {
             <div
               style={{
                 // height: chartHeight,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text type="secondary">暂无数据</Text>
-            </div>
-          )}
-        </Col>
-
-        {/* 主要方法热图 */}
-        <Col span={24}>
-          {data1 ? (
-            <HeatmapChart
-              params={{
-                method: conditions?.method,
-                tmeGroupBy: conditions?.method,
-                cohort: conditions?.numbers?.[0],
-              }}
-              data={data1}
-              height={chartHeight}
-            />
-          ) : (
-            <div
-              style={{
-                height: chartHeight,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

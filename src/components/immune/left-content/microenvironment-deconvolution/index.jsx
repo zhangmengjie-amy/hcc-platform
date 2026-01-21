@@ -14,7 +14,7 @@ import FilterCohort from "@/components/condition-selector/filter-cohort";
 import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 import DEGMethod from "@/components/condition-selector/deg-method";
 
-const Immune2Condition = forwardRef(( { handleOnReady }, ref) => {
+const MicroenvironmentDeconvolutionCondition = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
   const [selectedClinical, setSelectedClinical] = useState([]);
@@ -59,6 +59,7 @@ const Immune2Condition = forwardRef(( { handleOnReady }, ref) => {
           selectedTechnology={selectedTechnology}
           onChange={onSelection}
           onReady={onReady}
+          selectionType="radio"
         ></CohortSelection>
       }
       {<DEGMethod onChange={onSelection} onReady={onReady}></DEGMethod>}
@@ -66,4 +67,4 @@ const Immune2Condition = forwardRef(( { handleOnReady }, ref) => {
   );
 });
 
-export default Immune2Condition;
+export default MicroenvironmentDeconvolutionCondition;

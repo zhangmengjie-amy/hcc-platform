@@ -2,86 +2,135 @@
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { Row, Col, Flex } from "antd";
 import { clinicCountConfig } from "@/configs/mutation";
-import { getFullMutations } from "@/configs/request";
+import { getFullMutations, getPatientList } from "@/configs/request";
 import EmptyLoading from "@/components/empty-loading";
 import Chart from "./chart";
+import CohortType from "../condition-selector/dt-planet";
+import ClinicChart from "../mutation/driverLandscape/clinicChart";
 
-const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
+const Overall = forwardRef(({ conditions, selectedCohortType }, ref) => {
   const [loading, setLoading] = useState(true);
   const [hasData, setHasData] = useState(true);
-  const fullMutationsRef = useRef(null);
   const [countConfig, setCountConfig] = useState(null);
+  const [filteredPatientList, setFilteredPatientList] = useState(null);
+  const patientListRef = useRef(null);
   useEffect(() => {
-    if (!conditions?.geneList) return;
-    handleApplyLoading?.(true);
     setLoading(true);
-    const sampleWorker = new Worker("/workers/calculate.js");
     try {
-      Promise.all([getFullMutations()]).then((results) => {
-        fullMutationsRef.current = results[0];
-        sampleWorker.postMessage({ key: "overall", data: { originalMutations: fullMutationsRef.current, conditions } });
-        sampleWorker.onmessage = (event) => {
-          const result = event.data;
-          const _countConfig = {
-            age: {},
-            gender: {},
-            viralStatus: {},
-            race: {},
-            stage: {},
-          };
-          if (result.clinicList.length == 0) {
-            setHasData(false);
-            setCountConfig(_countConfig);
-            return;
-          }
-          Object.keys(_countConfig).forEach((item) => {
-            Object.keys(clinicCountConfig[item]).forEach((key) => {
-              let count = 0;
-              if (item == "age") {
-                if (key == "<20") {
-                  count = result.clinicList.filter(c => c[item].value < 20).length;
-                } else if (key == "20-39") {
-                  count = result.clinicList.filter(c => c[item].value >=20 && c[item].value <=39).length;
-                } else if (key == "40-59") {
-                  count = result.clinicList.filter(c => c[item].value >=40 && c[item].value <=59).length;
-                } else if (key == "60-79") {
-                  count = result.clinicList.filter(c => c[item].value >=60 && c[item].value <=79).length;
-                } else if (key == ">=80") {
-                  count = result.clinicList.filter(c => c[item].value >=80).length;
-                }
-              } else if (item == "viralStatus") {
-                if (key == "hbv-single-positive") {
-                  count = result.clinicList.filter(c => c["hbv"].value == "positive" && c["hcv"].value == "negative").length;
-                } else if (key == "hcv-single-positive") {
-                  count = result.clinicList.filter(c => c["hcv"].value == "positive" && c["hbv"].value == "negative").length;
-                } else if (key == "double-positive") {
-                  count = result.clinicList.filter(c => c["hcv"].value == "positive" && c["hbv"].value == "positive").length;
-                } else if (key == "double-negative") {
-                  count = result.clinicList.filter(c => c["hcv"].value == "negative" && c["hbv"].value == "negative").length;
-                }
-              } else {
-                count = result.clinicList.filter(c => c[item].value == key).length;
-              }
-
-              _countConfig[item][key] = {
-                count,
-                color: clinicCountConfig[item][key],
-              };
-            });
-          });
-          setHasData(true);
-          setCountConfig(_countConfig);
+      getPatientList(null).then((result) => {
+        patientListRef.current = result;
+        const _countConfig = {
+          age: {},
+          gender: {},
+          viralStatus: {},
+          race: {},
+          stage: {},
         };
-        handleApplyLoading?.(false);
+        if (!result) {
+          setHasData(false);
+          setCountConfig(_countConfig);
+          return;
+        }
+        const countResult = formatPatient(_countConfig, result);
+        setHasData(true);
+        setCountConfig(countResult);
         setLoading(false);
       });
     } catch (error) {
-    
     }
-    return () => {
-      sampleWorker.terminate();
+  }, []);
+
+  useEffect(() => {
+    const _countConfig = {
+      age: {},
+      gender: {},
+      viralStatus: {},
+      race: {},
+      stage: {},
     };
-  }, [conditions]);
+    if (!filteredPatientList?.length) {
+      setHasData(false);
+      setCountConfig(_countConfig);
+      return;
+    }
+    const countResult = formatPatient(_countConfig, filteredPatientList);
+    setHasData(true);
+    setCountConfig(countResult);
+
+  }, [filteredPatientList]);
+
+  const formatPatient = (_countConfig, _patientList) => {
+    Object.keys(_countConfig).forEach((item) => {
+      Object.keys(clinicCountConfig[item]).forEach((key) => {
+        let count = 0;
+        if (item == "age") {
+          if (key == "<20") {
+            count = _patientList?.filter((c) => c[item] < 20).length;
+          } else if (key == "20-39") {
+            count = _patientList?.filter((c) => c[item] >= 20 && c[item] <= 39).length;
+          } else if (key == "40-59") {
+            count = _patientList?.filter((c) => c[item] >= 40 && c[item] <= 59).length;
+          } else if (key == "60-79") {
+            count = _patientList?.filter((c) => c[item] >= 60 && c[item] <= 79).length;
+          } else if (key == ">=80") {
+            count = _patientList?.filter((c) => c[item] >= 80).length;
+          }
+        } else if (item == "viralStatus") {
+          if (key == "hbv-single-positive") {
+            count = _patientList?.filter(
+              (c) => c["hbv"] == "positive" && c["hcv"] == "negative",
+            ).length;
+          } else if (key == "hcv-single-positive") {
+            count = _patientList?.filter(
+              (c) => c["hcv"] == "positive" && c["hbv"] == "negative",
+            ).length;
+          } else if (key == "double-positive") {
+            count = _patientList?.filter(
+              (c) => c["hcv"] == "positive" && c["hbv"] == "positive",
+            ).length;
+          } else if (key == "double-negative") {
+            count = _patientList?.filter(
+              (c) => c["hcv"] == "negative" && c["hbv"] == "negative",
+            ).length;
+          }
+        } else {
+          count = _patientList?.filter((c) => c[item] == key).length;
+        }
+        _countConfig[item][key] = {
+          count,
+          color: clinicCountConfig[item][key],
+        };
+      });
+    });
+    return _countConfig;
+  };
+
+  useEffect(() => {
+
+    const _filteredPatientList = patientListRef.current?.filter((item) => (selectedCohortType == "ALL") || (item.type == selectedCohortType)).filter((clinic) => {
+      if (!conditions) return true;
+      return Object.keys(conditions).every((condition) => {
+        if (!conditions?.[condition]?.length) return true;
+        let realValue = clinic[condition];
+        if (condition === "age") {
+          if (clinic["age"] < 20) {
+            realValue = "<20";
+          } else if (clinic["age"] >= 20 && clinic["age"] <= 39) {
+            realValue = "20-39";
+          } else if (clinic["age"] >= 40 && clinic["age"] <= 59) {
+            realValue = "40-59";
+          } else if (clinic["age"] >= 60 && clinic["age"] <= 79) {
+            realValue = "60-79";
+          } else {
+            realValue = ">=80";
+          }
+        }
+        return conditions[condition]?.includes(realValue);
+      });
+    });
+    setFilteredPatientList(_filteredPatientList);
+
+  }, [conditions, selectedCohortType]);
 
   return (
 
@@ -92,7 +141,7 @@ const Overall = forwardRef(({ conditions, handleApplyLoading }, ref) => {
             return <Col key={index} xs={8} sm={8} md={8} lg={8} xl={8}>
               <div style={{ margin: "10px", padding: "10px", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
                 {
-                  <EmptyLoading loading={false} hasData={hasData}>
+                  <EmptyLoading loading={loading} hasData={hasData}>
                     <Chart title={item} option={countConfig[item]}></Chart>
                   </EmptyLoading>
                 }

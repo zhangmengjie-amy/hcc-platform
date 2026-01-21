@@ -2,15 +2,14 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Flex, Row, Col, Empty, Spin, Dropdown, Space, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { getPatientList, getBiomarkersScore } from "@/configs/request";
-import { getFullPhylogenetic } from "@/configs/request";
+import { getPatientList, getBiomarkersScore, getFullPhylogenetic } from "@/configs/request";
+
 import HorizontalTree from "@/components/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/planet-liver-sample";
 import DtLiverSampleChart from "@/components/dt-liver-sample";
 import SunburstChart from "@/components/biomarkers/right-content/biomarkers2/sunburst";
 import ColumnChart from "@/components/biomarkers/right-content/biomarkers2/column";
 import filterSampleByConditions from "@/utils/filter-patient";
-import { set } from "lodash";
 
 const PLANET_SUBTYPE_COLOR = {
   C1: "rgb(79, 151, 121)",
@@ -76,6 +75,10 @@ const SUBTYPE_DROPDOWN_ITEMS = [
     label: "Subtype",
   },
   {
+    key: "immune",
+    label: "Immune",
+  },
+  {
     key: "biomarker",
     label: "Biomarker",
   },
@@ -119,9 +122,16 @@ const HEATMAP_COLORS = {
     Proliferation: "rgba(232, 139, 173, 1)",
     Wnt: "rgba(235, 162, 127, 1)",
   },
+  immune: {
+    "Wound healing": "rgb(251, 154, 153)",
+    "IFN-g dominant": "rgb(253, 191, 111)",
+    "Inflammatory": "rgb(178, 223, 138)",
+    "Lymphocyte depleted": "rgb(31, 120, 180)",
+    "TGF-b dominant": "rgb(202, 178, 214)",
+  },
 };
 
-const mockFields = ["lee", "hoshida", "boyault", "chiang", "subtype", "biomarker"];
+const mockFields = ["lee", "hoshida", "boyault", "chiang", "subtype", "immune", "biomarker"];
 
 const MIXED_GROUP = [
   "C1,C2",
@@ -586,6 +596,10 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
           biomarker: {
             color: biomarkerScoreData?.[sample.id]?.color ?? "#f0f0f0",
             value: biomarkerScoreData?.[sample.id]?.score ?? null,
+          },
+          immune: {
+            color: HEATMAP_COLORS["immune"][sample.immuneSubtype] ?? "#f0f0f0",
+            value: sample.immuneSubtype,
           },
         };
       });

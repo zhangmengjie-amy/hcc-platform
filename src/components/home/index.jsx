@@ -145,7 +145,7 @@ const Home = () => {
       bgColor: "#fdeaea",
       url: "/images/survival-analysis.png",
       description:
-        "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients. ",
+        "In this module, using existing or user-specified biomarkers, users can explore how biomarkers can stratify patient survival. ",
     },
     {
       key: "multi-modal-joint-analysis",
@@ -229,8 +229,7 @@ const Home = () => {
                 style={{
                   width: "100%",
                   height: "100%",
-                  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15)",
-                  padding: "15px 15px 20px",
+                  padding: "10px 10px 20px",
                   borderRadius: "12px",
                   backgroundColor: item.bgColor,
                 }}
@@ -257,6 +256,7 @@ const Home = () => {
                   style={{
                     marginBottom: 0,
                     marginTop: 20,
+                    padding: "0px 10px", 
                     color: "rgb(20, 40, 80)",
                   }}
                 >

@@ -578,20 +578,22 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
         borderRadius: 4,
         border: "1px solid #e8e8e8",
       }}
-      bodyStyle={{
-        padding: 5,
-        height: "100%",
-        minHeight: dynamicHeight,
+      styles={{
+        body: {
+          padding: 5,
+          height: "100%",
+          minHeight: dynamicHeight,
+        },
       }}
     >
       {/* 使用自定义导出按钮 */}
       <div style={{ textAlign: "right", marginBottom: 10 }}>
-        <Dropdown overlay={exportMenu}>
+        <Dropdown menu={exportMenu}>
           <Button icon={<DownloadOutlined />}>
             导出 <DownOutlined />
           </Button>
         </Dropdown>
-        <Button onClick={downloadCSV}>下载CSV</Button>
+        <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>下载CSV</Button>
       </div>
 
       <ReactECharts

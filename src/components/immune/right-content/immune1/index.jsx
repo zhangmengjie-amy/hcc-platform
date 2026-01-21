@@ -2,8 +2,8 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Flex, Row, Col, Empty, Spin, Dropdown, Space, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { getImmuneSubtypes, getPatientList } from "@/configs/request";
-import { getFullPhylogenetic } from "@/configs/request";
+import { getPatientList, getBiomarkersScore, getFullPhylogenetic } from "@/configs/request";
+
 import HorizontalTree from "@/components/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/planet-liver-sample";
 import DtLiverSampleChart from "@/components/dt-liver-sample";
@@ -27,57 +27,9 @@ const DT_SUBTYPE_COLOR = {
   "TGF-b dominant": "rgb(202, 178, 214)",
 };
 
-const SUBTYPE_DROPDOWN_ITEMS = [{
-  key: "lee",
-  label: "Lee",
-}, {
-  key: "hoshida",
-  label: "Hoshida",
-}, {
-  key: "boyault",
-  label: "Boyault",
-}, {
-  key: "chiang",
-  label: "Chiang",
-}, {
-  key: "subtype",
-  label: "Subtype",
-}];
 
 const HEATMAP_COLORS = {
-  // "lee": {
-  //     "SURVIVAL_UP": "#FC8D62",
-  //     "SURVIVAL_DN": "#66C2A5"
-  // },
-  // "hoshida": {
-  //     "S1": "#377EB8",
-  //     "S2": "#FFFF33",
-  //     "S3": "#E41A1C"
-  // },
-  // "boyault": {
-  //     "G2": "#BF3131",
-  //     "G3": "#A1D99B",
-  //     "G4": "#A367B1",
-  //     "G5": "#A9A9A9",
-  //     "G6": "rgb(252, 199, 55)",
-  //     "G12": "#FF7F00",
-  //     "G56": "#FB9A99",
-
-  // },
-  // "chiang": {
-  //     "INTERFERON": "#FFBEAED4",
-  //     "UNANNOTATED": "black",
-  //     "POLYSOMY7": "#5C8374",
-  //     "PROLIFERATION": "#FF1E90FF",
-  //     "CTNNB1": "#A6CEE3",
-  // },
-  "subtype": {
-    "C1": "rgb(79, 151, 121)",
-    "C2": "rgb(72, 128, 187)",
-    "C3": "rgb(150, 91, 164)",
-    "C4": "rgb(167, 134, 56)",
-    "C5": "rgb(238, 188, 57)",
-    "C6": "rgb(218, 85, 76)",
+  subtype: {
     "Wound healing": "rgb(251, 154, 153)",
     "IFN-g dominant": "rgb(253, 191, 111)",
     "Inflammatory": "rgb(178, 223, 138)",
@@ -88,45 +40,93 @@ const HEATMAP_COLORS = {
 
 const mockFields = ["subtype"];
 
-
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-  "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-  "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-  "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
+const MIXED_GROUP = [
+  "C1,C2",
+  "C1,C3",
+  "C1,C4",
+  "C1,C5",
+  "C1,C6",
+  "C2,C3",
+  "C2,C4",
+  "C2,C5",
+  "C2,C6",
+  "C3,C4",
+  "C3,C5",
+  "C3,C6",
+  "C4,C5",
+  "C4,C6",
+  "C5,C6",
+  "C1,C2,C3",
+  "C1,C2,C4",
+  "C1,C2,C5",
+  "C1,C2,C6",
+  "C1,C3,C4",
+  "C1,C3,C5",
+  "C1,C3,C6",
+  "C1,C4,C5",
+  "C1,C4,C6",
+  "C1,C5,C6",
+  "C2,C3,C4",
+  "C2,C3,C5",
+  "C2,C3,C6",
+  "C2,C4,C6",
+  "C3,C4,C5",
+  "C3,C4,C6",
+  "C2,C4,C5",
+  "C2,C5,C6",
+  "C3,C5,C6",
+  "C4,C5,C6",
+  "C1,C2,C3,C4",
+  "C1,C2,C3,C5",
+  "C1,C2,C3,C6",
+  "C1,C2,C4,C5",
+  "C1,C2,C4,C6",
+  "C1,C2,C5,C6",
+  "C1,C3,C4,C5",
+  "C1,C3,C4,C6",
+  "C2,C3,C4,C5",
+  "C1,C3,C5,C6",
+  "C1,C4,C5,C6",
+  "C2,C3,C4,C6",
+  "C2,C3,C5,C6",
+  "C2,C4,C5,C6",
+  "C3,C4,C5,C6",
+  "C1,C2,C3,C4,C5",
+  "C1,C2,C3,C4,C6",
+  "C2,C3,C4,C5,C6",
+  "C1,C3,C4,C5,C6",
+  "C1,C2,C3,C5,C6",
+  "C1,C2,C4,C5,C6",
   "C1,C2,C3,C4,C5,C6",
 ];
 
 const MIXED_PURE = {
-  "Pure": "rgb(106, 194, 165)",
-  "Mixed": "rgb(158, 153, 197)",
+  Pure: "rgb(106, 194, 165)",
+  Mixed: "rgb(158, 153, 197)",
 };
 
-
 const STAGE_COLOR = {
-  "I": "rgb(250, 213, 120)",
-  "II": "rgb(245, 138, 66)",
-  "III": "rgb(224, 36, 40)",
+  I: "rgb(250, 213, 120)",
+  II: "rgb(245, 138, 66)",
+  III: "rgb(224, 36, 40)",
 };
 
 const STAGE_TRANS = {
-  "I": "I",
-  "II": "II",
-  "IA": "I",
-  "IB": "I",
-  "Ib": "I",
-  "IIA": "II",
-  "IIB": "II",
-  "IIIA": "III",
-  "IIIB": "III",
+  I: "I",
+  II: "II",
+  IA: "I",
+  IB: "I",
+  Ib: "I",
+  IIA: "II",
+  IIB: "II",
+  IIIA: "III",
+  IIIB: "III",
   "III A": "III",
 };
-const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onComplete }) => {
+const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, dnaOrRna = "DNA" }) => {
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
-  const [selectedDtSubtype, setSelectedDtSubtype] = useState("subtype");
-  const [selectedPlanetSubtype, setSelectedPlanetSubtype] = useState("subtype");
   const [planetSampleGeneData, setPlanetSampleGeneData] = useState(null);
   const [dtTreeList, setDtTreeList] = useState(null);
   const [dtSampleGeneData, setDtSampleGeneData] = useState(null);
@@ -134,6 +134,7 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
   const [currentDtPatientId, setCurrentDtPatientId] = useState(null);
   const [planetHeatmap, setPlanetHeatmap] = useState(null);
   const [dtHeatmap, setDtHeatmap] = useState(null);
+  const [biomarkerScoreData, setBiomarkerScoreData] = useState(null);
   const [currentPlanetLiverSamples, setCurrentPlanetLiverSamples] = useState(null);
   const [currentDtLiverSamples, setCurrentDtLiverSamples] = useState(null);
   const patientListRef = useRef(null);
@@ -142,42 +143,62 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
 
   useEffect(() => {
     if (!conditions) return;
-    conditions["stage"] = Array.from(new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item])));
+    conditions["stage"] = Array.from(
+      new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item])),
+    );
     const { geneList, ...clinicList } = conditions;
-    const filteredData = filterSampleByConditions(patientListRef.current, clinicList, geneList) ?? [];
+    const filteredData =
+      filterSampleByConditions(patientListRef.current, clinicList, geneList) ??
+      [];
+
+    
     setFilterdPatientList(filteredData);
   }, [conditions]);
 
+
   useEffect(() => {
     if (patientListRef.current?.length && geneListRef.current?.length) {
-      setCurrentPlanetPatientId(filterdPatientList?.filter((item) => item.type === "PLANET")[0]?.patientId);
-      setCurrentDtPatientId(filterdPatientList?.filter((item) => item.type === "DT")[0]?.patientId);
-      console.log("PlanetPatientId", currentDtPatientId, filterdPatientList);
+      setCurrentPlanetPatientId(
+        filterdPatientList?.filter((item) => item.type === "PLANET")[0]
+          ?.patientId,
+      );
+      setCurrentDtPatientId(
+        filterdPatientList?.filter((item) => item.type === "DT")[0]?.patientId,
+      );
     }
   }, [dataType, filterdPatientList]);
-
 
   useEffect(() => {
     setDtTreeLoading(true);
     setPlanetTreeLoading(true);
-    Promise.all([getImmuneSubtypes(null), getFullPhylogenetic(null)]).then((results) => {
-      const [patientList, geneList] = results;
-      geneListRef.current = geneList;
-      patientListRef.current = patientList?.data?.map((item) => {
-        return {
-          ...item,
-          stage: STAGE_TRANS[item.stage],
-          subtypes: item.subtypes?.filter((i) => !!i.subtype),
-        };
-      }).filter((item) => item.subtypes?.length);
-      setFilterdPatientList(patientListRef.current);
-      setCurrentPlanetPatientId(patientListRef.current?.filter((item) => item.type === "PLANET")[0]?.patientId);
-      setCurrentDtPatientId(patientListRef.current?.filter((item) => item.type === "DT")[0]?.patientId);
-      setDtTreeLoading(false);
-      setPlanetTreeLoading(false);
-    });
-  }, []);
+    Promise.all([getPatientList(null), getFullPhylogenetic(null)]).then(
+      (results) => {
+        const [patientList, geneList] = results;
 
+        geneListRef.current = geneList;
+        patientListRef.current = patientList
+          ?.filter((item) => !!item.subtypes?.length)
+          .map((item) => {
+            return {
+              ...item,
+              stage: STAGE_TRANS[item.stage],
+              subtypes: item.subtypes?.filter((i) => !!i.immuneSubtype),
+            };
+          }).filter((item) => item.subtypes?.length);
+        setFilterdPatientList(patientListRef.current);
+        setCurrentPlanetPatientId(
+          patientListRef.current?.filter((item) => item.type === "PLANET")[0]
+            ?.patientId,
+        );
+        setCurrentDtPatientId(
+          patientListRef.current?.filter((item) => item.type === "DT")[0]
+            ?.patientId,
+        );
+        setDtTreeLoading(false);
+        setPlanetTreeLoading(false);
+      },
+    );
+  }, []);
 
   const buildDtTreeData = (dtPatientId, dataType) => {
     if (!geneListRef.current || dtPatientList?.length == 0) return;
@@ -186,15 +207,19 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
-      const newick = dtPatientList?.find((item) => item.patientId === dtPatientId)?.newick;
+      const newick = dtPatientList?.find(
+        (item) => item.patientId === dtPatientId,
+      )?.newick;
       if (!newick) return;
-      const geneData = geneListRef.current?.filter((item) => item)?.filter((item) => item?.sampleId?.includes(`${dtPatientId}_`));
+      const geneData = geneListRef.current
+        ?.filter((item) => item)
+        ?.filter((item) => item?.sampleId?.includes(`${dtPatientId}_`));
       treeWorker.postMessage({ newick: newick, geneData });
       treeWorker.onmessage = ({ data }) => {
         setDtTreeList(data.treeList);
         setDtSampleGeneData(data.sampleGeneData);
         setDtTreeLoading(false);
-        onComplete?.(true);
+        onComplete(true);
       };
     }
   };
@@ -206,14 +231,18 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
-      const newick = planetPatientList?.find((item) => item.patientId === planetPatientId)?.newick;
+      const newick = planetPatientList?.find(
+        (item) => item.patientId === planetPatientId,
+      )?.newick;
       if (!newick) return;
-      const geneData = geneListRef.current?.filter((item) => item)?.filter((item) => item?.sampleId?.includes(`${planetPatientId}_`));
+      const geneData = geneListRef.current
+        ?.filter((item) => item)
+        ?.filter((item) => item?.sampleId?.includes(`${planetPatientId}_`));
       treeWorker.postMessage({ newick: newick, geneData });
       treeWorker.onmessage = ({ data }) => {
         setPlanetTreeList(data.treeList);
         setPlanetSampleGeneData(data.sampleGeneData);
-        onComplete?.(true);
+        onComplete(true);
       };
     }
   };
@@ -224,8 +253,8 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
   }, [currentDtPatientId, filterdPatientList, dataType]);
 
   useEffect(() => {
-    buildDtLiverSamples(currentDtPatientId, dataType, selectedDtSubtype);
-  }, [currentDtPatientId, filterdPatientList, dataType, selectedDtSubtype]);
+    buildDtLiverSamples(currentDtPatientId, dataType);
+  }, [currentDtPatientId, filterdPatientList, dataType]);
 
   useEffect(() => {
     buildPlanetHeatMap(currentPlanetPatientId, dataType);
@@ -233,57 +262,84 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
   }, [currentPlanetPatientId, filterdPatientList, dataType]);
 
   useEffect(() => {
-    buildPlanetLiverSamples(currentPlanetPatientId, dataType, selectedPlanetSubtype);
-  }, [currentPlanetPatientId, filterdPatientList, dataType, selectedPlanetSubtype]);
-
-  console.log("currentPlanetPatientId", currentPlanetPatientId);
+    buildPlanetLiverSamples(
+      currentPlanetPatientId,
+      dataType,
+    );
+  }, [
+    currentPlanetPatientId,
+    filterdPatientList,
+    dataType,
+  ]);
 
   function formatLabel(str) {
     return str?.replace(/.*_/, "") ?? str;
   }
 
-  const buildDtLiverSamples = (dtPatientId, dataType, selectedSubType) => {
+  const buildDtLiverSamples = (dtPatientId, dataType) => {
     if (dataType == "ALL" || dataType == "DT") {
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
-      const currentPatient = dtPatientList?.find((item) => item.patientId === dtPatientId);
-      const currentLiver = currentPatient?.dt_tumors?.[0]?.[dnaOrRna].map((tumor) => {
-        return {
-          ...tumor,
-          samples: tumor.samples.map((sample) => {
-            const subtypesValue = currentPatient.subtypes?.find((sub) => sub.id == sample.sample_id);
-            return {
-              ...sample,
-              color: HEATMAP_COLORS[selectedSubType]?.[subtypesValue?.[selectedSubType]] ?? "#f0f0f0",
-            };
-          }),
-          patientId: dtPatientId,
-        };
-      });
+      const currentPatient = dtPatientList?.find(
+        (item) => item.patientId === dtPatientId,
+      );
+      const currentLiver = currentPatient?.dt_tumors?.[0]?.[dnaOrRna].map(
+        (tumor) => {
+          return {
+            ...tumor,
+            samples: tumor.samples.map((sample) => {
+              const subtypesValue = currentPatient.subtypes?.find(
+                (sub) => sub.id == sample.sample_id,
+              );
+              return {
+                ...sample,
+                color:
+                  HEATMAP_COLORS["subtype"]?.[
+                    subtypesValue?.["immuneSubtype"]
+                  ] ?? "#f0f0f0",
+              };
+            }),
+            patientId: dtPatientId,
+          };
+        },
+      );
+      console.log(" currentLiver dt:", currentLiver);
       setCurrentDtLiverSamples(currentLiver);
     }
   };
 
-  const buildPlanetLiverSamples = (planetPatientId, dataType, selectedSubType) => {
+  const buildPlanetLiverSamples = (
+    planetPatientId,
+    dataType,
+  ) => {
     if (dataType == "ALL" || dataType == "PLANET") {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
-      const currentPatient = planetPatientList?.find((item) => item.patientId === planetPatientId);
-      const currentLiver = currentPatient?.planet_tumors[0][dnaOrRna].map((tumor) => {
-        return {
-          ...tumor,
-          samples: tumor.samples.map((sample) => {
-            const subtypesValue = currentPatient.subtypes?.find((sub) => sub.id == sample.sample_id);
-            return {
-              ...sample,
-              color: HEATMAP_COLORS[selectedSubType]?.[subtypesValue?.[selectedSubType]] ?? "#f0f0f0",
-            };
-          }),
-          patientId: planetPatientId,
-        };
-      });
+      const currentPatient = planetPatientList?.find(
+        (item) => item.patientId === planetPatientId,
+      );
+      const currentLiver = currentPatient?.planet_tumors[0][dnaOrRna].map(
+        (tumor) => {
+          return {
+            ...tumor,
+            samples: tumor.samples.map((sample) => {
+              const subtypesValue = currentPatient.subtypes?.find(
+                (sub) => sub.id == sample.sample_id,
+              );
+              return {
+                ...sample,
+                color:
+                  HEATMAP_COLORS["subtype"]?.[
+                    subtypesValue?.["immuneSubtype"]
+                  ] ?? "#f0f0f0",
+              };
+            }),
+            patientId: planetPatientId,
+          };
+        },
+      );
       setCurrentPlanetLiverSamples(currentLiver);
     }
   };
@@ -293,38 +349,42 @@ const RightPanel = ({ conditions, dataType = "PLANET", dnaOrRna = "DNA", onCompl
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
-      const subtypes = dtPatientList?.find((subtypeItem) => subtypeItem.patientId == dtPatientId)?.subtypes ?? [];
+      const subtypes =
+        dtPatientList?.find(
+          (subtypeItem) => subtypeItem.patientId == dtPatientId,
+        )?.subtypes ?? [];
       const _heatmap = buildSubtypes(subtypes);
       setDtHeatmap(_heatmap);
     }
   };
 
   const buildPlanetHeatMap = (planetPatientId, dataType) => {
-    if (dataType == "ALL" || dataType == "PLANET") {
+    if (dataType == "all" || dataType == "PLANET") {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
-      const subtypes = planetPatientList?.find((subtypeItem) => subtypeItem.patientId == planetPatientId)?.subtypes ?? [];
+      const subtypes =
+        planetPatientList?.find(
+          (subtypeItem) => subtypeItem.patientId == planetPatientId,
+        )?.subtypes ?? [];
       const _heatmap = buildSubtypes(subtypes);
       setPlanetHeatmap(_heatmap);
     }
   };
 
   const buildSubtypes = (subtypes) => {
-
     if (subtypes.length) {
       const _heatmap = {};
+
       subtypes.forEach((sample) => {
         _heatmap[formatLabel(sample?.id)] = {
-                   
-          "subtype": {
-            color: HEATMAP_COLORS["subtype"][sample.subtype] ?? "#f0f0f0",
-            value: sample.subtype,
+          subtype: {
+            color: HEATMAP_COLORS["subtype"][sample.immuneSubtype] ?? "#f0f0f0",
+            value: sample.immuneSubtype,
           },
         };
       });
       return _heatmap;
-
     }
   };
 

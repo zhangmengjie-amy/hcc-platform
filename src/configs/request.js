@@ -111,52 +111,10 @@ export const getValidGeneList = async (data) => {
   }
 };
 
-export const getFullClinical = async () => {
-  try {
-    const response = await fetch(`/json/sampleClinical.json`);
-    return response?.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-export const getImmuneSubtypes = async () => {
-  try {
-    const response = await fetch(`/json/immune_subtypes.json`);
-    return response?.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-
-
-export const getExpressionSubtypeList = async () => {
-  try {
-    const response = await fetch(`/json/hcc-expression-subtype.json`);
-    return response?.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
 export const getHeatmapBoxplot = async (data) => {
   try {
     const response = await post(`/hcc/v1/immune/heatmap-boxplot`, data);
     return response?.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-export const getMutationHeatmapList = async () => {
-  try {
-    const response = await fetch(`/json/immune-heatmap.json`);
-    return response?.json();
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -250,38 +208,6 @@ export const download = async (data) => {
   try {
     const response = await post(`/hcc/v1/immune/downloadCSV`, data);
     return response;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-
-export const getVolcanoPlot = async () => {
-  try {
-    const response = await fetch(`/json/volcano_GO_api_json.json`);
-    return response?.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-
-export const getImmuneSubtypeList = async () => {
-  try {
-    const response = await fetch(`/json/hcc-immune-subtype.json`);
-    return response?.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-export const getLiverSamples = async () => {
-  try {
-    const samples = await fetch(`/json/liver-sample.json`);
-    return samples?.json();
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

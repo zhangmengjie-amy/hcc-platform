@@ -23,9 +23,9 @@ import {
 } from "antd";
 import { useTranslation } from "react-i18next";
 import CohortType from "@/components/condition-selector/dt-planet";
-import ClinicalSelector from "@/components/condition-selector/clinical";
+import ClinicalSelector from "@/components/condition-selector/clinical-selector";
 
-const Immune1Condition = forwardRef(({}, ref) => {
+const ImmuneSubtypeCondition = forwardRef(({}, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
 
@@ -50,4 +50,4 @@ const Immune1Condition = forwardRef(({}, ref) => {
   );
 });
 
-export default Immune1Condition;
+export default ImmuneSubtypeCondition;

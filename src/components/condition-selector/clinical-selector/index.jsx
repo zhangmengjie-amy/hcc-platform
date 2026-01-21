@@ -58,26 +58,18 @@ const ConditionSelection = forwardRef(({ onChange }, ref) => {
       viralStatus: [],
     };
     setClinicList(params);
-    onChange({
+    onChange?.({
       clinicalConditions: params,
     });
   };
 
   const onClinicChange = (value, parent) => {
-    // if (value?.length === 0) {
-    //     messageApi.open({
-    //         type: 'warning',
-    //         content: "You have no selected selection, you will get all samples",
-    //         duration: 2,
-    //         maxCount: 3
-    //     });
-    // }
     const params = {
       ...clinicList,
       [parent]: value,
     };
     setClinicList(params);
-    onChange({
+    onChange?.({
       clinicalConditions: params,
     });
   };

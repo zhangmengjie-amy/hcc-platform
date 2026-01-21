@@ -13,7 +13,7 @@ import CohortSelection from "@/components/condition-selector/cohort-table";
 import FilterCohort from "@/components/condition-selector/filter-cohort";
 import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 import DTPlanet from "@/components/condition-selector/dt-planet";
-import ClinicalSelector from "@/components/condition-selector/clinical";
+import ClinicalSelector from "@/components/condition-selector/clinical-selector";
 
 const Clinical = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
