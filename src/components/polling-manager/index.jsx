@@ -7,12 +7,11 @@ import {
   CloseCircleOutlined,
   UpOutlined,
 } from "@ant-design/icons";
-import { getBiomarkersResultByTaskId } from "@/configs/request";
 
 const POLLING_INTERVAL = 3000;
 const MAX_POLLING_TIME = 300000; // 5分钟
 
-const PollingManager = ({ pollingData, onComplete }) => {
+const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
   const [tasks, setTasks] = useState([]);
   const [stats, setStats] = useState({
     total: 0,
@@ -61,12 +60,18 @@ const PollingManager = ({ pollingData, onComplete }) => {
 
     setTasks(newTasks);
     updateStats(newTasks);
+    setIsExpanded(true); // 初始化时展开
     startPolling();
 
     return () => {
       stopPolling();
     };
   }, [pollingData]);
+
+  // 检查是否有正在运行的任务
+  const hasRunningTasks = useCallback((taskList) => {
+    return taskList.some((task) => task.status === "running");
+  }, []);
 
   // 更新统计
   const updateStats = useCallback((taskList) => {
@@ -88,7 +93,7 @@ const PollingManager = ({ pollingData, onComplete }) => {
   // 轮询单个任务
   const pollSingleTask = useCallback(async (task) => {
     try {
-      const response = await getBiomarkersResultByTaskId(task.taskId);
+      const response = await apiMethod(task.taskId);
 
       const updatedTask = {
         ...task,
@@ -120,7 +125,6 @@ const PollingManager = ({ pollingData, onComplete }) => {
 
   // 批量轮询
   const pollTasks = useCallback(async () => {
-    setIsExpanded(true);
     if (!isPollingRef.current) return;
 
     const currentTasks = [...tasksRef.current];
@@ -251,6 +255,19 @@ const PollingManager = ({ pollingData, onComplete }) => {
     isPollingRef.current = false;
   }, []);
 
+  // 处理点击展开/收起
+  const handleToggleExpand = () => {
+    const currentTasks = tasksRef.current;
+    const hasRunning = hasRunningTasks(currentTasks);
+    
+    // 如果有正在运行的任务，不允许收起
+    if (hasRunning) {
+      setIsExpanded(true);
+    } else {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
   // 渲染状态图标
   const renderStatusIcon = (status) => {
     const icons = {
@@ -260,6 +277,10 @@ const PollingManager = ({ pollingData, onComplete }) => {
     };
     return icons[status] || null;
   };
+
+  // 检查当前是否有正在运行的任务
+  const hasRunning = hasRunningTasks(tasks);
+  const allCompleted = checkAllCompleted(tasks);
 
   // 如果没有轮询数据
   if (!pollingData) {
@@ -276,7 +297,7 @@ const PollingManager = ({ pollingData, onComplete }) => {
         border: "1px solid #d9d9d9",
       }}
     >
-      {/* 标题栏 - 始终显示 */}
+      {/* 标题栏 - 如果有运行中的任务则不允许收起 */}
       <div
         style={{
           padding: "10px 16px",
@@ -284,11 +305,11 @@ const PollingManager = ({ pollingData, onComplete }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          cursor: "pointer",
+          cursor: hasRunning ? "default" : "pointer",
           backgroundColor: "#fff",
           userSelect: "none",
         }}
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleToggleExpand}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <UpOutlined
@@ -296,12 +317,14 @@ const PollingManager = ({ pollingData, onComplete }) => {
               color: "#666",
               transform: isExpanded ? "rotate(0deg)" : "rotate(180deg)",
               transition: "transform 0.3s ease",
+              opacity: hasRunning ? 0.5 : 1,
             }}
           />
           <span style={{ fontWeight: 500 }}>
             任务执行状态
-            {checkAllCompleted(tasks) && stats.failed === 0 && " (已完成)"}
-            {checkAllCompleted(tasks) && stats.failed > 0 && " (部分失败)"}
+            {allCompleted && stats.failed === 0 && " (已完成)"}
+            {allCompleted && stats.failed > 0 && " (部分失败)"}
+            {hasRunning && " (运行中)"}
           </span>
         </div>
         <div style={{ display: "flex", gap: 20 }}>
@@ -360,10 +383,10 @@ const PollingManager = ({ pollingData, onComplete }) => {
         </div>
       </div>
 
-      {/* 展开的内容 */}
+      {/* 展开的内容 - 如果有运行中的任务则强制展开 */}
       <div
         style={{
-          maxHeight: isExpanded ? "500px" : "0",
+          maxHeight: (isExpanded || hasRunning) ? "500px" : "0",
           overflow: "hidden",
           transition: "max-height 0.3s ease-in-out",
         }}

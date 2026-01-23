@@ -3,6 +3,18 @@
     overflow: hidden;
   }
 
+  .moduleCard:hover {
+    transform: translateY(0);
+    position: relative;
+    box-shadow: none;
+    transition: all ease 0.3s;
+    &:hover {
+      transform: translateY(-8px);
+      transition: all ease 0.3s;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
+    }
+  }
+
   .singleModalList {
     padding: 0px 40px;
     // background: linear-gradient(to bottom, rgb(254, 242, 244), transparent);

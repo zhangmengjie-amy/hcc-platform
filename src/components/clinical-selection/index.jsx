@@ -1,12 +1,10 @@
 "use client";
-import React, { useRef, useMemo, useEffect, useImperativeHandle, useState, useCallback, forwardRef } from "react";
-import { usePDF } from "react-to-pdf";
+import React, { useRef, useEffect, useImperativeHandle, useState, useCallback, forwardRef } from "react";
 import { getGeneList, getValidGeneList, getClinicalConfig } from "@/configs/request";
-import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from "@ant-design/icons";
+import { CaretRightOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
 import EmptyLoading from "@/components/empty-loading";
 import {
-  Card,
   Collapse,
   Row,
   Col,
@@ -16,11 +14,8 @@ import {
   List,
   Checkbox,
   Button,
-  Affix,
-  Spin,
   Flex,
   Input,
-  Splitter,
   Typography,
   Select,
   Timeline,

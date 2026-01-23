@@ -1,9 +1,0 @@
-{
-    "cohort": ["TCGA-LIHC", "PKU_tissue"],
-    "groupBy": "stage",
-    "firstGroup": ["I", "II"],
-    "secondGroup": ["III", "IV"],
-    "geneList": null,
-    "geneSet": null,
-    "geneType": null
-}

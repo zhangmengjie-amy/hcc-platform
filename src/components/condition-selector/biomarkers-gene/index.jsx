@@ -4,11 +4,8 @@ import React, {
   useEffect,
   useImperativeHandle,
   useState,
-  useCallback,
   forwardRef,
-  useMemo,
 } from "react";
-import { usePDF } from "react-to-pdf";
 import {
   getBiomarkersGeneList,
   getBiomarkersSingleGene,
@@ -17,36 +14,18 @@ import GeneUpload from "@/components/condition-selector/gene-upload";
 import { CaretRightOutlined, LinkOutlined } from "@ant-design/icons";
 
 import {
-  Card,
   Collapse,
   Radio,
-  Table,
-  Row,
-  Col,
   Tag,
   Tooltip,
-  Space,
-  List,
-  Checkbox,
   Button,
-  Affix,
   Spin,
   Flex,
-  Input,
-  Splitter,
   Typography,
-  Select,
-  Timeline,
-  Slider,
-  message,
-  Upload,
-  Segmented,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import { FixedSizeList } from "react-window";
 import styles from "../style.module.scss";
-import { use } from "react";
 
 const RELOAD_ICON = "/images/reload.svg";
 const GENE_SET_COLOR = {
@@ -246,7 +225,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                     <Flex vertical>
                       {geneList.map((item) => {
                         return (
-                          <div style={{ marginBottom: "5px" }}>
+                          <div style={{ marginBottom: "5px" }} key={item.geneListName}>
                             <Radio value={item.geneListName}>
                               {item.geneListName}
                             </Radio>

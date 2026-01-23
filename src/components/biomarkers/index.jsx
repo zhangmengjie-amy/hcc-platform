@@ -7,66 +7,46 @@ import React, {
   useMemo,
 } from "react";
 import {
-  getBiomarkersResultByTaskId,
   getBiomarkersTaskIds,
-  getGeneList,
 } from "@/configs/request";
 import {
-  CaretRightOutlined,
   LoadingOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { getBiomarkers } from "@/configs/request";
+import { getBiomarkersResultByTaskId } from "@/configs/request";
 import SplitBar from "@/components/split-bar";
 import PollingManager from "@/components/polling-manager";
-import Biomarkers1Content from "./right-content/biomarkers1";
-import Biomarkers1Condition from "./left-content/biomarkers1";
-import Biomarkers2Condition from "./left-content/biomarkers2";
-import Biomarkers2Content from "./right-content/biomarkers2";
+import SurvivalAnalysisContent from "./right-content/survival-analysis";
+import SurvivalAnalysisCondition from "./left-content/survival-analysis";
+import MultiModalJointAnalysisCondition from "./left-content/multi-modal-joint-analysis";
+import MultiModalJointAnalysisContent from "./right-content/multi-modal-joint-analysis";
 import {
-  Collapse,
-  Radio,
-  Tooltip,
   Button,
-  Flex,
-  Splitter,
-  Typography,
   Segmented,
   message,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import Image from "next/image";
-const { Panel } = Splitter;
-const LEFT_SQUARE_SRC = "/images/left-square.svg";
-const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const DEFAULT_LEFT_PANEL_WIDTH = "25%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 100;
-const RELOAD_ICON = "/images/reload.svg";
 
 const Biomarkers = () => {
   const { t } = useTranslation();
   const [taskIdsWithCohort, setTaskIdsWithCohort] = useState(null);
-  const [contentType, setContentType] = useState("biomarkers1");
+  const [contentType, setContentType] = useState("survivalAnalysis");
   const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
   const [pollingData, setPollingData] = useState(null);
   const [pollingResultData, setPollingResultData] = useState(null);
-  const [biomarkers2Conditions, setBiomarkers2Conditions] = useState(null);
-  const biomarkers1ConditionRef = useRef(null);
+  const [multiModalJointAnalysisConditions, setMultiModalJointAnalysisConditions] = useState(null);
+  const survivalAnalysisConditionRef = useRef(null);
 
-  const biomarkers2ConditionRef = useRef(null);
+  const MultiModalJointAnalysisConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
-    if (contentType === "biomarkers1") {
-      const params = biomarkers1ConditionRef.current?.getParams();
+    if (contentType === "survivalAnalysis") {
+      const params = survivalAnalysisConditionRef.current?.getParams();
       applyMethod(params);
     }
-    if (contentType === "biomarkers2") {
-      const params = biomarkers2ConditionRef.current?.getParams();
+    if (contentType === "multiModalJointAnalysis") {
+      const params = MultiModalJointAnalysisConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
         selectedCohortType: params.selectedCohortType,
@@ -81,7 +61,7 @@ const Biomarkers = () => {
           return;
         }
       }
-      setBiomarkers2Conditions(requestParamsArray);
+      setMultiModalJointAnalysisConditions(requestParamsArray);
     }
   }, [contentType]);
 
@@ -108,10 +88,10 @@ const Biomarkers = () => {
   };
 
   const handleOnReady = useCallback(async (params) => {
-    if (contentType === "biomarkers1") {
+    if (contentType === "survivalAnalysis") {
       applyMethod(params);
     }
-    if (contentType === "biomarkers2") {
+    if (contentType === "multiModalJointAnalysis") {
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
         selectedCohortType: params.selectedCohortType,
@@ -126,7 +106,7 @@ const Biomarkers = () => {
           return;
         }
       }
-      setBiomarkers2Conditions(requestParamsArray);
+      setMultiModalJointAnalysisConditions(requestParamsArray);
     }
   }, [contentType]);
 
@@ -134,7 +114,7 @@ const Biomarkers = () => {
     if (!taskIdsWithCohort) return;
     setPollingData({
       taskIds: taskIdsWithCohort,
-      cohortInfo: biomarkers1ConditionRef.current
+      cohortInfo: survivalAnalysisConditionRef.current
         ?.getParams()
         ?.selectedRows?.reduce((acc, row) => {
           acc[row.number] = { name: row.name || `Cohort ${row.number}` };
@@ -273,8 +253,8 @@ const Biomarkers = () => {
         size="large"
         onChange={handleContentTypeChange}
         options={[
-          { value: "biomarkers1", label: "biomarkers1" },
-          { value: "biomarkers2", label: "biomarkers2" },
+          { value: "survivalAnalysis", label: "Survival Analysis" },
+          { value: "multiModalJointAnalysis", label: "Multi-modal joint analysis" },
         ]}
         value={contentType}
       />
@@ -295,29 +275,30 @@ const Biomarkers = () => {
         rightAction={rightAction}
         leftContent={
           <>
-            {contentType === "biomarkers1" ? (
-              <Biomarkers1Condition
-                ref={biomarkers1ConditionRef}
+            {contentType === "survivalAnalysis" ? (
+              <SurvivalAnalysisCondition
+                ref={survivalAnalysisConditionRef}
                 handleOnReady={handleOnReady}
-              ></Biomarkers1Condition>
-            ) : <Biomarkers2Condition ref={biomarkers2ConditionRef} handleOnReady={handleOnReady}></Biomarkers2Condition>}
+              ></SurvivalAnalysisCondition>
+            ) : <MultiModalJointAnalysisCondition ref={MultiModalJointAnalysisConditionRef} handleOnReady={handleOnReady}></MultiModalJointAnalysisCondition>}
           </>
         }
         rightContent={
           <>
             
-            {contentType === "biomarkers1" ? (
+            {contentType === "survivalAnalysis" ? (
               <>
                 <PollingManager
                   pollingData={pollingData}
                   onComplete={handlePollingComplete}
+                  apiMethod={getBiomarkersResultByTaskId}
                 />
-                <Biomarkers1Content
+                <SurvivalAnalysisContent
                   pollingResults={pollingResultData}
-                ></Biomarkers1Content>
+                ></SurvivalAnalysisContent>
               </>
             ) : (
-              <Biomarkers2Content biomarkers={biomarkers2Conditions?.biomarkers} conditions={biomarkers2Conditions?.clinicalConditions} dataType={biomarkers2Conditions?.selectedCohortType} onComplete={handleBiomarker2Complete}></Biomarkers2Content>
+              <MultiModalJointAnalysisContent biomarkers={multiModalJointAnalysisConditions?.biomarkers} conditions={multiModalJointAnalysisConditions?.clinicalConditions} dataType={multiModalJointAnalysisConditions?.selectedCohortType} onComplete={handleBiomarker2Complete}></MultiModalJointAnalysisContent>
             )}
           </>
         }

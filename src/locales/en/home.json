@@ -6,7 +6,7 @@
     "mutation": "Genome",
     "help": "Help",
     "about": "About",
-    "expression": "Transcriptome",
+    "transcriptome": "Transcriptome",
     "immune": "Immune",
     "clinical": "Clinical",
     "biomarkers": "Biomarkers"

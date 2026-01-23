@@ -27,32 +27,8 @@ const RELOAD_ICON = "/images/reload.svg";
 
 const Split = ({ leftContent, rightContent, leftAction, rightAction, initialLeftWidth = DEFAULT_LEFT_PANEL_WIDTH, initialRightWidth = DEFAULT_RIGHT_PANEL_WIDTH }) => {
   const { t } = useTranslation();
-  const [dataType, setDataType] = useState("planet");
-  const [mutationTypeTab, setMutationTypeTab] = useState("subtype");
-  const [applyLoading, setApplyLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
-  const [params, setParams] = useState({});
   const [leftPanelSize, setLeftPanelSize] = useState(initialLeftWidth);
   const [rightPanelSize, setRightPanelSize] = useState(initialRightWidth);
-  const [fetchLoading, setFetchLoading] = useState(true);
-  const [geneList, setGeneList] = useState([]);
-  const conditionSelectionRef = useRef(null);
-  const [clinicList, setClinicList] = useState({
-    gender: [],
-    age: [],
-    race: [],
-    stage: [],
-    viralStatus: [],
-  });
-  const geneRef = useRef(null);
-  const paramsRef = useRef(null);
-  const pathname = usePathname();
-
-
-
-  const handleApply = useCallback(() => {
-    setParams(conditionSelectionRef.current?.getParams());
-  }, []);
 
   const onPanelChange = (sizes) => {
     setLeftPanelSize(sizes[0]);
@@ -79,29 +55,16 @@ const Split = ({ leftContent, rightContent, leftAction, rightAction, initialLeft
     }
   };
 
-  useEffect(() => {
-    setParams({});
-  }, [mutationTypeTab]);
-
-    
-
-  const onDataTypeChange = (e) => {
-    setDataType(e.target.value);
-  };
-
-
   return (
     <>
-      {contextHolder}
       <Splitter className={styles.hccSlitter} lazy onResize={onPanelChange}>
         <Panel className={styles.panel} size={leftPanelSize} min={"20%"} max="50%">
           <div style={{ margin: "10px" }}>
             <Flex justify="space-between" align="center">
-              {leftAction}
-                          
+              <>{leftAction}</> 
               <Button color="default" variant="text"
                 onClick={leftPanelFullScreen}
-                style={{ color: "#fff", padding: 0 }}>
+                style={{ color: "#fff", padding: 0, marginLeft: "auto" }}>
                 <Image
                   src={LEFT_SQUARE_SRC}
                   alt="import"

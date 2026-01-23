@@ -62,7 +62,7 @@ const HCCFooter = () => {
             marginBottom: "10px",
           }}
         >
-          Copyright © 2028-{new Date().getFullYear()} 中国科学院动物研究所
+          Copyright © 2028-{new Date().getFullYear()} <a style={{ color: "#fff" }} href="https://www.ioz.ac.cn/" target="https://www.ioz.ac.cn/"> 中国科学院动物研究所 </a>
           {t("home:footer.copyright")}
         </Col>
         <Col

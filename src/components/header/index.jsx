@@ -62,10 +62,10 @@ const HCCHeader = () => {
           label: <Link href="/mutation">{t("home:header.mutation")}</Link>,
         },
         {
-          key: "/expression/subtype",
+          key: "/transcriptome",
           label: (
-            <Link href="/expression/subtype">
-              {t("home:header.expression")}
+            <Link href="/transcriptome">
+              {t("home:header.transcriptome")}
             </Link>
           ),
         },

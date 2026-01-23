@@ -85,7 +85,8 @@ const Home = () => {
 
   const items = [
     {
-      key: "driver-landscape",
+      key: "mutation",
+      path: "driver-landscape",
       title: "Driver landscape",
       textColor: "rgb(63,122,128)",
       bgColor: "rgb(226, 247, 252)",
@@ -94,7 +95,8 @@ const Home = () => {
         "Oncoprint plot shows genetic alterations in driver genes (or genes of interests from the user) across samples and patients.",
     },
     {
-      key: "timing-analysis",
+      key: "mutation",
+      path: "timing-analysis",
       title: "Timing analysis",
       textColor: "rgb(63,122,128)",
       bgColor: "rgb(226, 247, 252)",
@@ -103,7 +105,8 @@ const Home = () => {
         "Timing analysis allows users to trace the timing of the mutated genes by mapping them onto the phylogenetic tree.",
     },
     {
-      key: "differential-expression-analysis",
+      key: "transcriptome",
+      path: "differential-expression-analysis",
       title: "Differential expression analysis",
       textColor: "#7b1fa2",
       bgColor: "#f3eafa",
@@ -112,7 +115,8 @@ const Home = () => {
         "Differential gene expression analysis discovers differentially expressed genes (DEGs) between different subgroups (e.g. grouping by clinical information or molecular features) of samples.",
     },
     {
-      key: "transcriptomic-heterogeneity",
+      key: "transcriptome",
+      path: "transcriptomic-heterogeneity",
       title: "Transcriptomic heterogeneity",
       textColor: "#7b1fa2",
       bgColor: "#f3eafa",
@@ -121,7 +125,8 @@ const Home = () => {
         "This module explores how transcriptomic subtypes distribute across spatial samples within and between patients.",
     },
     {
-      key: "microenvironment-deconvolution",
+      key: "immune",
+      path: "microenvironment-deconvolution",
       title: "Microenvironment deconvolution",
       textColor: "#2e7d32",
       bgColor: "#e8f7f0",
@@ -130,7 +135,8 @@ const Home = () => {
         "Microenvironment deconvolution aims to characterize the immune or stroma cell distribution and classify the tumor microenvironment within and between tumors. ",
     },
     {
-      key: "microenvironment-spatial-heterogeneity",
+      key: "immune",
+      path: "immune-subtype",
       title: "Microenvironment spatial heterogeneity",
       textColor: "#2e7d32",
       bgColor: "#e8f7f0",
@@ -139,16 +145,18 @@ const Home = () => {
         "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients.",
     },
     {
-      key: "survival-analysis",
+      key: "biomarkers",
+      path: "survival-analysis",
       title: "Survival analysis",
       textColor: "#c2185b",
       bgColor: "#fdeaea",
       url: "/images/survival-analysis.png",
       description:
-        "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients. ",
+        "In this module, using existing or user-specified biomarkers, users can explore how biomarkers can stratify patient survival. ",
     },
     {
-      key: "multi-modal-joint-analysis",
+      key: "biomarkers",
+      path: "multi-modal-joint-analysis",
       title: "Multi-modal joint analysis",
       textColor: "#c2185b",
       bgColor: "#fdeaea",
@@ -225,12 +233,12 @@ const Home = () => {
           return (
             <Col key={index} xs={12} sm={12} md={6} lg={6}>
               <Flex
+                className={styles.moduleCard}
                 vertical
                 style={{
                   width: "100%",
                   height: "100%",
-                  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15)",
-                  padding: "15px 15px 20px",
+                  padding: "10px 10px 20px",
                   borderRadius: "12px",
                   backgroundColor: item.bgColor,
                 }}
@@ -257,13 +265,16 @@ const Home = () => {
                   style={{
                     marginBottom: 0,
                     marginTop: 20,
+                    padding: "0px 10px", 
                     color: "rgb(20, 40, 80)",
                   }}
                 >
                   {item.description}
                 </Paragraph>
                 <Flex justify="flex-end" style={{ marginTop: "auto" }}>
-                  <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff" }}>EXPLORE</Button>
+                  <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff", marginTop: "10px" }}>
+                    <a href={`/${item.key}?menu=${item.key}`} target={`/${item.key}?menu=${item.key}`}>EXPLORE</a>
+                  </Button>
                 </Flex>
               </Flex>
             </Col>

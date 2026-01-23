@@ -2,13 +2,12 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Result, Button, Spin, Card, Flex, Input, message } from "antd";
+import { Button, Spin, Card, Flex, Input, message } from "antd";
 import { resendActivation, activation, getCaptcha } from "@/configs/request";
 import {
   CheckCircleFilled,
   MailFilled,
   RocketFilled,
-  ReloadOutlined,
 } from "@ant-design/icons";
 
 export default function ActivationPage() {

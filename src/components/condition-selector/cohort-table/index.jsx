@@ -4,55 +4,27 @@ import React, {
   useEffect,
   useImperativeHandle,
   useState,
-  useCallback,
   forwardRef,
-  useMemo,
 } from "react";
-import { usePDF } from "react-to-pdf";
-import {
-  getGeneList,
-  getValidGeneList,
-  getGeneSetList,
-} from "@/configs/request";
 import {
   CaretRightOutlined,
   LinkOutlined,
-  UploadOutlined,
-  ApartmentOutlined,
-  BranchesOutlined,
 } from "@ant-design/icons";
 import {
-  Card,
   Collapse,
-  Radio,
   Table,
-  Row,
-  Col,
   Tag,
   Tooltip,
-  Space,
-  List,
-  Checkbox,
   Button,
-  Affix,
   Spin,
   Flex,
-  Input,
-  Splitter,
-  Typography,
-  Select,
-  Timeline,
-  Slider,
   message,
-  Upload,
-  Segmented,
+  Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { getCohortList } from "@/configs/request";
 import styles from "../style.module.scss";
-import { use } from "react";
-import { set } from "lodash";
 const CLASSIFY_COLOR = {
   "Tissue": "purple",
   "Celllines": "green",
@@ -81,6 +53,7 @@ const CohortSelection = forwardRef(
     },
     ref,
   ) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const { t } = useTranslation();
     const paramsRef = useRef(null);
     const cohortListRef = useRef(null);
@@ -206,7 +179,7 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            至多选择5个
+            至多选择10个
           </Typography.Paragraph>
           <Typography.Paragraph
             ellipsis={{
@@ -215,7 +188,7 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            已选择 { selectedRowKeys.length ?? 0 }个  
+            已选择 { selectedRowKeys?.length ?? 0 }个  
           </Typography.Paragraph>
           <Tooltip placement="bottom" title={t("common:reset-selection")}>
             <Button
@@ -241,7 +214,13 @@ const CohortSelection = forwardRef(
 
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        if (selectedRows?.length > 5) return;
+        if (selectedRows?.length > 10) {
+          messageApi.open({
+            type: "warning",
+            content: "最多选择10条",
+          });
+          return;
+        }
         setSelectedRowKeys(selectedRowKeys);
         onChange({ selectedRows });
       },
@@ -279,25 +258,28 @@ const CohortSelection = forwardRef(
     };
 
     return (
-      <div className={styles.condition}>
-        <Collapse
-          defaultActiveKey={"table"}
-          className={styles.searchCollapse}
-          expandIcon={({ isActive }) => (
-            <CaretRightOutlined
-              style={{ fontSize: 14 }}
-              rotate={isActive ? 90 : 0}
-            />
-          )}
-          items={[
-            {
-              key: "table",
-              label: tableCollapseTitle(),
-              children: tableCollapseContent(),
-            },
-          ]}
-        ></Collapse>
-      </div>
+      <>
+        { contextHolder }
+        <div className={styles.condition}>
+          <Collapse
+            defaultActiveKey={"table"}
+            className={styles.searchCollapse}
+            expandIcon={({ isActive }) => (
+              <CaretRightOutlined
+                style={{ fontSize: 14 }}
+                rotate={isActive ? 90 : 0}
+              />
+            )}
+            items={[
+              {
+                key: "table",
+                label: tableCollapseTitle(),
+                children: tableCollapseContent(),
+              },
+            ]}
+          ></Collapse>
+        </div>
+      </>
     );
   },
 );
