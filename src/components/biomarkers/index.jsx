@@ -7,45 +7,25 @@ import React, {
   useMemo,
 } from "react";
 import {
-  getBiomarkersResultByTaskId,
   getBiomarkersTaskIds,
-  getGeneList,
 } from "@/configs/request";
 import {
-  CaretRightOutlined,
   LoadingOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { getBiomarkers } from "@/configs/request";
+import { getBiomarkersResultByTaskId } from "@/configs/request";
 import SplitBar from "@/components/split-bar";
 import PollingManager from "@/components/polling-manager";
 import SurvivalAnalysisContent from "./right-content/survival-analysis";
 import SurvivalAnalysisCondition from "./left-content/survival-analysis";
 import MultiModalJointAnalysisCondition from "./left-content/multi-modal-joint-analysis";
-import MultiModalJointAnalysisContent from "./right-content/multiModalJointAnalysis";
+import MultiModalJointAnalysisContent from "./right-content/multi-modal-joint-analysis";
 import {
-  Collapse,
-  Radio,
-  Tooltip,
   Button,
-  Flex,
-  Splitter,
-  Typography,
   Segmented,
   message,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import Image from "next/image";
-const { Panel } = Splitter;
-const LEFT_SQUARE_SRC = "/images/left-square.svg";
-const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const DEFAULT_LEFT_PANEL_WIDTH = "25%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 100;
-const RELOAD_ICON = "/images/reload.svg";
 
 const Biomarkers = () => {
   const { t } = useTranslation();
@@ -311,6 +291,7 @@ const Biomarkers = () => {
                 <PollingManager
                   pollingData={pollingData}
                   onComplete={handlePollingComplete}
+                  apiMethod={getBiomarkersResultByTaskId}
                 />
                 <SurvivalAnalysisContent
                   pollingResults={pollingResultData}

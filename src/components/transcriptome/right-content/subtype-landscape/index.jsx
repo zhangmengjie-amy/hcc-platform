@@ -7,8 +7,8 @@ import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/planet-liver-sample";
 import DtLiverSampleChart from "@/components/dt-liver-sample";
-import SunburstChart from "@/components/transcriptome/subtype-landscape/right-panel/sunburst";
-import ColumnChart from "@/components/transcriptome/subtype-landscape/right-panel/column";
+import SunburstChart from "@/components/transcriptome/right-content/subtype-landscape/sunburst";
+import ColumnChart from "@/components/transcriptome/right-content/subtype-landscape/column";
 import filterSampleByConditions from "@/utils/filter-patient";
 
 const PLANET_SUBTYPE_COLOR = {
@@ -201,7 +201,7 @@ const STAGE_TRANS = {
   IIIB: "III",
   "III A": "III",
 };
-const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
+const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna = "RNA" }) => {
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
@@ -222,6 +222,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   const geneListRef = useRef(null);
 
   useEffect(() => {
+    if (!conditions) return;
     conditions["stage"] = Array.from(
       new Set(conditions["stage"]?.map((item) => STAGE_TRANS[item])),
     );
@@ -270,6 +271,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
         );
         setDtTreeLoading(false);
         setPlanetTreeLoading(false);
+        handleComplete(true);
       },
     );
   }, []);
@@ -277,7 +279,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   const buildDtTreeData = (dtPatientId, dataType) => {
     if (!geneListRef.current || dtPatientList?.length == 0) return;
     const treeWorker = new Worker("/workers/tree.js");
-    if (dataType == "all" || dataType == "dt") {
+    if (dataType == "ALL" || dataType == "DT") {
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
@@ -293,6 +295,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
         setDtTreeList(data.treeList);
         setDtSampleGeneData(data.sampleGeneData);
         setDtTreeLoading(false);
+        handleComplete(true);
       };
     }
   };
@@ -300,7 +303,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   const buildPlanetTreeData = (planetPatientId, dataType) => {
     if (!geneListRef.current || planetPatientList?.length == 0) return;
     const treeWorker = new Worker("/workers/tree.js");
-    if (dataType == "all" || dataType == "planet") {
+    if (dataType == "ALL" || dataType == "PLANET") {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
@@ -315,6 +318,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
       treeWorker.onmessage = ({ data }) => {
         setPlanetTreeList(data.treeList);
         setPlanetSampleGeneData(data.sampleGeneData);
+        handleComplete(true);
       };
     }
   };
@@ -351,7 +355,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   }
 
   const buildDtLiverSamples = (dtPatientId, dataType, selectedSubType) => {
-    if (dataType == "all" || dataType == "dt") {
+    if (dataType == "ALL" || dataType == "DT") {
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
@@ -387,7 +391,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
     dataType,
     selectedSubType,
   ) => {
-    if (dataType == "all" || dataType == "planet") {
+    if (dataType == "ALL" || dataType == "PLANET") {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
@@ -419,7 +423,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   };
 
   const buildDtHeatMap = (dtPatientId, dataType) => {
-    if (dataType == "all" || dataType == "dt") {
+    if (dataType == "ALL" || dataType == "DT") {
       if (!dtPatientId) {
         dtPatientId = dtPatientList?.[0]?.patientId;
       }
@@ -433,7 +437,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   };
 
   const buildPlanetHeatMap = (planetPatientId, dataType) => {
-    if (dataType == "all" || dataType == "planet") {
+    if (dataType == "ALL" || dataType == "PLANET") {
       if (!planetPatientId) {
         planetPatientId = planetPatientList?.[0]?.patientId;
       }
@@ -478,18 +482,18 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
   };
 
   const dtPatientList = useMemo(() => {
-    if (dataType == "planet") return [];
+    if (dataType == "PLANET") return [];
     return filterdPatientList?.filter((item) => item.type === "DT");
   }, [filterdPatientList, dataType]);
 
   const planetPatientList = useMemo(() => {
-    if (dataType == "dt") return [];
+    if (dataType == "DT") return [];
     return filterdPatientList?.filter((item) => item.type === "PLANET");
   }, [filterdPatientList, dataType]);
 
   return (
     <>
-      {(dataType == "all" || dataType == "planet") && (
+      {(dataType == "ALL" || dataType == "PLANET") && (
         <Row>
           <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
             <Flex
@@ -853,7 +857,7 @@ const RightPanel = ({ conditions, dataType = "planet", dnaOrRna = "RNA" }) => {
           </Col>
         </Row>
       )}
-      {(dataType == "all" || dataType == "dt") && (
+      {(dataType == "ALL" || dataType == "DT") && (
         <Row>
           <Col xs={12} sm={12} md={12} style={{ padding: "10px" }}>
             <Flex

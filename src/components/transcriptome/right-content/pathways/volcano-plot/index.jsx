@@ -79,7 +79,7 @@ const VolcanoPlot = ({
           <div style="font-weight: bold; margin-bottom: 8px;">${name}</div>
           <div>logFC: ${data.logFC.toFixed(4)}</div>
           <div>-log10(adj.P.Val): ${data.value[1].toFixed(4)}</div>
-          <div>adj.P.Val: ${data.adjPVal.toExponential(4)}</div>
+          <div>adj.P.Val: ${data.adjPVal}</div>
           <div style="color: ${data.itemStyle.color}; font-weight: bold;">
             显著性: ${data.significance}
           </div>
@@ -182,12 +182,13 @@ const VolcanoPlot = ({
         type: "scatter",
         name: "Not Significant",
         data: allData.filter(item => item.significance === "Not Significant"),
-        symbolSize: (val) => {
-          const pValue = Math.pow(10, -val[1]);
-          const baseSize = 4;
-          const maxSize = 8;
-          return baseSize + (1 - Math.min(pValue * 100, 1)) * (maxSize - baseSize);
-        },
+        // symbolSize: (val) => {
+        //   const pValue = Math.pow(10, -val[1]);
+        //   const baseSize = 2;
+        //   const maxSize = 4;
+        //   return baseSize + (1 - Math.min(pValue * 100, 1)) * (maxSize - baseSize);
+        // },
+        symbolSize: 4,
         itemStyle: {
           color: COLOR_MAP["Not Significant"],
         },
@@ -207,12 +208,13 @@ const VolcanoPlot = ({
         type: "scatter",
         name: "UP Significant",
         data: significantData.filter(item => item.significance === "UP Significant"),
-        symbolSize: (val) => {
-          const pValue = Math.pow(10, -val[1]);
-          const baseSize = 6;
-          const maxSize = 10;
-          return baseSize + (1 - Math.min(pValue * 100, 1)) * (maxSize - baseSize);
-        },
+        // symbolSize: (val) => {
+        //   const pValue = Math.pow(10, -val[1]);
+        //   const baseSize = 6;
+        //   const maxSize = 10;
+        //   return baseSize + (1 - Math.min(pValue * 100, 1)) * (maxSize - baseSize);
+        // },
+        symbolSize: 4,
         itemStyle: {
           color: COLOR_MAP["UP Significant"],
         },
@@ -276,12 +278,13 @@ const VolcanoPlot = ({
         type: "scatter",
         name: "DOWN Significant",
         data: significantData.filter(item => item.significance === "DOWN Significant"),
-        symbolSize: (val) => {
-          const pValue = Math.pow(10, -val[1]);
-          const baseSize = 6;
-          const maxSize = 10;
-          return baseSize + (1 - Math.min(pValue * 100, 1)) * (maxSize - baseSize);
-        },
+        // symbolSize: (val) => {
+        //   const pValue = Math.pow(10, -val[1]);
+        //   const baseSize = 6;
+        //   const maxSize = 10;
+        //   return baseSize + (1 - Math.min(pValue * 100, 1)) * (maxSize - baseSize);
+        // },
+        symbolSize: 4,
         itemStyle: {
           color: COLOR_MAP["DOWN Significant"],
         },

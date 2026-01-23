@@ -13,7 +13,7 @@ import CohortSelection from "@/components/condition-selector/cohort-table";
 import FilterCohort from "@/components/condition-selector/filter-cohort";
 import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 
-const Clinical = forwardRef(( { handleOnReady }, ref) => {
+const SurvivalAnalysisCondition = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
   const [selectedClinical, setSelectedClinical] = useState([]);
@@ -65,4 +65,4 @@ const Clinical = forwardRef(( { handleOnReady }, ref) => {
   );
 });
 
-export default Clinical;
+export default SurvivalAnalysisCondition;

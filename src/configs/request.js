@@ -155,7 +155,7 @@ export const getBiomarkersScore = async (data) => {
 export const getDEGTaskIds = async (data) => {
   try {
     const response = await post(`/hcc/v1/deg/submit`, data);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -203,6 +203,7 @@ export const getBiomarkersResultByTaskId = async (id) => {
     throw error;
   }
 };
+
 
 export const download = async (data) => {
   try {

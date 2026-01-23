@@ -179,7 +179,7 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            至多选择5个
+            至多选择10个
           </Typography.Paragraph>
           <Typography.Paragraph
             ellipsis={{
@@ -188,7 +188,7 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            已选择 { selectedRowKeys.length ?? 0 }个  
+            已选择 { selectedRowKeys?.length ?? 0 }个  
           </Typography.Paragraph>
           <Tooltip placement="bottom" title={t("common:reset-selection")}>
             <Button

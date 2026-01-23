@@ -75,19 +75,6 @@ const Immune2Content = ({ conditions }) => {
     }
   }, [conditions]);
 
-  // 如果参数不完整，显示提示
-  if (!conditions?.numbers?.[0] || !conditions?.method) {
-    return (
-      <div style={{ padding: 24, textAlign: "center" }}>
-        <Alert
-          message="暂无数据"
-          description="请检查筛选条件或稍后重试"
-          type="warning"
-          showIcon
-        />
-      </div>
-    );
-  }
 
   // 加载中状态
   if (loading) {

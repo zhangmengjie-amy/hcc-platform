@@ -15,7 +15,7 @@ import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 import DTPlanet from "@/components/condition-selector/dt-planet";
 import ClinicalSelector from "@/components/condition-selector/clinical-selector";
 
-const Clinical = forwardRef(( { handleOnReady }, ref) => {
+const MultiModalJointAnalysisCondition = forwardRef(( { handleOnReady }, ref) => {
   const { t } = useTranslation();
   const paramsRef = useRef(null);
 
@@ -47,4 +47,4 @@ const Clinical = forwardRef(( { handleOnReady }, ref) => {
   );
 });
 
-export default Clinical;
+export default MultiModalJointAnalysisCondition;

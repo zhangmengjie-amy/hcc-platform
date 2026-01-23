@@ -11,9 +11,9 @@ import {
 } from "@ant-design/icons";
 import SplitBar from "@/components/split-bar";
 import ImmuneSubtypeCondition from "./left-content/immune-subtype";
-import Immune2Condition from "./left-content/microenvironment-deconvolution";
-import Immune1Content from "./right-content/immune1";
-import Immune2Content from "./right-content/immune2";
+import MicroenvironmentDeconvolutionCondition from "./left-content/microenvironment-deconvolution";
+import ImmuneSubtypeContent from "./right-content/immune-subtype";
+import MicroenvironmentDeconvolutionContent from "./right-content/microenvironment-deconvolution";
 import {
   Collapse,
   Radio,
@@ -45,7 +45,7 @@ const Biomarkers = () => {
   const [microenvironmentDeconvolutionCondition, setMicroenvironmentDeconvolutionCondition] = useState(null);
   const ImmuneSubtypeConditionRef = useRef(null);
 
-  const immune2ConditionRef = useRef(null);
+  const microenvironmentDeconvolutionConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
     if (contentType === "immune-subtype") {
@@ -57,7 +57,7 @@ const Biomarkers = () => {
       setImmuneSubtypeConditions(requestParamsArray);
     }
     if (contentType === "microenvironment-deconvolution") {
-      const params = immune2ConditionRef.current?.getParams();
+      const params = microenvironmentDeconvolutionConditionRef.current?.getParams();
       const requestParamsArray = {
         method: params.selectedMethod,
         numbers: params.selectedRows?.map((item) => item.number),
@@ -78,7 +78,7 @@ const Biomarkers = () => {
     }
 
     if (contentType === "microenvironment-deconvolution") {
-      const params = immune2ConditionRef.current?.getParams();
+      const params = microenvironmentDeconvolutionConditionRef.current?.getParams();
       const requestParamsArray = {
         method: params.selectedMethod,
         numbers: params.selectedRows?.map((item) => item.number),
@@ -140,19 +140,18 @@ const Biomarkers = () => {
                 ref={ImmuneSubtypeConditionRef}
                 handleOnReady={handleOnReady}
               ></ImmuneSubtypeCondition>
-            ) : <Immune2Condition ref={immune2ConditionRef} handleOnReady={handleOnReady}></Immune2Condition>}
+            ) : <MicroenvironmentDeconvolutionCondition ref={microenvironmentDeconvolutionConditionRef} handleOnReady={handleOnReady}></MicroenvironmentDeconvolutionCondition>}
           </>
         }
         rightContent={
           <>
-            
             {contentType === "immune-subtype" ? (
               <>
-                <Immune1Content conditions={immuneSubtypeConditions?.clinicalConditions} dataType={immuneSubtypeConditions?.selectedCohortType} onComplete={handleComplete}>
-                </Immune1Content>
+                <ImmuneSubtypeContent conditions={immuneSubtypeConditions?.clinicalConditions} dataType={immuneSubtypeConditions?.selectedCohortType} onComplete={handleComplete}>
+                </ImmuneSubtypeContent>
               </>
             ) : (
-              <Immune2Content conditions={microenvironmentDeconvolutionCondition}></Immune2Content>
+              <MicroenvironmentDeconvolutionContent conditions={microenvironmentDeconvolutionCondition}></MicroenvironmentDeconvolutionContent>
             )}
           </>
         }

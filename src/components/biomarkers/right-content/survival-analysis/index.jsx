@@ -1,11 +1,9 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import { Select, Alert, Empty, Tag, Typography } from "antd";
+import { Select, Alert, Empty, Tag, Flex } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
-const { Text } = Typography;
-
-const Biomarkers1 = ({ pollingResults }) => {
+const SurvivalAnalysisContent = ({ pollingResults }) => {
   const [selectedCohort, setSelectedCohort] = useState(null);
 
   // 处理轮询结果，展开 result 数组并处理状态
@@ -32,16 +30,14 @@ const Biomarkers1 = ({ pollingResults }) => {
             taskId: cohortResult.taskId,
             // 确保 xmlContent 存在
             xmlContent: item.xmlContent || null,
-            // 确保 status 是字符串且统一处理
-            status: item.status ? item.status.toLowerCase() : "unknown",
           };
 
-          // 根据 status 判断成功/失败
-          if (
-            item.status === "SUCCESS" ||
-            item.status === "success" ||
-            item.xmlContent
-          ) {
+          // 根据 code 判断成功/失败 - 使用 code == 200 判断
+          const isSuccess = item.code === 200 || item.code === "200";
+          // 如果有xmlContent也认为是成功的
+          const hasContent = item.xmlContent;
+
+          if (isSuccess || hasContent) {
             success.push(itemWithCohortInfo);
           } else {
             failed.push(itemWithCohortInfo);
@@ -53,12 +49,11 @@ const Biomarkers1 = ({ pollingResults }) => {
         // 如果没有 result 数组，直接使用 cohortResult
         const item = {
           cohortId: cohortResult.cohortId,
-          cohortName:
-            cohortResult.cohortName || `${cohortResult.cohortId}`,
+          cohortName: cohortResult.cohortName || `${cohortResult.cohortId}`,
           taskId: cohortResult.taskId,
           xmlContent: null,
-          status: "failed",
-          errorMessage: "任务无返回结果",
+          code: cohortResult.code || 500,
+          message: cohortResult.message || "任务无返回结果",
         };
         failed.push(item);
         all.push(item);
@@ -71,30 +66,35 @@ const Biomarkers1 = ({ pollingResults }) => {
   // 首次自动选择第一个成功的cohort
   useEffect(() => {
     if (successItems.length > 0) {
-      // 根据 cohortId 分组，选择第一个cohort
       const firstCohortId = successItems[0].cohortId;
       setSelectedCohort(firstCohortId);
+    } else if (allItems.length > 0) {
+      // 如果没有成功的，选择第一个cohort
+      const firstCohortId = allItems[0].cohortId;
+      setSelectedCohort(firstCohortId);
     }
-  }, [successItems]);
+  }, [successItems, allItems]);
 
-
-  // 获取唯一的cohort列表（基于 cohortId）
+  // 获取唯一的cohort列表
   const uniqueCohorts = useMemo(() => {
     const cohortMap = new Map();
 
     allItems.forEach((item) => {
       if (!cohortMap.has(item.cohortId)) {
+        const hasSuccess = successItems.some(
+          (successItem) => successItem.cohortId === item.cohortId,
+        );
+        const hasFailed = failedItems.some(
+          (failedItem) => failedItem.cohortId === item.cohortId,
+        );
+
         cohortMap.set(item.cohortId, {
           cohortId: item.cohortId,
           cohortName: item.cohortName,
-          status: item.status,
-          errorMessage: item.errorMessage,
-          hasSuccess: successItems.some(
-            (successItem) => successItem.cohortId === item.cohortId,
-          ),
-          hasFailed: failedItems.some(
-            (failedItem) => failedItem.cohortId === item.cohortId,
-          ),
+          message: item.message,
+          code: item.code,
+          hasSuccess: hasSuccess,
+          hasFailed: hasFailed,
         });
       }
     });
@@ -102,62 +102,134 @@ const Biomarkers1 = ({ pollingResults }) => {
     return Array.from(cohortMap.values());
   }, [allItems, successItems, failedItems]);
 
-  // 构建下拉框选项
+  // 构建Select选项
   const selectOptions = useMemo(() => {
-    const options = [];
+    return uniqueCohorts.map((cohort) => {
+      const hasSuccess = cohort.hasSuccess;
+      const errorMessage = cohort.message;
 
-    uniqueCohorts.forEach((cohort) => {
-      if (cohort.hasSuccess) {
-        // 成功的cohort
-        options.push({
-          value: cohort.cohortId,
-          label: (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      return {
+        value: cohort.cohortId,
+        label: (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {hasSuccess ? (
                 <CheckCircleOutlined
                   style={{ color: "#52c41a", fontSize: 14 }}
                 />
-                <span>{cohort.cohortName}</span>
-              </div>
-              <Tag color="success" style={{ fontSize: 11 }}>
-                成功
-              </Tag>
+              ) : (
+                <CloseCircleOutlined
+                  style={{ color: "#ff4d4f", fontSize: 14 }}
+                />
+              )}
+              <span>{cohort.cohortName}</span>
             </div>
-          ),
-          disabled: false,
+            <Tag
+              color={hasSuccess ? "success" : "error"}
+              style={{ fontSize: 11 }}
+            >
+              {hasSuccess ? "成功" : "失败"}
+            </Tag>
+          </div>
+        ),
+        disabled: !cohort.hasSuccess,
+      };
+    });
+  }, [uniqueCohorts]);
+
+  // 获取当前选中的cohort数据
+  const currentCohortData = useMemo(() => {
+    if (!selectedCohort) return null;
+
+    const cohortInfo = uniqueCohorts.find((c) => c.cohortId === selectedCohort);
+    const successItemsForCohort = successItems.filter(
+      (item) => item.cohortId === selectedCohort,
+    );
+
+    if (successItemsForCohort.length === 0) {
+      // 如果没有成功的项目，尝试获取该cohort的所有项目
+      const allItemsForCohort = allItems.filter(
+        (item) => item.cohortId === selectedCohort,
+      );
+      if (allItemsForCohort.length > 0) {
+        // 合并数据
+        const allXmlContent = [];
+
+        allItemsForCohort.forEach((item) => {
+          if (item.xmlContent) {
+            allXmlContent.push(item.xmlContent);
+          }
         });
+
+        return {
+          cohortName: cohortInfo?.cohortName,
+          xmlContentList: allXmlContent,
+          error:
+            allXmlContent.length === 0
+              ? cohortInfo?.message || "该 cohort 暂无可用数据"
+              : null,
+        };
+      }
+
+      return {
+        cohortName: cohortInfo?.cohortName,
+        xmlContentList: [],
+        error: cohortInfo?.message || "该 cohort 暂无可用数据",
+      };
+    }
+
+    // 合并该cohort的所有成功数据
+    const allXmlContent = [];
+
+    successItemsForCohort.forEach((item) => {
+      if (item.xmlContent) {
+        allXmlContent.push(item.xmlContent);
       }
     });
 
-    return options;
-  }, [uniqueCohorts, failedItems]);
+    return {
+      cohortName: cohortInfo?.cohortName,
+      xmlContentList: allXmlContent,
+      error:
+        allXmlContent.length === 0
+          ? cohortInfo?.message || "该 cohort 暂无可用数据"
+          : null,
+    };
+  }, [selectedCohort, successItems, allItems, uniqueCohorts]);
 
-  // 获取当前选中的cohort的所有items
-  const selectedCohortItems = useMemo(() => {
-    if (!selectedCohort) return [];
-    return allItems.filter((item) => item.cohortId === selectedCohort);
-  }, [selectedCohort, allItems]);
-
-  // 获取当前选中的cohort的成功items（用于显示）
+  // 获取当前选中的cohort的成功items
   const selectedCohortSuccessItems = useMemo(() => {
     if (!selectedCohort) return [];
-    return selectedCohortItems.filter(
-      (item) =>
-        item.status === "SUCCESS" ||
-        item.status === "success" ||
-        item.xmlContent,
-    );
-  }, [selectedCohortItems]);
+    return successItems.filter((item) => item.cohortId === selectedCohort);
+  }, [selectedCohort, successItems]);
 
-  // 渲染选中的内容
+  // 检查是否有任何可用的数据
+  const hasAnyData = useMemo(() => {
+    if (successItems.length > 0) return true;
+
+    // 检查是否至少有一个cohort有数据
+    for (const cohort of uniqueCohorts) {
+      const itemsForCohort = allItems.filter(
+        (item) => item.cohortId === cohort.cohortId,
+      );
+      for (const item of itemsForCohort) {
+        if (item.xmlContent) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }, [successItems, allItems, uniqueCohorts]);
+
+  // 渲染主要内容
   const renderContent = () => {
-    if (!selectedCohort) {
+    if (!currentCohortData) {
       return (
         <Empty
           description="请选择一个cohort查看结果"
@@ -166,52 +238,28 @@ const Biomarkers1 = ({ pollingResults }) => {
       );
     }
 
-    // 检查选中的cohort是否有成功的结果
-    const selectedCohortInfo = uniqueCohorts.find(
-      (c) => c.cohortId === selectedCohort,
-    );
-    if (!selectedCohortInfo?.hasSuccess) {
-      // 失败的cohort
-      const failedItem = failedItems.find(
-        (item) => item.cohortId === selectedCohort,
-      );
-      const errorMessage =
-        failedItem?.errorMessage ||
-        selectedCohortInfo?.errorMessage ||
-        "任务执行失败";
-
+    // 显示当前cohort的错误信息
+    if (currentCohortData.error) {
       return (
         <Alert
-          message={
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <CloseCircleOutlined style={{ color: "#ff4d4f" }} />
-              <span>
-                {selectedCohortInfo?.cohortName || `${selectedCohort}`}{" "}
-                任务执行失败
-              </span>
-            </div>
-          }
-          description={errorMessage}
-          type="error"
-          showIcon={false}
-          style={{
-            margin: "40px auto",
-            maxWidth: 600,
-            padding: "20px",
-          }}
+          message="当前 Cohort 数据异常"
+          description={currentCohortData.error}
+          type="warning"
+          showIcon
+          style={{ margin: "40px auto", maxWidth: 600, padding: "20px" }}
         />
       );
     }
 
-    // 成功的cohort，显示所有成功的结果
-    if (selectedCohortSuccessItems.length === 0) {
+    // 渲染XML内容
+    if (currentCohortData.xmlContentList.length === 0) {
       return (
         <Alert
           message={
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <CloseCircleOutlined style={{ color: "#faad14" }} />
               <span>
-                {selectedCohortInfo?.cohortName || `${selectedCohort}`}{" "}
+                {currentCohortData.cohortName || `${selectedCohort}`}{" "}
                 暂无可用数据
               </span>
             </div>
@@ -228,14 +276,12 @@ const Biomarkers1 = ({ pollingResults }) => {
       );
     }
 
-    // 渲染成功的结果
+    // 渲染所有XML内容
     return (
       <div style={{ marginTop: 20 }}>
-
-        {/* 显示所有成功的结果 */}
-        {selectedCohortSuccessItems.map((item, index) => (
+        {currentCohortData.xmlContentList.map((xmlContent, index) => (
           <div key={index} style={{ marginBottom: 24 }}>
-            {item.xmlContent ? (
+            {xmlContent ? (
               <div
                 style={{
                   textAlign: "center",
@@ -245,7 +291,7 @@ const Biomarkers1 = ({ pollingResults }) => {
                   border: "1px solid #f0f0f0",
                   minHeight: "400px",
                 }}
-                dangerouslySetInnerHTML={{ __html: item.xmlContent }}
+                dangerouslySetInnerHTML={{ __html: xmlContent }}
               />
             ) : (
               <Alert
@@ -263,7 +309,26 @@ const Biomarkers1 = ({ pollingResults }) => {
 
   // 如果没有任务结果
   if (!pollingResults || pollingResults.length === 0) {
-    return <Empty description="暂无任务结果" style={{ marginTop: 100 }} />;
+    return (
+      <Empty
+        description="暂无任务结果"
+        style={{ marginTop: 100 }}
+        styles={{ iamge: { height: 80 } }}
+      />
+    );
+  }
+
+  // 如果没有数据
+  if (!hasAnyData) {
+    return (
+      <Alert
+        message="暂无数据"
+        description="请检查筛选条件或稍后重试"
+        type="warning"
+        showIcon
+        style={{ margin: 20 }}
+      />
+    );
   }
 
   return (
@@ -278,14 +343,16 @@ const Biomarkers1 = ({ pollingResults }) => {
             marginBottom: 12,
           }}
         >
+          {/* 如果有taskType，显示taskType */}
           {selectedCohortSuccessItems[0]?.taskType && (
             <div style={{ fontWeight: 500, fontSize: 16 }}>
               Type: {selectedCohortSuccessItems[0].taskType}
             </div>
           )}
 
+          {/* Select下拉框 */}
           <Select
-            style={{ width: "100%", maxWidth: 500 }}
+            style={{ width: "100%", maxWidth: 500, marginLeft: "auto" }}
             placeholder="请选择cohort"
             value={selectedCohort}
             onChange={setSelectedCohort}
@@ -301,4 +368,4 @@ const Biomarkers1 = ({ pollingResults }) => {
   );
 };
 
-export default Biomarkers1;
+export default SurvivalAnalysisContent;

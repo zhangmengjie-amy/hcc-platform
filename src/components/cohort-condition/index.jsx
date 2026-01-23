@@ -551,6 +551,7 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
     );
   };
 
+
   const analysisCollapseContent = () => {
     return (
       <div className={styles.searchCard} variant="borderless">
@@ -704,7 +705,7 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
                 </Flex>
               </Flex>
             )}
-            {queryType == "gene" && (
+            {queryType == "Gene" && (
               <Flex vertical>
                 <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
                   <Typography.Paragraph>Gene Type</Typography.Paragraph>
@@ -724,7 +725,7 @@ const CohortCondition = forwardRef(({ module = "DEG" }, ref) => {
             )}
           </Flex>
         </Flex>
-        {queryType == "gene" && (
+        {queryType == "Gene" && (
           <Flex
             vertical
             flex={1}

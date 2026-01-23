@@ -415,7 +415,7 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
       yAxis: {
         type: "category",
         data: yAxisData,
-        inverse: true, // 将y轴反转，使第一行显示在最上方
+        inverse: true,
         axisLabel: {
           fontSize: 10,
           color: "#333",
@@ -426,27 +426,9 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
           formatter: function (value, index) {
             // 第一行显示"Cluster"
             if (index === 0) return "Cluster";
-            // 其他行正常显示术语名称
             return termNames[index - 1];
           },
         },
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: true,
-          lineStyle: {
-            color: "#ccc",
-          },
-        },
-        splitLine: {
-          show: false,
-          lineStyle: {
-            type: "dashed",
-            color: "#eee",
-          },
-        },
-        boundaryGap: true,
       },
       visualMap: [
         // 热图的visualMap（显示在右侧）

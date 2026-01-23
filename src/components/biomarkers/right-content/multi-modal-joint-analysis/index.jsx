@@ -7,8 +7,8 @@ import { getPatientList, getBiomarkersScore, getFullPhylogenetic } from "@/confi
 import HorizontalTree from "@/components/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/planet-liver-sample";
 import DtLiverSampleChart from "@/components/dt-liver-sample";
-import SunburstChart from "@/components/biomarkers/right-content/biomarkers2/sunburst";
-import ColumnChart from "@/components/biomarkers/right-content/biomarkers2/column";
+import SunburstChart from "@/components/biomarkers/right-content/multi-modal-joint-analysis/sunburst";
+import ColumnChart from "@/components/biomarkers/right-content/multi-modal-joint-analysis/column";
 import filterSampleByConditions from "@/utils/filter-patient";
 
 const PLANET_SUBTYPE_COLOR = {
@@ -216,7 +216,7 @@ const STAGE_TRANS = {
   IIIB: "III",
   "III A": "III",
 };
-const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, dnaOrRna = "RNA" }) => {
+const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PLANET", onComplete, dnaOrRna = "RNA" }) => {
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
@@ -790,7 +790,7 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
-                    HOSHIDA
+                    BOYAULT
                   </Flex>
                   {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
                     return (
@@ -811,7 +811,7 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
-                    HOSHIDA
+                    CHIANG
                   </Flex>
                   {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
                     return (
@@ -1256,4 +1256,4 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
   );
 };
 
-export default RightPanel;
+export default MultiModalJointAnalysisContent;
