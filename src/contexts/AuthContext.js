@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
     setCookie("token", token, { 
       path: "/",
       maxAge: 7 * 24 * 60 * 60, // 7 days
-      sameSite: "strict",
+      sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     });
     
@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
     setCookie("username", userData?.username || "", {
       path: "/",
       maxAge: 7 * 24 * 60 * 60, // 7 days
-      sameSite: "strict",
+      sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     });
     setUser(userData);
