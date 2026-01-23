@@ -5,7 +5,6 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
-  useLayoutEffect,
 } from "react";
 
 import { useTranslation } from "react-i18next";

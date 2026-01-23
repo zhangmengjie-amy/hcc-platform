@@ -5,7 +5,6 @@ import {
   Empty,
   Flex,
 } from "antd";
-import { set } from "lodash";
 
 const SUBTYPE_COLOR = {
   "C1": "rgb(79, 151, 121)",

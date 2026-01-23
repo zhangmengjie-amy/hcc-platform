@@ -5,8 +5,6 @@ import {
   Empty,
   Flex,
 } from "antd";
-import { set } from "lodash";
-import { ticks } from "d3";
 
 const SUBTYPE_COLOR = {
   "Classic": "rgba(225, 229, 144, 1)",

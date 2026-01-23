@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { Flex, Row, Col, Empty, Spin, Dropdown, Space, Typography } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { getPatientList, getBiomarkersScore, getFullPhylogenetic } from "@/configs/request";
+import { Flex, Row, Col, Empty, Spin } from "antd";
+import { getPatientList, getFullPhylogenetic } from "@/configs/request";
 
 import HorizontalTree from "@/components/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/planet-liver-sample";
@@ -40,66 +39,6 @@ const HEATMAP_COLORS = {
 
 const mockFields = ["subtype"];
 
-const MIXED_GROUP = [
-  "C1,C2",
-  "C1,C3",
-  "C1,C4",
-  "C1,C5",
-  "C1,C6",
-  "C2,C3",
-  "C2,C4",
-  "C2,C5",
-  "C2,C6",
-  "C3,C4",
-  "C3,C5",
-  "C3,C6",
-  "C4,C5",
-  "C4,C6",
-  "C5,C6",
-  "C1,C2,C3",
-  "C1,C2,C4",
-  "C1,C2,C5",
-  "C1,C2,C6",
-  "C1,C3,C4",
-  "C1,C3,C5",
-  "C1,C3,C6",
-  "C1,C4,C5",
-  "C1,C4,C6",
-  "C1,C5,C6",
-  "C2,C3,C4",
-  "C2,C3,C5",
-  "C2,C3,C6",
-  "C2,C4,C6",
-  "C3,C4,C5",
-  "C3,C4,C6",
-  "C2,C4,C5",
-  "C2,C5,C6",
-  "C3,C5,C6",
-  "C4,C5,C6",
-  "C1,C2,C3,C4",
-  "C1,C2,C3,C5",
-  "C1,C2,C3,C6",
-  "C1,C2,C4,C5",
-  "C1,C2,C4,C6",
-  "C1,C2,C5,C6",
-  "C1,C3,C4,C5",
-  "C1,C3,C4,C6",
-  "C2,C3,C4,C5",
-  "C1,C3,C5,C6",
-  "C1,C4,C5,C6",
-  "C2,C3,C4,C6",
-  "C2,C3,C5,C6",
-  "C2,C4,C5,C6",
-  "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5",
-  "C1,C2,C3,C4,C6",
-  "C2,C3,C4,C5,C6",
-  "C1,C3,C4,C5,C6",
-  "C1,C2,C3,C5,C6",
-  "C1,C2,C4,C5,C6",
-  "C1,C2,C3,C4,C5,C6",
-];
-
 const MIXED_PURE = {
   Pure: "rgb(106, 194, 165)",
   Mixed: "rgb(158, 153, 197)",
@@ -123,7 +62,7 @@ const STAGE_TRANS = {
   IIIB: "III",
   "III A": "III",
 };
-const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, dnaOrRna = "DNA" }) => {
+const RightPanel = ({ conditions, dataType = "PLANET", onComplete, dnaOrRna = "DNA" }) => {
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
@@ -134,7 +73,6 @@ const RightPanel = ({ biomarkers, conditions, dataType = "PLANET", onComplete, d
   const [currentDtPatientId, setCurrentDtPatientId] = useState(null);
   const [planetHeatmap, setPlanetHeatmap] = useState(null);
   const [dtHeatmap, setDtHeatmap] = useState(null);
-  const [biomarkerScoreData, setBiomarkerScoreData] = useState(null);
   const [currentPlanetLiverSamples, setCurrentPlanetLiverSamples] = useState(null);
   const [currentDtLiverSamples, setCurrentDtLiverSamples] = useState(null);
   const patientListRef = useRef(null);
