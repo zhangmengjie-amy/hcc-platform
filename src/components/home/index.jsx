@@ -272,9 +272,11 @@ const Home = () => {
                   {item.description}
                 </Paragraph>
                 <Flex justify="flex-end" style={{ marginTop: "auto" }}>
+                  <a href={`/${item.key}?menu=${item.path}`} target={`/${item.key}?menu=${item.path}`}>
                   <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff", marginTop: "10px" }}>
-                    <a href={`/${item.key}?menu=${item.key}`} target={`/${item.key}?menu=${item.key}`}>EXPLORE</a>
+                    EXPLORE
                   </Button>
+                  </a>
                 </Flex>
               </Flex>
             </Col>
