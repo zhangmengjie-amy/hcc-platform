@@ -40,13 +40,13 @@ const Immune2Content = ({ conditions }) => {
 
       const request2 = {
         method: "hallmarks",
-        tmeGroupBy: "cibersort",
+        tmeGroupBy: conditions?.method,
         cohort: conditions?.numbers?.[0],
       };
 
       const request3 = {
         method: "markergenes",
-        tmeGroupBy: "cibersort",
+        tmeGroupBy: conditions?.method,
         cohort: conditions?.numbers?.[0],
       };
 
