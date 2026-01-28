@@ -1,5 +1,6 @@
 // middleware.js
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 // 路径配置
 const pathConfig = {
@@ -22,7 +23,7 @@ const pathConfig = {
   protected: [],
   // protected: [
   //   "/mutation",
-  //   "/expression",
+  //   "/transcriptome",
   //   "/immune",
   //   "/clinical", 
   //   "/biomarkers",
@@ -34,10 +35,8 @@ const pathConfig = {
 
 export function middleware(request) {
   const { pathname, searchParams } = request.nextUrl;
-  const token = request.cookies.get("token")?.value;
-  
-  console.log(`🛡️ [${request.method}] ${pathname} - Token: ${token ? "Present" : "Missing"}`);
-
+  const cookieStore = cookies();
+  const token = cookieStore.get("token")?.value;
   // 检查路径类型
   const isPublic = pathConfig.public.some(path => 
     pathname === path || pathname.startsWith(path + "/"),
@@ -46,8 +45,6 @@ export function middleware(request) {
   const isProtected = pathConfig.protected.some(path => 
     pathname === path || pathname.startsWith(path + "/"),
   );
-
-  console.log("isPublic", isPublic, pathname);
 
   // 公开路径直接放行
   if (isPublic) {

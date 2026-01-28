@@ -429,7 +429,7 @@ const VolcanoPlot = ({
         useDirtyRect: true,
       }}
       onEvents={{
-        rendered: () => console.log("Volcano plot rendered"),
+        rendered: () => {},
         click: (params) => {
           if (params.componentType === "series") {
             console.log("Gene clicked:", params.name);

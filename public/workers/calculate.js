@@ -77,11 +77,6 @@ self.onmessage = async ({ data }) => {
     const genesMutations = generateGenesMutations(finialMutations, finialGeneList);
     const sampleGenesMutations = calculateSampleGenesMutations(finialMutations, finialGeneList, finialClinicList);
     self.postMessage({ finialGeneList, sampleCategories, sampleMutations, genesMutations, sampleGenesMutations, ...{ clinicList: finialClinicList } });
-  } else if (data.key === "overall") {
-    const { data: { originalMutations, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, sampleType: sampleType, ...clinicList } } } = data;
-    const filteredMutations = filterSampleByConditions(originalMutations, clinicList, geneList);
-    const finialClinicList = formatClinicList(filteredMutations);
-    self.postMessage({ clinicList: finialClinicList });
   } else if (data.key === "filterGene") {
     const { data: { originalMutations, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, sampleType: sampleType, ...clinicList } } } = data;
     let filteredMutations = filterSampleByConditions(originalMutations, clinicList, geneList);

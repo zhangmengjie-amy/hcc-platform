@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Flex, Typography, Alert, Row, Button } from "antd";
 import styles from "./style.module.scss";
 import TreeDialog from "@/components/tree-dialog";
-import TreeList from "@/components/mutation/phylogeneticRelationship/phylogeneticTree";
+import TreeList from "@/components/mutation/right-content/phylogenetic-relationship/phylogenetic-tree";
 import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
 
@@ -54,7 +54,7 @@ const LEGEND = [{
 
 
 
-const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeType = "overview", conditions }) => {
+const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeType = "overview", conditions, handleComplete }) => {
   const [pieChartOption, setPieChartOption] = useState({});
   const [columnOption, setColumnOption] = useState({});
   const [loading, setLoading] = useState(true);
@@ -114,6 +114,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
       buildPieChart();
       buildBarChart();
       setLoading(false);
+      handleComplete?.(true);
     };
     return () => {
       sampleWorker.terminate();
@@ -473,7 +474,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         <EmptyLoading loading={loading} showEmpty={true} hasData={!!Object.keys(pieChartOption)?.length}>
 
           {
-            <><Alert style={{ margin: "0px 10px" }} message={renderMeaage} type="info" />
+            <><Alert message={renderMeaage} type="info" />
               <div style={{ position: "relative", top: treeType == "overview" ? 0 : "-70px", marginTop: treeType == "overview" ? "150px" : "0px", transform: `scale(${treeType == "overview" ? 1 : 0.7})`, transition: "all ease .3s" }}>
                 <ReactECharts ref={pieChartRef} option={pieChartOption} opts={{ renderer: "svg" }}
                   lazyUpdate={true}

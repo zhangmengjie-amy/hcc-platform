@@ -570,12 +570,34 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
     >
       {/* 使用自定义导出按钮 */}
       <div style={{ textAlign: "right", marginBottom: 10 }}>
-        <Dropdown menu={exportMenu}>
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: "png",
+                label: "PNG",
+                onClick: () => handleExport("png"),
+              },
+              {
+                key: "jpg",
+                label: "JPG",
+                onClick: () => handleExport("jpg"),
+              },
+              {
+                key: "svg",
+                label: "SVG",
+                onClick: () => handleExport("svg"),
+              },
+            ],
+          }}
+        >
           <Button icon={<DownloadOutlined />}>
             导出 <DownOutlined />
           </Button>
         </Dropdown>
-        <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>下载CSV</Button>
+        <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>
+          下载CSV
+        </Button>
       </div>
 
       <ReactECharts

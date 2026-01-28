@@ -118,66 +118,6 @@ const HEATMAP_COLORS = {
 
 const mockFields = ["lee", "hoshida", "boyault", "chiang", "subtype"];
 
-const MIXED_GROUP = [
-  "C1,C2",
-  "C1,C3",
-  "C1,C4",
-  "C1,C5",
-  "C1,C6",
-  "C2,C3",
-  "C2,C4",
-  "C2,C5",
-  "C2,C6",
-  "C3,C4",
-  "C3,C5",
-  "C3,C6",
-  "C4,C5",
-  "C4,C6",
-  "C5,C6",
-  "C1,C2,C3",
-  "C1,C2,C4",
-  "C1,C2,C5",
-  "C1,C2,C6",
-  "C1,C3,C4",
-  "C1,C3,C5",
-  "C1,C3,C6",
-  "C1,C4,C5",
-  "C1,C4,C6",
-  "C1,C5,C6",
-  "C2,C3,C4",
-  "C2,C3,C5",
-  "C2,C3,C6",
-  "C2,C4,C6",
-  "C3,C4,C5",
-  "C3,C4,C6",
-  "C2,C4,C5",
-  "C2,C5,C6",
-  "C3,C5,C6",
-  "C4,C5,C6",
-  "C1,C2,C3,C4",
-  "C1,C2,C3,C5",
-  "C1,C2,C3,C6",
-  "C1,C2,C4,C5",
-  "C1,C2,C4,C6",
-  "C1,C2,C5,C6",
-  "C1,C3,C4,C5",
-  "C1,C3,C4,C6",
-  "C2,C3,C4,C5",
-  "C1,C3,C5,C6",
-  "C1,C4,C5,C6",
-  "C2,C3,C4,C6",
-  "C2,C3,C5,C6",
-  "C2,C4,C5,C6",
-  "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5",
-  "C1,C2,C3,C4,C6",
-  "C2,C3,C4,C5,C6",
-  "C1,C3,C4,C5,C6",
-  "C1,C2,C3,C5,C6",
-  "C1,C2,C4,C5,C6",
-  "C1,C2,C3,C4,C5,C6",
-];
-
 const MIXED_PURE = {
   Pure: "rgb(106, 194, 165)",
   Mixed: "rgb(158, 153, 197)",
@@ -663,7 +603,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    HOSHIDA
+                    BOYAULT
                   </Flex>
                   {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
                     return (
@@ -684,7 +624,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    HOSHIDA
+                    CHIANG
                   </Flex>
                   {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
                     return (

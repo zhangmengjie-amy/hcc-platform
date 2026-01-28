@@ -1,224 +1,172 @@
 "use client";
-import React, { useRef, useEffect, useState, useCallback } from "react";
-import { usePDF } from "react-to-pdf";
-import { getGeneList } from "@/configs/request";
-import { CaretRightOutlined, LoadingOutlined, AppstoreOutlined, ApartmentOutlined, BranchesOutlined } from "@ant-design/icons";
-import { FixedSizeList } from "react-window";
-import { debounce } from "lodash";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import TimingAnalysis from "@/components/mutation/timing-analysis";
-import ConditionSelection from "@/components/clinical-selection";
-import ExportPdfButton from "@/components/export-pdf";
-import {
-  Collapse,
-  Row,
-  Col,
-  Tooltip,
-  Checkbox,
-  Button,
-  Flex,
-  Splitter,
-  Typography,
-  Segmented,
-  message,
-  Radio,
-} from "antd";
-import DriverLandscape from "@/components/mutation/driverLandscape";
-import PhylogeneticRelationship from "@/components/mutation/phylogeneticRelationship";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
+import { LoadingOutlined, AppstoreOutlined } from "@ant-design/icons";
+import SplitBar from "@/components/split-bar";
+import TimingAnalysis from "@/components/mutation/right-content/timing-analysis";
+import DriverLandscape from "@/components/mutation/right-content/driver-landscape";
+import PhylogeneticRelationship from "@/components/mutation/right-content/phylogenetic-relationship";
+import { Button, Segmented, message } from "antd";
 import { useTranslation } from "react-i18next";
-import Image from "next/image";
-import styles from "./style.module.scss";
-const { Panel } = Splitter;
-const LEFT_SQUARE_SRC = "/images/left-square.svg";
-const RIGHT_SQUARE_SRC = "/images/right-square.svg";
-const DEFAULT_LEFT_PANEL_WIDTH = "25%";
-const DEFAULT_RIGHT_PANEL_WIDTH = "75%";
-const RELOAD_ICON = "/images/reload.svg";
+import ConditionSelection from "@/components/mutation/left-content";
+
 const Mutation = () => {
   const { t } = useTranslation();
   const [treeType, setTreeType] = useState("overview");
-  const [dataType, setDataType] = useState("planet");
-  const [mutationTypeTab, setMutationTypeTab] = useState("driverLandscape");
-  const [sampleType, setSampleType] = useState("bySample");
-  const [applyLoading, setApplyLoading] = useState(false);
-  const [sliderValue, setSliderValue] = useState([0, 1]);
+  const [contentType, setContentType] = useState("driverLandscape");
+  const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
-  const [params, setParams] = useState({});
-  const [leftPanelSize, setLeftPanelSize] = useState(DEFAULT_LEFT_PANEL_WIDTH);
-  const [rightPanelSize, setRightPanelSize] = useState(DEFAULT_RIGHT_PANEL_WIDTH);
-  const driverLandscapeRef = useRef(null);
-  const conditionSelectionRef = useRef(null);
+  const [conditions, setConditions] = useState(null);
+  const [dataType, setDataType] = useState(null);
+  const [sampleType, setSampleType] = useState("bySample");
+  const [range, setRange] = useState([0, 1]);
+
+  const conditionsRef = useRef(null);
+
 
   const handleApply = useCallback(() => {
-    setParams(conditionSelectionRef.current?.getParams());
-  }, []);
+    const params = conditionsRef.current.getParams();
+    setDataType(params?.selectedCohortType?.toLowerCase() ?? "planet");
+    setConditions({
+      geneList: params.geneList,
+      ...params.clinicalConditions,
+    });
+  }, [contentType]);
 
-  const handleApplyLoading = (loading) => {
-    setApplyLoading(loading);
-  };
-
-  const onPanelChange = (sizes) => {
-    setLeftPanelSize(sizes[0]);
-    setRightPanelSize(sizes[1]);
-  };
-
-  const leftPanelFullScreen = () => {
-    if (rightPanelSize == "0") {
-      setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
-      setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
-    } else {
-      setLeftPanelSize("0");
-      setRightPanelSize("100%");
-    }
-  };
-
-  const rightPanelFullScreen = () => {
-    if (leftPanelSize == "0") {
-      setLeftPanelSize(DEFAULT_LEFT_PANEL_WIDTH);
-      setRightPanelSize(DEFAULT_RIGHT_PANEL_WIDTH);
-    } else {
-      setLeftPanelSize("100%");
-      setRightPanelSize("0");
-    }
-  };
+  const handleOnReady = useCallback(async (params) => {
+    setDataType(params?.selectedCohortType?.toLowerCase() ?? "planet");
+    setConditions({
+      geneList: params.geneList,
+      ...params.clinicalConditions,
+    });
+  }, [contentType]);
 
   const onSampleTypeChange = useCallback((value) => {
     setSampleType(value);
   }, []);
 
-  const dataTypeCollapseTitle = () => {
-    return <Flex justify={"space-between"} align={"center"}>
-      <Typography.Paragraph
-        ellipsis={{
-          rows: 1,
-          expandable: false,
-        }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>Filter By Cohort</Typography.Paragraph>
+  const handleComplete = useCallback(() => {
+    setApplyLoading(false);
+  }, []);
 
-      <Tooltip placement="bottom" title={t("common:reset-selection")}>
-        <Button color="default" onClick={(event) => {
-          handleDriverReload(event);
-        }} variant="text"
-        style={{ color: "#fff", padding: 0 }}>
-          <Image
-            src={RELOAD_ICON}
-            alt="reload"
-            width={16}
-            height={16}
-            tooltip={t("common:reload")}
+  const leftAction = useMemo(() => {
+    return (
+      <Button
+        color="default"
+        size="large"
+        icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />}
+        loading={applyLoading}
+        onClick={handleApply}
+        type="primary"
+      >
+        {t("common:apply")}
+      </Button>
+    );
+  }, [applyLoading, contentType]);
+
+  const handleContentTypeChange = useCallback((value) => {
+    setContentType(value);
+    setApplyLoading(true);
+  }, []);
+
+  const rightAction = useMemo(() => {
+    return (
+      <>
+        <Segmented
+          size="large"
+          onChange={handleContentTypeChange}
+          options={[
+            { value: "driverLandscape", label: "Driver Landscape" },
+            {
+              value: "phylogeneticRelationship",
+              label: "Phylogenetic Relationship",
+            },
+            { value: "timingAnalysis", label: "Timing Analysis" },
+          ]}
+          value={contentType}
+        />
+        {contentType == "driverLandscape" && (
+          <Segmented
+            size="large"
+            onChange={onSampleTypeChange}
+            options={[
+              { value: "bySample", label: "By Sample" },
+              { value: "byPatient", label: "By Patients" },
+            ]}
+            value={sampleType}
+            style={{ marginLeft: "20px" }}
           />
-        </Button>
-      </Tooltip>
-    </Flex>;
-  };
+        )}
+        {contentType == "phylogeneticRelationship" && (
+          <Segmented
+            size="large"
+            onChange={setTreeType}
+            options={[
+              { value: "overview", label: "Overview" },
+              { value: "detail", label: "Detail" },
+            ]}
+            value={treeType}
+            style={{ marginLeft: "20px" }}
+          />
+        )}
+      </>
+    );
+  }, [contentType, treeType, sampleType]);
 
-  const dataTypeCollapseContent = () => {
-    return <div className={styles.searchCard}
-      variant="borderless">
-      <Radio.Group
-        value={dataType}
-        onChange={onDataTypeChange}
-        options={[
-          { value: "planet", label: "PLANET" },
-          { value: "dt", label: "DT" },
-          { value: "all", label: "All" },
-        ]}
-      />
+  const rightContent = useMemo(() => {
+    return (
+      <>
+        {contentType === "driverLandscape" && (
+          <DriverLandscape
+            conditions={conditions}
+            dataType={dataType}
+            sampleType={sampleType}
+            handleComplete={handleComplete}
+          ></DriverLandscape>
+        )}
+        {contentType === "phylogeneticRelationship" && (
+          <PhylogeneticRelationship
+            conditions={conditions}
+            dataType={dataType}
+            treeType={treeType}
+            range={range}
+            handleComplete={handleComplete}
+          ></PhylogeneticRelationship>
+        )}
+        {contentType === "timingAnalysis" && (
+          <TimingAnalysis
+            conditions={conditions}
+            dataType={dataType}
+            range={range}
+            handleComplete={handleComplete}
+          ></TimingAnalysis>
+        )}
+      </>
+    );
+  }, [conditions, range, contentType, dataType, treeType, sampleType]);
 
-    </div>;
-  };
-
-  const onDataTypeChange = (e) => {
-    setDataType(e.target.value);
-  };
+  const leftContent = useMemo(() => {
+    return (
+      <ConditionSelection ref={conditionsRef} handleOnReady={handleOnReady} handleITH={contentType != "driverLandscape" ? setRange : null }></ConditionSelection>
+    );
+  }, [contentType]);
 
   return (
     <>
       {contextHolder}
-      <Splitter className={styles.mutationSplitter} lazy onResize={onPanelChange}>
-        <Panel className={styles.searchPanel} size={leftPanelSize} min={"20%"} max="50%">
-          <Flex justify="space-between" align="center" style={{ paddingLeft: "10px", height: "40px" }}>
-            <Button color="default" size="middle" disabled={applyLoading} icon={applyLoading ? <LoadingOutlined /> : <AppstoreOutlined />} loading={applyLoading} onClick={handleApply} type="primary">
-              {t("common:apply")}
-            </Button>
-            <Button color="default" variant="text"
-              onClick={leftPanelFullScreen}
-              style={{ color: "#fff", padding: 0 }}>
-              <Image
-                src={LEFT_SQUARE_SRC}
-                alt="import"
-                width={30}
-                height={30}
-              />
-            </Button>
-          </Flex>
-          <Collapse
-            defaultActiveKey={"dataType"}
-            className={styles.searchCollapse}
-            expandIcon={({ isActive }) => <CaretRightOutlined style={{ fontSize: 14 }} rotate={isActive ? 90 : 0} />}
-            items={[{
-              key: "dataType",
-              label: dataTypeCollapseTitle(),
-              children: dataTypeCollapseContent(),
-
-            }]}>
-          </Collapse>
-          <ConditionSelection ref={conditionSelectionRef} handleInitChange={handleApply} onITHChange={setSliderValue} showITH={mutationTypeTab !== "driverLandscape"}></ConditionSelection>
-        </Panel>
-        <Panel size={rightPanelSize} min={"50%"} max="80%">
-          <Flex justify="space-between" align="center" style={{ height: "40px", paddingRight: 10 }}>
-            <Flex align="center">
-              <Button color="default" variant="text"
-                style={{ color: "#fff", padding: 0, marginRight: 5 }}
-                onClick={rightPanelFullScreen}>
-                <Image
-                  src={RIGHT_SQUARE_SRC}
-                  alt="import"
-                  width={30}
-                  height={30}
-                />
-              </Button>
-
-              <Segmented
-                options={[
-                  { label: "Driver Landscape", value: "driverLandscape" },
-                  { value: "phylogeneticRelationship", label: "Phylogenetic Relationship" },
-                  { value: "timingAnalysis", label: "Timing Analysis" },
-                ]}
-                value={mutationTypeTab}
-                onChange={value => setMutationTypeTab(value)}
-              />
-            </Flex>
-                        
-            {
-              mutationTypeTab === "phylogeneticRelationship" && <Segmented
-                onChange={setTreeType}
-                options={[{ value: "overview", label: "Overview" }, { value: "detail", label: "Detail" }]}
-                value={treeType}
-              />
-            }
-            {
-              mutationTypeTab === "driverLandscape" && <Segmented
-                onChange={onSampleTypeChange}
-                options={[{ value: "bySample", label: "By Sample" }, { value: "byPatient", label: "By Patients" }]}
-                value={sampleType}
-              />
-            }
-            {/* <Button loading={loading} onClick={exportToPDF}>111</Button> */}
-            <ExportPdfButton document={driverLandscapeRef.current}></ExportPdfButton>
-          </Flex>
-          {
-            mutationTypeTab === "driverLandscape" && <DriverLandscape dataType={dataType} ref={driverLandscapeRef} handleApplyLoading={handleApplyLoading} conditions={params} sampleType={sampleType}></DriverLandscape>
-          }
-          {
-            mutationTypeTab === "phylogeneticRelationship" && <PhylogeneticRelationship  dataType={dataType}  range={sliderValue} conditions={params} treeType={treeType}></PhylogeneticRelationship>
-          }
-          {
-            mutationTypeTab === "timingAnalysis" && <TimingAnalysis dataType={dataType} range={sliderValue} conditions={params}></TimingAnalysis>
-          }
-        </Panel>
-      </Splitter>
+      <SplitBar
+        initialLeftWidth={"40%"}
+        initialRightWidth={"60%"}
+        leftAction={leftAction}
+        rightAction={rightAction}
+        leftContent={leftContent}
+        rightContent={rightContent}
+      ></SplitBar>
     </>
   );
 };

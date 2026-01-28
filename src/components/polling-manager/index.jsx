@@ -22,12 +22,9 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const pollingRef = useRef(null);
   const isPollingRef = useRef(false);
-  const pollingDataRef = useRef(pollingData);
-
-  // 使用 ref 跟踪最新的 pollingData
-  useEffect(() => {
-    pollingDataRef.current = pollingData;
-  }, [pollingData]);
+  
+  // 新增：用于标识当前是否在初始化
+  const isInitializingRef = useRef(false);
 
   // 使用 useRef 存储 tasks 的最新值
   const tasksRef = useRef(tasks);
@@ -35,7 +32,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
     tasksRef.current = tasks;
   }, [tasks]);
 
-  // 初始化任务
+  // 初始化任务 - 关键修改：完全清理旧任务
   useEffect(() => {
     if (!pollingData?.taskIds) return;
 
@@ -46,6 +43,16 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
 
     const taskEntries = Object.entries(taskIds);
     if (taskEntries.length === 0) return;
+
+    // 停止所有现有的轮询
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current);
+      pollingRef.current = null;
+    }
+    isPollingRef.current = false;
+    
+    // 设置初始化标志
+    isInitializingRef.current = true;
 
     const newTasks = taskEntries.map(([cohortId, taskId]) => ({
       taskId: String(taskId),
@@ -60,13 +67,21 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
 
     setTasks(newTasks);
     updateStats(newTasks);
-    setIsExpanded(true); // 初始化时展开
-    startPolling();
+    setIsExpanded(true);
+    
+    // 等待一小段时间确保状态更新完成
+    setTimeout(() => {
+      isInitializingRef.current = false;
+      startPolling();
+    }, 10);
 
+    // 清理函数：只清理定时器，不重置状态
     return () => {
-      stopPolling();
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
     };
-  }, [pollingData]);
+  }, [pollingData]); // 只依赖 pollingData
 
   // 检查是否有正在运行的任务
   const hasRunningTasks = useCallback((taskList) => {
@@ -121,7 +136,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
         message: "请求失败",
       };
     }
-  }, []);
+  }, [apiMethod]);
 
   // 批量轮询
   const pollTasks = useCallback(async () => {
@@ -241,6 +256,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
       pollTasks();
     }, POLLING_INTERVAL);
 
+    // 立即执行第一次轮询
     setTimeout(() => {
       pollTasks();
     }, 100);
@@ -260,7 +276,6 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
     const currentTasks = tasksRef.current;
     const hasRunning = hasRunningTasks(currentTasks);
     
-    // 如果有正在运行的任务，不允许收起
     if (hasRunning) {
       setIsExpanded(true);
     } else {
@@ -287,6 +302,9 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
     return null;
   }
 
+  // 修改：只有在初始化且没有任务时才显示初始化消息
+  const shouldShowInitializing = tasks.length === 0 && isInitializingRef.current;
+
   return (
     <div
       style={{
@@ -297,7 +315,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
         border: "1px solid #d9d9d9",
       }}
     >
-      {/* 标题栏 - 如果有运行中的任务则不允许收起 */}
+      {/* 标题栏 */}
       <div
         style={{
           padding: "10px 16px",
@@ -383,7 +401,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
         </div>
       </div>
 
-      {/* 展开的内容 - 如果有运行中的任务则强制展开 */}
+      {/* 展开的内容 */}
       <div
         style={{
           maxHeight: (isExpanded || hasRunning) ? "500px" : "0",
@@ -409,7 +427,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             status={stats.running > 0 ? "active" : "normal"}
           />
 
-          {tasks.length === 0 ? (
+          {shouldShowInitializing ? (
             <Alert
               message="正在初始化任务..."
               type="info"

@@ -99,7 +99,7 @@ const GoBarChart = ({
         left: "5%",
         right: "3%",
         bottom: "10%",
-        top: "15%",
+        top: "10%",
         containLabel: false,
       },
       title: {
@@ -127,8 +127,8 @@ const GoBarChart = ({
           const description = allDescriptions[index] || "";
           const id = allIds[index] || "";
           
-          let result = `<div style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">
-            ${description} (${id})
+          let result = `<div style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            ${description}
           </div>`;
           
           params.forEach(param => {
@@ -142,21 +142,14 @@ const GoBarChart = ({
               if (dataItem) {
                 result += `
                   <div style="line-height: 1.4; margin-bottom: 4px;">
-                    <span style="color: ${param.color}; font-weight: bold;">${ontology}:</span><br/>
-                    基因数量: ${param.value}<br/>
-                    P值: ${dataItem.pvalue || "N/A"}<br/>
-                    富集倍数: ${dataItem.fold_enrichment || "N/A"}
+                    Ontology: <span style="color: ${param.color}; font-weight: bold;">${ontology}</span><br/>
+                    ID: <span style="font-weight: bold;">${id}</span><br/>
+                    Gene Count: <span style="font-weight: bold;">${param.value}</span><br/>
                   </div>
                 `;
               }
             }
           });
-          
-          const totalCount = params.reduce((sum, param) => sum + param.value, 0);
-          
-          result += `<div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid #eee; font-weight: bold;">
-            总计基因数: ${totalCount}
-          </div>`;
           
           return result;
         },
@@ -174,7 +167,8 @@ const GoBarChart = ({
       } : { show: false },
       xAxis: {
         name: "基因数量 (Count)",
-        nameLocation: "center",
+        nameLocation: "middle",
+        nameGap: "25",
         nameTextStyle: {
           fontSize: 10,
           fontWeight: "bold",
