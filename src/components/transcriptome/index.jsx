@@ -97,7 +97,6 @@ const Transcriptome = () => {
           return;
         }
       }
-      setCohortList(params.selectedRows);
       const requestParamsArray = {
         queryType: params.groupBy,
         firstGroup: params.firstGroup,
@@ -108,14 +107,15 @@ const Transcriptome = () => {
         numbers: params.selectedRows?.map((item) => item.number),
       };
      
-      applyMethod(requestParamsArray);
+      applyMethod(requestParamsArray, params.selectedRows);
     }
   }, [contentType]);
 
-  const applyMethod = async (params) => {
+  const applyMethod = async (params, selectedRows) => {
     try {
       const taskIds = await getDEGTaskIds(params);
       setTaskIdsWithCohort(taskIds?.data);
+      setCohortList(selectedRows);
     } catch (error) {
       messageApi.open({
         type: "warning",
@@ -156,7 +156,6 @@ const Transcriptome = () => {
           return;
         }
       }
-      setCohortList(params.selectedRows);
       const requestParamsArray = {
         queryType: params.groupBy,
         firstGroup: params.firstGroup,
@@ -166,13 +165,14 @@ const Transcriptome = () => {
         geneSet: params.geneSet,
         numbers: params.selectedRows?.map((item) => item.number),
       };
-      applyMethod(requestParamsArray);
+      applyMethod(requestParamsArray, params.selectedRows);
     }
   }, [contentType]);
 
   useEffect(() => {
-    console.log("taskIdsWithCohort", taskIdsWithCohort);
-    if (!taskIdsWithCohort) return;
+    console.log("taskIdsWithCohort", taskIdsWithCohort, "cohortList", cohortList);
+    if (!taskIdsWithCohort || !cohortList) return;
+
     setPollingData({
       taskIds: taskIdsWithCohort,
       cohortInfo: cohortList?.reduce((acc, row) => {
@@ -224,8 +224,6 @@ const Transcriptome = () => {
   const handleSubtypeLandscapeComplete = useCallback(() => {
     setApplyLoading(false);
   }, []);
-
-  console.log("pollingData", pollingData);
 
   return (
     <>

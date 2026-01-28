@@ -8,13 +8,12 @@ import MutationChart from "./mutationChart";
 import SampleChart from "./sampleChart";
 import ChartsLegend from "./chartsLegend";
 
-const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, sampleType = "bySample", conditions }, ref) => {
+const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampleType = "bySample", conditions }, ref) => {
   const [sampleMutations, setSampleMutations] = useState(null);
   const [genesMutations, setGenesMutations] = useState(null);
   const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
   const [sampleCategories, setSampleCategories] = useState(null);
   const [height, setHeight] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [clinicList, setClinicList] = useState(null);
   const [finialGeneList, setFinialGeneList] = useState(null);
   const fullMutationsRef = useRef(null);
@@ -35,8 +34,7 @@ const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, s
   }, [conditions, sampleType, dataType]);
 
   const buildMutation = () => {
-    handleApplyLoading?.(false);
-    setLoading(false);
+    handleComplete?.(true);
     const sampleWorker = new Worker("/workers/calculate.js");
     try {
 
@@ -54,8 +52,7 @@ const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, s
         setSampleCategories(result.sampleCategories);
         setHeight(result.finialGeneList.length * 8 + 30);
       };
-      handleApplyLoading?.(false);
-      setLoading(false);
+      handleComplete?.(true);
     } catch (error) {
       console.log("error");
     }
@@ -65,7 +62,7 @@ const DriverLandscape = forwardRef(({ dataType = "planet", handleApplyLoading, s
   };
 
   return (
-    <div ref={ref} style={{ margin: "0 10px" }}>
+    <div ref={ref}>
       <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left. </span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
       <Row style={{ width: "100%" }}>
         <Col xs={21} sm={21} md={21} lg={21} xl={21}>

@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import styles from "../style.module.scss";
 const RELOAD_ICON = "/images/reload.svg";
-const ConditionSelection = forwardRef(({ onChange }, ref) => {
+const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
   const [clinicList, setClinicList] = useState({
     gender: [],
@@ -73,6 +73,18 @@ const ConditionSelection = forwardRef(({ onChange }, ref) => {
       clinicalConditions: params,
     });
   };
+
+  useEffect(() => {
+    onReady?.({
+      clinicalConditions: {
+        gender: [],
+        age: [],
+        race: [],
+        stage: [],
+        viralStatus: [],
+      },
+    });
+  }, []);
 
   const clinicCollapseTitle = () => {
     return (

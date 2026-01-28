@@ -17,7 +17,7 @@ import TreeDialog from "@/components/tree-dialog";
 import generateGradientColors from "@/utils/ith-color";
 
 
-const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions }) => {
+const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handleComplete }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [treeList, setTreeList] = useState(null);
@@ -58,7 +58,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions }) => 
 
     setStart(0);
     setEnd(6);
-  }, [range, conditions, dataType]);
+  }, [conditions, dataType, range]);
 
   const buildCharts = (fullMutations, patientList, fullPhylogenetic) => {
     const sampleWorker = new Worker("/workers/calculate.js");
@@ -88,6 +88,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions }) => 
       treeWorker.onmessage = ({ data: { treeList } }) => {
         setTreeList(treeList);
         setLoading(false);
+        handleComplete?.(true);
       };
     };
     return () => {
