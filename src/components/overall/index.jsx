@@ -5,8 +5,6 @@ import { clinicCountConfig } from "@/configs/mutation";
 import { getFullMutations, getPatientList } from "@/configs/request";
 import EmptyLoading from "@/components/empty-loading";
 import Chart from "./chart";
-import CohortType from "../condition-selector/dt-planet";
-import ClinicChart from "../mutation/right-content/driverLandscape/clinicChart";
 
 const Overall = forwardRef(({ conditions, selectedCohortType }, ref) => {
   const [loading, setLoading] = useState(true);
