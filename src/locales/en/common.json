@@ -10,5 +10,15 @@
   "generatePdf": "Generating PDF...",
   "pdfExportSuccess": "PDF export successful!",
   "pdfExportFailed": "PDF export failed!",
-  "pdfServiceUnavailable": "Export service unavailable!"
+  "pdfServiceUnavailable": "Export service unavailable!",
+  "explore": "Explore",
+  "filter": {
+    "gene": "Filter By Gene",
+    "clinic": "Filter By clinic",
+    "driver": "Filter By Driver",
+    "DNA_ITH": "Filter By DNA ITH",
+    "cohortType": "Cohort Type",
+    "method": "Method",
+    "filterCohort": "Filter Cohort"
+  }
 }

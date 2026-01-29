@@ -158,7 +158,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          Group
+          {t("common:filter.group")}
         </Typography.Paragraph>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>

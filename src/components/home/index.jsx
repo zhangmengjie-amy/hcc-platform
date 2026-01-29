@@ -1,61 +1,49 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useEffect } from "react";
 import {
   Layout,
   Flex,
   Row,
   Col,
   Card,
-  Menu,
-  FloatButton,
   Button,
-  Input,
   Typography,
 } from "antd";
 import styles from "./style.module.scss";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import classnames from "classnames";
 import { useTranslation } from "react-i18next";
 const { Title, Paragraph } = Typography;
 const Home = () => {
   const { t } = useTranslation();
-  const router = useRouter();
-  // const [searchText, setSearchText] = useState('');
-  const [seletedSingleModal, setSelectedSingleModal] = useState("mutation");
 
-  const onSearch = (value) => {
-    router.push(`/search?query=${!!value ? value : "TP53,CNNTB1,AXIN1"}`);
-  };
   const dataStaticList = [
     {
       icon: "/images/total-patients.svg",
       title: "6,068",
       key: "patient",
       textColor: "#2a5ca1",
-      text: t("home:totalPatients"),
+      text: t("home:dataStaticList.totalPatients"),
     },
     {
       icon: "/images/samples-analyzed.svg",
       title: "8,284",
       key: "sample",
       textColor: "#a3584c",
-      text: t("home:samplesAnalyzed"),
+      text: t("home:dataStaticList.samplesAnalyzed"),
     },
     {
       icon: "/images/identified-mutations.svg",
       title: 45,
-      key: "gene-mutation",
+      key: "cohorts",
       textColor: "#729863",
-      text: t("home:identifiedMutations"),
+      text: t("home:dataStaticList.totalCohorts"),
     },
     {
       icon: "/images/published-papers.svg",
       title: "Multi-sectors",
-      key: "papers",
+      key: "data-type",
       textColor: "#476eaa",
-      text: t("home:publishedPapers"),
+      text: t("home:dataStaticList.dataType"),
     },
   ];
 
@@ -64,22 +52,22 @@ const Home = () => {
       image: "/images/advanced-analysis.svg",
       textColor: "rgb(204,91,126)",
       bgColor: "rgb(255, 235, 242)",
-      title: t("home:researchOverview.list.advancedAnalysis.title"),
-      text: t("home:researchOverview.list.advancedAnalysis.description"),
+      title: t("home:researchOverview.list.geospatialAnalysis.title"),
+      text: t("home:researchOverview.list.geospatialAnalysis.description"),
     },
     {
       image: "/images/data-integration.svg",
       textColor: "rgb(99,83,160)",
       bgColor: "rgb(236, 236, 255)",
-      title: t("home:researchOverview.list.dataIntegration.title"),
-      text: t("home:researchOverview.list.dataIntegration.description"),
+      title: t("home:researchOverview.list.temporalAnalysis.title"),
+      text: t("home:researchOverview.list.temporalAnalysis.description"),
     },
     {
       image: "/images/mutation-mapping.svg",
       textColor: "rgb(63,122,128)",
       bgColor: "rgb(226, 247, 252)",
-      title: t("home:researchOverview.list.mutationMapping.title"),
-      text: t("home:researchOverview.list.mutationMapping.description"),
+      title: t("home:researchOverview.list.customAnalysis.title"),
+      text: t("home:researchOverview.list.customAnalysis.description"),
     },
   ];
 
@@ -87,27 +75,25 @@ const Home = () => {
     {
       key: "mutation",
       path: "driver-landscape",
-      title: "Driver landscape",
+      title: t("home:models.driverLandscape.title"),
       textColor: "rgb(63,122,128)",
       bgColor: "rgb(226, 247, 252)",
       url: "/images/driver-landscape.png",
-      description:
-        "Oncoprint plot shows genetic alterations in driver genes (or genes of interests from the user) across samples and patients.",
+      description: t("home:models.driverLandscape.description"),
     },
     {
       key: "mutation",
       path: "timing-analysis",
-      title: "Timing analysis",
+      title: t("home:models.timingAnalysis.title"),
       textColor: "rgb(63,122,128)",
       bgColor: "rgb(226, 247, 252)",
       url: "/images/timing-analysis.png",
-      description:
-        "Timing analysis allows users to trace the timing of the mutated genes by mapping them onto the phylogenetic tree.",
+      description: t("home:models.timingAnalysis.description"),
     },
     {
       key: "transcriptome",
       path: "differential-expression-analysis",
-      title: "Differential expression analysis",
+      title: t("home:models.differentialExpressionAnalysis.title"),
       textColor: "#7b1fa2",
       bgColor: "#f3eafa",
       url: "/images/differential-expression-analysis.png",
@@ -117,52 +103,47 @@ const Home = () => {
     {
       key: "transcriptome",
       path: "transcriptomic-heterogeneity",
-      title: "Transcriptomic heterogeneity",
+      title: t("home:models.transcriptomicHeterogeneity.title"),
       textColor: "#7b1fa2",
       bgColor: "#f3eafa",
       url: "/images/transcriptomic-heterogeneity.png",
-      description:
-        "This module explores how transcriptomic subtypes distribute across spatial samples within and between patients.",
+      description: t("home:models.transcriptomicHeterogeneity.title"),
     },
     {
       key: "immune",
       path: "microenvironment-deconvolution",
-      title: "Microenvironment deconvolution",
+      title: t("home:models.microenvironmentDeconvolution.title"),
       textColor: "#2e7d32",
       bgColor: "#e8f7f0",
       url: "/images/microenvironment-deconvolution.png",
-      description:
-        "Microenvironment deconvolution aims to characterize the immune or stroma cell distribution and classify the tumor microenvironment within and between tumors. ",
+      description: t("home:models.microenvironmentDeconvolution.description"),
     },
     {
       key: "immune",
       path: "immune-subtype",
-      title: "Microenvironment spatial heterogeneity",
+      title: t("home:models.microenvironmentSpatialHeterogeneity.title"),
       textColor: "#2e7d32",
       bgColor: "#e8f7f0",
       url: "/images/microenvironment-spatial-heterogeneity.png",
-      description:
-        "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients.",
+      description: t("home:models.microenvironmentSpatialHeterogeneity.description"),
     },
     {
       key: "biomarkers",
       path: "survival-analysis",
-      title: "Survival analysis",
+      title: t("home:models.survivalAnalysis.title"),
       textColor: "#c2185b",
       bgColor: "#fdeaea",
       url: "/images/survival-analysis.png",
-      description:
-        "In this module, using existing or user-specified biomarkers, users can explore how biomarkers can stratify patient survival. ",
+      description: t("home:models.survivalAnalysis.description"),
     },
     {
       key: "biomarkers",
       path: "multi-modal-joint-analysis",
-      title: "Multi-modal joint analysis",
+      title: t("home:models.multiModalJointAnalysis.title"),
       textColor: "#c2185b",
       bgColor: "#fdeaea",
       url: "/images/multi-modal-joint-analysis.png",
-      description:
-        "This module allows multi-modal information to be jointly displayed and analyzed. ",
+      description: t("home:models.multiModalJointAnalysis.description"),
     },
   ];
 
@@ -184,7 +165,7 @@ const Home = () => {
                   fontWeight: "bold",
                 }}
               >
-                <span>{"Welcome to LIGOR!"}</span>
+                <span>{t("home:banner.title")}!</span>
               </Typography.Title>
             </div>
             <Typography.Paragraph
@@ -226,7 +207,7 @@ const Home = () => {
             level={3}
             style={{ marginLeft: 15 }}
           >
-            Single Modal
+            {t("home:models.title")}
           </Title>
         </Col>
         {items.map((item, index) => {
@@ -273,9 +254,9 @@ const Home = () => {
                 </Paragraph>
                 <Flex justify="flex-end" style={{ marginTop: "auto" }}>
                   <a href={`/${item.key}?menu=${item.path}`} target={`/${item.key}?menu=${item.path}`}>
-                  <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff", marginTop: "10px" }}>
-                    EXPLORE
-                  </Button>
+                    <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff", marginTop: "10px" }}>
+                      {t("common:explore")}
+                    </Button>
                   </a>
                 </Flex>
               </Flex>

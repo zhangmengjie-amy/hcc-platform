@@ -79,7 +79,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         fullMutationsRef.current = originalMutations;
         let _patientList = patientListRef.current;
         if (dataType !== "all") {
-          _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
+          _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
         }
         buildCharts(_patientList, originalMutations);
       });
@@ -87,7 +87,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
       let _fullMutations = fullMutationsRef.current;
       let _patientList = patientListRef.current;
       if (dataType !== "all") {
-        _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
+        _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
         _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
       }
       buildCharts(_patientList, _fullMutations);
@@ -129,7 +129,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
 
   const getPatientListByActiveBar = () => {
     const [min, max] = activeBar.split("~");
-    return rangePatientListRef.current.filter((item) => {
+    return rangePatientListRef.current?.filter((item) => {
       return item.ith >= min && item.ith <= max;
     });
   };
@@ -433,12 +433,12 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
   const onBarEvents = useMemo(() => ({
     "click": function (params) {
       const [rangeMin, rangeMax] = range;
-      rangePatientListRef.current = rangePatientListRef.current = patientListRef.current.filter((item) => {
+      rangePatientListRef.current = rangePatientListRef.current = patientListRef.current?.filter((item) => {
         return item.ith >= rangeMin && item.ith <= rangeMax;
       });
       if (activeBar !== params.name) {
         const [min, max] = params.name.split("~");
-        rangePatientListRef.current = rangePatientListRef.current.filter((item) => {
+        rangePatientListRef.current = rangePatientListRef.current?.filter((item) => {
           return item.ith >= min && item.ith <= max;
         });
         setActiveBar(params.name);

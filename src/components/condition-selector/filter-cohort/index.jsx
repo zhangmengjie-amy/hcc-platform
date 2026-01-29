@@ -92,7 +92,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          Filter Cohort
+          {t("common:filter.filterCohort")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>

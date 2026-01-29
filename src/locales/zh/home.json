@@ -12,9 +12,8 @@
     "biomarkers": "生物标记"
   },
   "banner": {
-    "title": "肝癌数据平台",
-    "subTitle": "肝细胞癌综合分析",
-    "description": "用于分析肝细胞癌队列数据中多模态异质性的尖端平台，整合突变图谱、表达模式、免疫特征和临床结果，推进癌症研究和治疗策略"
+    "title": "欢迎使用LIGOR",
+    "description": "Liver Cancer Geospatial Omics Resource (LIGOR) is a comprehensive database designed to characterize the spatial intra-tumor heterogeneity(sITH) of hepatocellular carcinoma based on multi-omics data collected from spatially informed tumor sectors. It enables the exploration of multi-omic information across cohorts, characterizing spatial and temporal patterns of molecular changes, facilitating the discovery of biomarkers of clinical relevance."
   },
   "search": {
     "placeholder": "搜索突变基因名 / 临床信息"
@@ -24,19 +23,19 @@
   "identifiedMutations": "突变识别",
   "publishedPapers": "论文发表",
   "researchOverview": {
-    "title": "研究综述",
+    "title": "Research Overview",
     "list": {
-      "advancedAnalysis": {
-        "title": "高级分析",
-        "description": "使用最先进的测序技术进行全面的基因组分析"
+      "geospatialAnalysis": {
+        "title": "Geospatial analysis",
+        "description": "Visualize multi-modal heterogeneity of molecular features within and between a large group of HCC patients."
       },
-      "dataIntegration": {
-        "title": "数据集成",
-        "description": "结合临床和分子信息的多维数据分析"
+      "temporalAnalysis" : {
+        "title": "Temporal analysis",
+        "description": "Timing multi-modal changes by mapping them onto the phylogenetic tree."
       },
-      "mutationMapping": {
-        "title": "突变图谱",
-        "description": "基因改变的详细图谱及其临床意义"
+      "customAnalysis" : {
+        "title": "Custom analysis",
+        "description": "Support user-defined subgrouping analysis in gene expression, biomarker and survival analysis."
       }
     }
   },

@@ -50,7 +50,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handl
       let _fullMutations = fullMutationsRef.current;
       let _patientList = patientListRef.current;
       if (dataType !== "all") {
-        _patientList = patientListRef.current.filter((item) => item.type === dataType?.toUpperCase());
+        _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
         _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
       }
       buildCharts(_fullMutations, _patientList, fullPhylogeneticRef.current);
@@ -76,7 +76,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handl
       _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
       rangePatientListRef.current = getPatientListByRange(_patientList);
 
-      const treeList = rangePatientListRef.current.filter((item) => result.finialSampleList?.some((patient) => patient == item.patientId)).map((item) => {
+      const treeList = rangePatientListRef.current?.filter((item) => result.finialSampleList?.some((patient) => patient == item.patientId)).map((item) => {
         const geneData = fullPhylogenetic?.filter((sample) => sample?.sampleId?.includes(`${item.patientId}_`));
         return {
           ...item,

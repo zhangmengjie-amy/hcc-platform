@@ -87,11 +87,5 @@
     "driver": "驱动基因",
     "not-driver": "非驱动基因",
     "check-all-driver": "选择所有驱动基因"
-  },
-  "filter": {
-    "gene": "按基因筛选",
-    "clinic": "按临床信息筛选",
-    "driver": "按是否是驱动基因筛选",
-    "DNA_ITH": "按异质性值筛选"
   }
 }
