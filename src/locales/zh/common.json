@@ -10,5 +10,6 @@
   "generatePdf": "正在生成PDF...",
   "pdfExportSuccess": "PDF导出成功！",
   "pdfExportFailed": "PDF导出失败!",
-  "pdfServiceUnavailable": "Export service unavailable!"
+  "pdfServiceUnavailable": "Export service unavailable!",
+  "explore": "开始探索"
 }

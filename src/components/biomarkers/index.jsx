@@ -140,7 +140,7 @@ const Biomarkers = () => {
 
     // 根据 taskType 生成参数
     const baseParams = {
-      numbers: selectedRows.map((item) => item.number), // 从 selectedRows 的 number 字段获取
+      numbers: selectedRows?.map((item) => item?.number), // 从 selectedRows 的 number 字段获取
       taskType: selectedGeneType, // 直接使用 selectedGeneType
     };
 

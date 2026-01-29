@@ -51,7 +51,7 @@ const CohortType = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          Cohort Type
+          {t("common:filter.cohortType")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>

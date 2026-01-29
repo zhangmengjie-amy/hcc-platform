@@ -12,7 +12,7 @@
     "biomarkers": "Biomarkers"
   },
   "banner": {
-    "title": "LIGOR",
+    "title": "Welcome to LIGOR",
     "description": "Liver Cancer Geospatial Omics Resource (LIGOR) is a comprehensive database designed to characterize the spatial intra-tumor heterogeneity(sITH) of hepatocellular carcinoma based on multi-omics data collected from spatially informed tumor sectors. It enables the exploration of multi-omic information across cohorts, characterizing spatial and temporal patterns of molecular changes, facilitating the discovery of biomarkers of clinical relevance."
   },
   "search": {
@@ -22,18 +22,59 @@
   "samplesAnalyzed": "Samples Analyzed",
   "identifiedMutations": "Total Cohorts",
   "publishedPapers": "Data Types",
+  "dataStaticList": {
+    "totalPatients": "Total Patients",
+    "samplesAnalyzed": "Samples Analyzed",
+    "totalCohorts": "Total Cohorts",
+    "dataType": "Data Type"
+  },
+  "models": {
+    "title": "Single Model",
+    "driverLandscape": {
+      "title": "Driver Landscape",
+      "description": "Oncoprint plot shows genetic alterations in driver genes (or genes of interests from the user) across samples and patients."
+    },
+    "timingAnalysis": {
+      "title": "Timing Analysis",
+      "description": "Timing analysis allows users to trace the timing of the mutated genes by mapping them onto the phylogenetic tree."
+    },
+    "differentialExpressionAnalysis": {
+      "title": "Differential Expression Analysis",
+      "description": "Differential gene expression analysis discovers differentially expressed genes (DEGs) between different subgroups (e.g. grouping by clinical information or molecular features) of samples."
+    },
+    "transcriptomicHeterogeneity": {
+      "title": "Transcriptomic Heterogeneity",
+      "description": "This module explores how transcriptomic subtypes distribute across spatial samples within and between patients."
+    },
+    "microenvironmentDeconvolution": {
+      "title": "Transcriptomic Heterogeneity",
+      "description": "Microenvironment deconvolution aims to characterize the immune or stroma cell distribution and classify the tumor microenvironment within and between tumors."
+    },
+    "microenvironmentSpatialHeterogeneity": {
+      "title": "Microenvironment spatial heterogeneity",
+      "description": "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients."
+    },
+    "survivalAnalysis": {
+      "title": "Survival analysis",
+      "description": "In this module, using existing or user-specified biomarkers, users can explore how biomarkers can stratify patient survival."
+    },
+    "multiModalJointAnalysis": {
+      "title": "Multi-modal joint analysis",
+      "description": "This module allows multi-modal information to be jointly displayed and analyzed."
+    }
+  },
   "researchOverview": {
     "title": "Research Overview",
     "list": {
-      "advancedAnalysis": {
+      "geospatialAnalysis": {
         "title": "Geospatial analysis",
         "description": "Visualize multi-modal heterogeneity of molecular features within and between a large group of HCC patients."
       },
-      "dataIntegration" : {
+      "temporalAnalysis" : {
         "title": "Temporal analysis",
         "description": "Timing multi-modal changes by mapping them onto the phylogenetic tree."
       },
-      "mutationMapping" : {
+      "customAnalysis" : {
         "title": "Custom analysis",
         "description": "Support user-defined subgrouping analysis in gene expression, biomarker and survival analysis."
       }

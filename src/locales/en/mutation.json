@@ -84,11 +84,5 @@
     "driver": "Driver",
     "not-driver": "Not Driver",
     "check-all-driver": "Check All Driver"
-  },
-  "filter": {
-    "gene": "Filter By Gene",
-    "clinic": "Filter By clinic",
-    "driver": "Filter By Driver",
-    "DNA_ITH": "Filter By DNA ITH"
   }
 }

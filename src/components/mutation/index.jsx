@@ -67,7 +67,7 @@ const Mutation = () => {
         {t("common:apply")}
       </Button>
     );
-  }, [applyLoading, contentType]);
+  }, [applyLoading, contentType, t]);
 
   const handleContentTypeChange = useCallback((value) => {
     setContentType(value);

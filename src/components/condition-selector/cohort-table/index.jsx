@@ -170,7 +170,7 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            Cohort List
+            {t("common:filter.cohortList")}
           </Typography.Title>
           <Typography.Paragraph
             ellipsis={{

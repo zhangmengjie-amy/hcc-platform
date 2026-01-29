@@ -33,7 +33,7 @@ const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          Method
+          {t("common:filter.method")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>

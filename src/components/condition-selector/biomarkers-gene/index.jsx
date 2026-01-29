@@ -100,7 +100,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          Biomarkers Method
+          {t("common:filter.biomarkersMethod")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
