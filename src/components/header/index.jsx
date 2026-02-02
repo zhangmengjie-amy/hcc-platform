@@ -119,53 +119,55 @@ const HCCHeader = () => {
 
         {/* 根据登录状态显示不同的内容 */}
         {isAuthenticated ? (
-          <Flex align="center" gap={8}>
-            {/* 显示用户名下拉菜单 */}
-            <Dropdown
-              menu={{
-                items: userMenuItems,
-              }}
-              placement="bottomRight"
-            >
-              <Flex
-                align="center"
-                gap={4}
-                style={{
-                  cursor: "pointer",
-                  borderRadius: 6,
-                  transition: "all 0.3s",
-                  ":hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.04)",
-                  },
-                }}
-              >
-                {/* 显示用户头像 */}
-                <Avatar
-                  size="small"
-                  icon={<UserOutlined />}
-                  style={{
-                    backgroundColor: "#1890ff",
-                    fontSize: 12,
-                  }}
-                />
-                {/* 显示用户名，优先显示 realName，其次是 username，最后是 email */}
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: "#262626",
-                  }}
-                >
-                  {user.username ?? "用户"}
-                </span>
-                <DownOutlined style={{ fontSize: 12, color: "#8c8c8c" }} />
-              </Flex>
-            </Dropdown>
-          </Flex>
+          <></>
+          // <Flex align="center" gap={8}>
+          //   {/* 显示用户名下拉菜单 */}
+          //   <Dropdown
+          //     menu={{
+          //       items: userMenuItems,
+          //     }}
+          //     placement="bottomRight"
+          //   >
+          //     <Flex
+          //       align="center"
+          //       gap={4}
+          //       style={{
+          //         cursor: "pointer",
+          //         borderRadius: 6,
+          //         transition: "all 0.3s",
+          //         ":hover": {
+          //           backgroundColor: "rgba(0, 0, 0, 0.04)",
+          //         },
+          //       }}
+          //     >
+          //       {/* 显示用户头像 */}
+          //       <Avatar
+          //         size="small"
+          //         icon={<UserOutlined />}
+          //         style={{
+          //           backgroundColor: "#1890ff",
+          //           fontSize: 12,
+          //         }}
+          //       />
+          //       {/* 显示用户名，优先显示 realName，其次是 username，最后是 email */}
+          //       <span
+          //         style={{
+          //           fontSize: 14,
+          //           fontWeight: 500,
+          //           color: "#262626",
+          //         }}
+          //       >
+          //         {user.username ?? "用户"}
+          //       </span>
+          //       <DownOutlined style={{ fontSize: 12, color: "#8c8c8c" }} />
+          //     </Flex>
+          //   </Dropdown>
+          // </Flex>
         ) : (
-          <Button type="primary">
-            <Link href="/login">登录/注册</Link>
-          </Button>
+          // <Button type="primary">
+          //   <Link href="/login">登录/注册</Link>
+          // </Button>
+          <></>
         )}
       </Layout.Header>
     </Affix>

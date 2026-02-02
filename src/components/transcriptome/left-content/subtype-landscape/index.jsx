@@ -9,9 +9,6 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import CohortSelection from "@/components/condition-selector/cohort-table";
-import FilterCohort from "@/components/condition-selector/filter-cohort";
-import BiomarkersGene from "@/components/condition-selector/biomarkers-gene";
 import DTPlanet from "@/components/condition-selector/dt-planet";
 import ClinicalSelector from "@/components/condition-selector/clinical-selector";
 

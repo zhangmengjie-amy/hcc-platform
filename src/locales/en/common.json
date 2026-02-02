@@ -19,6 +19,16 @@
     "DNA_ITH": "Filter By DNA ITH",
     "cohortType": "Cohort Type",
     "method": "Method",
-    "filterCohort": "Filter Cohort"
+    "filterCohort": "Filter Cohort",
+    "cohortList": "Cohort List"
+  },
+  "subtype": {
+    "biomarker": "Biomarker",
+    "immune": "Immune",
+    "subtype": "Subtype",
+    "chiang": "Chiang",
+    "hoshida": "Hoshida",
+    "boyault": "Boyault",
+    "lee": "Lee"
   }
 }

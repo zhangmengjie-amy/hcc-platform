@@ -10,6 +10,8 @@ import DtLiverSampleChart from "@/components/dt-liver-sample";
 import SunburstChart from "@/components/biomarkers/right-content/multi-modal-joint-analysis/sunburst";
 import ColumnChart from "@/components/biomarkers/right-content/multi-modal-joint-analysis/column";
 import filterSampleByConditions from "@/utils/filter-patient";
+import { useTranslation } from "react-i18next";
+import styles from "./style.module.scss";
 
 const PLANET_SUBTYPE_COLOR = {
   C1: "rgb(79, 151, 121)",
@@ -32,10 +34,9 @@ const PLANET_HOSHIDA_COLOR = {
 };
 
 const PLANET_BOYAULT_COLOR = {
-  G2: "#BF3131",
+  G12: "#FF7F00",
   G3: "#A1D99B",
-  G4: "#A367B1",
-  G5: "#A9A9A9",
+  G56: "#FB9A99",
 };
 
 const DT_SUBTYPE_COLOR = {
@@ -131,68 +132,6 @@ const HEATMAP_COLORS = {
   },
 };
 
-const mockFields = ["lee", "hoshida", "boyault", "chiang", "subtype", "immune", "biomarker"];
-
-const MIXED_GROUP = [
-  "C1,C2",
-  "C1,C3",
-  "C1,C4",
-  "C1,C5",
-  "C1,C6",
-  "C2,C3",
-  "C2,C4",
-  "C2,C5",
-  "C2,C6",
-  "C3,C4",
-  "C3,C5",
-  "C3,C6",
-  "C4,C5",
-  "C4,C6",
-  "C5,C6",
-  "C1,C2,C3",
-  "C1,C2,C4",
-  "C1,C2,C5",
-  "C1,C2,C6",
-  "C1,C3,C4",
-  "C1,C3,C5",
-  "C1,C3,C6",
-  "C1,C4,C5",
-  "C1,C4,C6",
-  "C1,C5,C6",
-  "C2,C3,C4",
-  "C2,C3,C5",
-  "C2,C3,C6",
-  "C2,C4,C6",
-  "C3,C4,C5",
-  "C3,C4,C6",
-  "C2,C4,C5",
-  "C2,C5,C6",
-  "C3,C5,C6",
-  "C4,C5,C6",
-  "C1,C2,C3,C4",
-  "C1,C2,C3,C5",
-  "C1,C2,C3,C6",
-  "C1,C2,C4,C5",
-  "C1,C2,C4,C6",
-  "C1,C2,C5,C6",
-  "C1,C3,C4,C5",
-  "C1,C3,C4,C6",
-  "C2,C3,C4,C5",
-  "C1,C3,C5,C6",
-  "C1,C4,C5,C6",
-  "C2,C3,C4,C6",
-  "C2,C3,C5,C6",
-  "C2,C4,C5,C6",
-  "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5",
-  "C1,C2,C3,C4,C6",
-  "C2,C3,C4,C5,C6",
-  "C1,C3,C4,C5,C6",
-  "C1,C2,C3,C5,C6",
-  "C1,C2,C4,C5,C6",
-  "C1,C2,C3,C4,C5,C6",
-];
-
 const MIXED_PURE = {
   Pure: "rgb(106, 194, 165)",
   Mixed: "rgb(158, 153, 197)",
@@ -217,6 +156,7 @@ const STAGE_TRANS = {
   "III A": "III",
 };
 const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PLANET", onComplete, dnaOrRna = "RNA" }) => {
+  const { t } = useTranslation();
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
@@ -235,6 +175,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
   const patientListRef = useRef(null);
   const [filterdPatientList, setFilterdPatientList] = useState([]);
   const geneListRef = useRef(null);
+  const [biomarkersRange, setBiomarkersRange] = useState(null);
 
   useEffect(() => {
     if (!conditions) return;
@@ -250,6 +191,29 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
     setFilterdPatientList(filteredData);
   }, [conditions]);
 
+  const mockFields = [{
+    key: "lee",
+    label: t("common:subtype.lee"),
+  }, {
+    key: "hoshida",
+    label: t("common:subtype.hoshida"),
+  }, {
+    key: "boyault",
+    label: t("common:subtype.boyault"),
+  }, {
+    key: "chiang",
+    label: t("common:subtype.chiang"),
+  }, {
+    key: "subtype",
+    label: t("common:subtype.subtype"),
+  }, {
+    key: "immune",
+    label: t("common:subtype.immune"),
+  }, {
+    key: "biomarker",
+    label: t("common:subtype.biomarker"),
+  }];
+
   useEffect(() => {
     if (!biomarkers?.cohortName || !biomarkers?.taskType) return;
     const applyBiomarkersScore = async () => {
@@ -261,6 +225,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
         const min = Math.min(...geneScores);
         const max = Math.max(...geneScores);
         const avg = geneScores.reduce((sum, score) => sum + score, 0) / geneScores.length;
+        setBiomarkersRange({ min: min.toFixed(2), max: max.toFixed(2), avg: avg.toFixed(2) });
         const dataWithColor = result?.reduce((acc, item) => {
           acc[item.sampleId] = {
             score: item.geneScore,
@@ -651,7 +616,10 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
               )}
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
                     Pure or Mixed
                   </Flex>
                   {Object.keys(MIXED_PURE).map((item) => {
@@ -672,7 +640,10 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
                     Stage
                   </Flex>
                   {Object.keys(STAGE_COLOR).map((item) => {
@@ -693,7 +664,10 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
                     Subtype
                   </Flex>
                   {Object.keys(PLANET_SUBTYPE_COLOR).map((item) => {
@@ -714,7 +688,10 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
                     Samples
                   </Flex>
                   {[...Array(7)].map((_, i) => {
@@ -744,10 +721,28 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                     );
                   })}
                 </Flex>
+                <Flex vertical style={{ marginLeft: "10px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
+                    Biomarkers
+                  </Flex>
+                  <div className={styles.gradientBar} >
+                    <div className={styles.labels}>
+                      <div className={styles.label}>{biomarkersRange?.max || ""}</div>
+                      <div className={styles.label}>{biomarkersRange?.avg || ""}</div>
+                      <div className={styles.label}>{biomarkersRange?.min || ""}</div>
+                    </div>
+                  </div>
+                </Flex>
               </Flex>
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
                     Lee
                   </Flex>
                   {Object.keys(PLANET_LEE_COLOR).map((item) => {
@@ -768,8 +763,11 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
-                    HOSHIDA
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
+                    {t("common:subtype.hoshida")}
                   </Flex>
                   {Object.keys(PLANET_HOSHIDA_COLOR).map((item) => {
                     return (
@@ -789,8 +787,11 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
-                    BOYAULT
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
+                    {t("common:subtype.boyault")}
                   </Flex>
                   {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
                     return (
@@ -810,8 +811,11 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
-                    CHIANG
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
+                    {t("common:subtype.chiang")}
                   </Flex>
                   {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
                     return (
@@ -866,7 +870,9 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                       align="center"
                       justify="center"
                     >
-                      <Empty style={{ width: "100%", padding: "20px" }}></Empty>{" "}
+                      <Empty
+                        style={{ width: "100%", padding: "20px" }}
+                      ></Empty>{" "}
                     </Flex>
                   )
                 ) : (
@@ -905,7 +911,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   <Typography.Link>
                     <Space>
                       <span style={{ color: "#000" }}>Selected: </span>
-                      {selectedPlanetSubtype}
+                      {t(`common:subtype.${selectedPlanetSubtype}`)}
                       <DownOutlined />
                     </Space>
                   </Typography.Link>
@@ -1006,7 +1012,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
               ></ColumnChart>
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
                     Pure or Mixed
                   </Flex>
                   {Object.keys(MIXED_PURE).map((item) => {
@@ -1027,7 +1033,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
                     Stage
                   </Flex>
                   {Object.keys(STAGE_COLOR).map((item) => {
@@ -1048,7 +1054,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
                     Subtype
                   </Flex>
                   {Object.keys(DT_SUBTYPE_COLOR).map((item) => {
@@ -1069,7 +1075,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
-                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
                     Samples
                   </Flex>
                   {[...Array(7)].map((_, i) => {
@@ -1097,6 +1103,21 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                       </Flex>
                     );
                   })}
+                </Flex>
+                <Flex vertical style={{ marginLeft: "10px" }}>
+                  <Flex
+                    align="center"
+                    style={{ marginBottom: "10px", fontSize: "12px" }}
+                  >
+                    Biomarkers
+                  </Flex>
+                  <div className={styles.gradientBar} >
+                    <div className={styles.labels}>
+                      <div className={styles.label}>{biomarkersRange?.max || ""}</div>
+                      <div className={styles.label}>{biomarkersRange?.avg || ""}</div>
+                      <div className={styles.label}>{biomarkersRange?.min || ""}</div>
+                    </div>
+                  </div>
                 </Flex>
               </Flex>
             </Flex>
@@ -1134,7 +1155,9 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                       align="center"
                       justify="center"
                     >
-                      <Empty style={{ width: "100%", padding: "20px" }}></Empty>{" "}
+                      <Empty
+                        style={{ width: "100%", padding: "20px" }}
+                      ></Empty>{" "}
                     </Flex>
                   )
                 ) : (

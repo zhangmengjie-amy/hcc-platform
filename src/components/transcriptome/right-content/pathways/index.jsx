@@ -9,6 +9,7 @@ import {
   Select,
   Alert,
   Empty,
+  Button,
 } from "antd";
 import GoBarChart from "@/components/transcriptome/right-content/pathways/go-column";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
@@ -359,6 +360,10 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
     );
   }
 
+  const downloadCSV = () => {
+    console.log("download CSV");
+  };
+
   return (
     <div style={{ paddingTop: 20 }}>
       {/* 下拉选择器和Tag信息行 */}
@@ -401,9 +406,11 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
             options={selectOptions}
             dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
           />
+          <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>
+            下载CSV
+          </Button>
         </div>
       </div>
-
       {renderContent()}
     </div>
   );

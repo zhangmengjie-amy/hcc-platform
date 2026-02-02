@@ -1,7 +1,7 @@
 {
   "header": {
     "home": "Home",
-    "single-modal": "Single Modal",
+    "single-modal": "Single Modules",
     "multi-modal": "Multi Modal",
     "mutation": "Genome",
     "help": "Help",
@@ -64,7 +64,7 @@
     }
   },
   "researchOverview": {
-    "title": "Research Overview",
+    "title": "Core Features",
     "list": {
       "geospatialAnalysis": {
         "title": "Geospatial analysis",
