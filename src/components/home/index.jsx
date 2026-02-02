@@ -49,7 +49,7 @@ const Home = () => {
 
   const researchOverviewList = [
     {
-      image: "/images/advanced-analysis.svg",
+      image: "/images/geospatial-analysis.svg",
       textColor: "rgb(204,91,126)",
       bgColor: "rgb(255, 235, 242)",
       title: t("home:researchOverview.list.geospatialAnalysis.title"),
@@ -107,7 +107,7 @@ const Home = () => {
       textColor: "#7b1fa2",
       bgColor: "#f3eafa",
       url: "/images/transcriptomic-heterogeneity.png",
-      description: t("home:models.transcriptomicHeterogeneity.title"),
+      description: t("home:models.transcriptomicHeterogeneity.description"),
     },
     {
       key: "immune",
@@ -311,7 +311,7 @@ const Home = () => {
             level={3}
             style={{ marginLeft: 10 }}
           >
-            Search Overview
+            Core Features
           </Title>
           <Row
             gutter={[15, 15]}

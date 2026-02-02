@@ -314,7 +314,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                   </Typography.Paragraph>
                   <Checkbox.Group value={firstGroup} onChange={setFirstGroup}>
                     <Flex vertical>
-                      <Checkbox value="I">II</Checkbox>
+                      <Checkbox value="I">I</Checkbox>
                       <Checkbox value="II">II</Checkbox>
                       <Checkbox value="III">III</Checkbox>
                       <Checkbox value="IV">IV</Checkbox>

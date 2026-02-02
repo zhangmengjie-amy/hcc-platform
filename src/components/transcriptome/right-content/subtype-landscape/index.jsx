@@ -10,6 +10,7 @@ import DtLiverSampleChart from "@/components/dt-liver-sample";
 import SunburstChart from "@/components/transcriptome/right-content/subtype-landscape/sunburst";
 import ColumnChart from "@/components/transcriptome/right-content/subtype-landscape/column";
 import filterSampleByConditions from "@/utils/filter-patient";
+import { useTranslation } from "react-i18next";
 
 const PLANET_SUBTYPE_COLOR = {
   C1: "rgb(79, 151, 121)",
@@ -116,8 +117,6 @@ const HEATMAP_COLORS = {
   },
 };
 
-const mockFields = ["lee", "hoshida", "boyault", "chiang", "subtype"];
-
 const MIXED_PURE = {
   Pure: "rgb(106, 194, 165)",
   Mixed: "rgb(158, 153, 197)",
@@ -156,10 +155,29 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
   const [dtHeatmap, setDtHeatmap] = useState(null);
   const [currentPlanetLiverSamples, setCurrentPlanetLiverSamples] =
     useState(null);
+  const { t } = useTranslation();
   const [currentDtLiverSamples, setCurrentDtLiverSamples] = useState(null);
   const patientListRef = useRef(null);
   const [filterdPatientList, setFilterdPatientList] = useState([]);
   const geneListRef = useRef(null);
+
+  
+  const mockFields = [{
+    key: "lee",
+    label: t("common:subtype.lee"),
+  }, {
+    key: "hoshida",
+    label: t("common:subtype.hoshida"),
+  }, {
+    key: "boyault",
+    label: t("common:subtype.boyault"),
+  }, {
+    key: "chiang",
+    label: t("common:subtype.chiang"),
+  }, {
+    key: "subtype",
+    label: t("common:subtype.subtype"),
+  }];
 
   useEffect(() => {
     if (!conditions) return;
@@ -582,7 +600,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    HOSHIDA
+                    {t("common:subtype.hoshida")}
                   </Flex>
                   {Object.keys(PLANET_HOSHIDA_COLOR).map((item) => {
                     return (
@@ -603,7 +621,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    BOYAULT
+                    {t("common:subtype.boyault")}
                   </Flex>
                   {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
                     return (
@@ -624,7 +642,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    CHIANG
+                    {t("common:subtype.chiang")}
                   </Flex>
                   {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
                     return (
@@ -718,7 +736,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                   <Typography.Link>
                     <Space>
                       <span style={{ color: "#000" }}>Selected: </span>
-                      {selectedPlanetSubtype}
+                      {t(`common:subtype.${selectedPlanetSubtype}`)}
                       <DownOutlined />
                     </Space>
                   </Typography.Link>

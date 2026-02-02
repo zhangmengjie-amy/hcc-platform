@@ -164,7 +164,7 @@ export const getDEGTaskIds = async (data) => {
 
 export const validGene = async (data) => {
   try {
-    const response = await post(`/hcc/v1/search/genes`, data);
+    const response = await post(`/hcc/v1/gene/search`, data);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);

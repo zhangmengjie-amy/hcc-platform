@@ -24,6 +24,7 @@ import {
   Button,
   Segmented,
   message,
+  Flex,
 } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -247,17 +248,26 @@ const Biomarkers = () => {
     setApplyLoading(true);
   }, []);
 
+  const downloadCSV = () => {
+    console.log("download CSV");
+  };
+
   const rightAction = useMemo(() => {
     return (
-      <Segmented
-        size="large"
-        onChange={handleContentTypeChange}
-        options={[
-          { value: "survivalAnalysis", label: "Survival Analysis" },
-          { value: "multiModalJointAnalysis", label: "Multi-modal joint analysis" },
-        ]}
-        value={contentType}
-      />
+      <Flex justify="space-between" align="center" style={{ marginLeft: "auto" }}>
+        <Segmented
+          size="large"
+          onChange={handleContentTypeChange}
+          options={[
+            { value: "survivalAnalysis", label: "Survival Analysis" },
+            { value: "multiModalJointAnalysis", label: "Multi-modal joint analysis" },
+          ]}
+          value={contentType}
+        />
+        <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>
+          下载CSV
+        </Button>
+      </Flex>
     );
   }, [contentType]);
 

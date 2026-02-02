@@ -38,15 +38,18 @@ const HCCFooter = () => {
           </Paragraph>
           <Paragraph style={{ color: "#fff", fontWeight: "lighter" }}>Team</Paragraph> */}
         </Col>
-        <Col sm={12} md={6} lg={6} style={{ padding: "0 20px" }}>
+        <Col sm={12} md={8} lg={8} style={{ padding: "0 20px" }}>
           <Title style={{ color: "#fff" }} level={5}>
             {t("home:footer.contact.title")}
           </Title>
-          <Paragraph style={{ color: "#fff", fontWeight: "lighter" }}>
+          <Paragraph style={{ color: "#fff", fontWeight: "lighter", marginBottom: 5 }}>
             If you have any questions or suggestions, please contact
           </Paragraph>
-          <Paragraph style={{ color: "#fff", fontWeight: "lighter" }}>
-            epg@ioz.ac.cn
+          <Paragraph style={{ color: "#fff", fontWeight: "lighter", marginBottom: 5 }}>
+            Email: epg@ioz.ac.cn
+          </Paragraph>
+          <Paragraph style={{ color: "#fff", fontWeight: "lighter", marginBottom: 5 }}>
+            Github: https://github.com/Zhailab2026/LIGOR
           </Paragraph>
         </Col>
       </Row>

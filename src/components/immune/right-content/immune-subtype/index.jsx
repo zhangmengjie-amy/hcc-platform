@@ -9,6 +9,7 @@ import DtLiverSampleChart from "@/components/dt-liver-sample";
 import SunburstChart from "./sunburst";
 import ColumnChart from "./column";
 import filterSampleByConditions from "@/utils/filter-patient";
+import { useTranslation } from "react-i18next";
 
 const PLANET_SUBTYPE_COLOR = {
   "Wound healing": "rgb(251, 154, 153)",
@@ -37,8 +38,6 @@ const HEATMAP_COLORS = {
   },
 };
 
-const mockFields = ["subtype"];
-
 const MIXED_PURE = {
   Pure: "rgb(106, 194, 165)",
   Mixed: "rgb(158, 153, 197)",
@@ -63,6 +62,7 @@ const STAGE_TRANS = {
   "III A": "III",
 };
 const RightPanel = ({ conditions, dataType = "PLANET", onComplete, dnaOrRna = "DNA" }) => {
+  const { t } = useTranslation();
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
@@ -78,6 +78,11 @@ const RightPanel = ({ conditions, dataType = "PLANET", onComplete, dnaOrRna = "D
   const patientListRef = useRef(null);
   const [filterdPatientList, setFilterdPatientList] = useState([]);
   const geneListRef = useRef(null);
+
+  const mockFields = [ {
+    key: "subtype",
+    label: t("common:subtype.subtype"),
+  }];
 
   useEffect(() => {
     if (!conditions) return;

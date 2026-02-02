@@ -39,7 +39,7 @@ const Home = () => {
   }];
 
   const researchOverviewList = [{
-    image: "/images/advanced-analysis.svg",
+    image: "/images/geospatial-analysis.svg",
     textColor: "rgb(204,91,126)",
     bgColor: "rgb(255, 235, 242)",
     title: t("home:researchOverview.list.advancedAnalysis.title"),
@@ -124,7 +124,7 @@ const Home = () => {
 
       <Row justify="center" className={styles.singleModalList}>
         <Col xs={24} sm={24} md={24} lg={24}>
-          <Title className={styles.subTitle} level={3} style={{ marginLeft: 15 }}>Single Modal</Title></Col>
+          <Title className={styles.subTitle} level={3} style={{ marginLeft: 15 }}>Research Modules</Title></Col>
         {
           items.map((item, index) => {
             return <Col key={index} xs={12} sm={12} md={6} lg={6}>
@@ -167,7 +167,7 @@ const Home = () => {
 
         </Col>
         <Col xs={16} sm={16} md={16} lg={16}>
-          <Title className={styles.subTitle} level={3} style={{ marginLeft: 10 }}>Search Overview</Title>
+          <Title className={styles.subTitle} level={3} style={{ marginLeft: 10 }}>Core Features</Title>
           <Row justify="center" className={styles.researchHighlight}>
                                         
             {

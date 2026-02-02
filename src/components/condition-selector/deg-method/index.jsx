@@ -12,8 +12,6 @@ import { CaretRightOutlined } from "@ant-design/icons";
 import { Collapse, Radio, Tooltip, Button, Flex, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import { getCohortList } from "@/configs/request";
-import { FixedSizeList } from "react-window";
 import styles from "../style.module.scss";
 import { use } from "react";
 

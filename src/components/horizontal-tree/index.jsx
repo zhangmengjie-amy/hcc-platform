@@ -420,7 +420,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
 
       const xHeat = d3
         .scaleBand()
-        .domain(heatmapFields)
+        .domain(heatmapFields.map(f => f.label))
         .range([0, hmWidth])
         .padding(0.05);
 
@@ -453,10 +453,10 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
         .filter(d => formatLabel(d.data.name) !== "N")
         .forEach(leaf => {
           heatmapFields.forEach(field => {
-            const v = heatmapData?.[leaf.data.name]?.[field] ?? 0;
+            const v = heatmapData?.[leaf.data.name]?.[field.key] ?? 0;
             gHeat
               .append("rect")
-              .attr("x", xHeat(field))
+              .attr("x", xHeat(field.label))
               .attr("y", leaf.y - cellHeight / 2)
               .attr("width", xHeat.bandwidth())
               .attr("height", cellHeight)
@@ -464,7 +464,7 @@ const HorizontalTree = ({ data, color, adaptive, sampleGeneData, heatmapFields =
               .attr("stroke", "#fff")
               .attr("stroke-width", 1)
               .append("title")
-              .text(`${field}: ${v.value ?? "None"}`);
+              .text(`${field.label}: ${v.value ?? "None"}`);
           });
         });
     }

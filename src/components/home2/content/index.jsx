@@ -35,7 +35,7 @@ const HomeContent = () => {
     text: t("home:publishedPapers"),
   }];
   const researchOverviewList = [{
-    icon: "/images/advanced-analysis.svg",
+    icon: "/images/geospatial-analysis.svg",
     title: t("home:researchOverview.list.advancedAnalysis.title"),
     text: t("home:researchOverview.list.advancedAnalysis.description"),
   }, {
