@@ -490,7 +490,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
                   treeType == "overview" && <Flex style={{ width: TREE_CONTAINER_WIDTH, margin: "0 auto", justifyContent: "space-between", position: "absolute", top: "-120px", left: "50%", marginLeft: "-360px" }}>
                     {
                       getVisibleTreeListWithStyle?.map((item, index) => {
-                        return <Flex onClick={() => { viewTree(item); }} className={rangeList?.length > 6 && index != getVisibleTreeListWithStyle.length - 1 ? styles.ellipse : null} key={item.patientId} vertical align="center" style={{ width: "120px", height: "120px", transform: item.transform }}>
+                        return <Flex key={item.patientId}  onClick={() => { viewTree(item); }} className={rangeList?.length > 6 && index != getVisibleTreeListWithStyle.length - 1 ? styles.ellipse : null} vertical align="center" style={{ width: "120px", height: "120px", transform: item.transform }}>
                           <Typography.Paragraph style={{ margin: 0, textAlign: "center" }}>
                             {item.patientId}
                           </Typography.Paragraph>
@@ -506,7 +506,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
                   <Flex>
                     {
                       LEGEND.map((item) => {
-                        return <Flex key={item.patientId} align="center">
+                        return <Flex key={item.name} align="center">
                           <span style={{ marginLeft: 8, backgroundColor: item.color, borderRadius: 3, width: 12, height: 12, display: "inline-block" }}></span><span style={{ marginLeft: 3, color: "#666" }}>{item.name}</span>
                         </Flex>;
                       })

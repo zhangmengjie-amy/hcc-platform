@@ -44,12 +44,12 @@ const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampl
       sampleWorker.postMessage({ key: "driverLandscape", data: { sampleType, originalMutations: fullMutations, conditions } });
       sampleWorker.onmessage = (event) => {
         const result = event.data;
-        setSampleMutations(result.sampleMutations);
-        setGenesMutations(result.genesMutations);
-        setSampleGenesMutations(result.sampleGenesMutations);
-        setFinialGeneList(result.finialGeneList);
-        setClinicList(result.clinicList);
-        setSampleCategories(result.sampleCategories);
+        result.sampleMutations?.length && setSampleMutations(result.sampleMutations);
+        result.genesMutations?.length && setGenesMutations(result.genesMutations);
+        Object.keys(result.sampleGenesMutations)?.length && setSampleGenesMutations(result.sampleGenesMutations);
+        result.finialGeneList?.length && setFinialGeneList(result.finialGeneList);
+        result.clinicList?.length && setClinicList(result.clinicList);
+        result.sampleCategories?.length && setSampleCategories(result.sampleCategories);
         setHeight(result.finialGeneList.length * 8 + 30);
       };
       handleComplete?.(true);

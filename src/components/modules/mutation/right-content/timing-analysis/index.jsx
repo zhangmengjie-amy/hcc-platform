@@ -120,8 +120,8 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handl
       <EmptyLoading loading={loading} showEmpty={true} hasData={!!treeList?.length}>
         <Row style={{ width: "100%" }}>
           {
-            treeList?.slice(start, end)?.map((item, index) => {
-              return <Col key={index} xs={12} sm={12} md={12} lg={12} style={{ cursor: "pointer" }}>
+            treeList?.slice(start, end)?.map((item) => {
+              return <Col key={item?.patientId} xs={12} sm={12} md={12} lg={12} style={{ cursor: "pointer" }}>
                 <EmptyLoading hasData={!!treeList?.length} loading={loading}>
                   <div style={{ margin: "10px", height: "350px", padding: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, .05)", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
                     <Typography.Paragraph style={{ margin: 0, textAlign: "left" }}>
