@@ -1,8 +1,8 @@
 
 import React from "react";
 import { Suspense } from "react";
-import HCCFooter from "@/components/footer";
-import HCCHeader from "@/components/header";
+import HCCFooter from "@/components/common/footer";
+import HCCHeader from "@/components/common/header";
 
 
 export default function Layout({ children }) {

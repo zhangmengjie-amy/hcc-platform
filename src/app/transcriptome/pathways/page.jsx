@@ -1,7 +1,7 @@
-import Expression from "@/components/transcriptome";
+import Transcriptome from "@/components/modules/transcriptome";
 
 export default function PathwaysPage() {
   return (
-    <Expression path={"pathways"}></Expression>
+    <Transcriptome path={"pathways"}></Transcriptome>
   );
 }

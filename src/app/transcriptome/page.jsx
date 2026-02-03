@@ -1,7 +1,7 @@
-import Expression from "@/components/transcriptome";
+import Transcriptome from "@/components/modules/transcriptome";
 
-export default function ExpressionPage() {
+export default function TranscriptomePage() {
   return (
-    <Expression path={"subtype"}></Expression>
+    <Transcriptome path={"expression"}></Transcriptome>
   );
 }

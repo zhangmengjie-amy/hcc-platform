@@ -1,4 +1,4 @@
-import Mutation from "@/components/mutation";
+import Mutation from "@/components/modules/mutation";
 
 export default function MutationPage() {
   return (

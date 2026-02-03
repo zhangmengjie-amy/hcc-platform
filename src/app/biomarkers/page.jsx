@@ -1,4 +1,4 @@
-import Biomarkers from "@/components/biomarkers";
+import Biomarkers from "@/components/modules/biomarkers";
 
 export default function BiomarkersPage() {
   return (

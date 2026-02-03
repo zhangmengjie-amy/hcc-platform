@@ -225,10 +225,10 @@ export const getITHList = async (type = "planet") => {
   }
 };
 
-export const getCohortList = async () => {
+export const getCohortList = async (data) => {
   try {
-    const response = await get(`/hcc/v1/cohort/list`);
-    return response?.data;
+    const response = await get(`/hcc/v1/cohort/list`, data);
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

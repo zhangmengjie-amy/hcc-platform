@@ -29,7 +29,7 @@
     "dataType": "Data Type"
   },
   "models": {
-    "title": "Single Model",
+    "title": "Single Modules",
     "driverLandscape": {
       "title": "Driver Landscape",
       "description": "Oncoprint plot shows genetic alterations in driver genes (or genes of interests from the user) across samples and patients."

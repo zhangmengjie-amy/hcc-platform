@@ -6,8 +6,6 @@ import Image from "next/image";
 import CountUp from "react-countup";
 import classnames from "classnames";
 import { useTranslation } from "react-i18next";
-import HomeContent from "@/components/home/content";
-import HomeBanner from "@/components/home/banner";
 const { Title, Paragraph } = Typography;
 const Home = () => {
   const { t } = useTranslation();

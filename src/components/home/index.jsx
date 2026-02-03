@@ -26,7 +26,7 @@ const Home = () => {
     },
     {
       icon: "/images/samples-analyzed.svg",
-      title: "8,284",
+      title: "8,294",
       key: "sample",
       textColor: "#a3584c",
       text: t("home:dataStaticList.samplesAnalyzed"),

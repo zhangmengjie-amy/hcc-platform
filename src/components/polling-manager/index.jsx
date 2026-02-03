@@ -1,4 +1,3 @@
-// components/biomarkers/polling-manager.js
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Flex, Progress, Alert, List, Tag } from "antd";
 import {

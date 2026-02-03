@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import VerticalTree from "@/components/vertical-tree";
+import VerticalTree from "@/components/common/tree/vertical-tree";
 import { Modal, Typography, Flex, Button, Spin, Empty } from "antd";
 import styles from "./style.module.scss";
-import DtLiverSampleChart from "@/components/dt-liver-sample";
-import PlanetLiverSampleChart from "@/components/planet-liver-sample";
+import DtLiverSampleChart from "@/components/common/tumor/dt-liver-sample";
+import PlanetLiverSampleChart from "@/components/common/tumor/planet-liver-sample";
 import { useTranslation } from "react-i18next";
 import { getFullPhylogenetic } from "@/configs/request";
 const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, dnaOrRna = "DNA", baseline = "left", showTumor = false }) => {

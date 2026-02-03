@@ -1,6 +1,6 @@
 "use client";
 
-import PhylogeneticRelationship from "@/components/mutation";
+import PhylogeneticRelationship from "@/components/modules/mutation";
 import { useParams } from "next/navigation";
 export default function PhylogeneticRelationshipPage() {
   const { params } = useParams();
