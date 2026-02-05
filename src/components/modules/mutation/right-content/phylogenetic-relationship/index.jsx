@@ -10,6 +10,7 @@ import TreeDialog from "@/components/tree-dialog";
 import TreeList from "@/components/modules/mutation/right-content/phylogenetic-relationship/phylogenetic-tree";
 import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
+import { useTranslation } from "react-i18next";
 
 const VISIBLE_TREE_LENGTH = 6;
 const TREE_WIDTH = 120;
@@ -55,6 +56,7 @@ const LEGEND = [{
 
 
 const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeType = "overview", conditions, handleComplete }) => {
+  const { t } = useTranslation();
   const [pieChartOption, setPieChartOption] = useState({});
   const [columnOption, setColumnOption] = useState({});
   const [loading, setLoading] = useState(true);
@@ -74,14 +76,14 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     if (!patientListRef.current || !fullMutationsRef.current) {
       Promise.all([getPatientList(null), getFullMutations(null)]).then((results) => {
         const [patientList, originalMutations] = results;
-        patientListRef.current = buildAllPatientsData(patientList);
+        patientListRef.current = buildAllPatientsData(patientList?.data ?? []);
         patientListFilteredByConditionRef.current = patientListRef.current;
-        fullMutationsRef.current = originalMutations;
+        fullMutationsRef.current = originalMutations?.data;
         let _patientList = patientListRef.current;
         if (dataType !== "all") {
           _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
         }
-        buildCharts(_patientList, originalMutations);
+        buildCharts(_patientList, originalMutations?.data);
       });
     } else {
       let _fullMutations = fullMutationsRef.current;
@@ -93,7 +95,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
       buildCharts(_patientList, _fullMutations);
     }
 
-  }, [conditions, dataType]);
+  }, [conditions, dataType, t]);
 
   const buildCharts = (patientList, originalMutations) => {
     setLoading(true);
@@ -148,7 +150,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     }
     barEchartsInstance?.setOption({
       title: {
-        text: `Total: ${rangePatientListRef.current?.length ?? 0}`,
+        text: `${t("common:patientCount")}: ${rangePatientListRef.current?.length ?? 0}`,
       },
     });
     const pieEchartsInstance = pieChartRef.current?.getEchartsInstance();
@@ -244,7 +246,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         containLabel: true,
       },
       title: {
-        text: `Total: ${rangePatientListRef.current?.length ?? 0}`,
+        text: `${t("common:patientCount")}: ${rangePatientListRef.current?.length ?? 0}`,
         left: "center",
         top: 5,
         textStyle: {
@@ -260,7 +262,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         show: true,
         type: "category",
         data: BAR_AXIS,
-        name: "Intra-tumor heterogeneity (ITH)",
+        name: t("common:ITH"),
         nameLocation: "middle",
         nameGap: 20,
         nameTextStyle: {

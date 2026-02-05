@@ -331,8 +331,8 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
       (results) => {
         const [patientList, geneList] = results;
 
-        geneListRef.current = geneList;
-        patientListRef.current = patientList
+        geneListRef.current = geneList?.data ?? [];
+        patientListRef.current = patientList?.data
           ?.filter((item) => !!item.subtypes?.length)
           .map((item) => {
             return {
@@ -620,7 +620,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                     align="center"
                     style={{ marginBottom: "10px", fontSize: "12px" }}
                   >
-                    Pure or Mixed
+                    {t("common:subtype.pureOrMixed")}
                   </Flex>
                   {Object.keys(MIXED_PURE).map((item) => {
                     return (
@@ -1013,7 +1013,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px", fontSize: "12px" }}>
-                    Pure or Mixed
+                    {t("common:subtype.pureOrMixed")}
                   </Flex>
                   {Object.keys(MIXED_PURE).map((item) => {
                     return (

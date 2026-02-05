@@ -21,7 +21,7 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, dnaOrRna 
     buildDtLiverSamples(treeData.patientId);
     const treeWorker = new Worker("/workers/tree.js");
     getFullPhylogenetic(dataType).then((results) => {
-      const geneData = results?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`));
+      const geneData = results?.data?.filter((item) => item?.sampleId?.includes(`${treeData.patientId}_`));
 
       treeWorker.postMessage({ newick: treeData?.newick, geneData });
       treeWorker.onmessage = ({ data }) => {
@@ -79,7 +79,7 @@ const TreeChart = ({ treeData, modalOpen, geneList, onclose, dataType, dnaOrRna 
     <Flex >
       {
         clinic && Object.keys(clinic)?.map((item) => {
-          return <Flex align="center" key={item}><span style={{ marginLeft: "10px", fontSize: "14px" }}>{t(`mutation:sample.${item}`)}:</span><span style={{ display: "inline-block", marginLeft: "5px", width: "12px", height: "12px", borderRadius: "6px", backgroundColor: `${clinic?.[item]?.color}` }}></span><span style={{ marginLeft: "5px", fontSize: "12px", color: "#666" }}>{clinic?.[item]?.value}</span></Flex>;
+          return <Flex align="center" key={item}><span style={{ marginLeft: "10px", fontSize: "14px" }}>{t(`common:clinical.${item}`)}:</span><span style={{ display: "inline-block", marginLeft: "5px", width: "12px", height: "12px", borderRadius: "6px", backgroundColor: `${clinic?.[item]?.color}` }}></span><span style={{ marginLeft: "5px", fontSize: "12px", color: "#666" }}>{clinic?.[item]?.value}</span></Flex>;
         })
       }</Flex></Flex>;
   });

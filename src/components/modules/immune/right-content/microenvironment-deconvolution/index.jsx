@@ -52,9 +52,9 @@ const Immune2Content = ({ conditions }) => {
       ]);
 
       // 分别设置数据
-      setData1(response1);
-      setData2(response2);
-      setData3(response3);
+      setData1(response1?.data);
+      setData2(response2?.data);
+      setData3(response3?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("数据加载失败，请稍后重试");

@@ -86,7 +86,7 @@ const DtLiverSampleChart = ({ data }) => {
       .attr("text-anchor", "middle")
       .style("font-size", "12px")
       .style("font-weight", "normal")
-      .text(`${data.patientId}, Tumor: ${tumorWidth}cm × ${tumorHeight}cm, Sample: ${samples.length}`);
+      .text(`${data.patientId}, Tumor Size: ${tumorWidth}cm × ${tumorHeight}cm, Sample: ${samples.length}`);
 
     // 添加背景图片
     const imageUrl = `/images/RNA_${data.patientId}.svg`;

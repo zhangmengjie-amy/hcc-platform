@@ -8,18 +8,8 @@ import React, {
   forwardRef,
   useMemo,
 } from "react";
-import { usePDF } from "react-to-pdf";
-import {
-  getGeneList,
-  getValidGeneList,
-  getGeneSetList,
-} from "@/configs/request";
 import {
   CaretRightOutlined,
-  LinkOutlined,
-  UploadOutlined,
-  ApartmentOutlined,
-  BranchesOutlined,
 } from "@ant-design/icons";
 
 
@@ -131,7 +121,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               borderRadius: "12px",
             }}
           >
-            <Typography.Title level={5}>Clinical</Typography.Title>
+            <Typography.Title level={5}>{t("common:clinical.title")}</Typography.Title>
             <Checkbox.Group
               onChange={setSelectedClinical}
               value={selectedClinical}
@@ -158,7 +148,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               borderRadius: "12px",
             }}
           >
-            <Typography.Title level={5}>Classify</Typography.Title>
+            <Typography.Title level={5}>{t("common:classify")}</Typography.Title>
             <Radio.Group
               onChange={(e) => {
                 setSelectedClassify(e.target.value);
@@ -168,7 +158,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               <Flex vertical>
                 <Radio value="Tissue">Tissue</Radio>
                 <Radio value="Celllines">Celllines</Radio>
-                <Radio value="all">All</Radio>
+                <Radio value="all">{t("common:all")}</Radio>
               </Flex>
             </Radio.Group>
           </Flex>
@@ -183,7 +173,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               borderRadius: "12px",
             }}
           >
-            <Typography.Title level={5}>Technology</Typography.Title>
+            <Typography.Title level={5}>{t("common:technology")}</Typography.Title>
             <Radio.Group
               onChange={(e) => {
                 setSelectedTechnology(e.target.value);
@@ -193,7 +183,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               <Flex vertical>
                 <Radio value="Sequencing">Sequence</Radio>
                 <Radio value="Micro array">Micro Array</Radio>
-                <Radio value="all">All</Radio>
+                <Radio value="all">{t("common:all")}</Radio>
               </Flex>
             </Radio.Group>
           </Flex>

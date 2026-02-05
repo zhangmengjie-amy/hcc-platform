@@ -1,10 +1,7 @@
 "use client";
 import React, {
-  useRef,
   useEffect,
-  useImperativeHandle,
   useState,
-  useCallback,
   forwardRef,
 } from "react";
 import { CaretRightOutlined } from "@ant-design/icons";
@@ -13,8 +10,6 @@ import { Collapse, Radio, Tooltip, Button, Flex, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import styles from "../style.module.scss";
-import { use } from "react";
-import { select } from "d3-selection";
 
 const RELOAD_ICON = "/images/reload.svg";
 const INIT_COHORT_TYPE = "PLANET";
@@ -88,7 +83,7 @@ const CohortType = forwardRef(({ onChange, onReady }, ref) => {
             <Flex flex={1}>
               <Radio value={"PLANET"}>PLANET</Radio>
               <Radio value={"DT"}>DT</Radio>
-              <Radio value={"ALL"}>ALL</Radio>
+              <Radio value={"ALL"}>{t("common:all")}</Radio>
             </Flex>
           </Radio.Group>
         </Flex>

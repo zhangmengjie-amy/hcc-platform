@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import { getITHList, getNewick, getPatientList } from "@/configs/request";
+import { getPatientList } from "@/configs/request";
 import VerticalTree from "@/components/common/tree/vertical-tree";
 import { getFullPhylogenetic, getFullMutations } from "@/configs/request";
 import {
@@ -35,9 +35,9 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handl
     if (!patientListRef.current || !fullMutationsRef.current) {
       Promise.all([getFullMutations(null), getPatientList(null), getFullPhylogenetic(null)]).then((results) => {
         const [originalMutations, patientList, fullPhylogenetic] = results;
-        patientListRef.current = patientList;
-        fullMutationsRef.current = originalMutations;
-        fullPhylogeneticRef.current = fullPhylogenetic;
+        patientListRef.current = patientList?.data ?? [];
+        fullMutationsRef.current = originalMutations?.data ?? [];
+        fullPhylogeneticRef.current = fullPhylogenetic?.data ?? [];
         let _fullMutations = fullMutationsRef.current;
         let _patientList = patientListRef.current;
         if (dataType !== "all") {
@@ -125,7 +125,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handl
                 <EmptyLoading hasData={!!treeList?.length} loading={loading}>
                   <div style={{ margin: "10px", height: "350px", padding: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, .05)", border: "1px solid #f0f0f0", borderRadius: "12px" }}>
                     <Typography.Paragraph style={{ margin: 0, textAlign: "left" }}>
-                      {"Patient: "} <span style={{ fontWeight: "bold" }}>{item.patientId}</span>  {"ITH:"} <span style={{ fontWeight: "bold" }}> {item.ith}</span>
+                      {t("common:patientId")}: <span style={{ fontWeight: "bold" }}>{item.patientId}</span>  {t("common:ITH")}: <span style={{ fontWeight: "bold" }}> {item.ith}</span>
                     </Typography.Paragraph>
                     <Flex style={{ height: "300px" }}>
                       <VerticalTree
@@ -146,7 +146,7 @@ const TimingAnalysis = ({ range = [0, 1], dataType = "planet", conditions, handl
         </Row>
         <Flex justify="flex-end" style={{ margin: "20px 0" }}> <Pagination
           total={treeList?.length}
-          showTotal={(total) => `Total ${total} items`}
+          showTotal={(total) => `${t("common:patientCount")}:${total}`}
           defaultPageSize={6}
           onChange={onPageSizeChange}
           defaultCurrent={1}

@@ -84,7 +84,7 @@ export const resendActivation = async (data) => {
 export const getGeneList = async (current, size, keywords) => {
   try {
     const response = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -94,7 +94,7 @@ export const getGeneList = async (current, size, keywords) => {
 export const getGeneSetList = async () => {
   try {
     const response = await get("/hcc/v1/gene-set/list");
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching gene set:", error);
     throw error;
@@ -104,7 +104,7 @@ export const getGeneSetList = async () => {
 export const getValidGeneList = async (data) => {
   try {
     const response = await post(`/hcc/v1/verify-gene`, data);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -114,7 +114,7 @@ export const getValidGeneList = async (data) => {
 export const getHeatmapBoxplot = async (data) => {
   try {
     const response = await post(`/hcc/v1/immune/heatmap-boxplot`, data);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -215,16 +215,6 @@ export const download = async (data) => {
   }
 };
 
-export const getITHList = async (type = "planet") => {
-  try {
-    const response = await get(`/hcc/v1/ith/list?type=${type}`);
-    return response?.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
 export const getCohortList = async (data) => {
   try {
     const response = await get(`/hcc/v1/cohort/list`, data);
@@ -238,7 +228,7 @@ export const getCohortList = async (data) => {
 export const getFullPhylogenetic = async (type = "planet") => {
   try {
     const response = await get(`/hcc/v1/phylogeneticTree/list${type ? "?type=" + type : ""}`);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -258,7 +248,7 @@ export const getLollipopPlotData = async (data) => {
 export const getClinicalConfig = async () => {
   try {
     const clinicalConfig = await get(`/hcc/v1/clinical/select/list`);
-    return clinicalConfig?.data;
+    return clinicalConfig;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -268,7 +258,7 @@ export const getClinicalConfig = async () => {
 export const getPatientList = async (type = "planet") => {
   try {
     const response = await get(`/hcc/v1/clinical/list${type ? "?type=" + type : ""}`);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -279,7 +269,7 @@ export const getPatientList = async (type = "planet") => {
 export const getFullMutations = async (type) => {
   try {
     const response = await get(`/hcc/v1/oncoprint/list${type ? "?type=" + type : ""}`);
-    return response?.data;
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

@@ -39,7 +39,7 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
           itemStyle: {
             borderWidth: 0,
           },
-          data: sampleType === "byPatient" ? getPatientGroups().map(group => {
+          data: sampleType === "sortedByPatient" ? getPatientGroups().map(group => {
             return [{
               xAxis: group.start,
               itemStyle: {
@@ -114,7 +114,7 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
       yAxis: [{
         show: true,
         splitArea: {
-          show: sampleType == "bySample",
+          show: sampleType == "sortedBySample",
         },
         type: "category",
         position: "left",
@@ -134,7 +134,7 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
         type: "category",
         position: "right",
         splitArea: {
-          show: sampleType == "bySample",
+          show: sampleType == "sortedBySample",
         },
         data: finialGeneList.map((item) => item.gene),
         axisLabel: {
@@ -162,7 +162,7 @@ const SampleChart = ({ sampleGenesMutations, finialGeneList, sampleCategories, s
           const { gender = "", race = "", age = "", hbv = "", hcv = "", stage = "" } = clinic ?? {};
           const [x, y, value] = params.data?.value;
           let tooltipContent = `Gene: ${gene} ${isDriver ? "Is Driver Gene" : "Not Driver Gene"}<br>`;
-          tooltipContent += `Sample: ${sampleType == "bySample" ? sampleId : (sampleId?.split("_").slice(0, 2).join("_"))}<br>`;
+          tooltipContent += `Sample: ${sampleType == "sortedBySample" ? sampleId : (sampleId?.split("_").slice(0, 2).join("_"))}<br>`;
           tooltipContent += `<span style="display: inline-block; background-color:${age.color};width: 10px;height: 10px;margin-right: 5px"></span>Age: ${age.value}<br>`;
           tooltipContent += `<span style="display: inline-block; background-color:${gender.color};width: 10px;height: 10px;margin-right: 5px"></span>Gender: ${gender.value}<br>`;
           tooltipContent += `<span style="display: inline-block; background-color:${race.color};width: 10px;height: 10px;margin-right: 5px"></span>Race: ${race.value}<br>`;

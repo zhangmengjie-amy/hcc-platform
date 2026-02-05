@@ -1,8 +1,7 @@
 {
   "menu": {
     "driverLandscape": "Driver Landscape",
-    "phylogeneticRelationship": "Phylogenetic Relationship",
-    "evolutionaryTrajectory": "Evolutionary Trajectory"
+    "phylogeneticRelationship": "Phylogenetic Relationship"
   },
   "type": {
     "alterations": "Alterations",

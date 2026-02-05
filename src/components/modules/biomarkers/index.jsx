@@ -262,8 +262,8 @@ const Biomarkers = () => {
           size="large"
           onChange={handleContentTypeChange}
           options={[
-            { value: "survival-analysis", label: "Survival Analysis" },
-            { value: "multi-modal-joint-analysis", label: "Multi-modal joint analysis" },
+            { value: "survival-analysis", label: t("common:tabs.survivalAnalysis") },
+            { value: "multi-modal-joint-analysis", label: t("common:tabs.multiModalJointAnalysis") },
           ]}
           value={contentType}
         />
@@ -272,7 +272,7 @@ const Biomarkers = () => {
         </Button>
       </Flex>
     );
-  }, [contentType]);
+  }, [contentType, t]);
 
   const handleBiomarker2Complete = useCallback(() => {
     setApplyLoading(false);

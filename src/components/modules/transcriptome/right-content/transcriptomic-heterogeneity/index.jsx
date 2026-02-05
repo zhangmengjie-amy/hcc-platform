@@ -7,8 +7,8 @@ import { getFullPhylogenetic } from "@/configs/request";
 import HorizontalTree from "@/components/common/tree/horizontal-tree/index";
 import PlanetLiverSampleChart from "@/components/common/tumor/planet-liver-sample";
 import DtLiverSampleChart from "@/components/common/tumor/dt-liver-sample";
-import SunburstChart from "@/components/modules/transcriptome/right-content/subtype-landscape/sunburst";
-import ColumnChart from "@/components/modules/transcriptome/right-content/subtype-landscape/column";
+import SunburstChart from "@/components/modules/transcriptome/right-content/transcriptomic-heterogeneity/sunburst";
+import ColumnChart from "@/components/modules/transcriptome/right-content/transcriptomic-heterogeneity/column";
 import filterSampleByConditions from "@/utils/filter-patient";
 import { useTranslation } from "react-i18next";
 
@@ -140,7 +140,12 @@ const STAGE_TRANS = {
   IIIB: "III",
   "III A": "III",
 };
-const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna = "RNA" }) => {
+const RightPanel = ({
+  conditions,
+  handleComplete,
+  dataType = "PLANET",
+  dnaOrRna = "RNA",
+}) => {
   const [planetTreeLoading, setPlanetTreeLoading] = useState(false);
   const [dtTreeLoading, setDtTreeLoading] = useState(false);
   const [planetTreeList, setPlanetTreeList] = useState(null);
@@ -161,23 +166,28 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
   const [filterdPatientList, setFilterdPatientList] = useState([]);
   const geneListRef = useRef(null);
 
-  
-  const mockFields = [{
-    key: "lee",
-    label: t("common:subtype.lee"),
-  }, {
-    key: "hoshida",
-    label: t("common:subtype.hoshida"),
-  }, {
-    key: "boyault",
-    label: t("common:subtype.boyault"),
-  }, {
-    key: "chiang",
-    label: t("common:subtype.chiang"),
-  }, {
-    key: "subtype",
-    label: t("common:subtype.subtype"),
-  }];
+  const mockFields = [
+    {
+      key: "lee",
+      label: t("common:subtype.lee"),
+    },
+    {
+      key: "hoshida",
+      label: t("common:subtype.hoshida"),
+    },
+    {
+      key: "boyault",
+      label: t("common:subtype.boyault"),
+    },
+    {
+      key: "chiang",
+      label: t("common:subtype.chiang"),
+    },
+    {
+      key: "subtype",
+      label: t("common:subtype.subtype"),
+    },
+  ];
 
   useEffect(() => {
     if (!conditions) return;
@@ -209,8 +219,8 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
     Promise.all([getPatientList(null), getFullPhylogenetic(null)]).then(
       (results) => {
         const [patientList, geneList] = results;
-        geneListRef.current = geneList;
-        patientListRef.current = patientList
+        geneListRef.current = geneList?.data ?? [];
+        patientListRef.current = patientList?.data
           ?.filter((item) => !!item.subtypes?.length)
           .map((item) => {
             return {
@@ -483,7 +493,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Pure or Mixed
+                    {t("common:subtype.pureOrMixed")}
                   </Flex>
                   {Object.keys(MIXED_PURE).map((item) => {
                     return (
@@ -497,14 +507,14 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: MIXED_PURE[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Stage
+                    {t("common:clinical.stage")}
                   </Flex>
                   {Object.keys(STAGE_COLOR).map((item) => {
                     return (
@@ -518,14 +528,14 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: STAGE_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Subtype
+                    {t("common:subtype.subtype")}
                   </Flex>
                   {Object.keys(PLANET_SUBTYPE_COLOR).map((item) => {
                     return (
@@ -539,14 +549,14 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: PLANET_SUBTYPE_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Samples
+                    {t("common:sample")}
                   </Flex>
                   {[...Array(7)].map((_, i) => {
                     const tStage = `T${i + 1}`;
@@ -593,7 +603,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: PLANET_LEE_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
@@ -614,7 +624,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: PLANET_HOSHIDA_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
@@ -635,7 +645,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: PLANET_BOYAULT_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
@@ -656,7 +666,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: PLANET_CHIANG_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
@@ -697,7 +707,9 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                       align="center"
                       justify="center"
                     >
-                      <Empty style={{ width: "100%", padding: "20px" }}></Empty>{" "}
+                      <Empty
+                        style={{ width: "100%", padding: "20px" }}
+                      ></Empty>{" "}
                     </Flex>
                   )
                 ) : (
@@ -735,7 +747,9 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 >
                   <Typography.Link>
                     <Space>
-                      <span style={{ color: "#000" }}>Selected: </span>
+                      <span style={{ color: "#000" }}>
+                        {t("common:selected")}:{" "}
+                      </span>
                       {t(`common:subtype.${selectedPlanetSubtype}`)}
                       <DownOutlined />
                     </Space>
@@ -795,7 +809,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                           >
                             <Empty
                               style={{ width: "100%", padding: "20px" }}
-                            ></Empty>{" "}
+                            ></Empty>
                           </Flex>
                         )}
                       </Flex>
@@ -837,7 +851,7 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Pure or Mixed
+                    {t("common:subtype.pureOrMixed")}
                   </Flex>
                   {Object.keys(MIXED_PURE).map((item) => {
                     return (
@@ -851,14 +865,14 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: MIXED_PURE[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Stage
+                    {t("common:clinical.stage")}
                   </Flex>
                   {Object.keys(STAGE_COLOR).map((item) => {
                     return (
@@ -872,14 +886,14 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: STAGE_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Subtype
+                    {t("common:subtype.subtype")}
                   </Flex>
                   {Object.keys(DT_SUBTYPE_COLOR).map((item) => {
                     return (
@@ -893,14 +907,14 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                             backgroundColor: DT_SUBTYPE_COLOR[item],
                           }}
                         ></span>
-                        <span>{item}</span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Samples
+                    {t("common:sample")}
                   </Flex>
                   {[...Array(7)].map((_, i) => {
                     const tStage = `T${i + 1}`;
@@ -924,6 +938,92 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                           />
                         </svg>
                         <span>{tStage}</span>
+                      </Flex>
+                    );
+                  })}
+                </Flex>
+              </Flex>
+              <Flex style={{ marginTop: "30px" }}>
+                <Flex vertical style={{ marginLeft: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                    Lee
+                  </Flex>
+                  {Object.keys(PLANET_LEE_COLOR).map((item) => {
+                    return (
+                      <Flex key={item} align="center">
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "20px",
+                            height: "12px",
+                            marginRight: "5px",
+                            backgroundColor: PLANET_LEE_COLOR[item],
+                          }}
+                        ></span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
+                      </Flex>
+                    );
+                  })}
+                </Flex>
+                <Flex vertical style={{ marginLeft: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                    {t("common:subtype.hoshida")}
+                  </Flex>
+                  {Object.keys(PLANET_HOSHIDA_COLOR).map((item) => {
+                    return (
+                      <Flex key={item} align="center">
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "20px",
+                            height: "12px",
+                            marginRight: "5px",
+                            backgroundColor: PLANET_HOSHIDA_COLOR[item],
+                          }}
+                        ></span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
+                      </Flex>
+                    );
+                  })}
+                </Flex>
+                <Flex vertical style={{ marginLeft: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                    {t("common:subtype.boyault")}
+                  </Flex>
+                  {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
+                    return (
+                      <Flex key={item} align="center">
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "20px",
+                            height: "12px",
+                            marginRight: "5px",
+                            backgroundColor: PLANET_BOYAULT_COLOR[item],
+                          }}
+                        ></span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
+                      </Flex>
+                    );
+                  })}
+                </Flex>
+                <Flex vertical style={{ marginLeft: "10px" }}>
+                  <Flex align="center" style={{ marginBottom: "10px" }}>
+                    {t("common:subtype.chiang")}
+                  </Flex>
+                  {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
+                    return (
+                      <Flex key={item} align="center">
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "20px",
+                            height: "12px",
+                            marginRight: "5px",
+                            backgroundColor: PLANET_CHIANG_COLOR[item],
+                          }}
+                        ></span>
+                        <span style={{ fontSize: 12 }}>{item}</span>
                       </Flex>
                     );
                   })}
@@ -964,7 +1064,9 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                       align="center"
                       justify="center"
                     >
-                      <Empty style={{ width: "100%", padding: "20px" }}></Empty>{" "}
+                      <Empty
+                        style={{ width: "100%", padding: "20px" }}
+                      ></Empty>{" "}
                     </Flex>
                   )
                 ) : (
@@ -1002,7 +1104,9 @@ const RightPanel = ({ conditions, handleComplete, dataType = "PLANET", dnaOrRna 
                 >
                   <Typography.Link>
                     <Space>
-                      <span style={{ color: "#000" }}>Selected: </span>
+                      <span style={{ color: "#000" }}>
+                        {t("common:selected")}:{" "}
+                      </span>
                       {selectedDtSubtype}
                       <DownOutlined />
                     </Space>

@@ -26,7 +26,7 @@ const Mutation = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [conditions, setConditions] = useState(null);
   const [dataType, setDataType] = useState(null);
-  const [sampleType, setSampleType] = useState("bySample");
+  const [sampleType, setSampleType] = useState("sortedBySample");
   const [range, setRange] = useState([0, 1]);
 
   const conditionsRef = useRef(null);
@@ -84,12 +84,12 @@ const Mutation = () => {
           size="large"
           onChange={handleContentTypeChange}
           options={[
-            { value: "driver-landscape", label: "Driver Landscape" },
+            { value: "driver-landscape", label: t("common:tabs.driverLandscape") },
             {
               value: "phylogenetic-relationship",
-              label: "Phylogenetic Relationship",
+              label: t("common:tabs.phylogeneticRelationship"),
             },
-            { value: "timing-analysis", label: "Timing Analysis" },
+            { value: "timing-analysis", label: t("common:tabs.timingAnalysis") },
           ]}
           value={contentType}
         />
@@ -98,8 +98,8 @@ const Mutation = () => {
             size="large"
             onChange={onSampleTypeChange}
             options={[
-              { value: "bySample", label: "By Sample" },
-              { value: "byPatient", label: "By Patients" },
+              { value: "sortedBySample", label: t("common:tabs.sortedBySample") },
+              { value: "sortedByPatient", label: t("common:tabs.sortedByPatient") },
             ]}
             value={sampleType}
             style={{ marginLeft: "20px" }}
@@ -110,8 +110,8 @@ const Mutation = () => {
             size="large"
             onChange={setTreeType}
             options={[
-              { value: "overview", label: "Overview" },
-              { value: "detail", label: "Detail" },
+              { value: "overview", label: t("common:tabs.overview") },
+              { value: "detail", label: t("common:tabs.detail") },
             ]}
             value={treeType}
             style={{ marginLeft: "20px" }}
@@ -119,7 +119,7 @@ const Mutation = () => {
         )}
       </>
     );
-  }, [contentType, treeType, sampleType]);
+  }, [contentType, treeType, sampleType, t]);
 
   const rightContent = useMemo(() => {
     return (

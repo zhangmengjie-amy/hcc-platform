@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { Layout, FloatButton } from "antd";
-import HomeContent from "@/components/modules/home/content";
-import HomeBanner from "@/components/modules/home/banner";
+import { Layout } from "antd";
+import HomeContent from "@/components/home/content";
+import HomeBanner from "@/components/home/banner";
 
 const Home = () => {
 

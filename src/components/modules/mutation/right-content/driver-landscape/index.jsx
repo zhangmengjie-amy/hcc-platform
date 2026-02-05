@@ -1,14 +1,15 @@
 "use client";
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { Row, Col, Alert } from "antd";
-import { getFullMutations, getDTMutations } from "@/configs/request";
+import { getFullMutations } from "@/configs/request";
 import ClinicChart from "./clinicChart";
 import GeneChart from "./geneChart";
 import MutationChart from "./mutationChart";
 import SampleChart from "./sampleChart";
 import ChartsLegend from "./chartsLegend";
+import { useTranslation } from "react-i18next";
 
-const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampleType = "bySample", conditions }, ref) => {
+const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampleType = "sortedBySample", conditions }, ref) => {
   const [sampleMutations, setSampleMutations] = useState(null);
   const [genesMutations, setGenesMutations] = useState(null);
   const [sampleGenesMutations, setSampleGenesMutations] = useState(null);
@@ -17,6 +18,7 @@ const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampl
   const [clinicList, setClinicList] = useState(null);
   const [finialGeneList, setFinialGeneList] = useState(null);
   const fullMutationsRef = useRef(null);
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampl
       buildMutation();
     } else {
       getFullMutations(null).then((results) => {
-        fullMutationsRef.current = results;
+        fullMutationsRef.current = results?.data ?? [];
         buildMutation();
       },
       );
@@ -63,7 +65,7 @@ const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampl
 
   return (
     <div ref={ref}>
-      <Alert message={<><span>Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left. </span> <span>Please Refer to <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
+      <Alert message={<><span>{t("common:modules.driverLandscape")}</span> <span>{t("common:referTo")} <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
       <Row style={{ width: "100%" }}>
         <Col xs={21} sm={21} md={21} lg={21} xl={21}>
           <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>

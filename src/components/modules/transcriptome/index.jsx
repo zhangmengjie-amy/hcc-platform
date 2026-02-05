@@ -17,10 +17,10 @@ import {
 } from "@ant-design/icons";
 import SplitBar from "@/components/common/split-bar";
 import PollingManager from "@/components/polling-manager";
-import SubtypeLandscapeCondition from "./left-content/subtype-landscape";
-import PathwaysCondition from "./left-content/pathways";
-import SubtypeLandscapeContent from "./right-content/subtype-landscape";
-import PathwaysContent from "./right-content/pathways";
+import SubtypeLandscapeCondition from "./left-content/transcriptomic-heterogeneity";
+import PathwaysCondition from "./left-content/differential-expression-analysis";
+import SubtypeLandscapeContent from "./right-content/transcriptomic-heterogeneity";
+import PathwaysContent from "./right-content/differential-expression-analysis";
 import {
   Button,
   Segmented,
@@ -194,13 +194,13 @@ const Transcriptome = () => {
         size="large"
         onChange={handleContentTypeChange}
         options={[
-          { value: "transcriptomic-heterogeneity", label: "Subtype Landscape and Tree" },
-          { value: "differential-expression-analysis", label: "Customized DEGs and pathways" },
+          { value: "transcriptomic-heterogeneity", label: t("common:tabs.transcriptomicHeterogeneity") },
+          { value: "differential-expression-analysis", label: t("common:tabs.differentialExpressionAnalysis") },
         ]}
         value={contentType}
       />
     );
-  }, [contentType]);
+  }, [contentType, t]);
 
   const handleSubtypeLandscapeComplete = useCallback(() => {
     setApplyLoading(false);

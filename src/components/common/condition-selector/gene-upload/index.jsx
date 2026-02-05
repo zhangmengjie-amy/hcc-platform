@@ -1,41 +1,40 @@
 // components/GeneUpload.jsx
 import React, { useState, useEffect } from "react";
-import { Upload, Button, message, Tag, Spin, Space, Typography } from "antd";
-import { UploadOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import {
+  Upload,
+  Button,
+  message,
+  Tag,
+  Spin,
+  Space,
+  Typography,
+  Flex,
+} from "antd";
+import {
+  UploadOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import { validGene } from "@/configs/request";
-import PropTypes from "prop-types"; // 导入 PropTypes
+import { useTranslation } from "react-i18next";
 
 const { Paragraph } = Typography;
 
-// 假设的后端接口模拟
-const mockValidateGenesAPI = (geneNames) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const validGenes = geneNames.filter(name => {
-        return name.startsWith("GENE") || (name.length > 3 && !name.includes("INVALID"));
-      });
-      resolve({
-        success: true,
-        data: validGenes,
-        message: "基因验证成功",
-      });
-    }, 1000);
-  });
-};
-
 // 添加一个 prop: onChange
-const GeneUpload = ({ onChange }) => { // 接收 onChange prop
+const GeneUpload = ({ onChange }) => {
+  // 接收 onChange prop
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [validGenes, setValidGenes] = useState([]);
   const [invalidGenes, setInvalidGenes] = useState([]);
   const [totalGenesCount, setTotalGenesCount] = useState(0);
+  const { t } = useTranslation();
 
   const beforeUpload = (file) => {
     const isTxt = file.type === "text/plain";
     if (!isTxt) {
-      message.error("只能上传 TXT 文件!");
+      message.error(t("common:only-txt-file"));
     }
     setFileList(isTxt ? [file] : []);
     return isTxt || Upload.LIST_IGNORE;
@@ -57,7 +56,6 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
       onChange?.([]);
     }
 
-
     const file = fileList[0];
     const reader = new FileReader();
 
@@ -66,8 +64,8 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
       const lines = content.split("\n");
 
       const rawGeneNames = lines
-        .map(line => line.trim())
-        .filter(line => line !== "");
+        .map((line) => line.trim())
+        .filter((line) => line !== "");
 
       setTotalGenesCount(rawGeneNames.length);
 
@@ -85,16 +83,17 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
         console.log("rawGeneNames:", rawGeneNames);
         const response = await validGene(rawGeneNames);
         if (response.code == 200) {
-          const validated = response.data?.map(item => item.name);
+          const validated = response.data?.map((item) => item.name);
 
-          const invalid = rawGeneNames.filter(name => !validated.includes(name));
+          const invalid = rawGeneNames.filter(
+            (name) => !validated.includes(name),
+          );
           setValidGenes(validated);
           setInvalidGenes(invalid);
           message.success("基因文件处理并验证成功！");
 
           // *** 关键修改：调用父组件传递的回调函数 ***
           onChange?.(validated);
-
         } else {
           message.error(`基因验证失败: ${response.message}`);
           if (onChange) {
@@ -155,63 +154,86 @@ const GeneUpload = ({ onChange }) => { // 接收 onChange prop
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
-      <Typography.Title level={5}>上传基因列表 (TXT)</Typography.Title>
-      <Paragraph>
-        请上传一个 TXT 文件，每行包含一个基因名字。系统将自动识别、去除空格并验证基因名字的合法性。
-      </Paragraph>
+      {/* <Typography.Title level={5}>{t("common:uploadGeneList")} (TXT)</Typography.Title> */}
+      <Paragraph>{t("common:uploadGeneListTips")}</Paragraph>
 
       <Upload {...uploadProps}>
-        <Button size="small" icon={<UploadOutlined />} disabled={uploading || processing}>
-          选择 TXT 文件
+        <Button
+          size="small"
+          icon={<UploadOutlined />}
+          disabled={uploading || processing}
+        >
+          {t("common:selectTxtFile")}
         </Button>
       </Upload>
 
       <Button
         type="primary"
-        // onClick={handleUpload}
         disabled={true}
         loading={uploading || processing}
         style={{ marginTop: 16 }}
       >
-        {uploading || processing ? "处理中..." : "等待验证"}
+        {uploading || processing
+          ? `${t("common:processing")}...`
+          : t("common:waitForValidation")}
       </Button>
 
-      {(validGenes.length > 0 || invalidGenes.length > 0 || (totalGenesCount > 0 && !processing)) && (
-        <div style={{ marginTop: 24, borderTop: "1px solid #eee", paddingTop: 24 }}>
+      {(validGenes.length > 0 ||
+        invalidGenes.length > 0 ||
+        (totalGenesCount > 0 && !processing)) && (
+        <div
+          style={{ marginTop: 24, borderTop: "1px solid #eee", paddingTop: 24 }}
+        >
           {processing ? (
-            <Spin tip="正在处理文件并验证基因..."></Spin>
+            <Spin tip={`${t("common:processing")}...`}></Spin>
           ) : (
             <>
               <Typography.Title level={5}>
-                共识别<strong>{totalGenesCount}</strong>个基因，合法的基因{validGenes.length}个:
+                {t("common:allVerifiedGeneNames")}:{" "}
+                <strong>{totalGenesCount}</strong>
               </Typography.Title>
-
-              <Space size={[0, 8]} wrap>
-                {validGenes.length > 0 ? (
-                  validGenes.map((gene, index) => (
-                    <Tag key={index} icon={<CheckCircleOutlined />} color="success">
-                      {gene}
-                    </Tag>
-                  ))
-                ) : (
-                  <Tag color="default">无</Tag>
-                )}
-              </Space>
-
-              <Paragraph style={{ marginTop: 16 }}>
-                不合法的基因名字 ({invalidGenes.length} 个):
-              </Paragraph>
-              <Space size={[0, 8]} wrap>
-                {invalidGenes.length > 0 ? (
-                  invalidGenes.map((gene, index) => (
-                    <Tag key={index} icon={<CloseCircleOutlined />} color="error">
-                      {gene}
-                    </Tag>
-                  ))
-                ) : (
-                  <Tag color="default">无</Tag>
-                )}
-              </Space>
+              <Flex>
+                <Flex vertical style={{ flex: 1, marginRight: 24 }}>
+                  <Paragraph style={{ marginTop: 16 }}>
+                    {t("common:validGeneNames")} ({validGenes.length}):
+                  </Paragraph>
+                  <Space size={[0, 8]} wrap>
+                    {validGenes.length > 0 ? (
+                      validGenes.map((gene, index) => (
+                        <Tag
+                          key={index}
+                          icon={<CheckCircleOutlined />}
+                          color="success"
+                        >
+                          {gene}
+                        </Tag>
+                      ))
+                    ) : (
+                      <Tag color="default">{t("common:none")}</Tag>
+                    )}
+                  </Space>
+                </Flex>
+                <Flex vertical style={{ flex: 1 }}>
+                  <Paragraph style={{ marginTop: 16 }}>
+                    {t("common:invalidGeneNames")} ({invalidGenes.length}):
+                  </Paragraph>
+                  <Space size={[0, 8]} wrap>
+                    {invalidGenes.length > 0 ? (
+                      invalidGenes.map((gene, index) => (
+                        <Tag
+                          key={index}
+                          icon={<CloseCircleOutlined />}
+                          color="error"
+                        >
+                          {gene}
+                        </Tag>
+                      ))
+                    ) : (
+                      <Tag color="default">{t("common:none")}</Tag>
+                    )}
+                  </Space>
+                </Flex>
+              </Flex>
             </>
           )}
         </div>

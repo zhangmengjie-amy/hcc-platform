@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
 import EChartsReact from "echarts-for-react";
+import { useTranslation } from "react-i18next";
 import {
   Empty,
   Flex,
@@ -8,13 +9,21 @@ import {
 import { set } from "lodash";
 
 const SUBTYPE_COLOR = {
-  "Wound healing": "rgb(251, 154, 153)",
-  "IFN-g dominant": "rgb(253, 191, 111)",
-  "Inflammatory": "rgb(178, 223, 138)",
-  "Lymphocyte depleted": "rgb(31, 120, 180)",
-  "TGF-b dominant": "rgb(202, 178, 214)",
+  "C1": "rgb(79, 151, 121)",
+  "C2": "rgb(72, 128, 187)",
+  "C3": "rgb(150, 91, 164)",
+  "C4": "rgb(167, 134, 56)",
+  "C5": "rgb(238, 188, 57)",
+  "C6": "rgb(218, 85, 76)",
 };
 
+const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
+  "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
+  "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
+  "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
+  "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
+  "C1,C2,C3,C4,C5,C6",
+];
 
 const MIXED_PURE = {
   "Pure": "rgb(106, 194, 165)",
@@ -37,11 +46,12 @@ const spaceValue = 0.2;
 const SunburstChart = ({ data, patientId, handleItemClick }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);
+  const { t } = useTranslation();
   useEffect(() => {
     if (!data) return;
     const _option = buildOption();
     setOption(_option);
-  }, [data, patientId]);
+  }, [data, patientId, t]);
 
 
 
@@ -53,28 +63,26 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     const patientList = sortedPatientById(_patientList);
     let sortedPatientList = [];
     const purePatientList = [];
-    let mixedPatientList = [];
+    const mixedPatientList = [];
     const patientWithGroupSubtype = patientList
-      .filter((item) => new Set(item.subtypes?.map((s) => s.immuneSubtype)).size > 1)
+      .filter((item) => new Set(item.subtypes?.map((s) => s.subtype)).size > 1)
       .map((item) => ({
         ...item,
-        subtypes: item.subtypes.sort((a, b) => a.id?.localeCompare(b.id)),
+        subtypes: item.subtypes.sort((a, b) => a.subtype?.localeCompare(b.subtype)),
       }));
 
 
-    // MIXED_GROUP.forEach((group) => {
-    //     const patient = patientWithGroupSubtype.filter((item) => {
-    //         return Array.from(new Set(item.subtypes.map((sample) => sample.subtype))).join(",") == group
-    //     }).sort((a, b) => a.stage.length - b.stage.length);
-    //     mixedPatientList.push(...patient);
-    // })
-    mixedPatientList = patientWithGroupSubtype.sort((a, b) => a.stage.length - b.stage.length);
-    const patientWithSingleSubtype = patientList.filter((item) => new Set(item.subtypes?.map((item) => item.immuneSubtype)).size == 1);
+    MIXED_GROUP.forEach((group) => {
+      const patient = patientWithGroupSubtype.filter((item) => {
+        return Array.from(new Set(item.subtypes.map((sample) => sample.subtype))).join(",") == group;
+      }).sort((a, b) => a.stage.length - b.stage.length);
+      mixedPatientList.push(...patient);
+    });
+    const patientWithSingleSubtype = patientList.filter((item) => new Set(item.subtypes?.map((item) => item.subtype)).size == 1);
     Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-      const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.subtypes[0].immuneSubtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
+      const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.subtypes[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
       purePatientList.push(...patientWithSameSubtype);
     });
-
     sortedPatientList = [...purePatientList, ...mixedPatientList];
     return sortedPatientList;
   };
@@ -154,7 +162,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
         }],
       },
     ];
-    const subtype = patient.subtypes[sampleLength - 1]?.immuneSubtype;
+    const subtype = patient.subtypes[sampleLength - 1]?.subtype;
     const sampleId = patient.subtypes[sampleLength - 1]?.id;
     const color = SUBTYPE_COLOR[subtype];
     children.push({
@@ -180,10 +188,9 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     const filterdPatient = filterPatients(data);
     setHasData(!!filterdPatient?.length);
     const sortedPatient = sortPatients(filterdPatient);
-        
-    console.log("sortedPatient", data, filterdPatient, sortedPatient);
     let seriesData = [];
     const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.subtypes?.length));
+
 
     const pureChildren = [];
     const mixedChildren = [];
@@ -192,14 +199,13 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     let pureTotalSpace = 0;
     let mixedTotalSpace = 0;
     const mixedPatientsLength = sortedPatient.filter((item) => {
-      return new Set(item.subtypes.map((item) => item.immuneSubtype)).size > 1;
+      return new Set(item.subtypes.map((item) => item.subtype)).size > 1;
     })?.length;
     const purePatientsLength = sortedPatient.filter((item) => {
-      return new Set(item.subtypes.map((item) => item.immuneSubtype)).size == 1;
+      return new Set(item.subtypes.map((item) => item.subtype)).size == 1;
     })?.length;
-
     sortedPatient.forEach((patient, index) => {
-      const isPure = new Set(patient.subtypes.map((item) => item.immuneSubtype)).size == 1;
+      const isPure = new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
       const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
       if (isPure) {
         if (!initialPureSubtype && !!mixedPatientsLength) {
@@ -217,7 +223,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
             children: [],
           });
         }
-        if (initialPureSubtype !== patient.subtypes[0].immuneSubtype && mixedPatientsLength) {
+        if (initialPureSubtype !== patient.subtypes[0].subtype && mixedPatientsLength) {
           pureTotalSpace += 1;
           pureChildren.push({
             value: spaceValue,
@@ -230,9 +236,9 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
           });
         }
 
-        initialPureSubtype = patient.subtypes[0].immuneSubtype;
+        initialPureSubtype = patient.subtypes[0].subtype;
         pureChildren.push(...result);
-        if (new Set(sortedPatient[index + 1]?.subtypes.map((item) => item.immuneSubtype)).size > 1) {
+        if (new Set(sortedPatient[index + 1]?.subtypes.map((item) => item.subtype)).size > 1) {
           pureChildren.push({
             value: defaultValue,
             name: "Pure",
@@ -249,7 +255,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
         }
 
       } else {
-        const currentMixedSubtype = Array.from(new Set(patient.subtypes.map((sample) => sample.immuneSubtype))).join(",");
+        const currentMixedSubtype = Array.from(new Set(patient.subtypes.map((sample) => sample.subtype))).join(",");
         if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype && !!purePatientsLength) {
           mixedTotalSpace += 1;
           mixedChildren.push({
@@ -284,7 +290,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
       },
       label: {
         formatter: () => {
-          return `${realPurePercent}%\n\nPure patients`;
+          return `${realPurePercent}%\n\n${t("common:subtype.pure")}`;
         },
         rotate: "tangential",
         verticalAlign: "top",
@@ -394,8 +400,8 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
   }, []);
 
   return (
-    hasData ?  <EChartsReact style={{ width: "100%", height: "400px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: "svg" }}></EChartsReact> : 
-      <Flex style={{ height: "400px" }} align="center" justify="center"><Empty style={{ width: "100%", padding: "20px" }}></Empty> </Flex>
+    hasData ?  <EChartsReact style={{ width: "100%", height: "360px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: "svg" }}></EChartsReact> : 
+      <Flex style={{ height: "360px" }} align="center" justify="center"><Empty style={{ width: "100%", padding: "20px" }}></Empty> </Flex>
   );
 };
 

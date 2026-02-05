@@ -49,7 +49,7 @@ const Chart = forwardRef(({ option, title }, ref) => {
         },
         series: [
           {
-            data: Object.keys(option).map(key => ({ value: option[key].count, name: t(`mutation:sample.${key}`) })),
+            data: Object.keys(option).map(key => ({ value: option[key].count, name: t(`common:clinical.${key}`) })),
             type: "bar",
             itemStyle: { // Add itemStyle for individual bar styling
               color: (params) => {
@@ -64,7 +64,7 @@ const Chart = forwardRef(({ option, title }, ref) => {
     }
     const _chartOption = {
       title: {
-        text: t(`mutation:sample.${title}`),
+        text: t(`common:clinical.${title}`),
         left: "left",
         textStyle: {
           fontSize: 16,
@@ -95,14 +95,14 @@ const Chart = forwardRef(({ option, title }, ref) => {
       },
       series: [
         {
-          name:  t(`mutation:sample.${title}`),
+          name:  t(`common:clinical.${title}`),
           type: "pie",
           label: {
             show: false,
           },
           color: Object.keys(option).map(key => option[key].color),
           radius: "80%",
-          data: Object.keys(option).map(key => ({ value: option[key].count, name:  t(`mutation:sample.${key}`) })),
+          data: Object.keys(option).map(key => ({ value: option[key].count, name:  t(`common:clinical.${key}`) })),
           emphasis: {
             itemStyle: {
               shadowBlur: 10,

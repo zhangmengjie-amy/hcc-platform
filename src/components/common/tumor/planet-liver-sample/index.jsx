@@ -57,7 +57,7 @@ const PlanetLiverSampleChart = ({ data }) => {
       .attr("y", -margin.top / 2 + 5) // Adjust position as needed
       .attr("text-anchor", "middle")
       .style("font-size", "12px") // Slightly smaller font
-      .text(`${data.patientId}, Tumor: ${data.tumor_size}cm, Sample: ${(Number(data.samples[0].sample_r) * 2).toFixed(2)}cm`);
+      .text(`${data.patientId}, Tumor Size: ${data.tumor_size}cm, Sample: ${(Number(data.samples[0].sample_r) * 2).toFixed(2)}cm`);
 
     // Draw the liver
     svg.append("circle")

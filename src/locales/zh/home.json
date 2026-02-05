@@ -13,7 +13,7 @@
   },
   "banner": {
     "title": "欢迎使用LIGOR",
-    "description": "Liver Cancer Geospatial Omics Resource (LIGOR) is a comprehensive database designed to characterize the spatial intra-tumor heterogeneity(sITH) of hepatocellular carcinoma based on multi-omics data collected from spatially informed tumor sectors. It enables the exploration of multi-omic information across cohorts, characterizing spatial and temporal patterns of molecular changes, facilitating the discovery of biomarkers of clinical relevance."
+    "description": "肝癌空间组学资源库（LIGOR） 是一个综合性数据库，旨在基于从空间定位的肿瘤区域收集的多组学数据，刻画肝细胞癌的空间肿瘤内异质性。该平台支持跨队列多组学信息的探索，描绘分子变化的空间与时间模式，助力发现具有临床相关性的生物标志物。"
   },
   "search": {
     "placeholder": "搜索突变基因名 / 临床信息"
@@ -22,6 +22,48 @@
   "samplesAnalyzed": "样品分析",
   "identifiedMutations": "突变识别",
   "publishedPapers": "论文发表",
+  "dataStaticList": {
+    "totalPatients": "总患者数",
+    "samplesAnalyzed": "已分析样品数",
+    "totalCohorts": "总队列数",
+    "dataType": "数据类型",
+    "multiSectors": "多区域"
+  },
+  "models": {
+    "title": "单模态",
+    "driverLandscape": {
+      "title": "基因分布",
+      "description": "Oncoprint图展示了跨样本与跨患者的驱动基因（或用户关注的基因）中的遗传变异情况。"
+    },
+    "timingAnalysis": {
+      "title": "时序分析",
+      "description": "时间分析允许用户通过将突变基因映射到系统发育树上来追踪其突变时间。"
+    },
+    "differentialExpressionAnalysis": {
+      "title": "差异表达分析",
+      "description": "差异基因表达分析发现不同亚组（例如，按临床信息或分子特征分组）样本之间的差异表达基因（DEGs）。"
+    },
+    "transcriptomicHeterogeneity": {
+      "title": "转录组异质性",
+      "description": "该模块探索转录组亚型在患者内和患者间空间样本中的分布情况。"
+    },
+    "microenvironmentDeconvolution": {
+      "title": "微环境解构",
+      "description": "微环境解构旨在表征免疫或基质细胞的分布并分类肿瘤微环境。"
+    },
+    "microenvironmentSpatialHeterogeneity": {
+      "title": "微环境空间异质性",
+      "description": "该模块探索肿瘤微环境亚型在患者内和患者间空间样本中的变化情况。"
+    },
+    "survivalAnalysis": {
+      "title": "生存分析",
+      "description": "在该模块中，用户可以使用现有的或自定义的生物标志物，探索生物标志物如何对患者生存进行分层。"
+    },
+    "multiModalJointAnalysis": {
+      "title": "多模态联合分析",
+      "description": "该模块允许联合显示和分析多模态信息。"
+    }
+  },
   "researchOverview": {
     "title": "核心功能",
     "list": {
@@ -47,8 +89,8 @@
   },
   "footer" : {
     "aboutHccPlatform": {
-      "title": "LIGOR",
-      "description": "Integrating geospatial and temporal multi-omic information to provide a comprehensive platform, accelerating precision medicine in hepatocellular carcinoma."
+      "title": "肝癌空间组学资源库(LIGOR)",
+      "description": "通过整合空间与时间维度的多组学信息，构建一个综合性平台，以加速肝细胞癌精准医疗的进程。"
     },
     "quickLinks": {
       "title": "快速链接"
@@ -57,7 +99,13 @@
       "title": "资源"
     },
     "contact": {
-      "title": "联系"
+      "title": "联系方式",
+      "description": "如果您有任何问题或建议，请联系我们",
+      "github": "Github",
+      "email": "邮箱",
+      "ioz": "中国科学院动物研究所",
+      "security": "京公网安备11010502040073号",
+      "icp": "京ICP备05064604号-27"
     },
     "copyright": "版权所有"
   }

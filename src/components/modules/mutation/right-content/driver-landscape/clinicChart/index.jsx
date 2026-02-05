@@ -15,7 +15,7 @@ const ClinicChart = ({ clinicList, finialGeneList }) => {
     const option = buildBottomChartOption();
     setBottomChartOption(option);
     setLoading(false);
-  }, [clinicList, finialGeneList]);
+  }, [clinicList, finialGeneList, t]);
   const getBottomSeries = () => {
     const seriesData = [];
     clinicConfig.forEach((item, yIndex) => {
@@ -48,7 +48,7 @@ const ClinicChart = ({ clinicList, finialGeneList }) => {
         type: "category",
         show: true,
         position: "right",
-        data: clinicConfig.map((item) => t(`mutation:sample.${item.key}`)),
+        data: clinicConfig.map((item) => t(`common:clinical.${item.key}`)),
         splitLine: {
           show: false,
         },
@@ -86,7 +86,7 @@ const ClinicChart = ({ clinicList, finialGeneList }) => {
           params.reverse().forEach(item => {
             result += `
           <div><span style="display: inline-block; background-color:${item.color};width: 10px;height: 10px"></span><span>
-            ${t(`mutation:sample.${item.data?.category}`)}: ${item.data?.categoryValue}
+            ${t(`common:clinical.${item.data?.category}`)}: ${item.data?.categoryValue}
           </span></div>
         `;
           });

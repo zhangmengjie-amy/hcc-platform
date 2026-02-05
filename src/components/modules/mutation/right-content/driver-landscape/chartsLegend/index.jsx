@@ -13,7 +13,7 @@ const ChartsLegend = () => {
       <Col sm={5} md={5} lg={5}>
         <Row style={{ width: "100%" }} algin={"center"} justify={"center"}>
           <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: "rgb(210, 235, 227)" }} dashed>
-            {(t(`mutation:sample.race`))}
+            {(t(`common:clinical.race`))}
           </Divider>
         </Row>
         <Row style={{ width: "100%" }} algin={"center"}>
@@ -22,7 +22,7 @@ const ChartsLegend = () => {
               Object.keys(clinicColorConfig["race"]).slice(0, 6).map((item) => {
                 return <Typography.Paragraph key={item} className={styles.legendName}>
                   <span className={styles.colorBlock}
-                    style={{ backgroundColor: clinicColorConfig["race"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                    style={{ backgroundColor: clinicColorConfig["race"][item] }}></span>{(t(`common:clinical.${item}`))}
                 </Typography.Paragraph>;
               })
             }
@@ -32,7 +32,7 @@ const ChartsLegend = () => {
               Object.keys(clinicColorConfig["race"]).slice(6, 12).map((item) => {
                 return <Typography.Paragraph key={item} className={styles.legendName}>
                   <span className={styles.colorBlock}
-                    style={{ backgroundColor: clinicColorConfig["race"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                    style={{ backgroundColor: clinicColorConfig["race"][item] }}></span>{(t(`common:clinical.${item}`))}
                 </Typography.Paragraph>;
               })
             }
@@ -42,14 +42,14 @@ const ChartsLegend = () => {
       <Col sm={2} md={2} lg={2}>
         <Row style={{ width: "100%" }} algin={"center"} justify={"center"}>
           <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: "rgb(210, 235, 227)" }} dashed>
-            {(t(`mutation:sample.stage`))}
+            {(t(`common:clinical.stage`))}
           </Divider>
         </Row>
         {
           Object.keys(clinicColorConfig["stage"]).map((item) => {
             return <Typography.Paragraph key={item} className={styles.legendName}>
               <span className={styles.colorBlock}
-                style={{ backgroundColor: clinicColorConfig["stage"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                style={{ backgroundColor: clinicColorConfig["stage"][item] }}></span>{(t(`common:clinical.${item}`))}
             </Typography.Paragraph>;
           })
         }
@@ -57,7 +57,7 @@ const ChartsLegend = () => {
       <Col sm={2} md={2} lg={2}>
         <Row style={{ width: "100%" }} algin={"center"} justify={"center"}>
           <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: "rgb(210, 235, 227)" }} dashed>
-            {(t(`mutation:sample.age`))}
+            {(t(`common:clinical.age`))}
           </Divider>
         </Row>
 
@@ -66,7 +66,7 @@ const ChartsLegend = () => {
           Object.keys(clinicColorConfig["age"]).map((item) => {
             return <Typography.Paragraph key={item} className={styles.legendName}>
               <span className={styles.colorBlock}
-                style={{ backgroundColor: clinicColorConfig["age"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                style={{ backgroundColor: clinicColorConfig["age"][item] }}></span>{(t(`common:clinical.${item}`))}
             </Typography.Paragraph>;
           })
         }
@@ -102,13 +102,13 @@ const ChartsLegend = () => {
       </Col>
       <Col sm={2} md={2} lg={2}>
         <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: "rgb(210, 235, 227)" }} dashed>
-          {(t(`mutation:sample.gender`))}
+          {(t(`common:clinical.gender`))}
         </Divider>
         {
           Object.keys(clinicColorConfig["gender"]).map((item) => {
             return <Typography.Paragraph key={item} className={styles.legendName}>
               <span className={styles.colorBlock}
-                style={{ backgroundColor: clinicColorConfig["gender"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                style={{ backgroundColor: clinicColorConfig["gender"][item] }}></span>{(t(`common:clinical.${item}`))}
             </Typography.Paragraph>;
           })
         }
@@ -117,26 +117,26 @@ const ChartsLegend = () => {
         <Row style={{ width: "100%" }} algin={"center"} justify={"center"}>
           <Col sm={12} md={12} lg={12}>
             <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: "rgb(210, 235, 227)" }} dashed>
-              {(t(`mutation:sample.hbv`))}
+              {(t(`common:clinical.hbv`))}
             </Divider>
             {
               Object.keys(clinicColorConfig["hbv"]).map((item) => {
                 return <Typography.Paragraph key={item} className={styles.legendName}>
                   <span className={styles.colorBlock}
-                    style={{ backgroundColor: clinicColorConfig["hbv"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                    style={{ backgroundColor: clinicColorConfig["hbv"][item] }}></span>{(t(`common:clinical.${item}`))}
                 </Typography.Paragraph>;
               })
             }
           </Col>
           <Col sm={12} md={12} lg={12}>
             <Divider orientation="left" orientationMargin="0" variant="dashed" style={{ fontSize: "12px", fontWeight: "normal", borderColor: "rgb(210, 235, 227)" }} dashed>
-              {(t(`mutation:sample.hcv`))}
+              {(t(`common:clinical.hcv`))}
             </Divider>
             {
               Object.keys(clinicColorConfig["hcv"]).map((item) => {
                 return <Typography.Paragraph key={item} className={styles.legendName}>
                   <span className={styles.colorBlock}
-                    style={{ backgroundColor: clinicColorConfig["hcv"][item] }}></span>{(t(`mutation:sample.${item}`))}
+                    style={{ backgroundColor: clinicColorConfig["hcv"][item] }}></span>{(t(`common:clinical.${item}`))}
                 </Typography.Paragraph>;
               })
             }

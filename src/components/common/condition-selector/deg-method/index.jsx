@@ -31,7 +31,7 @@ const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          {t("common:filter.method")}
+          {t("common:filter.biomarkerMethod")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
@@ -88,13 +88,13 @@ const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
             onChange={onSelection}
           >
             <Flex vertical flex={1}>
-              <Radio value={"cibersort"}>cibersort</Radio>
-              <Radio value={"epic"}>epic</Radio>
-              <Radio value={"estimate"}>estimate</Radio>
-              <Radio value={"mcpcounter"}>mcpcounter</Radio>
-              <Radio value={"quantiseq"}>quantiseq</Radio>
-              <Radio value={"timer"}>timer</Radio>
-              <Radio value={"xcell"}>xcell</Radio>
+              <Radio value={"cibersort"}>{t("common:filter.cibersort")}</Radio>
+              <Radio value={"epic"}>{t("common:filter.epic")}</Radio>
+              <Radio value={"estimate"}>{t("common:filter.estimate")}</Radio>
+              <Radio value={"mcpcounter"}>{t("common:filter.mcpcounter")}</Radio>
+              <Radio value={"quantiseq"}>{t("common:filter.quantiseq")}</Radio>
+              <Radio value={"timer"}>{t("common:filter.timer")}</Radio>
+              <Radio value={"xcell"}>{t("common:filter.xcell")}</Radio>
             </Flex>
           </Radio.Group>
         </Flex>

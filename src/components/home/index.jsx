@@ -40,7 +40,7 @@ const Home = () => {
     },
     {
       icon: "/images/published-papers.svg",
-      title: "Multi-sectors",
+      title: t("home:dataStaticList.multiSectors"),
       key: "data-type",
       textColor: "#476eaa",
       text: t("home:dataStaticList.dataType"),
@@ -97,8 +97,7 @@ const Home = () => {
       textColor: "#7b1fa2",
       bgColor: "#f3eafa",
       url: "/images/differential-expression-analysis.png",
-      description:
-        "Differential gene expression analysis discovers differentially expressed genes (DEGs) between different subgroups (e.g. grouping by clinical information or molecular features) of samples.",
+      description: t("home:models.differentialExpressionAnalysis.description"),
     },
     {
       key: "transcriptome",
@@ -120,7 +119,7 @@ const Home = () => {
     },
     {
       key: "immune",
-      path: "immune-subtype",
+      path: "microenvironment-spatial-heterogeneity",
       title: t("home:models.microenvironmentSpatialHeterogeneity.title"),
       textColor: "#2e7d32",
       bgColor: "#e8f7f0",

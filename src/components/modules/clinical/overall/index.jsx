@@ -16,7 +16,7 @@ const Overall = forwardRef(({ conditions, selectedCohortType }, ref) => {
     setLoading(true);
     try {
       getPatientList(null).then((result) => {
-        patientListRef.current = result;
+        patientListRef.current = result?.data;
         const _countConfig = {
           age: {},
           gender: {},
@@ -24,12 +24,12 @@ const Overall = forwardRef(({ conditions, selectedCohortType }, ref) => {
           race: {},
           stage: {},
         };
-        if (!result) {
+        if (!result?.data?.length) {
           setHasData(false);
           setCountConfig(_countConfig);
           return;
         }
-        const countResult = formatPatient(_countConfig, result);
+        const countResult = formatPatient(_countConfig, result?.data);
         setHasData(true);
         setCountConfig(countResult);
         setLoading(false);

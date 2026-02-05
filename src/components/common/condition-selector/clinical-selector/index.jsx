@@ -3,7 +3,6 @@ import React, {
   useRef,
   useEffect,
   useState,
-  useCallback,
   forwardRef,
 } from "react";
 import {
@@ -45,7 +44,7 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
   useEffect(() => {
     setLoading(true);
     getClinicalConfig().then((results) => {
-      clinicalConfigRef.current = results;
+      clinicalConfigRef.current = results?.data;
       setLoading(false);
     });
   }, []);
@@ -99,7 +98,7 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          {t("mutation:filter.clinic")}
+          {t("mutation:filter.filterByClinic")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
@@ -127,7 +126,6 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
   const clinicCollapseContent = () => {
     return (
       <div
-        style={{ overflowY: "scroll", overflowX: "hidden" }}
         variant="borderless"
       >
         <EmptyLoading loading={loading} hasData={clinicalConfigRef.current}>
@@ -143,7 +141,7 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
                             dot: (
                               <Image
                                 src={`/images/${item == "stage" ? "tnm-stage-v8" : item
-                                  }.svg`}
+                                }.svg`}
                                 width={15}
                                 height={15}
                                 alt={item}
@@ -161,7 +159,7 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
                                   <Typography.Title
                                     level={5}
                                   >
-                                    {t(`mutation:sample.${item}`)}
+                                    {t(`common:clinical.${item}`)}
                                   </Typography.Title>
                                   {clinicalConfigRef.current[item]?.map(
                                     (child) => {
@@ -184,7 +182,7 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
                                                 expandable: false,
                                               }}
                                             >
-                                              {t(`mutation:sample.${child}`)}
+                                              {t(`common:clinical.${child}`)}
                                             </Typography.Paragraph>
                                           </Checkbox>
                                         </Col>

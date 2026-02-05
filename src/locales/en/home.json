@@ -26,7 +26,8 @@
     "totalPatients": "Total Patients",
     "samplesAnalyzed": "Samples Analyzed",
     "totalCohorts": "Total Cohorts",
-    "dataType": "Data Type"
+    "dataType": "Data Type",
+    "multiSectors": "Multi-sectors"
   },
   "models": {
     "title": "Single Modules",
@@ -98,7 +99,13 @@
       "title": "Resources"
     },
     "contact": {
-      "title": "Contact"
+      "title": "Contact",
+      "description": "If you have any questions or suggestions, please contact",
+      "github": "Github",
+      "email": "Email",
+      "ioz": "Institute of Zoology, Chinese Academy of Sciences",
+      "security": "Beijing Public Security Network Record No. 11010502040073",
+      "icp": "Beijing ICP License No. 05064604-27"
     },
     "copyright": "All rights reserved."
   }

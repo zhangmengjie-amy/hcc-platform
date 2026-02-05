@@ -180,7 +180,7 @@ const AdvancedSearch = () => {
           rows: 1,
           expandable: false,
         }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.driver")}</Typography.Paragraph>
+        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.driverGene")}</Typography.Paragraph>
 
       <Tooltip placement="bottom" title={t("common:reset-selection")}>
         <Button color="default" onClick={(event) => {
@@ -242,11 +242,12 @@ const AdvancedSearch = () => {
   const clinicCollapseTitle = () => {
     return <Flex justify={"space-between"} align={"center"}>
       <Typography.Paragraph
+        level={5}
         ellipsis={{
           rows: 1,
           expandable: false,
         }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.clinic")}</Typography.Paragraph>
+        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByClinic")}</Typography.Paragraph>
 
       <Tooltip placement="bottom" title={t("common:reset-selection")}>
         <Button color="default" onClick={(event) => {
@@ -390,7 +391,7 @@ const AdvancedSearch = () => {
                     <Row key={item.key}>
                       <Typography.Title
                         level={5}
-                        style={{ fontSize: "14px" }}>{t(`mutation:sample.${item.key}`)}</Typography.Title>
+                        style={{ fontSize: "14px" }}>{t(`common:clinical.${item.key}`)}</Typography.Title>
                       {
                         item.children?.map((child) => {
                           return (
@@ -401,7 +402,7 @@ const AdvancedSearch = () => {
                                 label={child.title}><Typography.Paragraph style={{ margin: 0 }} ellipsis={{
                                   rows: 1,
                                   expandable: false,
-                                }}>{t(`mutation:sample.${child.key}`)}</Typography.Paragraph></Checkbox>
+                                }}>{t(`common:clinical.${child.key}`)}</Typography.Paragraph></Checkbox>
                             </Col>
                           );
                         })
@@ -422,7 +423,7 @@ const AdvancedSearch = () => {
       const _params = {
         ...paramsRef.current,
         ...clinicList,
-        sampleType: "bySample",
+        sampleType: "sortedBySample",
         geneList: getGeneListWithIsDeriverGene(driverList),
       };
       setGeneList(driverList);
@@ -495,7 +496,7 @@ const AdvancedSearch = () => {
           rows: 1,
           expandable: false,
         }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.gene")}</Typography.Paragraph>
+        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByGene")}</Typography.Paragraph>
       <Space>
         <Tooltip placement="bottom" title={"Import"}>
           <Upload {...uploadProps} onClick={(event) => {
@@ -549,7 +550,7 @@ const AdvancedSearch = () => {
           rows: 1,
           expandable: false,
         }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.DNA_ITH")}</Typography.Paragraph>
+        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByDNA_ITH")}</Typography.Paragraph>
       <Space>
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
           <Button color="default" onClick={(event) => {

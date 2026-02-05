@@ -2,32 +2,24 @@
 import React, {
   useRef,
   useEffect,
-  useImperativeHandle,
   useState,
   forwardRef,
   useCallback,
 } from "react";
 import {
-  getBiomarkersGeneList,
-  getBiomarkersSingleGene,
-} from "@/configs/request";
-import {
   getGeneList,
   getValidGeneList,
-  getClinicalConfig,
 } from "@/configs/request";
 import { FixedSizeList } from "react-window";
 import { debounce } from "lodash";
 import EmptyLoading from "@/components/empty-loading";
-import GeneUpload from "@/components/common/condition-selector/gene-upload";
-import { CaretRightOutlined, LinkOutlined } from "@ant-design/icons";
+import { CaretRightOutlined } from "@ant-design/icons";
 import {
   Collapse,
   Radio,
   Tag,
   Tooltip,
   Button,
-  Spin,
   Flex,
   Typography,
   Space,
@@ -54,7 +46,6 @@ const IMPORT_SRC = "/images/import.svg";
 const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
 const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
-  const paramsRef = useRef(null);
   const [filteredList, setFilteredList] = useState([]);
   const [geneList, setGeneList] = useState([]);
   const [driverList, setDriverList] = useState("driver");
@@ -74,10 +65,10 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
       setLoadMoreLoading(true);
       getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue ?? "")
         .then((newData) => {
-          if (newData.records.length === 0) {
+          if (newData?.data?.records.length === 0) {
             return;
           }
-          filteredRef.current = [...filteredRef.current, ...newData.records];
+          filteredRef.current = [...filteredRef.current, ...newData?.data?.records];
           setFilteredList(filteredRef.current);
           setCurrent((p) => p + 1);
         })
@@ -107,8 +98,8 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   useEffect(() => {
     setFetchLoading(true);
     getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
-      geneRef.current = results?.records ?? [];
-      filteredRef.current = results?.records ?? [];
+      geneRef.current = results?.data?.records ?? [];
+      filteredRef.current = results?.data?.records ?? [];
       setFilteredList(filteredRef.current);
       const driverList = getDriverList();
 
@@ -198,15 +189,16 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   const driverCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>
-        <Typography.Paragraph
+        <Typography.Title
+          level={5}
           ellipsis={{
             rows: 1,
             expandable: false,
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          {t("mutation:filter.driver")}
-        </Typography.Paragraph>
+          {t("common:filter.filterByDriver")}
+        </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
           <Button
@@ -278,7 +270,7 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
           <Row>
             <Col xs={20} sm={20} md={20} lg={20}>
               <Radio value={"all"} label={"All"}>
-                {"All"}
+                {t("common:all")}
               </Radio>
             </Col>
             <Col xs={4} sm={4} md={4} lg={4}>
@@ -508,15 +500,16 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   const geneCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>
-        <Typography.Paragraph
+        <Typography.Title
+          level={5}
           ellipsis={{
             rows: 1,
             expandable: false,
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          {t("mutation:filter.gene")}
-        </Typography.Paragraph>
+          {t("common:filter.filterByGene")}
+        </Typography.Title>
         <Space>
           <Tooltip placement="bottom" title={"Import"}>
             <Upload

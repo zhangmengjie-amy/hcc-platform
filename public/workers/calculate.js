@@ -61,7 +61,7 @@ self.onmessage = async ({ data }) => {
     mutationTypeColorConfig = sortMutationTypeColorConfig(filteredMutations);
     const finialGeneList = sortGeneListByPercentage(filteredMutations, geneList);
     let finialMutations = [];
-    if (sampleType == "bySample") {
+    if (sampleType == "sortedBySample") {
       const { samplesIds } = maf2oncoprintdf(filteredMutations, [...finialGeneList].reverse());
       finialMutations = sortSamplesBySampleIds(filteredMutations, samplesIds);
       let blankMutationSample = finialMutations.filter((mutation) => !mutation.mutations?.length);

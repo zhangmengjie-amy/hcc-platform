@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import VolcanoPlot from "@/components/modules/transcriptome/right-content/pathways/volcano-plot";
+import VolcanoPlot from "@/components/modules/transcriptome/right-content/differential-expression-analysis/volcano-plot";
 import {
   Flex,
   Spin,
@@ -11,7 +11,7 @@ import {
   Empty,
   Button,
 } from "antd";
-import GoBarChart from "@/components/modules/transcriptome/right-content/pathways/go-column";
+import GoBarChart from "@/components/modules/transcriptome/right-content/differential-expression-analysis/go-column";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 const CLASSIFY_COLOR = {

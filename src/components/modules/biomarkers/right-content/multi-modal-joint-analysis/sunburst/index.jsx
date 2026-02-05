@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
 import EChartsReact from "echarts-for-react";
+import { useTranslation } from "react-i18next";
 import {
   Empty,
   Flex,
@@ -44,12 +45,13 @@ const spaceValue = 0.2;
 const SunburstChart = ({ data, patientId, handleItemClick, biomarkerMode = true, biomarkerColorMap }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!data) return;
     const _option = buildOption();
     setOption(_option);
-  }, [data, patientId, biomarkerColorMap]);
+  }, [data, patientId, biomarkerColorMap, t]);
 
   const sortedPatientById = (patientList) => {
     return patientList?.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1]);
@@ -286,7 +288,7 @@ const SunburstChart = ({ data, patientId, handleItemClick, biomarkerMode = true,
       },
       label: {
         formatter: () => {
-          return `${realPurePercent}%\n\nPure patients`;
+          return `${realPurePercent}%\n\n${t("common:subtype.pure")}`;
         },
         rotate: "tangential",
         verticalAlign: "top",

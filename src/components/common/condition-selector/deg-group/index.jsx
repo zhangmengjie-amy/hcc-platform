@@ -23,8 +23,6 @@ import {
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import {
-  getGeneList,
-  getValidGeneList,
   getGeneSetList,
 } from "@/configs/request";
 import GeneSetUpload from "@/components/common/condition-selector/gene-upload";
@@ -35,7 +33,6 @@ const RELOAD_ICON = "/images/reload.svg";
 
 const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
-  const [method, setMethod] = useState("cibersort");
   const [groupBy, setGroupBy] = useState("NT");
   const [firstGroup, setFirstGroup] = useState(["Tumor"]);
   const [secondGroup, setSecondGroup] = useState(["Normal"]);
@@ -140,7 +137,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
 
   useEffect(() => {
     getGeneSetList().then((data) => {
-      geneSetlistRef.current = data;
+      geneSetlistRef.current = data?.data;
     });
   }, []);
 
@@ -151,15 +148,16 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
   const analysisCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>
-        <Typography.Paragraph
+        <Typography.Title
+          level={5}
           ellipsis={{
             rows: 1,
             expandable: false,
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          {t("common:filter.group")}
-        </Typography.Paragraph>
+          {t("common:filter.grouping")}
+        </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
           <Button
@@ -197,7 +195,6 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
               borderRadius: "12px",
             }}
           >
-            <Typography.Paragraph>Group By</Typography.Paragraph>
             <Radio.Group
               value={groupBy}
               onChange={(e) => {
@@ -206,14 +203,14 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
             >
               <Flex>
                 <Flex vertical flex={1}>
-                  <Radio value={"NT"}>N/T</Radio>
-                  <Radio value={"HBV"}>HBV</Radio>
-                  <Radio value={"HCV"}>HCV</Radio>
-                  <Radio value={"Age"}>Age</Radio>
-                  <Radio value={"Stage"}>Stage</Radio>
+                  <Radio value={"NT"}>{t("common:clinical.nt")}</Radio>
+                  <Radio value={"HBV"}>{t("common:clinical.hbv")}</Radio>
+                  <Radio value={"HCV"}>{t("common:clinical.hcv")}</Radio>
+                  <Radio value={"Age"}>{t("common:clinical.age")}</Radio>
+                  <Radio value={"Stage"}>{t("common:clinical.stage")}</Radio>
                 </Flex>
                 <Flex vertical flex={1}>
-                  <Radio value={"Gene"}>Gene</Radio>
+                  <Radio value={"Gene"}>{t("common:gene")}</Radio>
                 </Flex>
               </Flex>
             </Radio.Group>
@@ -234,19 +231,19 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                 <Flex vertical>
                   <Flex vertical style={{ marginBottom: "10px" }}>
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
-                      First Group
+                      {t("common:filter.firstGroup")}
                     </Typography.Paragraph>
                     <Checkbox value="Tumor" disabled>
-                      Tumor
+                      {t("common:filter.tumor")}
                     </Checkbox>
                   </Flex>
                   <Flex vertical>
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
-                      Second Group
+                      {t("common:filter.secondGroup")}
                     </Typography.Paragraph>
 
                     <Checkbox value="Normal" disabled>
-                      Normal
+                      {t("common:filter.normal")}
                     </Checkbox>
                   </Flex>
                 </Flex>
@@ -257,18 +254,18 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                 <Flex vertical>
                   <Flex vertical style={{ marginBottom: "10px" }}>
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
-                      First Group
+                      {t("common:filter.firstGroup")}
                     </Typography.Paragraph>
                     <Checkbox value="positive" disabled>
-                      Positive
+                      {t("common:clinical.positive")}
                     </Checkbox>
                   </Flex>
                   <Flex vertical>
                     <Typography.Paragraph style={{ marginBottom: 0 }}>
-                      Second Group
+                      {t("common:filter.secondGroup")}
                     </Typography.Paragraph>
                     <Checkbox value="negative" disabled>
-                      Negative
+                      {t("common:clinical.negative")}
                     </Checkbox>
                   </Flex>
                 </Flex>
@@ -278,7 +275,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
               <Flex>
                 <Flex vertical flex={1}>
                   <Typography.Paragraph style={{ marginBottom: "10px" }}>
-                    First Group
+                    {t("common:filter.firstGroup")}
                   </Typography.Paragraph>
                   <Checkbox.Group value={firstGroup} onChange={setFirstGroup}>
                     <Flex vertical>
@@ -292,7 +289,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                 </Flex>
                 <Flex vertical flex={1}>
                   <Typography.Paragraph style={{ marginBottom: "10px" }}>
-                    Second Group
+                    {t("common:filter.secondGroup")}
                   </Typography.Paragraph>
                   <Checkbox.Group value={secondGroup} onChange={setSecondGroup}>
                     <Flex vertical>
@@ -310,7 +307,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
               <Flex>
                 <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
                   <Typography.Paragraph style={{ marginBottom: 0 }}>
-                    First Group
+                    {t("common:filter.firstGroup")}
                   </Typography.Paragraph>
                   <Checkbox.Group value={firstGroup} onChange={setFirstGroup}>
                     <Flex vertical>
@@ -323,7 +320,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                 </Flex>
                 <Flex vertical flex={1}>
                   <Typography.Paragraph style={{ marginBottom: 0 }}>
-                    Second Group
+                    {t("common:filter.secondGroup")}
                   </Typography.Paragraph>
                   <Checkbox.Group value={secondGroup} onChange={setSecondGroup}>
                     <Flex vertical>
@@ -339,7 +336,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
             {groupBy == "Gene" && (
               <Flex vertical>
                 <Flex vertical style={{ marginBottom: "10px" }} flex={1}>
-                  <Typography.Paragraph>Gene Type</Typography.Paragraph>
+                  <Typography.Paragraph>{t("common:filter.geneType")}</Typography.Paragraph>
                   <Radio.Group
                     value={geneType}
                     onChange={(e) => {
@@ -347,8 +344,8 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                     }}
                   >
                     <Flex vertical>
-                      <Radio value={"pathway"}>Pathway</Radio>
-                      <Radio value={"custom"}>Custom</Radio>
+                      <Radio value={"pathway"}>{t("common:filter.pathway")}</Radio>
+                      <Radio value={"custom"}>{t("common:filter.customGeneList")}</Radio>
                     </Flex>
                   </Radio.Group>
                 </Flex>
@@ -406,7 +403,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                           paddingTop: 20,
                         }}
                       >
-                        <Typography.Title level={4}>基因列表:</Typography.Title>
+                        <Typography.Title level={5}>基因列表:</Typography.Title>
                         {validatedGenesFromChild.length > 0 ? (
                           <Space size={[0, 8]} wrap>
                             {validatedGenesFromChild.map((gene, index) => (

@@ -43,13 +43,13 @@ const HCCFooter = () => {
             {t("home:footer.contact.title")}
           </Title>
           <Paragraph style={{ color: "#fff", fontWeight: "lighter", marginBottom: 5 }}>
-            If you have any questions or suggestions, please contact
+            {t("home:footer.contact.description")}
           </Paragraph>
           <Paragraph style={{ color: "#fff", fontWeight: "lighter", marginBottom: 5 }}>
-            Email: epg@ioz.ac.cn
+            {t("home:footer.contact.email")}: epg@ioz.ac.cn
           </Paragraph>
           <Paragraph style={{ color: "#fff", fontWeight: "lighter", marginBottom: 5 }}>
-            Github: https://github.com/Zhailab2026/LIGOR
+            {t("home:footer.contact.github")}: https://github.com/Zhailab2026/LIGOR
           </Paragraph>
         </Col>
       </Row>
@@ -65,7 +65,7 @@ const HCCFooter = () => {
             marginBottom: "10px",
           }}
         >
-          Copyright © 2028-{new Date().getFullYear()} <a style={{ color: "#fff" }} href="https://www.ioz.ac.cn/" target="https://www.ioz.ac.cn/"> 中国科学院动物研究所 </a>
+          Copyright © 2028-{new Date().getFullYear()} <a style={{ color: "#fff" }} href="https://www.ioz.ac.cn/" target="https://www.ioz.ac.cn/"> {t("home:footer.contact.ioz")} </a>
           {t("home:footer.copyright")}
         </Col>
         <Col
@@ -87,7 +87,7 @@ const HCCFooter = () => {
               target="https://bszs.conac.cn/sitename?method=show&id=0897A47506BF7A55E053022819AC98DD"
               href="https://bszs.conac.cn/sitename?method=show&id=0897A47506BF7A55E053022819AC98DD"
             >
-              京公网安备11010502040073号
+              {t("home:footer.contact.security")}
             </a>
            
           </Flex>
@@ -103,7 +103,7 @@ const HCCFooter = () => {
               target="https://beian.mps.gov.cn/#/query/webSearch"
               href="https://beian.mps.gov.cn/#/query/webSearch"
             >
-              京ICP备05064604号-27
+              {t("home:footer.contact.icp")}
             </a>
           </Flex>
         </Col>

@@ -100,7 +100,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
           }}
           style={{ margin: 0, color: "#fff", fontWeight: "500" }}
         >
-          {t("common:filter.biomarkersMethod")}
+          {t("common:filter.biomarkerMethod")}
         </Typography.Title>
 
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
@@ -139,7 +139,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               borderRadius: "12px",
             }}
           >
-            <Typography.Title level={5}>Gene Type</Typography.Title>
+            <Typography.Title level={5}>{t("common:filter.geneType")}</Typography.Title>
             <Radio.Group
               onChange={(e) => {
                 setSelectedGeneType(e.target.value);
@@ -147,9 +147,9 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               value={selectedGeneType}
             >
               <Flex vertical>
-                <Radio value="singleGene">Single Gene</Radio>
-                <Radio value="geneLists">Gene List</Radio>
-                <Radio value="customized">Customized</Radio>
+                <Radio value="singleGene">{t("common:filter.singleGene")}</Radio>
+                <Radio value="geneLists">{t("common:filter.geneLists")}</Radio>
+                <Radio value="customized">{t("common:filter.customGeneList")}</Radio>
               </Flex>
             </Radio.Group>
           </Flex>
@@ -182,7 +182,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                     borderRadius: "12px",
                   }}
                 >
-                  <Typography.Title level={5}>Single Gene</Typography.Title>
+                  <Typography.Title level={5}>{t("common:filter.singleGene")}</Typography.Title>
                   <Radio.Group
                     onChange={(e) => {
                       setSelectedSingleGene(e.target.value);
@@ -215,7 +215,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                     borderRadius: "12px",
                   }}
                 >
-                  <Typography.Title level={5}>Gene List</Typography.Title>
+                  <Typography.Title level={5}>{t("common:filter.geneLists")}</Typography.Title>
                   <Radio.Group
                     onChange={(e) => {
                       setSelectedGeneSet(e.target.value);
@@ -261,7 +261,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                     borderRadius: "12px",
                   }}
                 >
-                  <Typography.Title level={5}>Customized</Typography.Title>
+                  <Typography.Title level={5}>{t("common:filter.customGeneList")}</Typography.Title>
                   <GeneUpload
                     onChange={setSelectedCustomizedGeneList}
                   ></GeneUpload>

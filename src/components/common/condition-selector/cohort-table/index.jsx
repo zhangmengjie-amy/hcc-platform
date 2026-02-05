@@ -5,11 +5,9 @@ import React, {
   useImperativeHandle,
   useState,
   forwardRef,
+  useMemo,
 } from "react";
-import {
-  CaretRightOutlined,
-  LinkOutlined,
-} from "@ant-design/icons";
+import { CaretRightOutlined, LinkOutlined } from "@ant-design/icons";
 import {
   Collapse,
   Table,
@@ -26,19 +24,19 @@ import Image from "next/image";
 import { getCohortList } from "@/configs/request";
 import styles from "../style.module.scss";
 const CLASSIFY_COLOR = {
-  "Tissue": "purple",
-  "Celllines": "green",
+  Tissue: "purple",
+  Celllines: "green",
 };
 
 const LEVEL_COLOR = {
-  "Intra": "cyan",
-  "Inter": "blue",
+  Intra: "cyan",
+  Inter: "blue",
   "Inter+Intra": "lime",
 };
 
 const TECHNOLOGY_COLOR = {
   "Micro array": "orange",
-  "Sequencing": "magenta",
+  Sequencing: "magenta",
 };
 const RELOAD_ICON = "/images/reload.svg";
 const CohortSelection = forwardRef(
@@ -68,7 +66,10 @@ const CohortSelection = forwardRef(
         cohortListRef.current = result?.data ?? [];
         setCohortList(result?.data ?? []);
         setLoading(false);
-        setSelectedRowKeys([result?.data?.[0]?.number, result?.data?.[1]?.number]);
+        setSelectedRowKeys([
+          result?.data?.[0]?.number,
+          result?.data?.[1]?.number,
+        ]);
         onReady({ selectedRows: [result?.data?.[0], result?.data?.[1]] });
       });
     }, [type]);
@@ -94,73 +95,73 @@ const CohortSelection = forwardRef(
       setCohortList(filteredCohort);
     }, [selectedClassify, selectedClinical, selectedTechnology]);
 
-    const columns = [
-      {
-        title: "Cohort",
-        dataIndex: "number",
-        render: (text) => text,
-      },
-      {
-        title: "Level",
-        dataIndex: "level",
-        render: (text) => (
-          <Tag
-            style={{ display: "block", textAlign: "center" }}
-            color={LEVEL_COLOR[text]}
-          >
-            {text}
-          </Tag>
-        ),
-      },
-      {
-        title: "Technology",
-        dataIndex: "techonology",
-        render: (text) => (
-          <Tag
-            style={{ display: "block", textAlign: "center" }}
-            color={TECHNOLOGY_COLOR[text]}
-          >
-            {text}
-          </Tag>
-        ),
-      },
-      {
-        title: "Classify",
-        dataIndex: "classify",
-        render: (text) => (
-          <Tag
-            style={{ display: "block", textAlign: "center" }}
-            color={CLASSIFY_COLOR[text]}
-          >
-            {text}
-          </Tag>
-        ),
-      },
-      {
-        title: "DOI",
-        dataIndex: "doi",
-        render: (text) => (
-          <Tooltip title={`https://doi.org/${text}`} placement="top">
-            <Tag>
-              <a href={`https://doi.org/${text}`} target="_blank">
-                <LinkOutlined />
-              </a>
+    const columns = useMemo(() => {
+      return [
+        {
+          title: t("common:cohort"),
+          dataIndex: "number",
+          render: (text) => text,
+        },
+        {
+          title: t("common:level"),
+          dataIndex: "level",
+          render: (text) => (
+            <Tag
+              style={{ display: "block", textAlign: "center" }}
+              color={LEVEL_COLOR[text]}
+            >
+              {text}
             </Tag>
-          </Tooltip>
-        ),
-      },
-    ];
+          ),
+        },
+        {
+          title: t("common:technology"),
+          dataIndex: "techonology",
+          render: (text) => (
+            <Tag
+              style={{ display: "block", textAlign: "center" }}
+              color={TECHNOLOGY_COLOR[text]}
+            >
+              {text}
+            </Tag>
+          ),
+        },
+        {
+          title: t("common:classify"),
+          dataIndex: "classify",
+          render: (text) => (
+            <Tag
+              style={{ display: "block", textAlign: "center" }}
+              color={CLASSIFY_COLOR[text]}
+            >
+              {text}
+            </Tag>
+          ),
+        },
+        {
+          title: t("common:doi"),
+          dataIndex: "doi",
+          render: (text) => (
+            <Tooltip title={`https://doi.org/${text}`} placement="top">
+              <Tag>
+                <a href={`https://doi.org/${text}`} target="_blank">
+                  <LinkOutlined />
+                </a>
+              </Tag>
+            </Tooltip>
+          ),
+        },
+      ];
+    }, [t]);
     useImperativeHandle(ref, () => ({
       getParams: () => {
         return paramsRef.current;
       },
     }));
 
-    const handleReload = () => {
-      
-    };
+    const handleReload = () => {};
 
-    const tableCollapseTitle = () => {
+    const tableCollapseTitle = useMemo(() => {
       return (
         <Flex justify={"space-between"} align={"center"}>
           <Typography.Title
@@ -180,7 +181,9 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            至多选择10个
+            {
+              selectionType == "checkbox" ? t("common:maxSelectCount", { count: 10 }) : ""
+            }
           </Typography.Paragraph>
           <Typography.Paragraph
             ellipsis={{
@@ -189,7 +192,9 @@ const CohortSelection = forwardRef(
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            已选择 { selectedRowKeys?.length ?? 0 }个  
+            {
+              selectionType == "checkbox" ? t("common:selectedCount", { count: selectedRowKeys?.length ?? 0 }) : ""
+            }
           </Typography.Paragraph>
           <Tooltip placement="bottom" title={t("common:reset-selection")}>
             <Button
@@ -211,7 +216,7 @@ const CohortSelection = forwardRef(
           </Tooltip>
         </Flex>
       );
-    };
+    }, [t, selectedRowKeys]);
 
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
@@ -260,7 +265,7 @@ const CohortSelection = forwardRef(
 
     return (
       <>
-        { contextHolder }
+        {contextHolder}
         <div className={styles.condition}>
           <Collapse
             defaultActiveKey={"table"}
@@ -274,7 +279,7 @@ const CohortSelection = forwardRef(
             items={[
               {
                 key: "table",
-                label: tableCollapseTitle(),
+                label: tableCollapseTitle,
                 children: tableCollapseContent(),
               },
             ]}

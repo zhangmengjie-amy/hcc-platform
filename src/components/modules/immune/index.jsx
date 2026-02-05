@@ -11,9 +11,9 @@ import {
   AppstoreOutlined,
 } from "@ant-design/icons";
 import SplitBar from "@/components/common/split-bar";
-import ImmuneSubtypeCondition from "./left-content/immune-subtype";
+import ImmuneSubtypeCondition from "./left-content/microenvironment-spatial-heterogeneity";
 import MicroenvironmentDeconvolutionCondition from "./left-content/microenvironment-deconvolution";
-import ImmuneSubtypeContent from "./right-content/immune-subtype";
+import ImmuneSubtypeContent from "./right-content/microenvironment-spatial-heterogeneity";
 import MicroenvironmentDeconvolutionContent from "./right-content/microenvironment-deconvolution";
 import {
   Button,
@@ -26,7 +26,7 @@ const Biomarkers = () => {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const menu = searchParams.get("menu"); // 获取menu参数
-  const [contentType, setContentType] = useState(menu ?? "immune-subtype");
+  const [contentType, setContentType] = useState(menu ?? "microenvironment-spatial-heterogeneity");
   const [applyLoading, setApplyLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
   const [immuneSubtypeConditions, setImmuneSubtypeConditions] = useState(null);
@@ -36,7 +36,7 @@ const Biomarkers = () => {
   const microenvironmentDeconvolutionConditionRef = useRef(null);
 
   const handleApply = useCallback(() => {
-    if (contentType === "immune-subtype") {
+    if (contentType === "microenvironment-spatial-heterogeneity") {
       const params = ImmuneSubtypeConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
@@ -56,7 +56,7 @@ const Biomarkers = () => {
 
 
   const handleOnReady = useCallback(async (params) => {
-    if (contentType === "immune-subtype") {
+    if (contentType === "microenvironment-spatial-heterogeneity") {
       const params = ImmuneSubtypeConditionRef.current?.getParams();
       const requestParamsArray = {
         clinicalConditions: params.clinicalConditions,
@@ -101,13 +101,13 @@ const Biomarkers = () => {
         size="large"
         onChange={handleContentTypeChange}
         options={[
-          { value: "immune-subtype", label: "Immune subtype" },
-          { value: "microenvironment-deconvolution", label: "Microenvironment deconvolution" },
+          { value: "microenvironment-spatial-heterogeneity", label: t("common:tabs.microenvironmentSpatialHeterogeneity") },
+          { value: "microenvironment-deconvolution", label: t("common:tabs.microenvironmentDeconvolution") },
         ]}
         value={contentType}
       />
     );
-  }, [contentType]);
+  }, [contentType, t]);
 
   const handleComplete = useCallback(() => {
     setApplyLoading(false);
@@ -123,7 +123,7 @@ const Biomarkers = () => {
         rightAction={rightAction}
         leftContent={
           <>
-            {contentType === "immune-subtype" ? (
+            {contentType === "microenvironment-spatial-heterogeneity" ? (
               <ImmuneSubtypeCondition
                 ref={ImmuneSubtypeConditionRef}
                 handleOnReady={handleOnReady}
@@ -133,7 +133,7 @@ const Biomarkers = () => {
         }
         rightContent={
           <>
-            {contentType === "immune-subtype" ? (
+            {contentType === "microenvironment-spatial-heterogeneity" ? (
               <>
                 <ImmuneSubtypeContent conditions={immuneSubtypeConditions?.clinicalConditions} dataType={immuneSubtypeConditions?.selectedCohortType} onComplete={handleComplete}>
                 </ImmuneSubtypeContent>

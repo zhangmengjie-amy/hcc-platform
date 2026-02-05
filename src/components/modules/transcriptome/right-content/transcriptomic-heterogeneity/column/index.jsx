@@ -165,7 +165,7 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
               fontWeight: "bold",
             },
           },
-          rotate: 0, // 倾斜45度
+          rotate: 45, // 倾斜45度
           interval: 0, // 显示所有标签
           margin: 10, // 标签与坐标轴的间距
         },

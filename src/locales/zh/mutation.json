@@ -1,8 +1,7 @@
 {
   "menu": {
     "driverLandscape": "肝癌样本突变瀑布图",
-    "phylogeneticRelationship": "患者进化树",
-    "evolutionaryTrajectory": "肝癌进化自然史示意图"
+    "phylogeneticRelationship": "患者进化树"
   },
   "type": {
     "alterations": "突变类型",

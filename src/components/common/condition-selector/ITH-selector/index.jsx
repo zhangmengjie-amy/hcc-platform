@@ -31,12 +31,13 @@ const CohortType = forwardRef(({ onChange, onReady }, ref) => {
 
   const DNACollapseTitle = () => {
     return <Flex justify={"space-between"} align={"center"}>
-      <Typography.Paragraph
+      <Typography.Title
+        level={5}
         ellipsis={{
           rows: 1,
           expandable: false,
         }}
-        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("mutation:filter.DNA_ITH")}</Typography.Paragraph>
+        style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByITH")}</Typography.Title>
       <Space>
         <Tooltip placement="bottom" title={t("common:reset-selection")}>
           <Button color="default" onClick={(event) => {
