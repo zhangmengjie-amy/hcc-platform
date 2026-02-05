@@ -40,6 +40,17 @@
   "waitForValidation": "Waiting for validation",
   "maxSelectCount": "Select up to {{count}}",
   "selectedCount": "Selected {{count}}",
+  "taskStatus": {
+    "title": "Task Status",
+    "pending": "Pending",
+    "running": "Running",
+    "success": "Success",
+    "failed": "Failed",
+    "someFailed": "Some Failed",
+    "initializingTask": "Initializing Task",
+    "pleaseWaitForTaskDataLoading": "Please wait for task data loading"
+  },
+  "total": "Total",
   "filter": {
     "filterByGene": "Filter By Gene",
     "filterByClinic": "Filter By clinic",

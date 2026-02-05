@@ -6,6 +6,7 @@ import {
   CloseCircleOutlined,
   UpOutlined,
 } from "@ant-design/icons";
+import { t } from "i18next";
 
 const POLLING_INTERVAL = 3000;
 const MAX_POLLING_TIME = 300000; // 5分钟
@@ -338,10 +339,10 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             }}
           />
           <span style={{ fontWeight: 500 }}>
-            任务执行状态
-            {allCompleted && stats.failed === 0 && " (已完成)"}
-            {allCompleted && stats.failed > 0 && " (部分失败)"}
-            {hasRunning && " (运行中)"}
+            {t("common:taskStatus:title")}
+            {allCompleted && stats.failed === 0 && `(${t("common:taskStatus:success")})`}
+            {allCompleted && stats.failed > 0 && `(${t("common:taskStatus:someFailed")})`}
+            {hasRunning && `${t("common:taskStatus:running")}`}
           </span>
         </div>
         <div style={{ display: "flex", gap: 20 }}>
@@ -356,7 +357,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             >
               {stats.total}
             </span>
-            <span style={{ fontSize: 14, color: "#666" }}>总数</span>
+            <span style={{ fontSize: 14, color: "#666" }}>{t("common:total")}</span>
           </Flex>
           <Flex align="center">
             <span
@@ -369,7 +370,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             >
               {stats.success}
             </span>
-            <span style={{ fontSize: 14, color: "#666" }}>成功</span>
+            <span style={{ fontSize: 14, color: "#666" }}>{t("common:taskStatus:success")}</span>
           </Flex>
           <Flex align="center">
             <span
@@ -382,7 +383,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             >
               {stats.failed}
             </span>
-            <span style={{ fontSize: 14, color: "#666" }}>失败</span>
+            <span style={{ fontSize: 14, color: "#666" }}>{t("common:taskStatus:failed")}</span>
           </Flex>
           <Flex align="center">
             <span
@@ -395,7 +396,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             >
               {stats.running}
             </span>
-            <span style={{ fontSize: 14, color: "#666" }}>运行中</span>
+            <span style={{ fontSize: 14, color: "#666" }}>{t("common:taskStatus:running")}</span>
           </Flex>
         </div>
       </div>
@@ -428,10 +429,10 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
 
           {shouldShowInitializing ? (
             <Alert
-              message="正在初始化任务..."
+              message={t("common:initializingTask")}
               type="info"
               showIcon
-              description="请等待任务数据加载"
+              description={t("common:pleaseWaitForTaskDataLoading")}
             />
           ) : (
             <List
@@ -468,10 +469,10 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
                           }
                         >
                           { task.status === "running"
-                            ? "运行中"
+                            ? t("common:taskStatus:running")
                             : task.status === "success"
-                              ? "成功"
-                              : "失败" }
+                              ? t("common:taskStatus:success")
+                              : t("common:taskStatus:failed") }
                         </Tag>
                       </div>
                     </div>

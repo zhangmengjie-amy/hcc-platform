@@ -2,8 +2,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Select, Alert, Empty, Tag, Flex } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const SurvivalAnalysisContent = ({ pollingResults }) => {
+  const { t } = useTranslation();
   const [selectedCohort, setSelectedCohort] = useState(null);
 
   // 处理轮询结果，展开 result 数组并处理状态
@@ -134,7 +136,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
               color={hasSuccess ? "success" : "error"}
               style={{ fontSize: 11 }}
             >
-              {hasSuccess ? "成功" : "失败"}
+              {hasSuccess ? t("common:taskStatus:success") : t("common:taskStatus:failed")}
             </Tag>
           </div>
         ),
@@ -346,7 +348,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
           {/* 如果有taskType，显示taskType */}
           {selectedCohortSuccessItems[0]?.taskType && (
             <div style={{ fontWeight: 500, fontSize: 16 }}>
-              Type: {selectedCohortSuccessItems[0].taskType}
+              {t("common:filter.geneType")}: {t(`mutation:filter.${selectedCohortSuccessItems[0]?.taskType}`)}
             </div>
           )}
 
