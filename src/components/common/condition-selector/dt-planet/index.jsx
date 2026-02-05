@@ -47,7 +47,7 @@ const CohortType = forwardRef(({ onChange, onReady }, ref) => {
           {t("common:filter.cohortType")}
         </Typography.Title>
 
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+        <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button
             color="default"
             onClick={(event) => {

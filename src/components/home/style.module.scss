@@ -64,11 +64,11 @@
     padding: 20px;
     .bannerImage {
       position: relative;
-      min-height: 280px;
+      min-height: 300px;
       border-radius: 12px;
       background-image: url('/images/banner.png');
       background-size: contain;
-      background-position: center right;
+      background-position: center center;
       background-repeat: no-repeat;
 
       &::after {

@@ -34,7 +34,7 @@ const GeneUpload = ({ onChange }) => {
   const beforeUpload = (file) => {
     const isTxt = file.type === "text/plain";
     if (!isTxt) {
-      message.error(t("common:only-txt-file"));
+      message.error(t("common:onlyTxtFile"));
     }
     setFileList(isTxt ? [file] : []);
     return isTxt || Upload.LIST_IGNORE;
@@ -155,28 +155,29 @@ const GeneUpload = ({ onChange }) => {
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
       {/* <Typography.Title level={5}>{t("common:uploadGeneList")} (TXT)</Typography.Title> */}
-      <Paragraph>{t("common:uploadGeneListTips")}</Paragraph>
+      <Paragraph>{t("common:customizedGeneListTips")}</Paragraph>
+      <Flex justify="space-between">
+        <Upload {...uploadProps}>
+          <Button
+            size="midium"
+            type="primary"
+            icon={<UploadOutlined />}
+            disabled={uploading || processing}
+          >
+            {t("common:selectTxtFile")}
+          </Button>
+        </Upload>
 
-      <Upload {...uploadProps}>
         <Button
-          size="small"
-          icon={<UploadOutlined />}
-          disabled={uploading || processing}
+          type="primary"
+          disabled={true}
+          loading={uploading || processing}
         >
-          {t("common:selectTxtFile")}
+          {uploading || processing
+            ? `${t("common:processing")}...`
+            : t("common:waitForValidation")}
         </Button>
-      </Upload>
-
-      <Button
-        type="primary"
-        disabled={true}
-        loading={uploading || processing}
-        style={{ marginTop: 16 }}
-      >
-        {uploading || processing
-          ? `${t("common:processing")}...`
-          : t("common:waitForValidation")}
-      </Button>
+      </Flex>
 
       {(validGenes.length > 0 ||
         invalidGenes.length > 0 ||

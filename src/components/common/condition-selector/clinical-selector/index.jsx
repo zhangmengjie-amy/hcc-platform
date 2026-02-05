@@ -101,7 +101,7 @@ const ConditionSelection = forwardRef(({ onChange, onReady }, ref) => {
           {t("mutation:filter.filterByClinic")}
         </Typography.Title>
 
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+        <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button
             color="default"
             onClick={(event) => {

@@ -196,7 +196,7 @@ const CohortSelection = forwardRef(
               selectionType == "checkbox" ? t("common:selectedCount", { count: selectedRowKeys?.length ?? 0 }) : ""
             }
           </Typography.Paragraph>
-          <Tooltip placement="bottom" title={t("common:reset-selection")}>
+          <Tooltip placement="bottom" title={t("common:resetSelection")}>
             <Button
               color="default"
               onClick={(event) => {

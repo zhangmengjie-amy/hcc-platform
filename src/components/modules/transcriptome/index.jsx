@@ -55,7 +55,7 @@ const Transcriptome = () => {
       if (!params.selectedRows?.length) {
         messageApi.open({
           type: "warning",
-          content: "请至少选择一个cohort",
+          content: t("common:atLeastOneCohort"),
         });
         return;
       }
@@ -64,7 +64,7 @@ const Transcriptome = () => {
           if (params.geneList?.length == 0) {
             messageApi.open({
               type: "warning",
-              content: "请上传自定义基因txt",
+              content: t("common:uploadGenneList"),
             });
             return;
           }
@@ -114,7 +114,7 @@ const Transcriptome = () => {
       if (!params.selectedRows?.length) {
         messageApi.open({
           type: "warning",
-          content: "请至少选择一个cohort",
+          content: t("common:atLeastOneCohort"),
         });
         return;
       }
@@ -123,7 +123,7 @@ const Transcriptome = () => {
           if (params.geneList?.length == 0) {
             messageApi.open({
               type: "warning",
-              content: "请上传自定义基因txt",
+              content: t("common:uploadGenneList"),
             });
             return;
           }

@@ -3,7 +3,7 @@
   "learnMore": "View More",
   "changeLanguage": "Change Language",
   "reload": "reload",
-  "reset-selection": "Reset Selection",
+  "resetSelection": "Reset Selection",
   "search": "Search",
   "apply": "Apply",
   "exportPdf": "Export PDF",
@@ -29,8 +29,9 @@
   "referTo": "Please refer to",
   "branchInfo": "Branch Information",
   "uploadGeneList": "Upload Gene List",
-  "only-txt-file": "Only TXT files are allowed",
-  "uploadGeneListTips": "Please upload a TXT file, where each line contains a gene name. The system will automatically identify, remove whitespace, and validate the gene names.",
+  "onlyTxtFile": "Only TXT files are allowed",
+  "uploadGenneList": "Please upload a custom gene TXT file",
+  "customizedGeneListTips": "Please upload a TXT file, where each line contains a gene name. The system will automatically identify, remove whitespace, and validate the gene names.",
   "selectTxtFile": "Select TXT File",
   "invalidGeneNames": "Invalid Gene Names",
   "validGeneNames": "Valid Gene Names",
@@ -40,6 +41,10 @@
   "waitForValidation": "Waiting for validation",
   "maxSelectCount": "Select up to {{count}}",
   "selectedCount": "Selected {{count}}",
+  "tissue": "Tissue",
+  "celllines": "Cell Lines",
+  "sequence": "Sequence",
+  "microarray": "Microarray",
   "taskStatus": {
     "title": "Task Status",
     "pending": "Pending",
@@ -79,7 +84,8 @@
     "pathway": "Pathway",
     "singleGene": "Single Gene",
     "geneLists": "Multi-Gene Lists",
-    "customGeneList": "Custom Gene List"
+    "customGeneList": "Custom Gene List",
+    "atLeastOneCohort": "Please select at least one cohort"
   },
   "subtype": {
     "subtype": "Subtype",

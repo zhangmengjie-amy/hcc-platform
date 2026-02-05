@@ -3,7 +3,7 @@
   "learnMore": "查看更多",
   "changeLanguage": "切换语言",
   "reload": "重置",
-  "reset-selection": "重置筛选",
+  "resetSelection": "重置筛选",
   "search": "搜索",
   "apply": "应用",
   "exportPdf": "导出PDF",
@@ -29,8 +29,9 @@
   "referTo": "请参考",
   "branchInfo": "分支信息",
   "uploadGeneList": "上传基因列表",
-  "only-txt-file": "只能上传 TXT 文件",
-  "uploadGeneListTips": "请上传一个 TXT 文件，每行包含一个基因名字。系统将自动识别、去除空格并验证基因名字的合法性。",
+  "onlyTxtFile": "只能上传 TXT 文件",
+  "uploadGenneList": "请上传自定义基因txt文件",
+  "customizedGeneListTips": "请上传一个 TXT 文件，每行包含一个基因名字。系统将自动识别、去除空格并验证基因名字的合法性。",
   "selectTxtFile": "选择 TXT 文件",
   "invalidGeneNames": "不合法的基因名字",
   "validGeneNames": "合法的基因名字",
@@ -40,6 +41,10 @@
   "waitForValidation": "等待验证",
   "maxSelectCount": "最多选择 {{count}} 个",
   "selectedCount": "已选择 {{count}} 个",
+  "tissue": "组织",
+  "celllines": "细胞系",
+  "sequence": "序列",
+  "microarray": "微阵列",
   "taskStatus": {
     "title": "任务状态",
     "pending": "待处理",
@@ -79,7 +84,8 @@
     "pathway": "通路",
     "singleGene": "单基因",
     "geneLists": "基因集",
-    "customGeneList": "自定义基因列表"
+    "customGeneList": "自定义基因列表",
+    "atLeastOneCohort": "请至少选择一个队列"
   },
   "subtype": {
     "biomarker": "Biomarker",

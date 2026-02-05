@@ -60,7 +60,7 @@ const Biomarkers = () => {
         if (!params.selectedCustomizedGeneList?.length) {
           messageApi.open({
             type: "warning",
-            content: "请上传自定义基因txt",
+            content: t("common:uploadGenneList"),
           });
           return;
         }
@@ -74,7 +74,7 @@ const Biomarkers = () => {
     if (!params.selectedRows?.length) {
       messageApi.open({
         type: "warning",
-        content: "请至少选择一个cohort",
+        content: t("common:atLeastOneCohort"),
       });
       return;
     }
@@ -82,7 +82,7 @@ const Biomarkers = () => {
       if (!params.selectedCustomizedGeneList?.length) {
         messageApi.open({
           type: "warning",
-          content: "请上传自定义基因txt",
+          content: t("common:uploadGenneList"),
         });
         return;
       }
@@ -105,7 +105,7 @@ const Biomarkers = () => {
         if (!params.selectedCustomizedGeneList?.length) {
           messageApi.open({
             type: "warning",
-            content: "请上传自定义基因txt",
+            content: t("common:uploadGenneList"),
           });
           return;
         }

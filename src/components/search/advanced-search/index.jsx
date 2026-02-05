@@ -182,7 +182,7 @@ const AdvancedSearch = () => {
         }}
         style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.driverGene")}</Typography.Paragraph>
 
-      <Tooltip placement="bottom" title={t("common:reset-selection")}>
+      <Tooltip placement="bottom" title={t("common:resetSelection")}>
         <Button color="default" onClick={(event) => {
           handleDriverReload(event);
         }} variant="text"
@@ -249,7 +249,7 @@ const AdvancedSearch = () => {
         }}
         style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByClinic")}</Typography.Paragraph>
 
-      <Tooltip placement="bottom" title={t("common:reset-selection")}>
+      <Tooltip placement="bottom" title={t("common:resetSelection")}>
         <Button color="default" onClick={(event) => {
           handleClinicReload(event);
         }} variant="text"
@@ -526,7 +526,7 @@ const AdvancedSearch = () => {
             />
           </Button>
         </Tooltip>
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+        <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button color="default" onClick={(event) => {
             handleGeneReload(event);
           }} variant="text"
@@ -552,7 +552,7 @@ const AdvancedSearch = () => {
         }}
         style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByDNA_ITH")}</Typography.Paragraph>
       <Space>
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+        <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button color="default" onClick={(event) => {
             handleDNAReload(event);
           }} variant="text"

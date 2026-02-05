@@ -14,37 +14,17 @@ import {
 
 
 import {
-  Card,
   Collapse,
   Radio,
-  Table,
-  Row,
-  Col,
-  Tag,
   Tooltip,
-  Space,
-  List,
   Checkbox,
   Button,
-  Affix,
-  Spin,
   Flex,
-  Input,
-  Splitter,
   Typography,
-  Select,
-  Timeline,
-  Slider,
-  message,
-  Upload,
-  Segmented,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import { FixedSizeList } from "react-window";
 import styles from "../style.module.scss";
-import { use } from "react";
-
 
 const RELOAD_ICON = "/images/reload.svg";
 const FilterCohort = forwardRef(({ onChange }, ref) => {
@@ -85,7 +65,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
           {t("common:filter.filterCohort")}
         </Typography.Title>
 
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+        <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button
             color="default"
             onClick={(event) => {
@@ -127,13 +107,13 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               value={selectedClinical}
             >
               <Flex vertical>
-                <Checkbox value="nt">N/T</Checkbox>
-                <Checkbox value="hbv">HBV</Checkbox>
-                <Checkbox value="hcv">HCV</Checkbox>
-                <Checkbox value="age">Age</Checkbox>
-                <Checkbox value="race">Race</Checkbox>
-                <Checkbox value="stage">Stage</Checkbox>
-                <Checkbox value="gene">Gene</Checkbox>
+                <Checkbox value="nt">{t("common:clinical.nt")}</Checkbox>
+                <Checkbox value="hbv">{t("common:clinical.hbv")}</Checkbox>
+                <Checkbox value="hcv">{t("common:clinical.hcv")}</Checkbox>
+                <Checkbox value="age">{t("common:clinical.age")}</Checkbox>
+                <Checkbox value="race">{t("common:clinical.race")}</Checkbox>
+                <Checkbox value="stage">{t("common:clinical.stage")}</Checkbox>
+                <Checkbox value="gene">{t("common:gene")}</Checkbox>
               </Flex>
             </Checkbox.Group>
           </Flex>
@@ -156,8 +136,8 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               value={selectedClassify}
             >
               <Flex vertical>
-                <Radio value="Tissue">Tissue</Radio>
-                <Radio value="Celllines">Celllines</Radio>
+                <Radio value="Tissue">{t("common:tissue")}</Radio>
+                <Radio value="Celllines">{t("common:celllines")}</Radio>
                 <Radio value="all">{t("common:all")}</Radio>
               </Flex>
             </Radio.Group>
@@ -181,8 +161,8 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
               value={selectedTechnology}
             >
               <Flex vertical>
-                <Radio value="Sequencing">Sequence</Radio>
-                <Radio value="Micro array">Micro Array</Radio>
+                <Radio value="Sequencing">{t("common:sequence")}</Radio>
+                <Radio value="Micro array">{t("common:microarray")}</Radio>
                 <Radio value="all">{t("common:all")}</Radio>
               </Flex>
             </Radio.Group>

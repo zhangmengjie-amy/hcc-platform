@@ -39,7 +39,7 @@ const CohortType = forwardRef(({ onChange, onReady }, ref) => {
         }}
         style={{ margin: 0, color: "#fff", fontWeight: "500" }}>{t("common:filter.filterByITH")}</Typography.Title>
       <Space>
-        <Tooltip placement="bottom" title={t("common:reset-selection")}>
+        <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button color="default" onClick={(event) => {
             handleDNAReload(event);
           }} variant="text"
