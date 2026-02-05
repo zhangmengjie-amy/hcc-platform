@@ -12,6 +12,7 @@
   "pdfExportFailed": "PDF export failed!",
   "pdfServiceUnavailable": "Export service unavailable!",
   "explore": "Explore",
+  "cancel": "Cancel",
   "gene": "Gene",
   "sampleId": "Sample ID",
   "all": "All",

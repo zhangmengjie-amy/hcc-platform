@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { Layout } from "antd";
-import HomeContent from "@/components/home/content";
-import HomeBanner from "@/components/home/banner";
+import HomeContent from "./content";
+import HomeBanner from "./banner";
 
 const Home = () => {
 

@@ -2,11 +2,10 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { getFullMutations, getPatientList } from "@/configs/request";
 import ReactECharts from "echarts-for-react";
-import { Modal } from "antd";
 import Image from "next/image";
-import { Flex, Typography, Alert, Row, Button } from "antd";
+import { Flex, Typography, Alert } from "antd";
 import styles from "./style.module.scss";
-import TreeDialog from "@/components/tree-dialog";
+import TreeDialog from "@/components/modules/mutation/right-content/tree-dialog";
 import TreeList from "@/components/modules/mutation/right-content/phylogenetic-relationship/phylogenetic-tree";
 import generateGradientColors from "@/utils/ith-color";
 import EmptyLoading from "@/components/empty-loading";
@@ -18,44 +17,82 @@ const TREE_CONTAINER_WIDTH = VISIBLE_TREE_LENGTH * TREE_WIDTH;
 const PIE_CHART_WIDTH = 600;
 const BAR_CHART_WIDTH = PIE_CHART_WIDTH / 2;
 const BAR_CHART_HEIGHT = PIE_CHART_WIDTH * 0.35;
-const BAR_AXIS = ["0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1"];
-const BAR_CATEGORIES = ["0~0.1", "0.1~0.2", "0.2~0.3", "0.3~0.4", "0.4~0.5", "0.5~0.6", "0.6~0.7", "0.7~0.8", "0.8~0.9", "0.9~1.0"];
+const BAR_AXIS = [
+  "0",
+  "0.1",
+  "0.2",
+  "0.3",
+  "0.4",
+  "0.5",
+  "0.6",
+  "0.7",
+  "0.8",
+  "0.9",
+  "1",
+];
+const BAR_CATEGORIES = [
+  "0~0.1",
+  "0.1~0.2",
+  "0.2~0.3",
+  "0.3~0.4",
+  "0.4~0.5",
+  "0.5~0.6",
+  "0.6~0.7",
+  "0.7~0.8",
+  "0.8~0.9",
+  "0.9~1.0",
+];
 
-const LEGEND = [{
-  name: "<=0.1",
-  color: "#5E4FA2",
-}, {
-  name: "0.1-0.2",
-  color: "#AA37EC",
-}, {
-  name: "0.2-0.3",
-  color: "#8474C5",
-}, {
-  name: "0.3-0.4",
-  color: "#2F9BC8",
-}, {
-  name: "0.4-0.5",
-  color: "#66C2A5",
-}, {
-  name: "0.5-0.6",
-  color: "#ABDDA4",
-}, {
-  name: "0.6-0.7",
-  color: "#FCD467",
-}, {
-  name: "0.7-0.8",
-  color: "#FDAE61",
-}, {
-  name: "0.8-0.9",
-  color: "#F46D43",
-}, {
-  name: ">0.9",
-  color: "#9E0142",
-}];
+const LEGEND = [
+  {
+    name: "<=0.1",
+    color: "#5E4FA2",
+  },
+  {
+    name: "0.1-0.2",
+    color: "#AA37EC",
+  },
+  {
+    name: "0.2-0.3",
+    color: "#8474C5",
+  },
+  {
+    name: "0.3-0.4",
+    color: "#2F9BC8",
+  },
+  {
+    name: "0.4-0.5",
+    color: "#66C2A5",
+  },
+  {
+    name: "0.5-0.6",
+    color: "#ABDDA4",
+  },
+  {
+    name: "0.6-0.7",
+    color: "#FCD467",
+  },
+  {
+    name: "0.7-0.8",
+    color: "#FDAE61",
+  },
+  {
+    name: "0.8-0.9",
+    color: "#F46D43",
+  },
+  {
+    name: ">0.9",
+    color: "#9E0142",
+  },
+];
 
-
-
-const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeType = "overview", conditions, handleComplete }) => {
+const PhylogeneticRelationship = ({
+  range = [0, 1],
+  dataType = "planet",
+  treeType = "overview",
+  conditions,
+  handleComplete,
+}) => {
   const { t } = useTranslation();
   const [pieChartOption, setPieChartOption] = useState({});
   const [columnOption, setColumnOption] = useState({});
@@ -74,41 +111,61 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
   useEffect(() => {
     if (!conditions?.geneList) return;
     if (!patientListRef.current || !fullMutationsRef.current) {
-      Promise.all([getPatientList(null), getFullMutations(null)]).then((results) => {
-        const [patientList, originalMutations] = results;
-        patientListRef.current = buildAllPatientsData(patientList?.data ?? []);
-        patientListFilteredByConditionRef.current = patientListRef.current;
-        fullMutationsRef.current = originalMutations?.data;
-        let _patientList = patientListRef.current;
-        if (dataType !== "all") {
-          _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
-        }
-        buildCharts(_patientList, originalMutations?.data);
-      });
+      Promise.all([getPatientList(null), getFullMutations(null)]).then(
+        (results) => {
+          const [patientList, originalMutations] = results;
+          patientListRef.current = buildAllPatientsData(
+            patientList?.data ?? [],
+          );
+          patientListFilteredByConditionRef.current = patientListRef.current;
+          fullMutationsRef.current = originalMutations?.data;
+          let _patientList = patientListRef.current;
+          if (dataType !== "all") {
+            _patientList = patientListRef.current?.filter(
+              (item) => item.type === dataType?.toUpperCase(),
+            );
+          }
+          buildCharts(_patientList, originalMutations?.data);
+        },
+      );
     } else {
       let _fullMutations = fullMutationsRef.current;
       let _patientList = patientListRef.current;
       if (dataType !== "all") {
-        _patientList = patientListRef.current?.filter((item) => item.type === dataType?.toUpperCase());
-        _fullMutations = fullMutationsRef.current.filter((item) => item.type === dataType?.toUpperCase());
+        _patientList = patientListRef.current?.filter(
+          (item) => item.type === dataType?.toUpperCase(),
+        );
+        _fullMutations = fullMutationsRef.current.filter(
+          (item) => item.type === dataType?.toUpperCase(),
+        );
       }
       buildCharts(_patientList, _fullMutations);
     }
-
   }, [conditions, dataType, t]);
 
   const buildCharts = (patientList, originalMutations) => {
     setLoading(true);
     const sampleWorker = new Worker("/workers/calculate.js");
-    sampleWorker.postMessage({ key: "filterGene", data: { originalMutations, conditions } });
+    sampleWorker.postMessage({
+      key: "filterGene",
+      data: { originalMutations, conditions },
+    });
     sampleWorker.onmessage = (event) => {
       const result = event.data;
-      let _patientList = patientList.filter((item) => !!item.newick && result.finialSampleList?.some((patient) => patient == item.patientId))?.map((item) => {
-        return {
-          ...item,
-          ith: Number(item.ith)?.toFixed(2) ?? 1,
-        };
-      });
+      let _patientList = patientList
+        .filter(
+          (item) =>
+            !!item.newick &&
+            result.finialSampleList?.some(
+              (patient) => patient == item.patientId,
+            ),
+        )
+        ?.map((item) => {
+          return {
+            ...item,
+            ith: Number(item.ith)?.toFixed(2) ?? 1,
+          };
+        });
       _patientList = _patientList?.sort((a, b) => a.ith - b.ith);
       patientListFilteredByConditionRef.current = _patientList;
       rangePatientListRef.current = getPatientListByRange();
@@ -141,9 +198,11 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     rangePatientListRef.current = getPatientListByRange();
     const barEchartsInstance = barChartRef.current?.getEchartsInstance();
     barEchartsInstance?.setOption({
-      series: [{
-        data: getBarSeriesData(),
-      }],
+      series: [
+        {
+          data: getBarSeriesData(),
+        },
+      ],
     });
     if (activeBar && activeBar !== "all") {
       rangePatientListRef.current = getPatientListByActiveBar();
@@ -155,9 +214,11 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     });
     const pieEchartsInstance = pieChartRef.current?.getEchartsInstance();
     pieEchartsInstance?.setOption({
-      series: [{
-        data: buildPieSeriesData(),
-      }],
+      series: [
+        {
+          data: buildPieSeriesData(),
+        },
+      ],
     });
     setRangeList(rangePatientListRef.current);
   }, [range, activeBar]);
@@ -228,11 +289,15 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
 
   const getBarSeriesData = () => {
     const barData = getBarData();
-    return generateGradientColors(barData.length,
-    ).map((color, index) => ({
+    return generateGradientColors(barData.length).map((color, index) => ({
       name: BAR_CATEGORIES[index],
       value: barData[index],
-      itemStyle: { color, borderRadius: [5, 5, 0, 0], borderWidth: BAR_CATEGORIES[index] === activeBar ? 3 : 0, borderColor: "rgb(29, 86, 126)" },
+      itemStyle: {
+        color,
+        borderRadius: [5, 5, 0, 0],
+        borderWidth: BAR_CATEGORIES[index] === activeBar ? 3 : 0,
+        borderColor: "rgb(29, 86, 126)",
+      },
     }));
   };
 
@@ -295,7 +360,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
         {
           data: getBarSeriesData(),
           type: "bar",
-          barWidth: "100%",  // 柱子宽度设为100%
+          barWidth: "100%", // 柱子宽度设为100%
           barGap: "0%",
         },
       ],
@@ -308,23 +373,32 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     const centerPosition = { rotate: 0, translate: "0px, -20px" };
     if (numElements === 1) {
       return [{ rotate: 0, translate: "300px, -20px" }];
-    }
-    else if (numElements === 2) {
-      return [{ rotate: -30, translate: "100px, 80px" },
-        { rotate: 30, translate: "-100px, 80px" }];
+    } else if (numElements === 2) {
+      return [
+        { rotate: -30, translate: "100px, 80px" },
+        { rotate: 30, translate: "-100px, 80px" },
+      ];
     } else if (numElements === 3) {
-      return [{ rotate: -40, translate: "0px, 90px" }, centerPosition, { rotate: 40, translate: "0px, 90px" }];
+      return [
+        { rotate: -40, translate: "0px, 90px" },
+        centerPosition,
+        { rotate: 40, translate: "0px, 90px" },
+      ];
     } else if (numElements === 4) {
-      return [{ rotate: -55, translate: "-135px, 60px" },
+      return [
+        { rotate: -55, translate: "-135px, 60px" },
         { rotate: -20, translate: "-30px, -20px" },
         { rotate: 20, translate: "30px, -20px" },
-        { rotate: 55, translate: "135px, 60px" }];
+        { rotate: 55, translate: "135px, 60px" },
+      ];
     } else if (numElements === 5) {
-      return [{ rotate: -55, translate: "-135px, 60px" },
+      return [
+        { rotate: -55, translate: "-135px, 60px" },
         { rotate: -30, translate: "-30px, 0px" },
         centerPosition,
         { rotate: 30, translate: "30px, 0px" },
-        { rotate: 55, translate: "135px, 60px" }];
+        { rotate: 55, translate: "135px, 60px" },
+      ];
     } else {
       return [
         { rotate: -80, translate: "-300px, -20px" },
@@ -353,7 +427,7 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
     let result = [];
 
     if (patientLength >= VISIBLE_TREE_LENGTH) {
-      const patientsWithSamples = rangePatientListRef.current.map(item => ({
+      const patientsWithSamples = rangePatientListRef.current.map((item) => ({
         ...item,
         sampleLength: getSamplesFromNewick(item.newick),
       }));
@@ -371,8 +445,11 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
 
         // 取当前 chunk 中 sampleLength 最大的元素
         if (chunk.length > 0) {
-          const maxInChunk = chunk.reduce((max, current) =>
-            (current.sampleLength > max.sampleLength ? current : max), chunk[0]);
+          const maxInChunk = chunk.reduce(
+            (max, current) =>
+              current.sampleLength > max.sampleLength ? current : max,
+            chunk[0],
+          );
           result.push(maxInChunk);
         }
         // 如果 chunk 为空（理论上不会发生，因为 patientLength >= 6）
@@ -429,99 +506,226 @@ const PhylogeneticRelationship = ({ range = [0, 1], dataType = "planet", treeTyp
   };
 
   const getAreaPatientData = (minValue, maxValue) => {
-    return rangePatientListRef.current?.filter((patient) => patient.ith > minValue && patient.ith <= maxValue);
+    return rangePatientListRef.current?.filter(
+      (patient) => patient.ith > minValue && patient.ith <= maxValue,
+    );
   };
 
-  const onBarEvents = useMemo(() => ({
-    "click": function (params) {
-      const [rangeMin, rangeMax] = range;
-      rangePatientListRef.current = rangePatientListRef.current = patientListRef.current?.filter((item) => {
-        return item.ith >= rangeMin && item.ith <= rangeMax;
-      });
-      if (activeBar !== params.name) {
-        const [min, max] = params.name.split("~");
-        rangePatientListRef.current = rangePatientListRef.current?.filter((item) => {
-          return item.ith >= min && item.ith <= max;
-        });
-        setActiveBar(params.name);
-      } else {
-        setActiveBar("all");
-      }
-    },
-  }), [activeBar]);
+  const onBarEvents = useMemo(
+    () => ({
+      click: function (params) {
+        const [rangeMin, rangeMax] = range;
+        rangePatientListRef.current = rangePatientListRef.current =
+          patientListRef.current?.filter((item) => {
+            return item.ith >= rangeMin && item.ith <= rangeMax;
+          });
+        if (activeBar !== params.name) {
+          const [min, max] = params.name.split("~");
+          rangePatientListRef.current = rangePatientListRef.current?.filter(
+            (item) => {
+              return item.ith >= min && item.ith <= max;
+            },
+          );
+          setActiveBar(params.name);
+        } else {
+          setActiveBar("all");
+        }
+      },
+    }),
+    [activeBar],
+  );
 
   const viewTree = (data) => {
     currentPatientRef.current = data;
     setModalOpen(true);
   };
 
-  const onPieEvents = useMemo(() => ({
-    "click": function (params) {
-      viewTree(params.data);
-    },
-  }), []);
+  const onPieEvents = useMemo(
+    () => ({
+      click: function (params) {
+        viewTree(params.data);
+      },
+    }),
+    [],
+  );
 
   const renderMeaage = useMemo(() => {
-    return treeType === "overview" ?
+    return treeType === "overview" ? (
       <>
-        <span>Phylogenetic tree is an efficient way displaying the genetic relationship of different sectors. In this page, you will be able to sub-select patients based on the criterion shown on the left.  The rainbow displays the overall distribution of intra-tumor heterogeneity (ITH) across all tumors. By sub-selecting the patient cohort (left) or click on the individual bars from the rainbow, we can navigate through the cohort or zoom in individual patients.  If you want to look at the individual phylogeny in detail, please click on the detail button on the top right. </span>
-        <span> Please refer to <a href="https://en.wikipedia.org/wiki/Phylogenetic_tree">Phylogenetic tree</a></span></> :
-      "In this page, you will be able select individual patient and glance through its phylogenetic tree by clicking on the individual panel.";
+        <span>
+          Phylogenetic tree is an efficient way displaying the genetic
+          relationship of different sectors. In this page, you will be able to
+          sub-select patients based on the criterion shown on the left. The
+          rainbow displays the overall distribution of intra-tumor heterogeneity
+          (ITH) across all tumors. By sub-selecting the patient cohort (left) or
+          click on the individual bars from the rainbow, we can navigate through
+          the cohort or zoom in individual patients. If you want to look at the
+          individual phylogeny in detail, please click on the detail button on
+          the top right.{" "}
+        </span>
+        <span>
+          {" "}
+          Please refer to{" "}
+          <a href="https://en.wikipedia.org/wiki/Phylogenetic_tree">
+            Phylogenetic tree
+          </a>
+        </span>
+      </>
+    ) : (
+      "In this page, you will be able select individual patient and glance through its phylogenetic tree by clicking on the individual panel."
+    );
   }, [treeType]);
 
   return (
-
     <>
       {
-        <EmptyLoading loading={loading} showEmpty={true} hasData={!!Object.keys(pieChartOption)?.length}>
-
+        <EmptyLoading
+          loading={loading}
+          showEmpty={true}
+          hasData={!!Object.keys(pieChartOption)?.length}
+        >
           {
-            <><Alert message={renderMeaage} type="info" />
-              <div style={{ position: "relative", top: treeType == "overview" ? 0 : "-70px", marginTop: treeType == "overview" ? "150px" : "0px", transform: `scale(${treeType == "overview" ? 1 : 0.7})`, transition: "all ease .3s" }}>
-                <ReactECharts ref={pieChartRef} option={pieChartOption} opts={{ renderer: "svg" }}
+            <>
+              <Alert message={renderMeaage} type="info" />
+              <div
+                style={{
+                  position: "relative",
+                  top: treeType == "overview" ? 0 : "-70px",
+                  marginTop: treeType == "overview" ? "150px" : "0px",
+                  transform: `scale(${treeType == "overview" ? 1 : 0.7})`,
+                  transition: "all ease .3s",
+                }}
+              >
+                <ReactECharts
+                  ref={pieChartRef}
+                  option={pieChartOption}
+                  opts={{ renderer: "svg" }}
                   lazyUpdate={true}
                   onEvents={onPieEvents}
-                  style={{ height: PIE_CHART_WIDTH, width: PIE_CHART_WIDTH, margin: "0 auto" }}>
-                </ReactECharts>
-                <ReactECharts ref={barChartRef} option={columnOption} opts={{ renderer: "svg" }}
+                  style={{
+                    height: PIE_CHART_WIDTH,
+                    width: PIE_CHART_WIDTH,
+                    margin: "0 auto",
+                  }}
+                ></ReactECharts>
+                <ReactECharts
+                  ref={barChartRef}
+                  option={columnOption}
+                  opts={{ renderer: "svg" }}
                   lazyUpdate={true}
                   onEvents={onBarEvents}
-                  style={{ height: BAR_CHART_HEIGHT, width: BAR_CHART_WIDTH, position: "absolute", left: "50%", marginLeft: -BAR_CHART_WIDTH / 2, bottom: "265px" }}>
-                </ReactECharts>
-                {
-                  treeType == "overview" && <Flex style={{ width: TREE_CONTAINER_WIDTH, margin: "0 auto", justifyContent: "space-between", position: "absolute", top: "-120px", left: "50%", marginLeft: "-360px" }}>
-                    {
-                      getVisibleTreeListWithStyle?.map((item, index) => {
-                        return <Flex key={item.patientId}  onClick={() => { viewTree(item); }} className={rangeList?.length > 6 && index != getVisibleTreeListWithStyle.length - 1 ? styles.ellipse : null} vertical align="center" style={{ width: "120px", height: "120px", transform: item.transform }}>
-                          <Typography.Paragraph style={{ margin: 0, textAlign: "center" }}>
+                  style={{
+                    height: BAR_CHART_HEIGHT,
+                    width: BAR_CHART_WIDTH,
+                    position: "absolute",
+                    left: "50%",
+                    marginLeft: -BAR_CHART_WIDTH / 2,
+                    bottom: "265px",
+                  }}
+                ></ReactECharts>
+                {treeType == "overview" && (
+                  <Flex
+                    style={{
+                      width: TREE_CONTAINER_WIDTH,
+                      margin: "0 auto",
+                      justifyContent: "space-between",
+                      position: "absolute",
+                      top: "-120px",
+                      left: "50%",
+                      marginLeft: "-360px",
+                    }}
+                  >
+                    {getVisibleTreeListWithStyle?.map((item, index) => {
+                      return (
+                        <Flex
+                          key={item.patientId}
+                          onClick={() => {
+                            viewTree(item);
+                          }}
+                          className={
+                            rangeList?.length > 6 &&
+                            index != getVisibleTreeListWithStyle.length - 1
+                              ? styles.ellipse
+                              : null
+                          }
+                          vertical
+                          align="center"
+                          style={{
+                            width: "120px",
+                            height: "120px",
+                            transform: item.transform,
+                          }}
+                        >
+                          <Typography.Paragraph
+                            style={{ margin: 0, textAlign: "center" }}
+                          >
                             {item.patientId}
                           </Typography.Paragraph>
 
-                          <Image src={item.image} width="100" height="100" alt="tree"></Image>
-                        </Flex>;
-                      })
-                    }
+                          <Image
+                            src={item.image}
+                            width="100"
+                            height="100"
+                            alt="tree"
+                          ></Image>
+                        </Flex>
+                      );
+                    })}
                   </Flex>
-                }
+                )}
 
-                <Flex align="center" justify="center" style={{ position: "absolute", width: "100%", bottom: 240, margin: "0 auto" }}>
+                <Flex
+                  align="center"
+                  justify="center"
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    bottom: 240,
+                    margin: "0 auto",
+                  }}
+                >
                   <Flex>
-                    {
-                      LEGEND.map((item) => {
-                        return <Flex key={item.name} align="center">
-                          <span style={{ marginLeft: 8, backgroundColor: item.color, borderRadius: 3, width: 12, height: 12, display: "inline-block" }}></span><span style={{ marginLeft: 3, color: "#666" }}>{item.name}</span>
-                        </Flex>;
-                      })
-                    }
+                    {LEGEND.map((item) => {
+                      return (
+                        <Flex key={item.name} align="center">
+                          <span
+                            style={{
+                              marginLeft: 8,
+                              backgroundColor: item.color,
+                              borderRadius: 3,
+                              width: 12,
+                              height: 12,
+                              display: "inline-block",
+                            }}
+                          ></span>
+                          <span style={{ marginLeft: 3, color: "#666" }}>
+                            {item.name}
+                          </span>
+                        </Flex>
+                      );
+                    })}
                   </Flex>
                 </Flex>
               </div>
-              {
-                treeType === "detail" && <TreeList dataType={dataType} list={rangeList} treeType={treeType} viewTree={viewTree}></TreeList>
-              }
-              {
-                modalOpen && <TreeDialog showTumor treeData={currentPatientRef.current} dataType={dataType} modalOpen={modalOpen} onclose={() => { setModalOpen(false); }} />
-              }
+              {treeType === "detail" && (
+                <TreeList
+                  dataType={dataType}
+                  list={rangeList}
+                  treeType={treeType}
+                  viewTree={viewTree}
+                ></TreeList>
+              )}
+              {modalOpen && (
+                <TreeDialog
+                  showTumor
+                  treeData={currentPatientRef.current}
+                  dataType={dataType}
+                  modalOpen={modalOpen}
+                  onclose={() => {
+                    setModalOpen(false);
+                  }}
+                />
+              )}
             </>
           }
         </EmptyLoading>

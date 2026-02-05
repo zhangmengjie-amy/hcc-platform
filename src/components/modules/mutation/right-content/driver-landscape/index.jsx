@@ -2,11 +2,11 @@
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { Row, Col, Alert } from "antd";
 import { getFullMutations } from "@/configs/request";
-import ClinicChart from "./clinicChart";
-import GeneChart from "./geneChart";
-import MutationChart from "./mutationChart";
-import SampleChart from "./sampleChart";
-import ChartsLegend from "./chartsLegend";
+import ClinicChart from "./clinic-chart";
+import GeneChart from "./gene-chart";
+import MutationChart from "./mutation-chart";
+import SampleChart from "./sample-chart";
+import ChartsLegend from "./charts-legend";
 import { useTranslation } from "react-i18next";
 
 const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampleType = "sortedBySample", conditions }, ref) => {

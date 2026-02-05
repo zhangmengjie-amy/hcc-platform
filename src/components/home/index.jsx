@@ -11,7 +11,9 @@ import {
 } from "antd";
 import styles from "./style.module.scss";
 import Image from "next/image";
+import CountUp from "react-countup";
 import { useTranslation } from "react-i18next";
+
 const { Title, Paragraph } = Typography;
 const Home = () => {
   const { t } = useTranslation();
@@ -19,21 +21,21 @@ const Home = () => {
   const dataStaticList = [
     {
       icon: "/images/total-patients.svg",
-      title: "6,068",
+      title:  <CountUp start={0} end={6068} separator=","/>,
       key: "patient",
       textColor: "#2a5ca1",
       text: t("home:dataStaticList.totalPatients"),
     },
     {
       icon: "/images/samples-analyzed.svg",
-      title: "8,294",
+      title:  <CountUp start={0} end={8294} separator=","/>,
       key: "sample",
       textColor: "#a3584c",
       text: t("home:dataStaticList.samplesAnalyzed"),
     },
     {
       icon: "/images/identified-mutations.svg",
-      title: 45,
+      title: <CountUp start={0} end={45} separator=","/>,
       key: "cohorts",
       textColor: "#729863",
       text: t("home:dataStaticList.totalCohorts"),
@@ -194,7 +196,7 @@ const Home = () => {
                         <Image src={"/images/rainbow.jpg"} width={350} height={200} alt='rainbow'></Image> */}
           </Flex>
         </Col>
-        <Col xs={24} sm={24} md={12} lg={12}>
+        <Col xs={24} sm={24} md={12} lg={12} className={styles.bannerCol}>
           <div className={styles.bannerImage}></div>
         </Col>
       </Row>
@@ -218,7 +220,7 @@ const Home = () => {
                 style={{
                   width: "100%",
                   height: "100%",
-                  padding: "10px 10px 20px",
+                  padding: "6px 6px 20px",
                   borderRadius: "12px",
                   backgroundColor: item.bgColor,
                 }}
@@ -253,7 +255,7 @@ const Home = () => {
                 </Paragraph>
                 <Flex justify="flex-end" style={{ marginTop: "auto" }}>
                   <a href={`/${item.key}?menu=${item.path}`} target={`/${item.key}?menu=${item.path}`}>
-                    <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff", marginTop: "10px" }}>
+                    <Button color="#fff" style={{ border: "none", color: `${item.textColor}`, background: "#fff", marginTop: "10px", marginRight: "15px" }}>
                       {t("common:explore")}
                     </Button>
                   </a>

@@ -12,6 +12,7 @@
   "pdfExportFailed": "PDF导出失败!",
   "pdfServiceUnavailable": "导出服务不可用!",
   "explore": "开始探索",
+  "cancel": "取消",
   "gene": "基因",
   "sampleId": "样本 ID",
   "all": "全部",

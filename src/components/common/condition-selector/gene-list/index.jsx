@@ -6,10 +6,7 @@ import React, {
   forwardRef,
   useCallback,
 } from "react";
-import {
-  getGeneList,
-  getValidGeneList,
-} from "@/configs/request";
+import { getGeneList, getValidGeneList } from "@/configs/request";
 import { FixedSizeList } from "react-window";
 import { debounce } from "lodash";
 import EmptyLoading from "@/components/empty-loading";
@@ -68,7 +65,10 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
           if (newData?.data?.records.length === 0) {
             return;
           }
-          filteredRef.current = [...filteredRef.current, ...newData?.data?.records];
+          filteredRef.current = [
+            ...filteredRef.current,
+            ...newData?.data?.records,
+          ];
           setFilteredList(filteredRef.current);
           setCurrent((p) => p + 1);
         })
@@ -150,9 +150,7 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
             </FixedSizeList>
           </Checkbox.Group>
         </EmptyLoading>
-        <div style={{ borderTop: "1px solid #f0f0f0", padding: "2px 0" }}>
-          {t("mutation:select-count")}: {geneList?.length || 0}
-        </div>
+        <div style={{ paddingTop: "5px", borderTop: "1px solid #d9d9d9" }}></div>
         <Checkbox
           className={styles.checkAllDriver}
           checked={isAllDriverChecked()}
@@ -363,8 +361,6 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
     });
   };
 
-
-
   useEffect(() => {
     let finalGeneList = [];
     if (driverList == "driver") {
@@ -378,7 +374,6 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
     onChange({
       geneList: finalGeneList,
     });
-
   }, [geneList, driverList]);
 
   const onDriverChange = useCallback((e) => {
@@ -511,6 +506,16 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
           {t("common:filter.filterByGene")}
         </Typography.Title>
         <Space>
+          <Typography.Title
+            level={5}
+            ellipsis={{
+              rows: 1,
+              expandable: false,
+            }}
+            style={{ margin: 0, color: "#fff", fontWeight: "500" }}
+          >
+            {t("mutation:select-count")}: {geneList?.length || 0}
+          </Typography.Title>
           <Tooltip placement="bottom" title={"Import"}>
             <Upload
               {...uploadProps}
