@@ -164,14 +164,13 @@
   .subTitle {
     position: relative;
     padding-left: 10px;
-    padding-top: 20px;
-    color:rgb(10, 186, 181) !important;
+    color:#476EAE !important;
 
     &:before {
       content: "";
       position: absolute;
       left: 0;
-      top: 25px;
+      top: 5px;
       width: 5px;
       height: 25px;
       bottom: 11px;

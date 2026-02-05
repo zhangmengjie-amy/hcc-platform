@@ -15,7 +15,7 @@ const HCCFooter = () => {
       className={styles.HCCFooter}
       style={{ padding: "20px 0px 0px 0px" }}
     >
-      <Row className={styles.footerContent} style={{ padding: "0 50px" }}>
+      <Row className={styles.footerContent} style={{ padding: "0 50px 10px" }}>
         <Col sm={12} md={6} lg={6} style={{ padding: "0 20px" }}>
           <Title style={{ color: "#fff" }} level={5}>
             {t("home:footer.aboutHccPlatform.title")}

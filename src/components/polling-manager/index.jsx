@@ -117,14 +117,14 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
 
       if (response.code === 202) {
         updatedTask.status = "running";
-        updatedTask.message = response.message || "任务运行中...";
+        updatedTask.message = t("common:taskInProgress");
       } else if (response.code === 200) {
         updatedTask.status = "success";
         updatedTask.result = response.data;
-        updatedTask.message = "任务完成";
+        updatedTask.message = t("common:taskCompleted");
       } else {
         updatedTask.status = "failed";
-        updatedTask.message = response.message || "任务执行失败";
+        updatedTask.message = response.message || t("common:taskFailed");
       }
 
       return updatedTask;
@@ -136,7 +136,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
         message: "请求失败",
       };
     }
-  }, [apiMethod]);
+  }, [apiMethod, t]);
 
   // 批量轮询
   const pollTasks = useCallback(async () => {
@@ -178,7 +178,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
         return {
           ...task,
           status: "failed",
-          message: "任务执行超时",
+          message: t("common:taskTimeout"),
           lastCheckTime: now,
         };
       }
@@ -239,7 +239,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
     } catch (error) {
       // 静默处理错误
     }
-  }, [pollSingleTask, updateStats, checkAllCompleted, onComplete]);
+  }, [pollSingleTask, updateStats, checkAllCompleted, onComplete, t]);
 
   // 开始轮询
   const startPolling = useCallback(() => {

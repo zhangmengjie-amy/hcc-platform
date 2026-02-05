@@ -162,7 +162,7 @@ const Home = () => {
                 style={{
                   marginBottom: 0,
                   fontSize: "54px",
-                  color: "rgb(10, 186, 181)",
+                  color: "#476EAE",
                   fontWeight: "bold",
                 }}
               >
@@ -200,17 +200,17 @@ const Home = () => {
           <div className={styles.bannerImage}></div>
         </Col>
       </Row>
+      <Row style={{ padding: "0 40px" }}>
+        <Title
+          className={styles.subTitle}
+          level={3}
+        >
+          {t("home:models.title")}
+        </Title>
+      </Row>
 
       <Row justify="center" className={styles.singleModalList} gutter={[20, 20]}>
-        <Col xs={24} sm={24} md={24} lg={24}>
-          <Title
-            className={styles.subTitle}
-            level={3}
-            style={{ marginLeft: 15 }}
-          >
-            {t("home:models.title")}
-          </Title>
-        </Col>
+
         {items.map((item, index) => {
           return (
             <Col key={index} xs={12} sm={12} md={6} lg={6}>
@@ -268,7 +268,7 @@ const Home = () => {
       <Row justify="center" className={styles.overview} gutter={[10, 10]}>
         <Col xs={24} sm={24} md={8} lg={8}>
           <Title className={styles.subTitle} level={3}>
-            Data Static
+            {t("home:dataStatistics")}
           </Title>
           <Row
             gutter={[15, 15]}
@@ -312,7 +312,7 @@ const Home = () => {
             level={3}
             style={{ marginLeft: 10 }}
           >
-            Core Features
+            {t("home:researchOverview.title")}
           </Title>
           <Row
             gutter={[15, 15]}

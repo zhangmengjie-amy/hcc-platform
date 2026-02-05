@@ -64,6 +64,8 @@
       "description": "This module allows multi-modal information to be jointly displayed and analyzed."
     }
   },
+  "dataStatistics": "Data Statistics",
+  
   "researchOverview": {
     "title": "Core Features",
     "list": {

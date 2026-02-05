@@ -8,12 +8,13 @@ const GoBarChart = ({
   height = "800px",
   loadingText = "加载中...",
   errorText = "加载失败",
-  title = "GO 富集分析堆叠柱状图",
+  title = "",
   showLegend = true,
 }) => {
   const [chartData, setChartData] = useState(data);
   const [loading, setLoading] = useState(!data?.length);
   const [error, setError] = useState(null);
+
 
   // 如果有外部传入的 data，直接使用
   useEffect(() => {

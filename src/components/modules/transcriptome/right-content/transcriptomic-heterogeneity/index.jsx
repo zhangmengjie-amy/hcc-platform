@@ -21,18 +21,18 @@ const PLANET_SUBTYPE_COLOR = {
   C6: "rgb(218, 85, 76)",
 };
 
-const PLANET_LEE_COLOR = {
+const LEE_COLOR = {
   SURVIVAL_UP: "#FC8D62",
   SURVIVAL_DN: "#66C2A5",
 };
 
-const PLANET_HOSHIDA_COLOR = {
+const HOSHIDA_COLOR = {
   S1: "#377EB8",
   S2: "#FFFF33",
   S3: "#E41A1C",
 };
 
-const PLANET_BOYAULT_COLOR = {
+const BOYAULT_COLOR = {
   G2: "#BF3131",
   G3: "#A1D99B",
   G4: "#A367B1",
@@ -46,7 +46,7 @@ const DT_SUBTYPE_COLOR = {
   Wnt: "rgba(235, 162, 127, 1)",
 };
 
-const PLANET_CHIANG_COLOR = {
+const CHIANG_COLOR = {
   INTERFERON: "#FFBEAED4",
   UNANNOTATED: "black",
   POLYSOMY7: "#5C8374",
@@ -591,7 +591,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     Lee
                   </Flex>
-                  {Object.keys(PLANET_LEE_COLOR).map((item) => {
+                  {Object.keys(LEE_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -600,7 +600,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_LEE_COLOR[item],
+                            backgroundColor: LEE_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -612,7 +612,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.hoshida")}
                   </Flex>
-                  {Object.keys(PLANET_HOSHIDA_COLOR).map((item) => {
+                  {Object.keys(HOSHIDA_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -621,7 +621,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_HOSHIDA_COLOR[item],
+                            backgroundColor: HOSHIDA_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -633,7 +633,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.boyault")}
                   </Flex>
-                  {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
+                  {Object.keys(BOYAULT_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -642,7 +642,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_BOYAULT_COLOR[item],
+                            backgroundColor: BOYAULT_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -654,7 +654,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.chiang")}
                   </Flex>
-                  {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
+                  {Object.keys(CHIANG_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -663,7 +663,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_CHIANG_COLOR[item],
+                            backgroundColor: CHIANG_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -946,9 +946,9 @@ const RightPanel = ({
               <Flex style={{ marginTop: "30px" }}>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Lee
+                    {t("common:subtype.lee")}
                   </Flex>
-                  {Object.keys(PLANET_LEE_COLOR).map((item) => {
+                  {Object.keys(LEE_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -957,7 +957,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_LEE_COLOR[item],
+                            backgroundColor: LEE_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -969,7 +969,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.hoshida")}
                   </Flex>
-                  {Object.keys(PLANET_HOSHIDA_COLOR).map((item) => {
+                  {Object.keys(HOSHIDA_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -978,7 +978,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_HOSHIDA_COLOR[item],
+                            backgroundColor: HOSHIDA_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -990,7 +990,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.boyault")}
                   </Flex>
-                  {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
+                  {Object.keys(BOYAULT_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -999,7 +999,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_BOYAULT_COLOR[item],
+                            backgroundColor: BOYAULT_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -1011,7 +1011,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.chiang")}
                   </Flex>
-                  {Object.keys(PLANET_CHIANG_COLOR).map((item) => {
+                  {Object.keys(CHIANG_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -1020,7 +1020,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: PLANET_CHIANG_COLOR[item],
+                            backgroundColor: CHIANG_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>
@@ -1107,7 +1107,7 @@ const RightPanel = ({
                       <span style={{ color: "#000" }}>
                         {t("common:selected")}:{" "}
                       </span>
-                      {selectedDtSubtype}
+                      {t(`common:subtype.${selectedDtSubtype}`)}
                       <DownOutlined />
                     </Space>
                   </Typography.Link>

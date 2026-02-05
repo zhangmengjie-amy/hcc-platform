@@ -267,8 +267,8 @@ const Biomarkers = () => {
           ]}
           value={contentType}
         />
-        <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>
-          下载CSV
+        <Button type="primary" onClick={downloadCSV} style={{ marginLeft: 10 }}>
+          {t("common:downloadCSV")}
         </Button>
       </Flex>
     );

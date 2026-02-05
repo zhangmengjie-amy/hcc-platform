@@ -313,9 +313,9 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
   if (!pollingResults || pollingResults.length === 0) {
     return (
       <Empty
-        description="暂无任务结果"
+        description={t("common:noData")}
         style={{ marginTop: 100 }}
-        styles={{ iamge: { height: 80 } }}
+        styles={{ image: { height: 80 } }}
       />
     );
   }

@@ -3,6 +3,7 @@ import ReactECharts from "echarts-for-react";
 import { Card, Button, Dropdown, Menu, Typography } from "antd";
 import { DownloadOutlined, DownOutlined } from "@ant-design/icons";
 import { download } from "@/configs/request";
+import { t } from "i18next";
 
 const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
   const chartRef = useRef(null);
@@ -607,7 +608,7 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
             </Button>
           </Dropdown>
           <Button type="primary" onClick={downloadCSV} style={{ marginLeft: 10 }}>
-            下载CSV
+            {t("common:downloadCSV")}
           </Button>
         </div>
       </div>

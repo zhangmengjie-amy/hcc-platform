@@ -13,6 +13,7 @@ import {
 } from "antd";
 import GoBarChart from "@/components/modules/transcriptome/right-content/differential-expression-analysis/go-column";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { t } from "i18next";
 
 const CLASSIFY_COLOR = {
   Tissue: "purple",
@@ -77,7 +78,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
           DEGResults: [],
           GORes: [],
           code: cohortResult.code || 500,
-          message: cohortResult.message || "任务无返回结果",
+          message: cohortResult.message || t("common:noResults"),
         };
         failed.push(item);
         all.push(item);
@@ -319,7 +320,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
           }}
         >
           {currentCohortData.goBubbleData?.length > 0 ? (
-            <GoBarChart data={currentCohortData.goBubbleData} />
+            <GoBarChart data={currentCohortData.goBubbleData} title={t("common:goEnrichmentAnalysis")} />
           ) : (
             <Flex
               align="center"
@@ -327,7 +328,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
               style={{ width: "100%", height: "100%" }}
             >
               <Typography.Text type="secondary">
-                暂无GO分析数据
+                {t("common:noData")}
               </Typography.Text>
             </Flex>
           )}
@@ -340,7 +341,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
   if (!pollingResults || pollingResults.length === 0) {
     return (
       <Empty 
-        description="暂无任务结果" 
+        description={t("common:noData")} 
         style={{ marginTop: 100 }} 
         styles={{ image: { height: 80 } }}
       />
@@ -406,8 +407,8 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
             options={selectOptions}
             dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
           />
-          <Button onClick={downloadCSV} style={{ marginLeft: 10 }}>
-            下载CSV
+          <Button type="primary" onClick={downloadCSV} style={{ marginLeft: 10 }}>
+            {t("common:downloadCSV")}
           </Button>
         </div>
       </div>

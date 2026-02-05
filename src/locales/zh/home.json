@@ -64,20 +64,21 @@
       "description": "该模块允许联合显示和分析多模态信息。"
     }
   },
+  "dataStatistics": "数据统计",
   "researchOverview": {
     "title": "核心功能",
     "list": {
       "geospatialAnalysis": {
-        "title": "Geospatial analysis",
-        "description": "Visualize multi-modal heterogeneity of molecular features within and between a large group of HCC patients."
+        "title": "地理空间分析",
+        "description": "可视化大型肝细胞癌患者群体内和群体间的多模态分子特征异质性。"
       },
       "temporalAnalysis" : {
-        "title": "Temporal analysis",
-        "description": "Timing multi-modal changes by mapping them onto the phylogenetic tree."
+        "title": "时序分析",
+        "description": "通过将多模态变化映射到系统发育树上，追踪其时间变化。"
       },
       "customAnalysis" : {
-        "title": "Custom analysis",
-        "description": "Support user-defined subgrouping analysis in gene expression, biomarker and survival analysis."
+        "title": "自定义分析",
+        "description": "支持用户定义的亚组分析，包括基因表达、生物标志物和生存分析。"
       }
     }
   },
