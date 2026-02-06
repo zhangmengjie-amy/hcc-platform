@@ -15,7 +15,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { validGene } from "@/configs/request";
+import { getValidGeneList } from "@/configs/request";
 import { useTranslation } from "react-i18next";
 
 const { Paragraph } = Typography;
@@ -80,10 +80,9 @@ const GeneUpload = ({ onChange }) => {
       }
 
       try {
-        console.log("rawGeneNames:", rawGeneNames);
-        const response = await validGene(rawGeneNames);
+        const response = await getValidGeneList(rawGeneNames);
         if (response.code == 200) {
-          const validated = response.data?.map((item) => item.name);
+          const validated = response.data?.map((item) => item.gene);
 
           const invalid = rawGeneNames.filter(
             (name) => !validated.includes(name),

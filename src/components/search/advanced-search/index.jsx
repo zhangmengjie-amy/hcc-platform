@@ -418,7 +418,7 @@ const AdvancedSearch = () => {
   useEffect(() => {
     setFetchLoading(true);
     getGeneList(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, "").then((results) => {
-      geneRef.current = results?.records ?? [];
+      geneRef.current = results?.data?.records ?? [];
       const driverList = getDriverList();
       const _params = {
         ...paramsRef.current,
@@ -587,7 +587,7 @@ const AdvancedSearch = () => {
       setLoadMoreLoading(true);
       getGeneList(current + 1, DEFAULT_PAGE_SIZE, filterValue)
         .then(newData => {
-          geneRef.current = [...geneRef.current, ...newData.records];
+          geneRef.current = [...geneRef.current, ...newData.data.records];
           setCurrent(p => p + 1);
         })
         .finally(() => {
@@ -602,7 +602,7 @@ const AdvancedSearch = () => {
     setLoadMoreLoading(true);
     getGeneList(1, DEFAULT_PAGE_SIZE, _filterValue)
       .then(newData => {
-        geneRef.current = newData.records;
+        geneRef.current = newData?.data?.records;
         setCurrent(1);
       })
       .finally(() => {

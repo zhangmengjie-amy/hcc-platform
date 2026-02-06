@@ -292,7 +292,7 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
     setLoadMoreLoading(true);
     getGeneList(1, DEFAULT_PAGE_SIZE, _filterValue)
       .then((newData) => {
-        filteredRef.current = newData.records;
+        filteredRef.current = newData?.data?.records;
         setFilteredList(filteredRef.current);
         setCurrent(1);
       })
@@ -467,10 +467,10 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
       reader.onload = (e) => {
         const content = e.target.result?.split("\r\n");
         getValidGeneList(content).then((validGeneList) => {
-          if (!validGeneList?.length) {
-            message.error(`File upload failed.`);
+          if (!validGeneList?.data.length) {
+            message?.error(`File upload failed.`);
           } else {
-            checkGeneList(validGeneList);
+            checkGeneList(validGeneList?.data?.map((item) => item.gene));
           }
         });
       };
