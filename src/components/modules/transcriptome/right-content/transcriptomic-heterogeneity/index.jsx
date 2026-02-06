@@ -32,6 +32,8 @@ const HOSHIDA_COLOR = {
   S3: "#E41A1C",
 };
 
+
+
 const BOYAULT_COLOR = {
   G2: "#BF3131",
   G3: "#A1D99B",
@@ -140,6 +142,13 @@ const STAGE_TRANS = {
   IIIB: "III",
   "III A": "III",
 };
+
+const PLANET_BOYAULT_COLOR = {
+  G12: "#FF7F00",
+  G3: "#A1D99B",
+  G56: "#FB9A99",
+};
+
 const RightPanel = ({
   conditions,
   handleComplete,
@@ -633,7 +642,7 @@ const RightPanel = ({
                   <Flex align="center" style={{ marginBottom: "10px" }}>
                     {t("common:subtype.boyault")}
                   </Flex>
-                  {Object.keys(BOYAULT_COLOR).map((item) => {
+                  {Object.keys(PLANET_BOYAULT_COLOR).map((item) => {
                     return (
                       <Flex key={item} align="center">
                         <span
@@ -642,7 +651,7 @@ const RightPanel = ({
                             width: "20px",
                             height: "12px",
                             marginRight: "5px",
-                            backgroundColor: BOYAULT_COLOR[item],
+                            backgroundColor: PLANET_BOYAULT_COLOR[item],
                           }}
                         ></span>
                         <span style={{ fontSize: 12 }}>{item}</span>

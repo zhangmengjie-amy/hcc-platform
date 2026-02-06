@@ -514,7 +514,7 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
             }}
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
-            {t("mutation:select-count")}: {geneList?.length || 0}
+            {t("common:selectedCount")}: {geneList?.length || 0}
           </Typography.Title>
           <Tooltip placement="bottom" title={"Import"}>
             <Upload

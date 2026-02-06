@@ -30,7 +30,7 @@
     "multiSectors": "多区域"
   },
   "models": {
-    "title": "单模态",
+    "title": "研究模块",
     "driverLandscape": {
       "title": "基因分布",
       "description": "Oncoprint图展示了跨样本与跨患者的驱动基因（或用户关注的基因）中的遗传变异情况。"

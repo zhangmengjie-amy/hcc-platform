@@ -269,13 +269,13 @@ const Home = () => {
           );
         })}
       </Row>
-      <Row justify="center" className={styles.overview}>
+      <Row justify="center" className={styles.overview} gutter={[10, 10]}>
         <Col xs={24} sm={24} md={8} lg={8}>
           <Title className={styles.subTitle} level={3}>
             {t("home:dataStatistics")}
           </Title>
           <Row
-            gutter={[10, 15]}
+            gutter={[10, 10]}
             style={{ margin: 0 }}
             className={styles.dataStaticList}
           >
@@ -285,7 +285,7 @@ const Home = () => {
                   key={item.key}
                   xs={12} sm={12} md={12} lg={12}
                   style={{
-                    height: 112,
+                    height: 114,
                     backgroundColor: item.bgColor,
                   }}
                 >

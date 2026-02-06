@@ -30,7 +30,7 @@
     "multiSectors": "Multi-sectors"
   },
   "models": {
-    "title": "Single Modules",
+    "title": "Research Modules",
     "driverLandscape": {
       "title": "Driver Landscape",
       "description": "Oncoprint plot shows genetic alterations in driver genes (or genes of interests from the user) across samples and patients."
@@ -48,7 +48,7 @@
       "description": "This module explores how transcriptomic subtypes distribute across spatial samples within and between patients."
     },
     "microenvironmentDeconvolution": {
-      "title": "Transcriptomic Heterogeneity",
+      "title": "Microenvironment Deconvolution",
       "description": "Microenvironment deconvolution aims to characterize the immune or stroma cell distribution and classify the tumor microenvironment within and between tumors."
     },
     "microenvironmentSpatialHeterogeneity": {

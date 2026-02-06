@@ -54,7 +54,7 @@ const HCCHeader = () => {
       key: "/home",
     },
     {
-      label: t("home:header.single-modal"),
+      label: t("home:header.multi-modal"),
       key: "/single-modal",
       children: [
         {

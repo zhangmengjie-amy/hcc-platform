@@ -151,7 +151,7 @@ const AdvancedSearch = () => {
         </Checkbox.Group>
 
       </EmptyLoading>
-      <div style={{ borderTop: "1px solid #f0f0f0", padding: "2px 0" }}>{t("mutation:select-count")}: {geneList?.length || 0}</div>
+      <div style={{ borderTop: "1px solid #f0f0f0", padding: "2px 0" }}>{t("common:selectedCount")}: {geneList?.length || 0}</div>
       <Checkbox className={styles.checkAllDriver} checked={isAllDriverChecked()}
         indeterminate={existDriverChecked()}
         onChange={onCheckAllChange} style={{ marginBottom: 6 }}>

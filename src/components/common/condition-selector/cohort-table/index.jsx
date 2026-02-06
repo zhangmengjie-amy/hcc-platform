@@ -193,7 +193,7 @@ const CohortSelection = forwardRef(
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
             {
-              selectionType == "checkbox" ? t("common:selectedCount", { count: selectedRowKeys?.length ?? 0 }) : ""
+              selectionType == "checkbox" ? `${t("common:selectedCount")}: ${selectedRowKeys?.length ?? 0}` : ""
             }
           </Typography.Paragraph>
           <Tooltip placement="bottom" title={t("common:resetSelection")}>
