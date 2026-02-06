@@ -182,7 +182,7 @@ const CohortSelection = forwardRef(
             style={{ margin: 0, color: "#fff", fontWeight: "500" }}
           >
             {
-              selectionType == "checkbox" ? t("common:maxSelectCount", { count: 10 }) : ""
+              selectionType == "checkbox" ? t("common:maxSelectCount") + ": 10" : ""
             }
           </Typography.Paragraph>
           <Typography.Paragraph
