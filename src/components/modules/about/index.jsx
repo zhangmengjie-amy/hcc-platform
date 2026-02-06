@@ -18,11 +18,15 @@ const About = () => {
 
   return (
     <div style={{ background: "#f8f9fa", padding: "20px 40px" }}>
-      <Typography.Title level={2} className={styles.title}>Laboratory Introduction</Typography.Title>
+      <Typography.Title level={2} className={styles.title}>
+        Laboratory Introduction
+      </Typography.Title>
       <Row gutter={[16, 16]}>
         <Col xs={12}>
           <Flex vertical className={styles.aboutContent}>
-            <Typography.Title level={3} className={styles.aboutTitle}>Zhai Lab</Typography.Title>
+            <Typography.Title level={3} className={styles.aboutTitle}>
+              Zhai Lab
+            </Typography.Title>
             <p>
               The Zhai Lab, located at the Institute of Zoology, Chinese Academy
               of Sciences, is broadly interested in the research of molecular
@@ -64,42 +68,65 @@ const About = () => {
               strategic demands. For more information, please visit:
             </p>
             <p>
-              <a href="http://www.especies.cn/" target="http://www.especies.cn/">
+              <a
+                href="http://www.especies.cn/"
+                target="http://www.especies.cn/"
+              >
                 http://www.especies.cn/
               </a>
             </p>
           </Flex>
         </Col>
       </Row>
-      <Typography.Title level={2} className={styles.title}>Related Databases</Typography.Title>
+      <Typography.Title level={2} className={styles.title}>
+        Related Databases
+      </Typography.Title>
       <Row gutter={[16, 16]}>
         <Col xs={6}>
-          <Flex vertical className={styles.databaseContent}>
-            <Typography.Title level={3} className={styles.databaseTitle}>TCGA</Typography.Title>
-            <p>The Cancer Genome Atlas</p>
-          </Flex>
+          <a
+            href="https://portal.gdc.cancer.gov/"
+            target="https://portal.gdc.cancer.gov/"
+          >
+            <Flex vertical className={styles.databaseContent}>
+              <Typography.Title level={4} className={styles.databaseTitle}>
+                TCGA
+              </Typography.Title>
+              <p>The Cancer Genome Atlas</p>
+            </Flex>
+          </a>
         </Col>
         <Col xs={6}>
-          <Flex vertical className={styles.databaseContent}>
-            <Typography.Title level={3} className={styles.databaseTitle}>ICGC</Typography.Title>
-            <p>Intl. Cancer Genome Consortium</p>
-          </Flex>
+          <a href="https://dcc.icgc.org/" target="https://dcc.icgc.org/">
+            <Flex vertical className={styles.databaseContent}>
+              <Typography.Title level={4} className={styles.databaseTitle}>
+                ICGC
+              </Typography.Title>
+              <p>Intl. Cancer Genome Consortium</p>
+            </Flex>
+          </a>
         </Col>
         <Col xs={6}>
-          <Flex vertical className={styles.databaseContent}>
-            <Typography.Title level={3} className={styles.databaseTitle}>
-              GEO
-            </Typography.Title>
-            <p>Gene Expression Omnibus</p>
-          </Flex>
-        </Col>        
+          <a
+            href="https://www.ncbi.nlm.nih.gov/geo/"
+            target="https://www.ncbi.nlm.nih.gov/geo/"
+          >
+            <Flex vertical className={styles.databaseContent}>
+              <Typography.Title level={4} className={styles.databaseTitle}>
+                GEO
+              </Typography.Title>
+              <p>Gene Expression Omnibus</p>
+            </Flex>
+          </a>
+        </Col>
         <Col xs={6}>
-          <Flex vertical className={styles.databaseContent}>
-            <Typography.Title level={3} className={styles.databaseTitle}>
-              NGDC
-            </Typography.Title>
-            <p>National Genomics Data Center</p>
-          </Flex>
+          <a href="https://ngdc.cncb.ac.cn/" target="https://ngdc.cncb.ac.cn/">
+            <Flex vertical className={styles.databaseContent}>
+              <Typography.Title level={4} className={styles.databaseTitle}>
+                NGDC
+              </Typography.Title>
+              <p>National Genomics Data Center</p>
+            </Flex>
+          </a>
         </Col>
       </Row>
     </div>
