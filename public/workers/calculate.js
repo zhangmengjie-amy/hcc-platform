@@ -223,7 +223,7 @@ function maf2oncoprintdf(mafData, geneList = null, options = {}) {
     }
   });
 
-  const orderedGenes = geneList.map(g => g.gene).filter(g => genes.includes(g));
+  const orderedGenes = geneList?.map(g => g?.gene).filter(g => genes?.includes(g));
 
   const orderedSamples = [...samples];
   orderedSamples.sort((s1, s2) => {
@@ -496,7 +496,7 @@ function generateGenesMutations(samples, geneList) {
     type: "bar",
     barWidth: 8,
     stack: true,
-    data: geneList.map(geneItem => {
+    data: geneList?.map(geneItem => {
       return samples.reduce((count, sample) => {
         if (!sample.mutations) return count;
         const mutation = sample.mutations.find(m => m.gene === geneItem.gene);

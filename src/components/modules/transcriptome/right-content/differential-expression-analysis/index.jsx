@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import VolcanoPlot from "@/components/modules/transcriptome/right-content/differential-expression-analysis/volcano-plot";
 import {
   Flex,
@@ -13,7 +13,9 @@ import {
 } from "antd";
 import GoBarChart from "@/components/modules/transcriptome/right-content/differential-expression-analysis/go-column";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+import downloadBase64CSV from "@/utils/downloadBase64CSV";
+import { downloadDEG } from "@/configs/request";
 
 const CLASSIFY_COLOR = {
   Tissue: "purple",
@@ -27,13 +29,13 @@ const LEVEL_COLOR = {
 };
 
 const TECHNOLOGY_COLOR = {
-  "Micro array": "orange",
+  "Microarray": "orange",
   Sequencing: "magenta",
 };
 
-const Pathways = ({ pollingResults, cohortList = [] }) => {
+const DifferentialExpressionAnalysis = ({ multiModalJointAnalysis, pollingResults, cohortList = [] }) => {
   const [selectedCohort, setSelectedCohort] = useState(null);
-
+  const { t } = useTranslation();
   // 处理轮询结果，展开 result 数组并处理状态
   const { successItems, failedItems, allItems } = useMemo(() => {
     if (!pollingResults || !Array.isArray(pollingResults)) {
@@ -158,7 +160,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
               <span>{cohort.cohortName}</span>
             </div>
             <Tag color={hasSuccess ? "success" : "error"} style={{ fontSize: 11 }}>
-              {hasSuccess ? "成功" : "失败"}
+              {hasSuccess ? t("common:success") : t("common:failed")}
             </Tag>
           </div>
         ),
@@ -202,7 +204,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
           volcanoData: allVolcanoData,
           goBubbleData: allGoData,
           error: allVolcanoData.length === 0 && allGoData.length === 0 ? 
-            (cohortInfo?.message || "该 cohort 暂无可用数据") : null,
+            (cohortInfo?.message || t("common:noData")) : null,
         };
       }
       
@@ -210,7 +212,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
         cohortInfo: detailedCohortInfo || cohortInfo?.cohortInfo || { number: cohortInfo?.cohortName },
         volcanoData: [],
         goBubbleData: [],
-        error: cohortInfo?.message || "该 cohort 暂无可用数据",
+        error: cohortInfo?.message || t("common:noData"),
       };
     }
 
@@ -270,7 +272,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
     if (currentCohortData.error) {
       return (
         <Alert
-          message="当前 Cohort 数据异常"
+          message={t("common:currentCohortError")}
           description={currentCohortData.error}
           type="warning"
           showIcon
@@ -361,8 +363,25 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
     );
   }
 
-  const downloadCSV = () => {
-    console.log("download CSV");
+  const downloadCSV = async () => {
+    console.log("downloadCSV", multiModalJointAnalysis);
+    const {
+      numbers,
+      ...params
+    } = multiModalJointAnalysis;
+    const apiParams = {
+      number: selectedCohort,
+      ...params,
+    };
+    try {
+      // 调用后端接口获取CSV数据
+      const response = await downloadDEG(apiParams);
+      if (response.code == 200) {
+        downloadBase64CSV(response?.data?.csvContent, response?.data?.fileName);
+      }
+    } catch (error) {
+      console.error("下载失败:", error);
+    }
   };
 
   return (
@@ -401,7 +420,7 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
           {/* Select下拉框 */}
           <Select
             style={{ width: "100%", maxWidth: 500, marginLeft: "auto" }}
-            placeholder="请选择cohort"
+            placeholder={t("common:selectOneCohort")}
             value={selectedCohort}
             onChange={setSelectedCohort}
             options={selectOptions}
@@ -417,4 +436,4 @@ const Pathways = ({ pollingResults, cohortList = [] }) => {
   );
 };
 
-export default Pathways;
+export default DifferentialExpressionAnalysis;

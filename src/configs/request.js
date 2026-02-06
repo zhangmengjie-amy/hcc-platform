@@ -83,7 +83,7 @@ export const resendActivation = async (data) => {
 
 export const getGeneList = async (current, size, keywords) => {
   try {
-    const response = await get(`/hcc/v1/genes?current=${current}&size=${size}&keywords=${keywords}`);
+    const response = await get(`/hcc/v1/gene/list?current=${current}&size=${size}&keywords=${keywords}`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -103,7 +103,7 @@ export const getGeneSetList = async () => {
 
 export const getValidGeneList = async (data) => {
   try {
-    const response = await post(`/hcc/v1/verify-gene`, data);
+    const response = await post(`/hcc/v1/gene/search`, data);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -123,7 +123,7 @@ export const getHeatmapBoxplot = async (data) => {
 
 export const getBiomarkersSingleGene = async () => {
   try {
-    const response = await post(`/hcc/v1/single-genes`);
+    const response = await get(`/hcc/v1/gene/single-genes`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -133,7 +133,7 @@ export const getBiomarkersSingleGene = async () => {
 
 export const getBiomarkersGeneList = async () => {
   try {
-    const response = await post(`/hcc/v1/gene-lists`);
+    const response = await get(`/hcc/v1/gene/gene-lists`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -143,7 +143,7 @@ export const getBiomarkersGeneList = async () => {
 
 export const getBiomarkersScore = async (data) => {
   try {
-    const response = await post(`/hcc/v1/biomarker/genesScore`, data);
+    const response = await post(`/hcc/v1/biomarker/genes-score`, data);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -155,6 +155,16 @@ export const getBiomarkersScore = async (data) => {
 export const getDEGTaskIds = async (data) => {
   try {
     const response = await post(`/hcc/v1/deg/submit`, data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const downloadDEG = async (data) => {   
+  try {
+    const response = await post(`/hcc/v1/deg/download-csv`, data);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -176,7 +186,7 @@ export const validGene = async (data) => {
 
 export const getDEGResultByTaskId = async (id) => {
   try {
-    const response = await post(`/hcc/v1/deg/result/${id}`);
+    const response = await get(`/hcc/v1/deg/result/${id}`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -196,7 +206,7 @@ export const getBiomarkersTaskIds = async (data) => {
 
 export const getBiomarkersResultByTaskId = async (id) => {
   try {
-    const response = await post(`/hcc/v1/biomarker/result/${id}`);
+    const response = await get(`/hcc/v1/biomarker/result/${id}`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -207,7 +217,7 @@ export const getBiomarkersResultByTaskId = async (id) => {
 
 export const download = async (data) => {
   try {
-    const response = await post(`/hcc/v1/immune/downloadCSV`, data);
+    const response = await post(`/hcc/v1/immune/download-csv`, data);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -227,7 +237,7 @@ export const getCohortList = async (data) => {
 
 export const getFullPhylogenetic = async (type = "planet") => {
   try {
-    const response = await get(`/hcc/v1/phylogeneticTree/list${type ? "?type=" + type : ""}`);
+    const response = await get(`/hcc/v1/phylogenetic-tree/list${type ? "?type=" + type : ""}`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -249,6 +259,16 @@ export const getClinicalConfig = async () => {
   try {
     const clinicalConfig = await get(`/hcc/v1/clinical/select/list`);
     return clinicalConfig;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const downloadBiomarkerScore = async (data) => {
+  try {
+    const response = await post(`/hcc/v1/biomarker/genes-score/download-csv`, data);
+    return response;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

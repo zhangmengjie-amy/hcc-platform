@@ -35,7 +35,7 @@ const LEVEL_COLOR = {
 };
 
 const TECHNOLOGY_COLOR = {
-  "Micro array": "orange",
+  "Microarray": "orange",
   Sequencing: "magenta",
 };
 const RELOAD_ICON = "/images/reload.svg";

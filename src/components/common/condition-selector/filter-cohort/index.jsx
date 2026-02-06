@@ -162,7 +162,7 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
             >
               <Flex vertical>
                 <Radio value="Sequencing">{t("common:sequence")}</Radio>
-                <Radio value="Micro array">{t("common:microarray")}</Radio>
+                <Radio value="Microarray">{t("common:microarray")}</Radio>
                 <Radio value="all">{t("common:all")}</Radio>
               </Flex>
             </Radio.Group>

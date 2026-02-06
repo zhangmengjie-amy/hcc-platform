@@ -53,6 +53,11 @@
   "taskFailed": "Task Failed",
   "taskTimeout": "Task Timeout",
   "downloadCSV": "Download CSV",
+  "retry": "Retry",
+  "selectOneCohort": "Please select one cohort to view results",
+  "currentCohortError": "Current Cohort data error",
+  "pleaseCheckFilterOrRetry": "Please check filter criteria or try again later",
+  "loadFailed": "Load Error",
   "taskStatus": {
     "title": "Task Status",
     "pending": "Pending",
@@ -174,7 +179,6 @@
     "IVA": "IVA"
   },
   "modules": {
-    "driverLandscape": "Oncoprint plot is an efficient way displaying the driver status across samples and patients. In this page, you will be able to sub-select samples and drivers based on the criterion shown on the left.",
     "phylogeneticRelationship": "Phylogenetic Relationship",
     "timingAnalysis": "Timing Analysis",
     "differentialExpressionAnalysis": "Differential Expression Analysis",

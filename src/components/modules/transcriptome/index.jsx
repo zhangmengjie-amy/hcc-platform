@@ -27,6 +27,7 @@ import {
   message,
 } from "antd";
 import { useTranslation } from "react-i18next";
+import { set } from "lodash";
 
 const Transcriptome = () => {
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ const Transcriptome = () => {
   const [pollingResultData, setPollingResultData] = useState(null);
   const [survivalAnalysisCondition, setSurvivalAnalysisCondition] = useState(null);
   const [cohortList, setCohortList] = useState([]);
+  const [multiModalJointAnalysis, setMultiModalJointAnalysis] = useState(null);
   const survivalAnalysisConditionRef = useRef(null);
 
   const MultiModalJointAnalysisConditionRef = useRef(null);
@@ -87,7 +89,7 @@ const Transcriptome = () => {
         geneSet: params.geneSet,
         numbers: params.selectedRows?.map((item) => item?.number),
       };
-     
+      setMultiModalJointAnalysis(requestParamsArray);
       applyMethod(requestParamsArray, params.selectedRows);
     }
   }, [contentType]);
@@ -146,6 +148,7 @@ const Transcriptome = () => {
         geneSet: params.geneSet,
         numbers: params.selectedRows?.map((item) => item?.number),
       };
+      setMultiModalJointAnalysis(requestParamsArray);
       applyMethod(requestParamsArray, params.selectedRows);
     }
   }, [contentType]);
@@ -237,7 +240,7 @@ const Transcriptome = () => {
                   pollingData={pollingData}
                   onComplete={handlePollingComplete}
                 />
-                <PathwaysContent pollingResults={pollingResultData} cohortList={cohortList}></PathwaysContent>
+                <PathwaysContent multiModalJointAnalysis={multiModalJointAnalysis} pollingResults={pollingResultData} cohortList={cohortList}></PathwaysContent>
               </>
             )}
           </>

@@ -24,6 +24,7 @@ const Home = () => {
       title:  <CountUp start={0} end={6068} separator=","/>,
       key: "patient",
       textColor: "#2a5ca1",
+      bgColor: "#e6f1ff",
       text: t("home:dataStaticList.totalPatients"),
     },
     {
@@ -31,6 +32,7 @@ const Home = () => {
       title:  <CountUp start={0} end={8294} separator=","/>,
       key: "sample",
       textColor: "#a3584c",
+      bgColor: "#fae3e3",
       text: t("home:dataStaticList.samplesAnalyzed"),
     },
     {
@@ -38,6 +40,7 @@ const Home = () => {
       title: <CountUp start={0} end={45} separator=","/>,
       key: "cohorts",
       textColor: "#729863",
+      bgColor: "#e8f7e2",
       text: t("home:dataStaticList.totalCohorts"),
     },
     {
@@ -45,6 +48,7 @@ const Home = () => {
       title: t("home:dataStaticList.multiSectors"),
       key: "data-type",
       textColor: "#476eaa",
+      bgColor: "#dee9f7",
       text: t("home:dataStaticList.dataType"),
     },
   ];
@@ -265,13 +269,13 @@ const Home = () => {
           );
         })}
       </Row>
-      <Row justify="center" className={styles.overview} gutter={[10, 10]}>
+      <Row justify="center" className={styles.overview}>
         <Col xs={24} sm={24} md={8} lg={8}>
           <Title className={styles.subTitle} level={3}>
             {t("home:dataStatistics")}
           </Title>
           <Row
-            gutter={[15, 15]}
+            gutter={[10, 15]}
             style={{ margin: 0 }}
             className={styles.dataStaticList}
           >
@@ -282,11 +286,7 @@ const Home = () => {
                   xs={12} sm={12} md={12} lg={12}
                   style={{
                     height: 112,
-                    backgroundImage: `url('/images/${item.key}-bg.png')`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "bottom right",
-                    backgroundRepeat: "no-repeat",
-                    backgroundOrigin: "content-box",
+                    backgroundColor: item.bgColor,
                   }}
                 >
                   <Typography.Paragraph

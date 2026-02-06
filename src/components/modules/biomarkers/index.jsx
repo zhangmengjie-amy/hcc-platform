@@ -14,7 +14,7 @@ import {
   LoadingOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
-import { getBiomarkersResultByTaskId } from "@/configs/request";
+import { getBiomarkersResultByTaskId, downloadBiomarkerScore } from "@/configs/request";
 import SplitBar from "@/components/common/split-bar";
 import PollingManager from "@/components/polling-manager";
 import SurvivalAnalysisContent from "./right-content/survival-analysis";
@@ -28,6 +28,7 @@ import {
   Flex,
 } from "antd";
 import { useTranslation } from "react-i18next";
+import downloadBase64CSV from "@/utils/downloadBase64CSV";
 
 const Biomarkers = () => {
   const { t } = useTranslation();
@@ -251,9 +252,20 @@ const Biomarkers = () => {
     setApplyLoading(true);
   }, []);
 
-  const downloadCSV = () => {
-    console.log("download CSV");
-  };
+  const downloadCSV = useCallback(async () => {
+    const params = MultiModalJointAnalysisConditionRef.current?.getParams();
+    const apiParams = generateBiomarkers2RequestParams(params);
+    try {
+      // 调用后端接口获取CSV数据
+      const response = await downloadBiomarkerScore(apiParams);
+      if (response.code == 200) {
+        downloadBase64CSV(response?.data?.csvContent, response?.data?.fileName);
+      }
+    } catch (error) {
+      console.error("下载失败:", error);
+      // message.error("下载失败");
+    }
+  }, []);
 
   const rightAction = useMemo(() => {
     return (
@@ -267,9 +279,13 @@ const Biomarkers = () => {
           ]}
           value={contentType}
         />
-        <Button type="primary" onClick={downloadCSV} style={{ marginLeft: 10 }}>
-          {t("common:downloadCSV")}
-        </Button>
+        {
+          contentType === "multi-modal-joint-analysis" && (
+            <Button type="primary" onClick={downloadCSV} style={{ marginLeft: 10 }}>
+              {t("common:downloadCSV")}
+            </Button>
+          )
+        }
       </Flex>
     );
   }, [contentType, t]);

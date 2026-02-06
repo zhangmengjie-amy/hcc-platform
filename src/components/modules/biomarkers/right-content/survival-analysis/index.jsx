@@ -174,7 +174,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
           xmlContentList: allXmlContent,
           error:
             allXmlContent.length === 0
-              ? cohortInfo?.message || "该 cohort 暂无可用数据"
+              ? cohortInfo?.message || t("common:noData")
               : null,
         };
       }
@@ -182,7 +182,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
       return {
         cohortName: cohortInfo?.cohortName,
         xmlContentList: [],
-        error: cohortInfo?.message || "该 cohort 暂无可用数据",
+        error: cohortInfo?.message || t("common:noData"),
       };
     }
 
@@ -200,7 +200,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
       xmlContentList: allXmlContent,
       error:
         allXmlContent.length === 0
-          ? cohortInfo?.message || "该 cohort 暂无可用数据"
+          ? cohortInfo?.message || t("common:noData")
           : null,
     };
   }, [selectedCohort, successItems, allItems, uniqueCohorts]);
@@ -234,7 +234,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
     if (!currentCohortData) {
       return (
         <Empty
-          description="请选择一个cohort查看结果"
+          description={t("common:selectOneCohort")}
           style={{ marginTop: 60 }}
         />
       );
@@ -244,7 +244,7 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
     if (currentCohortData.error) {
       return (
         <Alert
-          message="当前 Cohort 数据异常"
+          message={t("common:currentCohortError")}
           description={currentCohortData.error}
           type="warning"
           showIcon
@@ -262,11 +262,11 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
               <CloseCircleOutlined style={{ color: "#faad14" }} />
               <span>
                 {currentCohortData.cohortName || `${selectedCohort}`}{" "}
-                暂无可用数据
+                {t("common:noData")}
               </span>
             </div>
           }
-          description="该cohort没有返回有效数据"
+          description={t("common:noData")}
           type="warning"
           showIcon={false}
           style={{
@@ -324,8 +324,8 @@ const SurvivalAnalysisContent = ({ pollingResults }) => {
   if (!hasAnyData) {
     return (
       <Alert
-        message="暂无数据"
-        description="请检查筛选条件或稍后重试"
+        message={t("common:noData")}
+        description={t("common:pleaseCheckFilterOrRetry")}
         type="warning"
         showIcon
         style={{ margin: 20 }}

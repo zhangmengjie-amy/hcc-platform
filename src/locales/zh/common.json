@@ -53,6 +53,11 @@
   "taskFailed": "任务失败",
   "taskTimeout": "任务超时",
   "downloadCSV": "下载 CSV",
+  "retry": "重试",
+  "selectOneCohort": "请选择一个cohort查看结果",
+  "currentCohortError": "当前 Cohort 数据异常",
+  "pleaseCheckFilterOrRetry": "请检查筛选条件或稍后重试",
+  "loadFailed": "加载失败",
   "taskStatus": {
     "title": "任务状态",
     "pending": "待处理",

@@ -223,7 +223,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
                     value={selectedGeneSet}
                   >
                     <Flex vertical>
-                      {geneList.map((item) => {
+                      {geneList?.map((item) => {
                         return (
                           <div style={{ marginBottom: "5px" }} key={item.geneListName}>
                             <Radio value={item.geneListName}>

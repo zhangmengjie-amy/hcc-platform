@@ -65,7 +65,6 @@ const DriverLandscape = forwardRef(({ dataType = "PLANET", handleComplete, sampl
 
   return (
     <div ref={ref}>
-      <Alert message={<><span>{t("common:modules.driverLandscape")}</span> <span>{t("common:referTo")} <a href="https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html">OncoPrint</a></span></>} type="info" />
       <Row style={{ width: "100%" }}>
         <Col xs={21} sm={21} md={21} lg={21} xl={21}>
           <MutationChart sampleMutations={sampleMutations} sampleCategories={sampleCategories} finialGeneList={finialGeneList}></MutationChart>

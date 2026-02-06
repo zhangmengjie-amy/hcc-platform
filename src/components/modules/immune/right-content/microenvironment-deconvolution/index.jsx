@@ -10,8 +10,9 @@ import {
 import HeatmapChart from "./heatmap";
 import BoxPlot from "./boxplot";
 import { getHeatmapBoxplot } from "@/configs/request";
+import { t } from "i18next";
 
-const Immune2Content = ({ conditions }) => {
+const microenvironmentDeconvolution = ({ conditions }) => {
   const [data1, setData1] = useState(null); // method: conditions.method
   const [data2, setData2] = useState(null); // method: "hallmarks"
   const [data3, setData3] = useState(null); // method: "markergenes"
@@ -84,7 +85,7 @@ const Immune2Content = ({ conditions }) => {
     return (
       <div style={{ padding: 24, textAlign: "center" }}>
         <Alert
-          message="加载失败"
+          message={t("common:loadFailed")}
           description={error}
           type="error"
           showIcon
@@ -93,7 +94,7 @@ const Immune2Content = ({ conditions }) => {
               onClick={fetchData}
               style={{ marginTop: 8, padding: "4px 12px", cursor: "pointer" }}
             >
-              重试
+              {t("common:retry")}
             </button>
           }
         />
@@ -198,4 +199,4 @@ const Immune2Content = ({ conditions }) => {
   );
 };
 
-export default Immune2Content;
+export default microenvironmentDeconvolution;
