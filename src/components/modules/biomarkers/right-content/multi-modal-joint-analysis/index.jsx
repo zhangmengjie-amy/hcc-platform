@@ -227,7 +227,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
         const avg = geneScores.reduce((sum, score) => sum + score, 0) / geneScores.length;
         setBiomarkersRange({ min: min.toFixed(2), max: max.toFixed(2), avg: avg.toFixed(2) });
         const dataWithColor = result?.reduce((acc, item) => {
-          acc[item.sampleId] = {
+          acc[item?.sampleId] = {
             score: item.geneScore,
             color: getColorForScoreWithAvg(item.geneScore, min, max, avg),
           };

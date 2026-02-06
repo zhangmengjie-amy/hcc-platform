@@ -58,6 +58,10 @@
   "currentCohortError": "Current Cohort data error",
   "pleaseCheckFilterOrRetry": "Please check filter criteria or try again later",
   "loadFailed": "Load Error",
+  "about": {
+    "laboratoryIntroduction": "Laboratory Introduction",
+    "relatedDatabases": "Related Databases"
+  },
   "taskStatus": {
     "title": "Task Status",
     "pending": "Pending",

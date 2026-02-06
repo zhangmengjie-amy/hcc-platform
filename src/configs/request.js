@@ -225,9 +225,9 @@ export const download = async (data) => {
   }
 };
 
-export const getCohortList = async (data) => {
+export const getCohortList = async (type) => {
   try {
-    const response = await get(`/hcc/v1/cohort/list`, data);
+    const response = await get(`/hcc/v1/cohort/list${type ? "?type=" + type : ""}`);
     return response;
   } catch (error) {
     console.error("Error fetching data:", error);

@@ -160,7 +160,7 @@ const Transcriptome = () => {
     setPollingData({
       taskIds: taskIdsWithCohort,
       cohortInfo: cohortList?.reduce((acc, row) => {
-        acc[row.number] = { name: row.name || `Cohort ${row.number}` };
+        acc[row?.number] = { name: row.name || `Cohort ${row.number}` };
         return acc;
       }, {}),
     });

@@ -62,7 +62,7 @@ const CohortSelection = forwardRef(
 
     useEffect(() => {
       setLoading(true);
-      getCohortList({ type }).then((result) => {
+      getCohortList(type).then((result) => {
         cohortListRef.current = result?.data ?? [];
         setCohortList(result?.data ?? []);
         setLoading(false);

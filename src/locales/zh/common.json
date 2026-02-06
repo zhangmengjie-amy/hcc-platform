@@ -58,6 +58,10 @@
   "currentCohortError": "当前 Cohort 数据异常",
   "pleaseCheckFilterOrRetry": "请检查筛选条件或稍后重试",
   "loadFailed": "加载失败",
+  "about": {
+    "laboratoryIntroduction": "实验室介绍",
+    "relatedDatabases": "相关数据库"
+  },
   "taskStatus": {
     "title": "任务状态",
     "pending": "待处理",

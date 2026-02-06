@@ -19,7 +19,7 @@ const About = () => {
   return (
     <div style={{ background: "#f8f9fa", padding: "20px 40px" }}>
       <Typography.Title level={2} className={styles.title}>
-        Laboratory Introduction
+        {t("common:about.laboratoryIntroduction")}
       </Typography.Title>
       <Row gutter={[16, 16]}>
         <Col xs={12}>
@@ -79,7 +79,7 @@ const About = () => {
         </Col>
       </Row>
       <Typography.Title level={2} className={styles.title}>
-        Related Databases
+        {t("common:about.relatedDatabases")}
       </Typography.Title>
       <Row gutter={[16, 16]}>
         <Col xs={6}>
