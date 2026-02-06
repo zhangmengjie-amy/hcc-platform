@@ -27,6 +27,7 @@ import {
   Row,
   Col,
   List,
+  message,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
@@ -43,6 +44,7 @@ const IMPORT_SRC = "/images/import.svg";
 const DRIVER_COLORS = ["rgb(239, 207, 210)", "rgb(205, 205, 205)"];
 const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
+  const [messageApi, contextHolder] = message.useMessage();
   const [filteredList, setFilteredList] = useState([]);
   const [geneList, setGeneList] = useState([]);
   const [driverList, setDriverList] = useState("driver");
@@ -150,7 +152,9 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
             </FixedSizeList>
           </Checkbox.Group>
         </EmptyLoading>
-        <div style={{ paddingTop: "5px", borderTop: "1px solid #d9d9d9" }}></div>
+        <div
+          style={{ paddingTop: "5px", borderTop: "1px solid #d9d9d9" }}
+        ></div>
         <Checkbox
           className={styles.checkAllDriver}
           checked={isAllDriverChecked()}
@@ -458,7 +462,10 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
         file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt");
 
       if (!isTxt) {
-        message.error("只能上传 txt 格式的文件!");
+        messageApi.open({
+          type: "error",
+          content: "Only txt files are allowed!",
+        });
         return Upload.LIST_IGNORE;
       }
 
@@ -468,27 +475,27 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
         const content = e.target.result?.split("\r\n");
         getValidGeneList(content).then((validGeneList) => {
           if (!validGeneList?.data.length) {
-            message?.error(`File upload failed.`);
+            messageApi.open({
+              type: "error",
+              content: `File upload failed.`,
+            });
           } else {
+            messageApi.open({
+              type: "success",
+              content: `File uploaded successfully.`,
+            });
             checkGeneList(validGeneList?.data?.map((item) => item.gene));
           }
         });
       };
       reader.onerror = () => {
-        message.error("read faild");
+        messageApi.open({
+          type: "error",
+          content: `File upload failed.`,
+        });
       };
       reader.readAsText(file, "UTF-8");
       return false;
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
     },
   };
 
@@ -556,42 +563,45 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   };
 
   return (
-    <div className={styles.condition}>
-      <Collapse
-        defaultActiveKey={"gene"}
-        className={styles.searchCollapse}
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined
-            style={{ fontSize: 14 }}
-            rotate={isActive ? 90 : 0}
-          />
-        )}
-        items={[
-          {
-            key: "gene",
-            label: geneCollapseTitle(),
-            children: geneCollapseContent(),
-          },
-        ]}
-      ></Collapse>
-      <Collapse
-        defaultActiveKey={"driver"}
-        className={styles.searchCollapse}
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined
-            style={{ fontSize: 14 }}
-            rotate={isActive ? 90 : 0}
-          />
-        )}
-        items={[
-          {
-            key: "driver",
-            label: driverCollapseTitle(),
-            children: driverCollapseContent(),
-          },
-        ]}
-      ></Collapse>
-    </div>
+    <>
+      {contextHolder}
+      <div className={styles.condition}>
+        <Collapse
+          defaultActiveKey={"gene"}
+          className={styles.searchCollapse}
+          expandIcon={({ isActive }) => (
+            <CaretRightOutlined
+              style={{ fontSize: 14 }}
+              rotate={isActive ? 90 : 0}
+            />
+          )}
+          items={[
+            {
+              key: "gene",
+              label: geneCollapseTitle(),
+              children: geneCollapseContent(),
+            },
+          ]}
+        ></Collapse>
+        <Collapse
+          defaultActiveKey={"driver"}
+          className={styles.searchCollapse}
+          expandIcon={({ isActive }) => (
+            <CaretRightOutlined
+              style={{ fontSize: 14 }}
+              rotate={isActive ? 90 : 0}
+            />
+          )}
+          items={[
+            {
+              key: "driver",
+              label: driverCollapseTitle(),
+              children: driverCollapseContent(),
+            },
+          ]}
+        ></Collapse>
+      </div>
+    </>
   );
 });
 
