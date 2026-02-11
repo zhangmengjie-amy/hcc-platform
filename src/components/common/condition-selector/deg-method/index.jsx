@@ -19,7 +19,13 @@ const RELOAD_ICON = "/images/reload.svg";
 const DEGMethod = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
   const [method, setMethod] = useState("cibersort");
-  const handleReload = () => {};
+  const handleReload = (event) => {
+    event.stopPropagation();
+    setMethod("cibersort");
+    onChange?.({
+      selectedMethod: "cibersort",
+    });
+  };
   const methodCollapseTitle = () => {
     return (
       <Flex justify={"space-between"} align={"center"}>

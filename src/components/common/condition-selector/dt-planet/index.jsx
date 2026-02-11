@@ -16,7 +16,15 @@ const INIT_COHORT_TYPE = "PLANET";
 const CohortType = forwardRef(({ onChange, onReady }, ref) => {
   const { t } = useTranslation();
   const [cohortType, setCohortType] = useState(INIT_COHORT_TYPE);
-  const handleReload = () => {};
+  const handleReload = (event) => {
+    event.stopPropagation();
+    setCohortType(INIT_COHORT_TYPE);
+    if (onChange) {
+      onChange({
+        selectedCohortType: INIT_COHORT_TYPE,
+      });
+    }
+  };
 
   useEffect(() => {
     onReady && onReady({

@@ -56,7 +56,10 @@ const GeneList = forwardRef(({ onChange, onReady }, ref) => {
   const geneRef = useRef(null);
   const filteredRef = useRef(null);
 
-  const handleDriverReload = () => {};
+  const handleDriverReload = (event) => {
+    event.stopPropagation();
+    setDriverList("driver");
+  };
 
   const loadMoreGene = useCallback(
     debounce(() => {

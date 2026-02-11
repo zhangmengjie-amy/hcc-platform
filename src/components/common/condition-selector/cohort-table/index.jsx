@@ -158,7 +158,9 @@ const CohortSelection = forwardRef(
       },
     }));
 
-    const handleReload = () => {};
+    const handleReload = (event) => {
+      event.stopPropagation();
+    };
 
     const tableCollapseTitle = useMemo(() => {
       return (
@@ -195,7 +197,7 @@ const CohortSelection = forwardRef(
               selectionType == "checkbox" ? `${t("common:selectedCount")}: ${selectedRowKeys?.length ?? 0}` : ""
             }
           </Typography.Paragraph>
-          <Tooltip placement="bottom" title={t("common:resetSelection")}>
+          {/* <Tooltip placement="bottom" title={t("common:resetSelection")}>
             <Button
               color="default"
               onClick={(event) => {
@@ -212,7 +214,7 @@ const CohortSelection = forwardRef(
                 tooltip={t("common:reload")}
               />
             </Button>
-          </Tooltip>
+          </Tooltip> */}
         </Flex>
       );
     }, [t, selectedRowKeys]);

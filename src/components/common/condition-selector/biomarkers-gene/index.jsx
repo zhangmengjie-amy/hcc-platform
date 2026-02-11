@@ -44,7 +44,9 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
   const [selectedGeneSet, setSelectedGeneSet] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const handleDriverReload = () => {};
+  const handleDriverReload = (event) => {
+    event.stopPropagation();
+  };
 
   useImperativeHandle(ref, () => ({
     getParams: () => {
@@ -103,7 +105,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
           {t("common:filter.biomarkerMethod")}
         </Typography.Title>
 
-        <Tooltip placement="bottom" title={t("common:resetSelection")}>
+        {/* <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button
             color="default"
             onClick={(event) => {
@@ -120,7 +122,7 @@ const BiomarkersGene = forwardRef(({ onChange, onReady }, ref) => {
               tooltip={t("common:reload")}
             />
           </Button>
-        </Tooltip>
+        </Tooltip> */}
       </Flex>
     );
   };

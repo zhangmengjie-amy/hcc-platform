@@ -910,7 +910,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                 >
                   <Typography.Link>
                     <Space>
-                      <span style={{ color: "#000" }}>Selected: </span>
+                      <span style={{ color: "#000" }}>{t("common:selected")}: </span>
                       {t(`common:subtype.${selectedPlanetSubtype}`)}
                       <DownOutlined />
                     </Space>
@@ -1195,7 +1195,7 @@ const MultiModalJointAnalysisContent = ({ biomarkers, conditions, dataType = "PL
                 >
                   <Typography.Link>
                     <Space>
-                      <span style={{ color: "#000" }}>Selected: </span>
+                      <span style={{ color: "#000" }}>{t("common:selected")}: </span>
                       {selectedDtSubtype}
                       <DownOutlined />
                     </Space>

@@ -203,10 +203,9 @@ const TimingAnalysis = ({
           })}
         </Row>
         <Flex justify="flex-end" style={{ margin: "20px 0" }}>
-          {" "}
           <Pagination
             total={treeList?.length}
-            showTotal={(total) => `${t("common:patientCount")}:${total}`}
+            showTotal={(total) => `${t("common:total")}:${total}`}
             defaultPageSize={6}
             onChange={onPageSizeChange}
             defaultCurrent={1}

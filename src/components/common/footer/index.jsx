@@ -65,7 +65,7 @@ const HCCFooter = () => {
             marginBottom: "10px",
           }}
         >
-          Copyright © 2028-{new Date().getFullYear()} <a style={{ color: "#fff" }} href="https://www.ioz.ac.cn/" target="https://www.ioz.ac.cn/"> {t("home:footer.contact.ioz")} </a>
+          Copyright © 2018-{new Date().getFullYear()} <a style={{ color: "#fff" }} href="https://www.ioz.ac.cn/" target="https://www.ioz.ac.cn/"> {t("home:footer.contact.ioz")} </a>
           {t("home:footer.copyright")}
         </Col>
         <Col

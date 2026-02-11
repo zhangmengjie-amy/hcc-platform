@@ -34,7 +34,12 @@ const FilterCohort = forwardRef(({ onChange }, ref) => {
   const [selectedClassify, setSelectedClassify] = useState("all");
   const [selectedTechnology, setSelectedTechnology] = useState("all");
 
-  const handleDriverReload = () => {};
+  const handleDriverReload = (event) => {
+    event.stopPropagation();
+    setSelectedClinical([]);
+    setSelectedClassify("all");
+    setSelectedTechnology("all");
+  };
 
   useImperativeHandle(ref, () => ({
     getParams: () => {

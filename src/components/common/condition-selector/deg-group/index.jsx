@@ -92,7 +92,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
       _firstGroup = null;
       _secondGroup = null;
     }
-    
+
     onChange({
       geneList,
       geneSet,
@@ -159,7 +159,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
           {t("common:filter.grouping")}
         </Typography.Title>
 
-        <Tooltip placement="bottom" title={t("common:resetSelection")}>
+        {/* <Tooltip placement="bottom" title={t("common:resetSelection")}>
           <Button
             color="default"
             onClick={(event) => {
@@ -176,7 +176,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
               tooltip={t("common:reload")}
             />
           </Button>
-        </Tooltip>
+        </Tooltip> */}
       </Flex>
     );
   };

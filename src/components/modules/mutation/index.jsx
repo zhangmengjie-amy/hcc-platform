@@ -35,8 +35,9 @@ const Mutation = () => {
   const conditionsRef = useRef(null);
 
   const handleApply = useCallback(() => {
-    const params = conditionsRef.current.getParams();
+    const params = conditionsRef.current?.getParams();
     setDataType(params?.selectedCohortType?.toLowerCase() ?? "planet");
+    debugger;
     setConditions({
       geneList: params.geneList,
       ...params.clinicalConditions,
@@ -185,6 +186,7 @@ const Mutation = () => {
   const leftContent = useMemo(() => {
     return (
       <ConditionSelection
+        ref={conditionsRef}
         handleOnReady={handleOnReady}
         handleITH={contentType != "driver-landscape" ? setRange : null}
       ></ConditionSelection>
