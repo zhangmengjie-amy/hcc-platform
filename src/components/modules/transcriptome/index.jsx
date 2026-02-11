@@ -120,6 +120,7 @@ const Transcriptome = () => {
         });
         return;
       }
+
       if (params.groupBy == "Gene") {
         if (params.geneType == "custom") {
           if (params.geneList?.length == 0) {

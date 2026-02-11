@@ -96,7 +96,7 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
             subtype: item.subtype,
           },
           itemStyle: {
-            color: SUBTYPE_COLOR[item.subtype],
+            color: SUBTYPE_COLOR[item.immuneSubtype],
             borderWidth: 2, // 设置边框宽度
             borderColor: "#fff", // 设置边框颜色
 

@@ -92,7 +92,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
       _firstGroup = null;
       _secondGroup = null;
     }
-
+    
     onChange({
       geneList,
       geneSet,
@@ -393,33 +393,7 @@ const DEGGroupBy = forwardRef(({ onChange, onReady }, ref) => {
                     </FixedSizeList>
                   </>
                 ) : (
-                  <Flex vertical align="center">
-                    <div className="App" style={{ padding: 20 }}>
-                      <GeneSetUpload onGenesValidated={handleGenesValidated} />
-                      <div
-                        style={{
-                          marginTop: 20,
-                          borderTop: "1px dashed #ccc",
-                          paddingTop: 20,
-                        }}
-                      >
-                        <Typography.Title level={5}>基因列表:</Typography.Title>
-                        {validatedGenesFromChild.length > 0 ? (
-                          <Space size={[0, 8]} wrap>
-                            {validatedGenesFromChild.map((gene, index) => (
-                              <Tag key={index} color="blue">
-                                {gene}
-                              </Tag>
-                            ))}
-                          </Space>
-                        ) : (
-                          <Typography.Text type="secondary">
-                            暂无合法基因列表，请上传并验证文件。
-                          </Typography.Text>
-                        )}
-                      </div>
-                    </div>
-                  </Flex>
+                  <GeneSetUpload onChange={handleGenesValidated} />
                 )}
               </Radio.Group>
             </Flex>

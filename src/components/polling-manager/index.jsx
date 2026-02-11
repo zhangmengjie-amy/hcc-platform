@@ -13,7 +13,7 @@ const MAX_POLLING_TIME = 300000; // 5分钟
 
 const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
   const [tasks, setTasks] = useState([]);
-  const [stats, setStats] = useState({
+  const [status, setStatus] = useState({
     total: 0,
     success: 0,
     failed: 0,
@@ -60,13 +60,13 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
       cohortName: cohortInfo[cohortId]?.name || `Cohort ${cohortId}`,
       status: "running",
       result: null,
-      message: "开始轮询...",
+      message: `${t("common:startPolling")}...`,
       startTime: Date.now(),
       lastCheckTime: Date.now(),
     }));
 
     setTasks(newTasks);
-    updateStats(newTasks);
+    updateStatus(newTasks);
     setIsExpanded(true);
     
     // 等待一小段时间确保状态更新完成
@@ -89,15 +89,15 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
   }, []);
 
   // 更新统计
-  const updateStats = useCallback((taskList) => {
-    const stats = {
+  const updateStatus = useCallback((taskList) => {
+    const status = {
       total: taskList.length,
       success: taskList.filter((t) => t.status === "success").length,
       failed: taskList.filter((t) => t.status === "failed").length,
       running: taskList.filter((t) => t.status === "running").length,
     };
-    setStats(stats);
-    return stats;
+    setStatus(status);
+    return status;
   }, []);
 
   // 检查是否完成
@@ -188,7 +188,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
     const activeTasks = updatedTasks.filter((t) => t.status === "running");
     if (activeTasks.length === 0) {
       setTasks(updatedTasks);
-      updateStats(updatedTasks);
+      updateStatus(updatedTasks);
       return;
     }
 
@@ -221,7 +221,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
       });
 
       setTasks(updatedTasks);
-      const newStats = updateStats(updatedTasks);
+      const newStatus = updateStatus(updatedTasks);
 
       if (checkAllCompleted(updatedTasks)) {
         stopPolling();
@@ -239,7 +239,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
     } catch (error) {
       // 静默处理错误
     }
-  }, [pollSingleTask, updateStats, checkAllCompleted, onComplete, t]);
+  }, [pollSingleTask, updateStatus, checkAllCompleted, onComplete, t]);
 
   // 开始轮询
   const startPolling = useCallback(() => {
@@ -340,8 +340,8 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
           />
           <span style={{ fontWeight: 500 }}>
             {t("common:taskStatus:title")}
-            {allCompleted && stats.failed === 0 && `(${t("common:taskStatus:success")})`}
-            {allCompleted && stats.failed > 0 && `(${t("common:taskStatus:someFailed")})`}
+            {allCompleted && status.failed === 0 && `(${t("common:taskStatus:success")})`}
+            {allCompleted && status.failed > 0 && `(${t("common:taskStatus:someFailed")})`}
             {hasRunning && `${t("common:taskStatus:running")}`}
           </span>
         </div>
@@ -355,7 +355,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
                 color: "#1890ff",
               }}
             >
-              {stats.total}
+              {status.total}
             </span>
             <span style={{ fontSize: 14, color: "#666" }}>{t("common:total")}</span>
           </Flex>
@@ -368,7 +368,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
                 color: "#52c41a",
               }}
             >
-              {stats.success}
+              {status.success}
             </span>
             <span style={{ fontSize: 14, color: "#666" }}>{t("common:taskStatus:success")}</span>
           </Flex>
@@ -381,7 +381,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
                 color: "#ff4d4f",
               }}
             >
-              {stats.failed}
+              {status.failed}
             </span>
             <span style={{ fontSize: 14, color: "#666" }}>{t("common:taskStatus:failed")}</span>
           </Flex>
@@ -394,7 +394,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
                 color: "#faad14",
               }}
             >
-              {stats.running}
+              {status.running}
             </span>
             <span style={{ fontSize: 14, color: "#666" }}>{t("common:taskStatus:running")}</span>
           </Flex>
@@ -412,19 +412,19 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
         <div style={{ padding: "10px 16px" }}>
           <Progress
             percent={
-              stats.total > 0
+              status.total > 0
                 ? Math.round(
-                  ((stats.success + stats.failed) / stats.total) * 100,
+                  ((status.success + status.failed) / status.total) * 100,
                 )
                 : 0
             }
             success={{
               percent:
-                stats.total > 0
-                  ? Math.round((stats.success / stats.total) * 100)
+                status.total > 0
+                  ? Math.round((status.success / status.total) * 100)
                   : 0,
             }}
-            status={stats.running > 0 ? "active" : "normal"}
+            status={status.running > 0 ? "active" : "normal"}
           />
 
           {shouldShowInitializing ? (

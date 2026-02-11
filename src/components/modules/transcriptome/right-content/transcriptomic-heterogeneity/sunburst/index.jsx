@@ -1,44 +1,93 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import EChartsReact from "echarts-for-react";
 import { useTranslation } from "react-i18next";
-import {
-  Empty,
-  Flex,
-} from "antd";
-import { set } from "lodash";
+import { DownloadOutlined, DownOutlined } from "@ant-design/icons";
+import { Empty, Flex, Button, Dropdown } from "antd";
 
 const SUBTYPE_COLOR = {
-  "C1": "rgb(79, 151, 121)",
-  "C2": "rgb(72, 128, 187)",
-  "C3": "rgb(150, 91, 164)",
-  "C4": "rgb(167, 134, 56)",
-  "C5": "rgb(238, 188, 57)",
-  "C6": "rgb(218, 85, 76)",
+  C1: "rgb(79, 151, 121)",
+  C2: "rgb(72, 128, 187)",
+  C3: "rgb(150, 91, 164)",
+  C4: "rgb(167, 134, 56)",
+  C5: "rgb(238, 188, 57)",
+  C6: "rgb(218, 85, 76)",
 };
 
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-  "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-  "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-  "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
+const MIXED_GROUP = [
+  "C1,C2",
+  "C1,C3",
+  "C1,C4",
+  "C1,C5",
+  "C1,C6",
+  "C2,C3",
+  "C2,C4",
+  "C2,C5",
+  "C2,C6",
+  "C3,C4",
+  "C3,C5",
+  "C3,C6",
+  "C4,C5",
+  "C4,C6",
+  "C5,C6",
+  "C1,C2,C3",
+  "C1,C2,C4",
+  "C1,C2,C5",
+  "C1,C2,C6",
+  "C1,C3,C4",
+  "C1,C3,C5",
+  "C1,C3,C6",
+  "C1,C4,C5",
+  "C1,C4,C6",
+  "C1,C5,C6",
+  "C2,C3,C4",
+  "C2,C3,C5",
+  "C2,C3,C6",
+  "C2,C4,C6",
+  "C3,C4,C5",
+  "C3,C4,C6",
+  "C2,C4,C5",
+  "C2,C5,C6",
+  "C3,C5,C6",
+  "C4,C5,C6",
+  "C1,C2,C3,C4",
+  "C1,C2,C3,C5",
+  "C1,C2,C3,C6",
+  "C1,C2,C4,C5",
+  "C1,C2,C4,C6",
+  "C1,C2,C5,C6",
+  "C1,C3,C4,C5",
+  "C1,C3,C4,C6",
+  "C2,C3,C4,C5",
+  "C1,C3,C5,C6",
+  "C1,C4,C5,C6",
+  "C2,C3,C4,C6",
+  "C2,C3,C5,C6",
+  "C2,C4,C5,C6",
+  "C3,C4,C5,C6",
+  "C1,C2,C3,C4,C5",
+  "C1,C2,C3,C4,C6",
+  "C2,C3,C4,C5,C6",
+  "C1,C3,C4,C5,C6",
+  "C1,C2,C3,C5,C6",
+  "C1,C2,C4,C5,C6",
   "C1,C2,C3,C4,C5,C6",
 ];
 
 const MIXED_PURE = {
-  "Pure": "rgb(106, 194, 165)",
-  "Mixed": "rgb(158, 153, 197)",
+  Pure: "rgb(106, 194, 165)",
+  Mixed: "rgb(158, 153, 197)",
 };
 
 const MIXED_PURE_BG = {
-  "Pure": "rgb(239, 249, 247)",
-  "Mixed": "rgb(247, 240, 247)",
+  Pure: "rgb(239, 249, 247)",
+  Mixed: "rgb(247, 240, 247)",
 };
 
 const STAGE_COLOR = {
-  "I": "rgb(250, 213, 120)",
-  "II": "rgb(245, 138, 66)",
-  "III": "rgb(224, 36, 40)",
+  I: "rgb(250, 213, 120)",
+  II: "rgb(245, 138, 66)",
+  III: "rgb(224, 36, 40)",
 };
 
 const defaultValue = 1;
@@ -46,6 +95,7 @@ const spaceValue = 0.2;
 const SunburstChart = ({ data, patientId, handleItemClick }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);
+  const chartRef = useRef(null);
   const { t } = useTranslation();
   useEffect(() => {
     if (!data) return;
@@ -53,10 +103,10 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     setOption(_option);
   }, [data, patientId, t]);
 
-
-
   const sortedPatientById = (patientList) => {
-    return patientList?.sort((a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1]);
+    return patientList?.sort(
+      (a, b) => a.patientId.split("_")[1] - b.patientId.split("_")[1],
+    );
   };
 
   const sortPatients = (_patientList) => {
@@ -68,19 +118,30 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
       .filter((item) => new Set(item.subtypes?.map((s) => s.subtype)).size > 1)
       .map((item) => ({
         ...item,
-        subtypes: item.subtypes.sort((a, b) => a.subtype?.localeCompare(b.subtype)),
+        subtypes: item.subtypes.sort((a, b) =>
+          a.subtype?.localeCompare(b.subtype),
+        ),
       }));
 
-
     MIXED_GROUP.forEach((group) => {
-      const patient = patientWithGroupSubtype.filter((item) => {
-        return Array.from(new Set(item.subtypes.map((sample) => sample.subtype))).join(",") == group;
-      }).sort((a, b) => a.stage.length - b.stage.length);
+      const patient = patientWithGroupSubtype
+        .filter((item) => {
+          return (
+            Array.from(
+              new Set(item.subtypes.map((sample) => sample.subtype)),
+            ).join(",") == group
+          );
+        })
+        .sort((a, b) => a.stage.length - b.stage.length);
       mixedPatientList.push(...patient);
     });
-    const patientWithSingleSubtype = patientList.filter((item) => new Set(item.subtypes?.map((item) => item.subtype)).size == 1);
+    const patientWithSingleSubtype = patientList.filter(
+      (item) => new Set(item.subtypes?.map((item) => item.subtype)).size == 1,
+    );
     Object.keys(SUBTYPE_COLOR).forEach((subtype) => {
-      const patientWithSameSubtype = patientWithSingleSubtype.filter((item) => item.subtypes[0].subtype == subtype).sort((a, b) => a.stage.length - b.stage.length);
+      const patientWithSameSubtype = patientWithSingleSubtype
+        .filter((item) => item.subtypes[0].subtype == subtype)
+        .sort((a, b) => a.stage.length - b.stage.length);
       purePatientList.push(...patientWithSameSubtype);
     });
     sortedPatientList = [...purePatientList, ...mixedPatientList];
@@ -94,11 +155,11 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
         maxLevel = currentLevel;
       }
       if (node.children && node.children.length > 0) {
-        node.children.forEach(child => traverse(child, currentLevel + 1));
+        node.children.forEach((child) => traverse(child, currentLevel + 1));
       }
     }
 
-    data.forEach(root => traverse(root, 1));
+    data.forEach((root) => traverse(root, 1));
     return maxLevel;
   }
 
@@ -108,60 +169,72 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
 
   const buildChildren = (sampleLength, patient, PURE_MIXED) => {
     const children = [];
-    if (sampleLength == 0) return [
-      {
-        value: defaultValue,
-        name: "",
-        itemStyle: {
-          borderWidth: 0,
-          color: MIXED_PURE_BG[PURE_MIXED],
-        },
-        children: [{
-          name: patient.stage,
+    if (sampleLength == 0)
+      return [
+        {
           value: defaultValue,
-          custom: {
-            theme: "Stage",
-            patientId: patient.patientId,
-            sampleLength: patient.subtypes.length,
-            PURE_MIXED: PURE_MIXED,
-          },
+          name: "",
           itemStyle: {
-            color: STAGE_COLOR[patient.stage],
+            borderWidth: 0,
+            color: MIXED_PURE_BG[PURE_MIXED],
           },
-          children: [{
-            value: defaultValue,
-            name: "",
-            itemStyle: {
-              borderWidth: 0,
-              color: MIXED_PURE_BG[PURE_MIXED],
-            },
-            children: [{
+          children: [
+            {
+              name: patient.stage,
               value: defaultValue,
               custom: {
-                theme: "RNA Mixed or Pure",
+                theme: "Stage",
                 patientId: patient.patientId,
-                sampleId: patient.sampleId,
                 sampleLength: patient.subtypes.length,
-                stage: patient.stage,
+                PURE_MIXED: PURE_MIXED,
               },
-              children: [{
-                value: 1,
-                itemStyle: {
-                  borderWidth: 0,
-                  color: (patientId ?? data[0]?.patientId) == patient.patientId ? "rgb(49, 96, 148)" : MIXED_PURE_BG[PURE_MIXED],
-                },
-              }],
-              name: PURE_MIXED,
               itemStyle: {
-                borderWidth: 0,
-                color: MIXED_PURE[PURE_MIXED],
+                color: STAGE_COLOR[patient.stage],
               },
-                           
-            }],
-          }],
-        }],
-      },
-    ];
+              children: [
+                {
+                  value: defaultValue,
+                  name: "",
+                  itemStyle: {
+                    borderWidth: 0,
+                    color: MIXED_PURE_BG[PURE_MIXED],
+                  },
+                  children: [
+                    {
+                      value: defaultValue,
+                      custom: {
+                        theme: "RNA Mixed or Pure",
+                        patientId: patient.patientId,
+                        sampleId: patient.sampleId,
+                        sampleLength: patient.subtypes.length,
+                        stage: patient.stage,
+                      },
+                      children: [
+                        {
+                          value: 1,
+                          itemStyle: {
+                            borderWidth: 0,
+                            color:
+                              (patientId ?? data[0]?.patientId) ==
+                              patient.patientId
+                                ? "rgb(49, 96, 148)"
+                                : MIXED_PURE_BG[PURE_MIXED],
+                          },
+                        },
+                      ],
+                      name: PURE_MIXED,
+                      itemStyle: {
+                        borderWidth: 0,
+                        color: MIXED_PURE[PURE_MIXED],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ];
     const subtype = patient.subtypes[sampleLength - 1]?.subtype;
     const sampleId = patient.subtypes[sampleLength - 1]?.id;
     const color = SUBTYPE_COLOR[subtype];
@@ -189,8 +262,9 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     setHasData(!!filterdPatient?.length);
     const sortedPatient = sortPatients(filterdPatient);
     let seriesData = [];
-    const maxSampleLength = Math.max(...sortedPatient.map(patient => patient.subtypes?.length));
-
+    const maxSampleLength = Math.max(
+      ...sortedPatient.map((patient) => patient.subtypes?.length),
+    );
 
     const pureChildren = [];
     const mixedChildren = [];
@@ -205,8 +279,13 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
       return new Set(item.subtypes.map((item) => item.subtype)).size == 1;
     })?.length;
     sortedPatient.forEach((patient, index) => {
-      const isPure = new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
-      const result = buildChildren(maxSampleLength, patient, isPure ? "Pure" : "Mixed");
+      const isPure =
+        new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
+      const result = buildChildren(
+        maxSampleLength,
+        patient,
+        isPure ? "Pure" : "Mixed",
+      );
       if (isPure) {
         if (!initialPureSubtype && !!mixedPatientsLength) {
           pureChildren.push({
@@ -223,7 +302,10 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
             children: [],
           });
         }
-        if (initialPureSubtype !== patient.subtypes[0].subtype && mixedPatientsLength) {
+        if (
+          initialPureSubtype !== patient.subtypes[0].subtype &&
+          mixedPatientsLength
+        ) {
           pureTotalSpace += 1;
           pureChildren.push({
             value: spaceValue,
@@ -238,7 +320,11 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
 
         initialPureSubtype = patient.subtypes[0].subtype;
         pureChildren.push(...result);
-        if (new Set(sortedPatient[index + 1]?.subtypes.map((item) => item.subtype)).size > 1) {
+        if (
+          new Set(
+            sortedPatient[index + 1]?.subtypes.map((item) => item.subtype),
+          ).size > 1
+        ) {
           pureChildren.push({
             value: defaultValue,
             name: "Pure",
@@ -253,10 +339,15 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
             children: [],
           });
         }
-
       } else {
-        const currentMixedSubtype = Array.from(new Set(patient.subtypes.map((sample) => sample.subtype))).join(",");
-        if (initialMixedSubtype && initialMixedSubtype !== currentMixedSubtype && !!purePatientsLength) {
+        const currentMixedSubtype = Array.from(
+          new Set(patient.subtypes.map((sample) => sample.subtype)),
+        ).join(",");
+        if (
+          initialMixedSubtype &&
+          initialMixedSubtype !== currentMixedSubtype &&
+          !!purePatientsLength
+        ) {
           mixedTotalSpace += 1;
           mixedChildren.push({
             value: spaceValue,
@@ -272,79 +363,90 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
         mixedChildren.push(...result);
       }
     });
-    const realPureLength = pureChildren.filter((item) => item.value == 1)?.length;
-    const realMixedLength = mixedChildren.filter((item) => item.value == 1)?.length;
+    const realPureLength = pureChildren.filter(
+      (item) => item.value == 1,
+    )?.length;
+    const realMixedLength = mixedChildren.filter(
+      (item) => item.value == 1,
+    )?.length;
     const totalLength = realPureLength + realMixedLength;
-    const realPurePercent = (realPureLength / totalLength * 100).toFixed(0);
-    const realMixedPercent = (realMixedLength / totalLength * 100).toFixed(0);
+    const realPurePercent = ((realPureLength / totalLength) * 100).toFixed(0);
+    const realMixedPercent = ((realMixedLength / totalLength) * 100).toFixed(0);
 
     const totalPureLength = realPureLength + pureTotalSpace * spaceValue;
     const totalMixedLength = realMixedLength + mixedTotalSpace * spaceValue;
 
-    seriesData = [{
-      name: "",
-      value: totalPureLength,
-      itemStyle: {
-        borderWidth: 0,
-        color: MIXED_PURE_BG["Pure"],
-      },
-      label: {
-        formatter: () => {
-          return `${realPurePercent}%\n\n${t("common:subtype.pure")}`;
+    seriesData = [
+      {
+        name: "",
+        value: totalPureLength,
+        itemStyle: {
+          borderWidth: 0,
+          color: MIXED_PURE_BG["Pure"],
         },
-        rotate: "tangential",
-        verticalAlign: "top",
-        padding: [!mixedPatientsLength ? -15 : 20, 0],
-        fontSize: 14,
-        color: "#000",
-        hideOverlap: false,
-      },
-      children: pureChildren,
-    }, {
-      name: "",
-      value: totalMixedLength,
-      itemStyle: {
-        color: MIXED_PURE_BG["Mixed"],
-      },
-      label: {
-        formatter: () => {
-          return `Mixed patients\n\n${realMixedPercent}%`;
+        label: {
+          formatter: () => {
+            return `${realPurePercent}%\n\n${t("common:subtype.pure")}`;
+          },
+          rotate: "tangential",
+          verticalAlign: "top",
+          padding: [!mixedPatientsLength ? -20 : 25, 0],
+          fontSize: 14,
+          color: "#000",
+          hideOverlap: false,
         },
-        rotate: "tangential",
-        verticalAlign: "bottom",
-        padding: [!purePatientsLength ? -20 : 20, 0],
-        fontSize: 14,
-        color: "#000",
-        hideOverlap: false,
+        children: pureChildren,
       },
-      children: mixedChildren,
-    }];
+      {
+        name: "",
+        value: totalMixedLength,
+        itemStyle: {
+          color: MIXED_PURE_BG["Mixed"],
+        },
+        label: {
+          formatter: () => {
+            return `Mixed patients\n\n${realMixedPercent}%`;
+          },
+          rotate: "tangential",
+          verticalAlign: "bottom",
+          padding: [!purePatientsLength ? -25 : 25, 0],
+          fontSize: 14,
+          color: "#000",
+          hideOverlap: false,
+        },
+        children: mixedChildren,
+      },
+    ];
 
     const levelCount = getLevelCount(seriesData);
     const firstLevelRatio = 0.45;
     const remainingRatio = 1 - firstLevelRatio;
 
     // 创建层级配置
-    const levels = [{}, {
-      r0: "0%",
-      r: 95 + "%",
-      label: {
-        show: true,
+    const levels = [
+      {},
+      {
+        r0: "0%",
+        r: 100 + "%",
+        label: {
+          show: true,
+        },
+        itemStyle: {
+          borderWidth: 1,
+          borderColor: "#ccc",
+          color: MIXED_PURE_BG["MIXED"],
+        },
       },
-      itemStyle: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        color: MIXED_PURE_BG["MIXED"],
-      },
-    }];
+    ];
 
     // 为剩余层级创建配置
     for (let i = 1; i < levelCount; i++) {
-      const start = firstLevelRatio + (i - 1) * (remainingRatio / (levelCount - 1));
+      const start =
+        firstLevelRatio + (i - 1) * (remainingRatio / (levelCount - 1));
       const end = firstLevelRatio + i * (remainingRatio / (levelCount - 1));
       levels.push({
-        r0: (start * 100) + "%",
-        r: (end * 100) + "%",
+        r0: start * 100 + "%",
+        r: end * 100 + "%",
         label: {
           align: "right",
           rotate: "radial",
@@ -353,7 +455,11 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
       });
     }
 
-    const startAngle = 180 + ((totalPureLength) / (totalPureLength + totalMixedLength) * 360 - (totalMixedLength) / (totalPureLength + totalMixedLength) * 360) / 4;
+    const startAngle =
+      180 +
+      ((totalPureLength / (totalPureLength + totalMixedLength)) * 360 -
+        (totalMixedLength / (totalPureLength + totalMixedLength)) * 360) /
+        4;
     return {
       grid: {
         left: 0,
@@ -399,9 +505,82 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
     handleItemClick?.(params.data?.custom?.patientId);
   }, []);
 
-  return (
-    hasData ?  <EChartsReact style={{ width: "100%", height: "360px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: "svg" }}></EChartsReact> : 
-      <Flex style={{ height: "360px" }} align="center" justify="center"><Empty style={{ width: "100%", padding: "20px" }}></Empty> </Flex>
+  const handleExport = (type) => {
+    if (!chartRef.current) return;
+
+    try {
+      const echartsInstance = chartRef.current.getEchartsInstance();
+
+      // 构建导出配置
+      const exportConfig = {
+        type,
+        pixelRatio: 2,
+        excludeComponents: ["toolbox"],
+      };
+
+      // 只为JPG格式设置白色背景
+      if (type === "jpg") {
+        exportConfig.backgroundColor = "#ffffff";
+      }
+
+      // 获取数据URL
+      const dataUrl = echartsInstance.getDataURL(exportConfig);
+
+      // 创建下载链接
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `${data?.title || "circle"}.${type}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Export failed:", error);
+    }
+  };
+
+  return hasData ? (
+    <>
+      {/* <div style={{ width: "100%" }}>
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: "png",
+                label: "PNG",
+                onClick: () => handleExport("png"),
+              },
+              {
+                key: "jpg",
+                label: "JPG",
+                onClick: () => handleExport("jpg"),
+              },
+              {
+                key: "svg",
+                label: "SVG",
+                onClick: () => handleExport("svg"),
+              },
+            ],
+          }}
+        >
+          <Button type="primary" icon={<DownloadOutlined />} style={{ marginLeft: "20px" }}>
+            {t("common:export")} <DownOutlined />
+          </Button>
+        </Dropdown>
+      </div> */}
+
+      <EChartsReact
+        ref={chartRef}
+        style={{ width: "100%", height: "360px" }}
+        key={JSON.stringify(option)}
+        option={option}
+        onEvents={{ click: handleClick }}
+        opts={{ renderer: "svg" }}
+      ></EChartsReact>
+    </>
+  ) : (
+    <Flex style={{ height: "360px" }} align="center" justify="center">
+      <Empty style={{ width: "100%", padding: "20px" }}></Empty>{" "}
+    </Flex>
   );
 };
 

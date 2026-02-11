@@ -29,6 +29,7 @@ const GeneUpload = ({ onChange }) => {
   const [validGenes, setValidGenes] = useState([]);
   const [invalidGenes, setInvalidGenes] = useState([]);
   const [totalGenesCount, setTotalGenesCount] = useState(0);
+  const [messageApi, contextHolder] = message.useMessage();
   const { t } = useTranslation();
 
   const beforeUpload = (file) => {
@@ -42,7 +43,10 @@ const GeneUpload = ({ onChange }) => {
 
   const handleUpload = async () => {
     if (fileList.length === 0) {
-      message.warning("请选择一个 TXT 文件。");
+      messageApi.open({
+        type: "warning",
+        content: t("common:selectTxtFile"),
+      });
       return;
     }
 
@@ -70,7 +74,10 @@ const GeneUpload = ({ onChange }) => {
       setTotalGenesCount(rawGeneNames.length);
 
       if (rawGeneNames.length === 0) {
-        message.warning("TXT 文件中没有识别到基因名字。");
+        messageApi.open({
+          type: "warning",
+          content: t("common:noGeneNameInTxt"),
+        });
         setUploading(false);
         setProcessing(false);
         if (onChange) {
@@ -89,19 +96,27 @@ const GeneUpload = ({ onChange }) => {
           );
           setValidGenes(validated);
           setInvalidGenes(invalid);
-          message.success("基因文件处理并验证成功！");
+          messageApi.open({
+            type: "success",
+            content: t("common:geneFileProcessSuccess"),
+          });
 
           // *** 关键修改：调用父组件传递的回调函数 ***
           onChange?.(validated);
         } else {
-          message.error(`基因验证失败: ${response.message}`);
+          messageApi.open({
+            type: "error",
+            content: `${t("common:geneValidationFailed")}`,
+          });
           if (onChange) {
             onChange?.([]); // 验证失败，传递空数组
           }
         }
       } catch (error) {
-        console.error("基因验证接口调用失败:", error);
-        message.error("基因验证失败，请检查网络或服务器。");
+        messageApi.open({
+          type: "error",
+          content: `${t("common:geneFileApiFailed")}`,
+        });
         onChange?.([]); // 异常情况，传递空数组
       } finally {
         setUploading(false);
@@ -110,7 +125,10 @@ const GeneUpload = ({ onChange }) => {
     };
 
     reader.onerror = () => {
-      message.error("文件读取失败。");
+      messageApi.open({
+        type: "error",
+        content: t("common:readFailed"),
+      });
       setUploading(false);
       setProcessing(false);
       onChange?.([]); // 读取失败，传递空数组
@@ -152,93 +170,101 @@ const GeneUpload = ({ onChange }) => {
   }, []);
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto" }}>
-      {/* <Typography.Title level={5}>{t("common:uploadGeneList")} (TXT)</Typography.Title> */}
-      <Paragraph>{t("common:customizedGeneListTips")}</Paragraph>
-      <Flex justify="space-between">
-        <Upload {...uploadProps}>
+    <>
+      {contextHolder}
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        {/* <Typography.Title level={5}>{t("common:uploadGeneList")} (TXT)</Typography.Title> */}
+        <Paragraph>{t("common:customizedGeneListTips")}</Paragraph>
+        <Flex justify="space-between">
+          <Upload {...uploadProps}>
+            <Button
+              size="midium"
+              type="primary"
+              loading={uploading || processing}
+              icon={<UploadOutlined />}
+              disabled={uploading || processing}
+            >
+              {t("common:selectTxtFile")}
+            </Button>
+          </Upload>
+
           <Button
-            size="midium"
             type="primary"
-            icon={<UploadOutlined />}
-            disabled={uploading || processing}
+            disabled={true}
+            loading={uploading || processing}
           >
-            {t("common:selectTxtFile")}
+            {uploading || processing
+              ? `${t("common:processing")}...`
+              : t("common:waitForValidation")}
           </Button>
-        </Upload>
+        </Flex>
 
-        <Button
-          type="primary"
-          disabled={true}
-          loading={uploading || processing}
-        >
-          {uploading || processing
-            ? `${t("common:processing")}...`
-            : t("common:waitForValidation")}
-        </Button>
-      </Flex>
-
-      {(validGenes.length > 0 ||
-        invalidGenes.length > 0 ||
-        (totalGenesCount > 0 && !processing)) && (
-        <div
-          style={{ marginTop: 24, borderTop: "1px solid #eee", paddingTop: 24 }}
-        >
-          {processing ? (
-            <Spin tip={`${t("common:processing")}...`}></Spin>
-          ) : (
-            <>
-              <Typography.Title level={5}>
-                {t("common:allVerifiedGeneNames")}:{" "}
-                <strong>{totalGenesCount}</strong>
-              </Typography.Title>
-              <Flex>
-                <Flex vertical style={{ flex: 1, marginRight: 24 }}>
-                  <Paragraph style={{ marginTop: 16 }}>
-                    {t("common:validGeneNames")} ({validGenes.length}):
-                  </Paragraph>
-                  <Space size={[0, 8]} wrap>
-                    {validGenes.length > 0 ? (
-                      validGenes.map((gene, index) => (
-                        <Tag
-                          key={index}
-                          icon={<CheckCircleOutlined />}
-                          color="success"
-                        >
-                          {gene}
-                        </Tag>
-                      ))
-                    ) : (
-                      <Tag color="default">{t("common:none")}</Tag>
-                    )}
-                  </Space>
+        {(validGenes.length > 0 ||
+          invalidGenes.length > 0 ||
+          (totalGenesCount > 0 && !processing)) && (
+          <div
+            style={{
+              marginTop: 24,
+              borderTop: "1px solid #eee",
+              paddingTop: 24,
+            }}
+          >
+            {processing ? (
+              <Spin tip={`${t("common:processing")}...`}></Spin>
+            ) : (
+              <>
+                <Typography.Title level={5}>
+                  {t("common:allVerifiedGeneNames")}:{" "}
+                  <strong>{totalGenesCount}</strong>
+                </Typography.Title>
+                <Flex>
+                  <Flex vertical style={{ flex: 1, marginRight: 24 }}>
+                    <Paragraph style={{ marginTop: 16 }}>
+                      {t("common:validGeneNames")} ({validGenes.length}):
+                    </Paragraph>
+                    <Space size={[0, 8]} wrap>
+                      {validGenes.length > 0 ? (
+                        validGenes.map((gene, index) => (
+                          <Tag
+                            key={index}
+                            icon={<CheckCircleOutlined />}
+                            color="success"
+                          >
+                            {gene}
+                          </Tag>
+                        ))
+                      ) : (
+                        <Tag color="default">{t("common:none")}</Tag>
+                      )}
+                    </Space>
+                  </Flex>
+                  <Flex vertical style={{ flex: 1 }}>
+                    <Paragraph style={{ marginTop: 16 }}>
+                      {t("common:invalidGeneNames")} ({invalidGenes.length}):
+                    </Paragraph>
+                    <Space size={[0, 8]} wrap>
+                      {invalidGenes.length > 0 ? (
+                        invalidGenes.map((gene, index) => (
+                          <Tag
+                            key={index}
+                            icon={<CloseCircleOutlined />}
+                            color="error"
+                          >
+                            {gene}
+                          </Tag>
+                        ))
+                      ) : (
+                        <Tag color="default">{t("common:none")}</Tag>
+                      )}
+                    </Space>
+                  </Flex>
                 </Flex>
-                <Flex vertical style={{ flex: 1 }}>
-                  <Paragraph style={{ marginTop: 16 }}>
-                    {t("common:invalidGeneNames")} ({invalidGenes.length}):
-                  </Paragraph>
-                  <Space size={[0, 8]} wrap>
-                    {invalidGenes.length > 0 ? (
-                      invalidGenes.map((gene, index) => (
-                        <Tag
-                          key={index}
-                          icon={<CloseCircleOutlined />}
-                          color="error"
-                        >
-                          {gene}
-                        </Tag>
-                      ))
-                    ) : (
-                      <Tag color="default">{t("common:none")}</Tag>
-                    )}
-                  </Space>
-                </Flex>
-              </Flex>
-            </>
-          )}
-        </div>
-      )}
-    </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, forwardRef } from "react";
 import { getFullMutations, getPatientList } from "@/configs/request";
 import ReactECharts from "echarts-for-react";
 import Image from "next/image";
@@ -86,13 +86,13 @@ const LEGEND = [
   },
 ];
 
-const PhylogeneticRelationship = ({
+const PhylogeneticRelationship = forwardRef(({
   range = [0, 1],
   dataType = "planet",
   treeType = "overview",
   conditions,
   handleComplete,
-}) => {
+}, ref) => {
   const { t } = useTranslation();
   const [pieChartOption, setPieChartOption] = useState({});
   const [columnOption, setColumnOption] = useState({});
@@ -549,35 +549,8 @@ const PhylogeneticRelationship = ({
     [],
   );
 
-  const renderMeaage = useMemo(() => {
-    return treeType === "overview" ? (
-      <>
-        <span>
-          Phylogenetic tree is an efficient way displaying the genetic
-          relationship of different sectors. In this page, you will be able to
-          sub-select patients based on the criterion shown on the left. The
-          rainbow displays the overall distribution of intra-tumor heterogeneity
-          (ITH) across all tumors. By sub-selecting the patient cohort (left) or
-          click on the individual bars from the rainbow, we can navigate through
-          the cohort or zoom in individual patients. If you want to look at the
-          individual phylogeny in detail, please click on the detail button on
-          the top right.{" "}
-        </span>
-        <span>
-          {" "}
-          Please refer to{" "}
-          <a href="https://en.wikipedia.org/wiki/Phylogenetic_tree">
-            Phylogenetic tree
-          </a>
-        </span>
-      </>
-    ) : (
-      "In this page, you will be able select individual patient and glance through its phylogenetic tree by clicking on the individual panel."
-    );
-  }, [treeType]);
-
   return (
-    <>
+    <div ref={ref}>
       {
         <EmptyLoading
           loading={loading}
@@ -586,7 +559,6 @@ const PhylogeneticRelationship = ({
         >
           {
             <>
-              <Alert message={renderMeaage} type="info" />
               <div
                 style={{
                   position: "relative",
@@ -730,7 +702,7 @@ const PhylogeneticRelationship = ({
           }
         </EmptyLoading>
       }
-    </>
+    </div>
   );
-};
+});
 export default PhylogeneticRelationship;

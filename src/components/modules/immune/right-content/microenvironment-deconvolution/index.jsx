@@ -10,9 +10,10 @@ import {
 import HeatmapChart from "./heatmap";
 import BoxPlot from "./boxplot";
 import { getHeatmapBoxplot } from "@/configs/request";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const microenvironmentDeconvolution = ({ conditions }) => {
+  const { t } = useTranslation();
   const [data1, setData1] = useState(null); // method: conditions.method
   const [data2, setData2] = useState(null); // method: "hallmarks"
   const [data3, setData3] = useState(null); // method: "markergenes"

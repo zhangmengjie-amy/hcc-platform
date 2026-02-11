@@ -1,42 +1,31 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import EChartsReact from "echarts-for-react";
-import {
-  Empty,
-  Flex,
-} from "antd";
-import { set } from "lodash";
-import { ticks } from "d3";
+import { Empty, Flex, Button, Dropdown } from "antd";
+import { useTranslation } from "react-i18next";
+import { DownloadOutlined, DownOutlined } from "@ant-design/icons";
 
 const SUBTYPE_COLOR = {
-  "Classic": "rgba(225, 229, 144, 1)",
-  "Hybrid": "rgba(90, 155, 219, 1)",
-  "Proliferation": "rgba(232, 139, 173, 1)",
-  "Wnt": "rgba(235, 162, 127, 1)",
+  Classic: "rgba(225, 229, 144, 1)",
+  Hybrid: "rgba(90, 155, 219, 1)",
+  Proliferation: "rgba(232, 139, 173, 1)",
+  Wnt: "rgba(235, 162, 127, 1)",
 };
 
-const MIXED_GROUP = ["C1,C2", "C1,C3", "C1,C4", "C1,C5", "C1,C6", "C2,C3", "C2,C4", "C2,C5", "C2,C6", "C3,C4", "C3,C5", "C3,C6", "C4,C5", "C4,C6", "C5,C6",
-  "C1,C2,C3", "C1,C2,C4", "C1,C2,C5", "C1,C2,C6", "C1,C3,C4", "C1,C3,C5", "C1,C3,C6", "C1,C4,C5", "C1,C4,C6", "C1,C5,C6", "C2,C3,C4", "C2,C3,C5", "C2,C3,C6", "C2,C4,C6", "C3,C4,C5", "C3,C4,C6", "C2,C4,C5", "C2,C5,C6", "C3,C5,C6", "C4,C5,C6",
-  "C1,C2,C3,C4", "C1,C2,C3,C5", "C1,C2,C3,C6", "C1,C2,C4,C5", "C1,C2,C4,C6", "C1,C2,C5,C6", "C1,C3,C4,C5", "C1,C3,C4,C6", "C2,C3,C4,C5", "C1,C3,C5,C6", "C1,C4,C5,C6",
-  "C2,C3,C4,C6", "C2,C3,C5,C6", "C2,C4,C5,C6", "C3,C4,C5,C6",
-  "C1,C2,C3,C4,C5", "C1,C2,C3,C4,C6", "C2,C3,C4,C5,C6", "C1,C3,C4,C5,C6", "C1,C2,C3,C5,C6", "C1,C2,C4,C5,C6",
-  "C1,C2,C3,C4,C5,C6",
-];
-
 const MIXED_PURE = {
-  "Pure": "rgb(106, 194, 165)",
-  "Mixed": "rgb(158, 153, 197)",
+  Pure: "rgb(106, 194, 165)",
+  Mixed: "rgb(158, 153, 197)",
 };
 
 const MIXED_PURE_BG = {
-  "Pure": "rgb(239, 249, 247)",
-  "Mixed": "rgb(247, 240, 247)",
+  Pure: "rgb(239, 249, 247)",
+  Mixed: "rgb(247, 240, 247)",
 };
 
 const STAGE_COLOR = {
-  "I": "rgb(250, 213, 120)",
-  "II": "rgb(245, 138, 66)",
-  "III": "rgb(224, 36, 40)",
+  I: "rgb(250, 213, 120)",
+  II: "rgb(245, 138, 66)",
+  III: "rgb(224, 36, 40)",
 };
 
 const defaultValue = 1;
@@ -45,7 +34,8 @@ const spaceValue_lg = 0.2;
 const ColumnChart = ({ data, patientId, handleItemClick }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);
-
+  const chartRef = useRef(null);
+  const { t } = useTranslation();
   const [currentPatientId, setCurrentPatientId] = useState(null);
 
   useEffect(() => {
@@ -58,14 +48,19 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
   };
 
   const sortData = (data) => {
-    const pureList = data.filter((item) => new Set(item.subtypes.map((item) => item.subtype)).size == 1);
-    const mixedList = data.filter((item) => new Set(item.subtypes.map((item) => item.subtype)).size > 1);
+    const pureList = data.filter(
+      (item) => new Set(item.subtypes.map((item) => item.subtype)).size == 1,
+    );
+    const mixedList = data.filter(
+      (item) => new Set(item.subtypes.map((item) => item.subtype)).size > 1,
+    );
     return [...pureList, ...mixedList];
   };
   const getBottomSeries = (data) => {
     const seriesData = [];
     sortData(data).forEach((patient, yIndex) => {
-      const isPure = new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
+      const isPure =
+        new Set(patient.subtypes.map((item) => item.subtype)).size == 1;
       patient.subtypes?.forEach((item, xIndex) => {
         if (xIndex == 0) {
           seriesData.push({
@@ -112,13 +107,11 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
             color: SUBTYPE_COLOR[item.subtype],
             borderWidth: 2, // 设置边框宽度
             borderColor: "#fff", // 设置边框颜色
-
           },
         });
       });
     });
     return seriesData;
-
   };
 
   const buildOption = (data) => {
@@ -143,14 +136,13 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
         }),
         axisTick: {
           show: false,
-
         },
         axisLabel: {
           textStyle: {
             fontSize: 10, // 调整字体大小
             color: "#666", // 字体颜色
           },
-          formatter: function(value, index) {
+          formatter: function (value, index) {
             // 根据索引获取对应的柱子id
             var currentId = sortData(data)[index]?.patientId;
             if (currentId === patientId) {
@@ -218,9 +210,84 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
     handleItemClick?.(params.data?.custom?.patientId);
   }, []);
 
-  return (
-    hasData ? <EChartsReact style={{ width: "100%", height: "400px" }} key={JSON.stringify(option)} option={option} onEvents={{ click: handleClick }} opts={{ renderer: "svg" }}></EChartsReact> :
-      <Flex style={{ height: "400px" }} align="center" justify="center"><Empty style={{ width: "100%", padding: "20px" }}></Empty> </Flex>
+  const handleExport = (type) => {
+    if (!chartRef.current) return;
+    try {
+      const echartsInstance = chartRef.current.getEchartsInstance();
+
+      // 构建导出配置
+      const exportConfig = {
+        type,
+        pixelRatio: 2,
+        excludeComponents: ["toolbox"],
+      };
+
+      // 只为JPG格式设置白色背景
+      if (type === "jpg") {
+        exportConfig.backgroundColor = "#ffffff";
+      }
+
+      // 获取数据URL
+      const dataUrl = echartsInstance.getDataURL(exportConfig);
+
+      // 创建下载链接
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `${data?.title || "Transcriptomic Column"}.${type}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Export failed:", error);
+    }
+  };
+
+  return hasData ? (
+    <>
+      <div style={{ width: "100%" }}>
+        {/* <Dropdown
+          menu={{
+            items: [
+              {
+                key: "png",
+                label: "PNG",
+                onClick: () => handleExport("png"),
+              },
+              {
+                key: "jpg",
+                label: "JPG",
+                onClick: () => handleExport("jpg"),
+              },
+              {
+                key: "svg",
+                label: "SVG",
+                onClick: () => handleExport("svg"),
+              },
+            ],
+          }}
+        >
+          <Button
+            type="primary"
+            icon={<DownloadOutlined />}
+            style={{ marginLeft: "20px" }}
+          >
+            {t("common:export")} <DownOutlined />
+          </Button>
+        </Dropdown> */}
+        <EChartsReact
+          ref={chartRef}
+          style={{ width: "100%", height: "400px" }}
+          key={JSON.stringify(option)}
+          option={option}
+          onEvents={{ click: handleClick }}
+          opts={{ renderer: "svg" }}
+        ></EChartsReact>
+      </div>
+    </>
+  ) : (
+    <Flex style={{ height: "400px" }} align="center" justify="center">
+      <Empty style={{ width: "100%", padding: "20px" }}></Empty>{" "}
+    </Flex>
   );
 };
 

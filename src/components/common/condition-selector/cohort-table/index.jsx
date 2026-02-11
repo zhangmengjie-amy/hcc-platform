@@ -68,9 +68,8 @@ const CohortSelection = forwardRef(
         setLoading(false);
         setSelectedRowKeys([
           result?.data?.[0]?.number,
-          result?.data?.[1]?.number,
         ]);
-        onReady({ selectedRows: [result?.data?.[0], result?.data?.[1]] });
+        onReady({ selectedRows: [result?.data?.[0]] });
       });
     }, [type]);
 
@@ -223,7 +222,7 @@ const CohortSelection = forwardRef(
         if (selectedRows?.length > 10) {
           messageApi.open({
             type: "warning",
-            content: "最多选择10条",
+            content: `${t("common:maxSelectCount")}: 10`,
           });
           return;
         }

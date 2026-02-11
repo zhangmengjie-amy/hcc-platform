@@ -4,11 +4,11 @@ import { Card, Button, Dropdown, Menu, Typography } from "antd";
 import { DownloadOutlined, DownOutlined } from "@ant-design/icons";
 import { download } from "@/configs/request";
 import downloadBase64CSV from "@/utils/downloadBase64CSV";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
   const chartRef = useRef(null);
-
+  const { t } = useTranslation();
   const { chartData, dynamicHeight, clusterColors, clusterValues } =
     useMemo(() => {
       if (!data || !data.Heatmap_Body || data.Heatmap_Body.length === 0) {
@@ -548,7 +548,7 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
           {data.title ?? "Heatmap"}
         </Typography.Title>
         <div style={{ position: "absolute", top: 0, right: 30 }}>
-          <Dropdown
+          {/* <Dropdown
             menu={{
               items: [
                 {
@@ -570,9 +570,9 @@ const HeatmapChart = ({ params, data, cellSize = 10, heightPadding = 150 }) => {
             }}
           >
             <Button type="primary" icon={<DownloadOutlined />}>
-              导出 <DownOutlined />
+              {t("common:export")} <DownOutlined />
             </Button>
-          </Dropdown>
+          </Dropdown> */}
           <Button type="primary" onClick={downloadCSV} style={{ marginLeft: 10 }}>
             {t("common:downloadCSV")}
           </Button>
