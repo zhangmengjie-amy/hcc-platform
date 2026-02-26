@@ -17,20 +17,12 @@ const MIXED_PURE = {
   Mixed: "rgb(158, 153, 197)",
 };
 
-const MIXED_PURE_BG = {
-  Pure: "rgb(239, 249, 247)",
-  Mixed: "rgb(247, 240, 247)",
-};
-
 const STAGE_COLOR = {
   I: "rgb(250, 213, 120)",
   II: "rgb(245, 138, 66)",
   III: "rgb(224, 36, 40)",
 };
 
-const defaultValue = 1;
-const spaceValue = 0.2;
-const spaceValue_lg = 0.2;
 const ColumnChart = ({ data, patientId, handleItemClick }) => {
   const [option, setOption] = useState({});
   const [hasData, setHasData] = useState(false);

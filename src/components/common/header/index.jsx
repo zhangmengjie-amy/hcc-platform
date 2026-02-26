@@ -114,7 +114,7 @@ const HCCHeader = () => {
           style={{ flex: 1, minWidth: 0 }}
         />
 
-        <Tag color="orange">Internal beta</Tag>
+        {/* <Tag color="orange">Internal beta</Tag> */}
         <Language />
 
         {/* 根据登录状态显示不同的内容 */}

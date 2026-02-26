@@ -37,7 +37,6 @@ const Mutation = () => {
   const handleApply = useCallback(() => {
     const params = conditionsRef.current?.getParams();
     setDataType(params?.selectedCohortType?.toLowerCase() ?? "planet");
-    debugger;
     setConditions({
       geneList: params.geneList,
       ...params.clinicalConditions,

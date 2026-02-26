@@ -22,6 +22,7 @@ const TimingAnalysis = ({
   const currentPatientRef = useRef(null);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(6);
+  const [pageSize, setPageSize] = useState(6);
   const [modalOpen, setModalOpen] = useState(false);
   const patientListRef = useRef(null);
   const fullMutationsRef = useRef(null);
@@ -67,6 +68,7 @@ const TimingAnalysis = ({
 
     setStart(0);
     setEnd(6);
+    setPageSize(6);
   }, [conditions, dataType, range]);
 
   const buildCharts = (fullMutations, patientList, fullPhylogenetic) => {
@@ -142,6 +144,7 @@ const TimingAnalysis = ({
     const end = start + pageSize;
     setStart(start);
     setEnd(end);
+    setPageSize(pageSize);
   };
 
   return (
@@ -207,6 +210,7 @@ const TimingAnalysis = ({
             total={treeList?.length}
             showTotal={(total) => `${t("common:total")}:${total}`}
             defaultPageSize={6}
+            pageSize={pageSize}
             onChange={onPageSizeChange}
             defaultCurrent={1}
             pageSizeOptions={[6, 10, 20, 50, 100]}

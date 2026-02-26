@@ -18,6 +18,11 @@ const MIXED_PURE = {
   "Mixed": "rgb(158, 153, 197)",
 };
 
+const MIXED_PURE_BG = {
+  Pure: "rgb(239, 249, 247)",
+  Mixed: "rgb(247, 240, 247)",
+};
+
 
 const STAGE_COLOR = {
   "I": "rgb(250, 213, 120)",
@@ -93,7 +98,7 @@ const ColumnChart = ({ data, patientId, handleItemClick, biomarkerMode = true, b
             score: biomarkerColorMap?.[item.id]?.score,
           },
           itemStyle: {
-            color: biomarkerMode ? (biomarkerColorMap?.[item.id]?.color ?? "#fff") : SUBTYPE_COLOR[item.subtype],
+            color: biomarkerMode ? (biomarkerColorMap?.[item.id]?.color ?? MIXED_PURE_BG[isPure ? "Pure" : "Mixed"]) : SUBTYPE_COLOR[item.subtype],
             borderWidth: 2, // 设置边框宽度
             borderColor: "#fff", // 设置边框颜色
           },
