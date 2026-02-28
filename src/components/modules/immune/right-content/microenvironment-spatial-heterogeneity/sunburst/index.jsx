@@ -115,7 +115,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
           name: patient.stage,
           value: defaultValue,
           custom: {
-            theme: "Stage",
+            theme: "Immune",
             patientId: patient.patientId,
             sampleLength: patient.subtypes.length,
             PURE_MIXED: PURE_MIXED,
@@ -164,7 +164,7 @@ const SunburstChart = ({ data, patientId, handleItemClick }) => {
       name: subtype ?? "",
       value: defaultValue,
       custom: {
-        theme: "Subtype",
+        theme: "Immune",
         patientId: patient.patientId,
         sampleId,
         stage: patient.stage,

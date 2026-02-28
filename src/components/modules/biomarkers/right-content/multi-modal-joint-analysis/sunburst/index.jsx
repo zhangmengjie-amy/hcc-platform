@@ -164,10 +164,10 @@ const SunburstChart = ({ data, patientId, handleItemClick, biomarkerMode = true,
     const sampleId = patient.subtypes[sampleLength - 1]?.id;
     const color = SUBTYPE_COLOR[subtype];
     children.push({
-      name: subtype ?? "",
+      name: (biomarkerMode ? biomarkerColorMap?.[sampleId]?.score : subtype) ?? "",
       value: defaultValue,
       custom: {
-        theme: "Subtype",
+        theme: "Biomarkers",
         patientId: patient.patientId,
         sampleId,
         stage: patient.stage,
@@ -306,7 +306,7 @@ const SunburstChart = ({ data, patientId, handleItemClick, biomarkerMode = true,
       },
       label: {
         formatter: () => {
-          return `Mixed patients\n\n${realMixedPercent}%`;
+          return `${t("common:subtype.mixed")}\n\n${realMixedPercent}%`;
         },
         rotate: "tangential",
         verticalAlign: "bottom",

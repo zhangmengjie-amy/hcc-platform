@@ -18,6 +18,7 @@
   "gene": "基因",
   "geneCount": "基因数量",
   "sampleId": "样本 ID",
+  "samples": "样本",
   "all": "全部",
   "cohort": "队列",
   "level": "级别",
@@ -113,9 +114,10 @@
     "atLeastOneCohort": "请至少选择一个队列"
   },
   "subtype": {
-    "biomarker": "Biomarker",
-    "immune": "Immune",
-    "subtype": "Subtype",
+    "biomarker": "生物标记",
+    "immuneSubtype": "免疫",
+    "subtype": "分型",
+    "stage": "TNM阶段",
     "chiang": "Chiang",
     "hoshida": "Hoshida",
     "boyault": "Boyault",

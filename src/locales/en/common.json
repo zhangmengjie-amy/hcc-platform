@@ -18,6 +18,7 @@
   "gene": "Gene",
   "geneCount": "Gene Count",
   "sampleId": "Sample ID",
+  "samples": "Samples",
   "all": "All",
   "cohort": "Cohort",
   "level": "Level",
@@ -115,7 +116,8 @@
   "subtype": {
     "subtype": "Subtype",
     "biomarker": "Biomarker",
-    "immune": "Immune",
+    "immuneSubtype": "Immune",
+    "stage": "Stage",
     "chiang": "Chiang",
     "hoshida": "Hoshida",
     "boyault": "Boyault",

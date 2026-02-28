@@ -87,7 +87,7 @@ const RightPanel = ({
   const mockFields = [
     {
       key: "subtype",
-      label: t("common:subtype.subtype"),
+      label: t("common:subtype.immuneSubtype"),
     },
   ];
 
@@ -246,7 +246,6 @@ const RightPanel = ({
           };
         },
       );
-      console.log(" currentLiver dt:", currentLiver);
       setCurrentDtLiverSamples(currentLiver);
     }
   };
@@ -392,7 +391,7 @@ const RightPanel = ({
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Stage
+                    {t("common:subtype.stage")}
                   </Flex>
                   {Object.keys(STAGE_COLOR).map((item) => {
                     return (
@@ -413,7 +412,7 @@ const RightPanel = ({
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Subtype
+                    {t("common:subtype.immuneSubtype")}
                   </Flex>
                   {Object.keys(PLANET_SUBTYPE_COLOR).map((item) => {
                     return (
@@ -434,7 +433,7 @@ const RightPanel = ({
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Samples
+                    {t("common:samples")}
                   </Flex>
                   {[...Array(7)].map((_, i) => {
                     const tStage = `T${i + 1}`;
@@ -501,7 +500,7 @@ const RightPanel = ({
                     >
                       <Empty
                         style={{ width: "100%", padding: "20px" }}
-                      ></Empty>{" "}
+                      ></Empty>
                     </Flex>
                   )
                 ) : (
@@ -634,7 +633,7 @@ const RightPanel = ({
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Stage
+                    {t("common:subtype.stage")}
                   </Flex>
                   {Object.keys(STAGE_COLOR).map((item) => {
                     return (
@@ -655,7 +654,7 @@ const RightPanel = ({
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Subtype
+                    {t("common:subtype.immuneSubtype")}
                   </Flex>
                   {Object.keys(DT_SUBTYPE_COLOR).map((item) => {
                     return (
@@ -676,7 +675,7 @@ const RightPanel = ({
                 </Flex>
                 <Flex vertical style={{ marginLeft: "10px" }}>
                   <Flex align="center" style={{ marginBottom: "10px" }}>
-                    Samples
+                    {t("common:samples")}
                   </Flex>
                   {[...Array(7)].map((_, i) => {
                     const tStage = `T${i + 1}`;
@@ -742,7 +741,7 @@ const RightPanel = ({
                     >
                       <Empty
                         style={{ width: "100%", padding: "20px" }}
-                      ></Empty>{" "}
+                      ></Empty>
                     </Flex>
                   )
                 ) : (
