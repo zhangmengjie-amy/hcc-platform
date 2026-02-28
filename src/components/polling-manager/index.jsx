@@ -342,7 +342,7 @@ const PollingManager = ({ pollingData, onComplete, apiMethod }) => {
             {t("common:taskStatus:title")}
             {allCompleted && status.failed === 0 && `(${t("common:taskStatus:success")})`}
             {allCompleted && status.failed > 0 && `(${t("common:taskStatus:someFailed")})`}
-            {hasRunning && `${t("common:taskStatus:running")}`}
+            {hasRunning && `(${t("common:taskStatus:running")})`}
           </span>
         </div>
         <div style={{ display: "flex", gap: 20 }}>

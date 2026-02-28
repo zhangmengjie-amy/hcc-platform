@@ -52,15 +52,15 @@
       "description": "Microenvironment deconvolution aims to characterize the immune or stroma cell distribution and classify the tumor microenvironment within and between tumors."
     },
     "microenvironmentSpatialHeterogeneity": {
-      "title": "Microenvironment spatial heterogeneity",
+      "title": "Microenvironment Spatial Heterogeneity",
       "description": "This module explores how the tumor microenvironment subtypes vary across spatial samples within and between patients."
     },
     "survivalAnalysis": {
-      "title": "Survival analysis",
+      "title": "Survival Analysis",
       "description": "In this module, using existing or user-specified biomarkers, users can explore how biomarkers can stratify patient survival."
     },
     "multiModalJointAnalysis": {
-      "title": "Multi-modal joint analysis",
+      "title": "Multi-modal Joint Analysis",
       "description": "This module allows multi-modal information to be jointly displayed and analyzed."
     }
   },
@@ -70,15 +70,15 @@
     "title": "Core Features",
     "list": {
       "geospatialAnalysis": {
-        "title": "Geospatial analysis",
+        "title": "Geospatial Analysis",
         "description": "Visualize multi-modal heterogeneity of molecular features within and between a large group of HCC patients."
       },
       "temporalAnalysis" : {
-        "title": "Temporal analysis",
+        "title": "Temporal Analysis",
         "description": "Timing multi-modal changes by mapping them onto the phylogenetic tree."
       },
       "customAnalysis" : {
-        "title": "Custom analysis",
+        "title": "Custom Analysis",
         "description": "Support user-defined subgrouping analysis in gene expression, biomarker and survival analysis."
       }
     }

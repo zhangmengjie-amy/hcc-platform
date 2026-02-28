@@ -46,7 +46,7 @@
   "none": "None",
   "processing": "Processing",
   "waitForValidation": "Waiting for validation",
-  "maxSelectCount": "Select up to",
+  "maxSelectCount": "Select Up To",
   "selectedCount": "Selected",
   "tissue": "Tissue",
   "celllines": "Cell Lines",
@@ -83,7 +83,7 @@
   "total": "Total",
   "filter": {
     "filterByGene": "Filter By Genes",
-    "filterByClinic": "Filter By clinical Information",
+    "filterByClinic": "Filter By Clinical Information",
     "filterByDriver": "Filter By Driver Genes",
     "filterByITH": "Filter By DNA ITH",
     "cohortType": "Cohort",
