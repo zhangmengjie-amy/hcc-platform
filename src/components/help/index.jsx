@@ -159,24 +159,23 @@ const Home = () => {
         User Manual
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
-        Welcome to LIGOR database! This page will help to guide you through the
-        website and help you through the analytical steps.
+        Welcome to the LIGOR database! This page will help to guide you through
+        the website and help you through the analytical steps.
       </Typography.Paragraph>
       <Typography.Title
         style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
       >
-        The introduction page
+        Introduction Page
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         At the introduction page, you are provided with two different options to
         explore the database. The first approach is through the dropdown menu in
         the header region of the website. For example, by clicking on buttons
         such as “Multi-modal,” “Biomarkers,” and their subsequent menu options,
-        you can navigate through the different analytical modules of the
-        database.
+        you can navigate through different analytical modules of the database.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-1.png"}></img>
+        <img src={"/images/help-01.png"}></img>
       </div>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         The other, more direct option is to click on the individual research
@@ -188,14 +187,14 @@ const Home = () => {
         These modules are color-coded according to four layers of omic
         information, ranging from genome and transcriptome to immune features
         and biomarkers. By clicking the “Explore” button within each module,
-        users can directly access the corresponding section.
+        users can directly access the corresponding module.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-2.png"}></img>
+        <img src={"/images/help-02.png"}></img>
       </div>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         Below the research module region, at the bottom of the introduction
-        page, you can find statistics on the data hosted at LIGOR, as well as a
+        page, you can find statistics of the data hosted at LIGOR, as well as a
         summary of the core features of the website.
       </Typography.Paragraph>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
@@ -204,7 +203,7 @@ const Home = () => {
         contacting the developers.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-3.png"}></img>
+        <img src={"/images/help-03.png"}></img>
       </div>
       <Typography.Title
         style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
@@ -213,35 +212,35 @@ const Home = () => {
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         In the genome layer, we designed three modules including driver
-        landscape, phylogenetic relationship as well as timing analysis. We will
-        walk you through all the modules in this section.
+        landscape, phylogenetic relationship as well as the timing analysis. We
+        will walk you through all the modules in this section.
       </Typography.Paragraph>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        The Driver Landscape
+        Driver Landscape
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
-        To explore the driver landscape of the HCC cohorts (i.e., the PLANet or
-        Ditan cohort), the Driver Landscape module allows users to generate an
+        To explore the driver landscape of the HCC cohorts (i.e., the PLANET or
+        DT cohort), the Driver Landscape module allows users to generate an
         oncoprint plot across all patients for a set of driver genes specified
         by the user. An oncoprint plot is an efficient way to display the
         mutation status of driver genes across samples and patients. On this
-        page, users can select specific cohorts (e.g., the PLANet cohort, the
-        Ditan cohort, or both) and choose driver genes based on the criteria
-        shown on the left panel. By default, a list of 62 driver genes from Kaya
-        et al. (PMID xxx) is pre-selected. However, users may select any gene of
-        interest. At the bottom left of the page, users can further subset the
-        patient cohort by filtering clinical variables such as patient age. On
-        the right side of the page, the oncoprint plot displays the driver
-        landscape of the selected patients. As multiple samples were collected
-        from each patient, users can either sort samples individually (default
-        setting) or group samples by patient (i.e., multiple samples from the
-        same patient are plotted together).
+        page, users can select specific cohorts (e.g., the PLANET cohort, the DT
+        cohort, or both) and choose driver genes based on the criteria shown on
+        the left panel. By default, a list of 62 driver genes(Kaya et al., 2022)
+        is pre-selected. However, users may select any gene of interest. At the
+        bottom left of the page, users can further sub-select the patient cohort
+        by filtering clinical variables such as patient age. On the right side
+        of the page, the oncoprint plot displays the driver landscape of the
+        selected patients. As multiple samples were collected from each patient,
+        users can either sort samples individually (default setting) or group
+        samples by patient (i.e., multiple samples from the same patient are
+        plotted together).
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-4.png"}></img>
+        <img src={"/images/help-04.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        The phylogenetic tree
+        Phylogenetic Relationship
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         Phylogenetic tree is an efficient way displaying the genetic
@@ -255,7 +254,7 @@ const Home = () => {
         top right.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-5.png"}></img>
+        <img src={"/images/help-05.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
         Timing analysis
@@ -272,7 +271,7 @@ const Home = () => {
         timing of driver events.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-6.png"}></img>
+        <img src={"/images/help-06.png"}></img>
       </div>
       <Typography.Title
         style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
@@ -286,22 +285,22 @@ const Home = () => {
         One striking feature of HCC is its exceptionally high degree of
         transcriptomic heterogeneity. This module displays transcriptomic
         subtypes both within and between patients. For example, when selecting
-        the PLANet cohort, a circos plot presents each patient as a stacked bar,
-        with the outer ticks indicating the selected patients. The phylogenetic
+        the PLANET cohort, a circos plot presents each patient as a stacked bar,
+        with the outer tick indicating the selected patients. The phylogenetic
         tree shown on the right includes five tip labels representing the
         transcriptomic subtypes of the samples. The final subtype corresponds to
-        the transcriptomic classification reported in Chen et al. (PMID xx). The
-        bottom-right panel illustrates the spatial locations of the sampled
-        sectors. Users can navigate through different patients by clicking on
-        different patients from the circos plot. If the Ditan cohort is
+        the transcriptomic classification reported in Chen et al (Chen et al.,
+        2024). The bottom-right panel illustrates the spatial locations of the
+        sampled sectors. Users can navigate through different patients by
+        clicking on different patients from the circos plot. If the DT cohort is
         selected, patient samples are displayed as vertical stacked bars rather
         than a circos plot. The final subtype corresponds to the transcriptomic
-        classification described in Liu et al. (PMID xx). Similar to the genome
-        layer, users can filter patients based on clinical information using the
-        panel located at the bottom left.
+        classification described in Liu et al (Liu et al., 2024). Similar to the
+        genome layer, users can filter patients based on the clinical
+        information using the panel located at the bottom left.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-7.png"}></img>
+        <img src={"/images/help-07.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
         Differential expression analysis
@@ -323,7 +322,7 @@ const Home = () => {
         enrichment analyses to be conducted.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-8.png"}></img>
+        <img src={"/images/help-08.png"}></img>
       </div>
       <Typography.Title
         style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
@@ -334,20 +333,101 @@ const Home = () => {
         Microenvironment spatial heterogeneity
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
-        Similar to the transcriptomic heterogeneity module, this module illustrates microenvironmental spatial heterogeneity in multi-regional cohorts. For example, when the PLANet cohort is selected, the microenvironmental subtypes of all samples are displayed for all patients in a circos plot format. The phylogenetic tree and sampling locations of the selected patient (indicated by a tick on the outer ring) are shown on the right and bottom panels, respectively. The microenvironmental subtypes are based on the TCGA pan-cancer tumor microenvironment (TME) classifier (PMID xx). Users can choose different patients by clicking on the circos plot. Similar to the transcriptomic heterogeneity module, the Ditan cohort is shown similarly. 
+        Similar to the transcriptomic heterogeneity module, this module
+        illustrates microenvironmental spatial heterogeneity in multi-regional
+        cohorts. For example, when the PLANET cohort is selected, the
+        microenvironmental subtypes of all samples are displayed for all
+        patients in a circos plot format. The phylogenetic tree and sampling
+        locations of the selected patient (indicated by a tick on the outer
+        ring) are shown on the right and bottom panels, respectively. The
+        microenvironmental subtypes are based on the classifier developed by the
+        TCGA consortium(Thorsson et al., 2018). Users can choose different
+        patients by clicking on the circos plot. Similar to the transcriptomic
+        heterogeneity module, the DT cohort can be shown similarly.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-9.png"}></img>
+        <img src={"/images/help-09.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Microenvironment deconvolution 
+        Microenvironment deconvolution
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
-        The tumor microenvironment (TME) exhibits substantial heterogeneity in immune and stromal cell composition. By integrating seven widely used deconvolution methods—CIBERSORT, TIMER, xCell, MCPcounter, ESTIMATE, EPIC, and quanTIseq—this module allows users to select their cohort and method of interest. Based on the selected deconvolution output, patients are stratified into TME subtypes. For each subtype, marker genes and the activity levels of cancer hallmark pathways are provided. In addition, users can download the raw deconvolution results for customized downstream analyses and further subgrouping according to their specific research needs.
+        The tumor microenvironment (TME) exhibits substantial heterogeneity in
+        immune and stromal cell composition. By integrating seven widely used
+        deconvolution methods—CIBERSORT, TIMER, xCell, MCPcounter, ESTIMATE,
+        EPIC, and quanTIseq—this module allows users to select their cohort and
+        method of interest. Based on the selected deconvolution output, patients
+        are stratified into TME subtypes. For each subtype, marker genes and the
+        activity levels of cancer hallmark pathways are provided. In addition,
+        users can download the raw deconvolution results for customized
+        downstream analyses and further subgrouping according to their specific
+        research needs.
       </Typography.Paragraph>
       <div className={styles.imgContainer}>
-        <img src={"/images/help-10.png"}></img>
+        <img src={"/images/help-010.png"}></img>
       </div>
+      <Typography.Title
+        style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
+      >
+        The biomarker layer
+      </Typography.Title>
+      <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
+        Survival Analysis
+      </Typography.Title>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        The survival analysis module enables users to evaluate the
+        stratification ability of a given biomarker, whether it is a single gene
+        or a gene signature (get set). Users can first filter (top left) and
+        select (left panel) the cohort of interest. For biomarkers, users may
+        choose from a set of pre-curated HCC-related markers, including
+        single-gene biomarkers (e.g., AFP) and multi-gene signatures (e.g., the
+        Gajewski 13-gene inflammatory signature). The module compares the
+        expression levels of the selected biomarker across different clinical
+        stages. A corresponding Kaplan–Meier (KM) survival plot is generated for
+        the chosen biomarker within the selected cohort. When multiple cohorts
+        are selected, users can navigate between results using the m enu at the
+        top right to view each cohort individually.
+      </Typography.Paragraph>
+
+      <div className={styles.imgContainer}>
+        <img src={"/images/help-011.png"}></img>
+      </div>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        If you select “Custom Gene List”, you must upload .txt file with the
+        right format.
+      </Typography.Paragraph>
+      <div className={styles.imgContainer}>
+        <img src={"/images/help-012.png"}></img>
+      </div>
+      <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
+        Multi-modal Joint Analysis
+      </Typography.Title>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        Leveraging multi-modal data, LIGOR provides an integrated platform that
+        jointly visualizes the spatial locations and genetic relationships of
+        tumor sectors alongside their transcriptomic and immune subtypes, as
+        well as biomarker expression levels. This enables the comprehensive
+        display and cross-modal integration of multi-omic features across
+        patient cohorts.
+      </Typography.Paragraph>
+      <div className={styles.imgContainer}>
+        <img src={"/images/help-013.png"}></img>
+      </div>
+      <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
+        References
+      </Typography.Title>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        Chen J, Kaya N A, Zhang Y, Kendarsari R I, Sekar K, Chong S L, Seshachalam V P, Ling W H, Phua C Z J, & Lai H. A multimodal atlas of hepatocellular carcinoma reveals convergent evolutionary paths and ‘bad apple’effect on clinical trajectory[J]. Journal of Hepatology, 2024, 81: 667-678.
+      </Typography.Paragraph>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        Kaya N A, Chen J, Lai H, Yang H, Ma L, Liu X, Alvarez J S, Liu J, Hillmer A M, & Tai D. Genome instability is associated with ethnic differences between Asians and Europeans in hepatocellular carcinoma[J]. Theranostics, 2022, 12: 4703.
+      </Typography.Paragraph>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        Liu X, Zhang K, Kaya N A, Jia Z, Wu D, Chen T, Liu Z, Zhu S, Hillmer A M, & Wuestefeld T. Tumor phylogeography reveals block-shaped spatial heterogeneity and the mode of evolution in Hepatocellular Carcinoma[J]. Nature Communications, 2024, 15: 3169.
+      </Typography.Paragraph>
+      <Typography.Paragraph style={{ fontSize: "20px" }}>
+        Thorsson V, Gibbs D L, Brown S D, Wolf D, Bortone D S, Yang T-H O, Porta-Pardo E, Gao G F, Plaisier C L, & Eddy J A. The immune landscape of cancer[J]. Immunity, 2018, 48: 812-830. e814.
+      </Typography.Paragraph>
     </Layout>
   );
 };

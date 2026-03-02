@@ -2,6 +2,7 @@
   padding: 30px 50px;
   min-height: 100%;
   background-color: #f0f0f0;
+  overflow: hidden;
 }
 
 .imgContainer {
@@ -10,7 +11,8 @@
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
   background-color: #fff;
+  text-align: center;
   img {
-    width: 100%;
+    width: 80%;
   }
 }

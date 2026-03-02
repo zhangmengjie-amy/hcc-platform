@@ -471,6 +471,7 @@ const MultiModalJointAnalysisContent = ({
     filterdPatientList,
     dataType,
     selectedPlanetSubtype,
+    biomarkerScoreData,
   ]);
 
   function formatLabel(str) {

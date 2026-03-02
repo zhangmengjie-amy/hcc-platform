@@ -136,7 +136,7 @@ const microenvironmentDeconvolution = ({ conditions }) => {
             <HeatmapChart
               params={{
                 method: "hallmarks",
-                tmeGroupBy: "cibersort",
+                tmeGroupBy: conditions?.method,
                 cohort: conditions?.numbers?.[0],
               }}
               data={data2}
@@ -160,7 +160,7 @@ const microenvironmentDeconvolution = ({ conditions }) => {
             <HeatmapChart
               params={{
                 method: "markergenes",
-                tmeGroupBy: "cibersort",
+                tmeGroupBy: conditions?.method,
                 cohort: conditions?.numbers?.[0],
               }}
               data={data3}
