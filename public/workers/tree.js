@@ -1,4 +1,19 @@
-// tree.js (作为 Web Worker)
+/**
+ * Web Worker 计算模块（tree.js）
+ *
+ * 输入：
+ * - newick: 系统发育树的 Newick 字符串
+ * - geneData: 每个 sample 的突变信息（含 gene / genome_change / isDriver / 临床字段等）
+ *
+ * 输出：
+ * - treeList: 解析后的树结构（在部分节点上会附加 geneData / samples 标注）
+ * - clinic: 患者临床信息（带颜色映射）
+ * - sampleGeneData: 每个样本的 driver/nonDriver 基因列表（unionGene 去重）
+ *
+ * 目的：
+ * 在 Worker 线程中完成树解析与标注计算，避免阻塞主线程渲染。
+ */
+// 临床特征到颜色的映射（用于 UI 渲染标签/热图）
 const clinicColorConfig = {
   stage: {
     "IA": "rgb(255, 245, 240)",
@@ -26,12 +41,16 @@ const clinicColorConfig = {
   gender: { Female: "rgb(255, 144, 187)", Male: "rgb(109, 225, 210)" },
 };
 
-// 将 "ITH_01_T1" → "T1", 将DT01_01 → T1
+// 统一样本标签：将 "ITH_01_T1" → "T1"；类似 "DT01_01" → "01"（保留最后一个 "_" 后片段）
 function formatLabel(str) {
   return str?.replace(/.*_/, "") ?? str;
 }
 
-// 解析 Newick, 给每个节点设置 _parent，并收集叶节点 name->node 映射
+/**
+ * 解析 Newick 字符串为树结构
+ * - 每个节点都会挂载 `_parent` 以便回溯到根
+ * - 叶子节点（有 name 的节点）会被收集到 nameToNode 映射中，方便按样本名定位节点
+ */
 function parseNewick(newick) {
   const tokens = newick.split(/\s*(;|\(|\)|,|:)\s*/);
   const ancestors = [];
@@ -66,6 +85,7 @@ function parseNewick(newick) {
   return { tree, nameToNode };
 }
 
+// 获取从根到当前节点的路径（包含根与当前节点）
 function getPathToRoot(node) {
   const path = [];
   while (node) {
@@ -75,7 +95,7 @@ function getPathToRoot(node) {
   return path.reverse();
 }
 
-// 找到多条路径的 MRCA
+// 在多条 root->leaf 路径中找到最近共同祖先（MRCA）
 function findMRCA(paths) {
   if (paths.length === 0) return null;
   let idx = 0;
@@ -92,7 +112,12 @@ function findMRCA(paths) {
   return { node: paths[0][idx - 1], path: paths[0].slice(0, idx) };
 }
 
-// 如果 MRCA 本身 length 为 0，往上找第一个 length>0；都没有则找 name="N"
+/**
+ * 选择用于“基因标注”的节点：
+ * - 优先使用 MRCA
+ * - 若 MRCA 的 branch length 为 0，则沿着路径向上找第一个 length > 0 的节点
+ * - 若仍找不到，则回退到 name="N" 的节点（如果存在）
+ */
 function resolveAnnotNode(mrcaInfo, nameToNode) {
   if (!mrcaInfo) return null;
   const { path } = mrcaInfo;
@@ -102,7 +127,9 @@ function resolveAnnotNode(mrcaInfo, nameToNode) {
   return nameToNode["N"] || null;
 }
 
+// Worker 入口：解析树并把基因映射标注到树节点上
 self.onmessage = ({ data: { newick, geneData } }) => {
+  // 将 gene + genome_change 组合成唯一键（用于去重与标注）
   const mutationsWithGenomeChange = geneData.map((item) => {
     return {
       sampleId: item.sampleId,
@@ -114,10 +141,11 @@ self.onmessage = ({ data: { newick, geneData } }) => {
       }),
     };
   });
-  // 1. 解析树
+
+  // 1) 解析树（生成 tree 结构和 name->node 的索引）
   const { tree, nameToNode } = parseNewick(newick);
 
-  // 2. 构建 sample->[{gene,isDriver}]，并记录 gene 的 isDriver 标记
+  // 2) 构建 sample -> 基因列表，并汇总每个 unionGene 是否为 driver
   const sampleToGenes = Object.create(null);
   const geneToDriverFlag = Object.create(null);
 
@@ -132,7 +160,7 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     });
   });
 
-  // 3. 构建 gene->sampleId 列表
+  // 3) 构建 unionGene -> 样本列表（每个样本对同一 unionGene 只计一次）
   const geneToSamples = Object.create(null);
   for (const [smp, arr] of Object.entries(sampleToGenes)) {
     new Set(arr.map(x => x.unionGene)).forEach(unionGene => {
@@ -141,7 +169,7 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     });
   }
 
-  // 4. 缓存每个样本的 root->leaf 路径
+  // 4) 缓存每个样本在树上的 root->leaf 路径（便于 MRCA 计算）
   const samplePaths = Object.fromEntries(
     Object.entries(sampleToGenes).map(([smp]) => {
       const node = nameToNode[smp];
@@ -149,7 +177,13 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     }),
   );
 
-  // 5. 标注每个基因到树节点
+  /**
+   * 5) 将每个 unionGene 标注到树节点上
+   * - 找出携带该突变的样本集合
+   * - 计算这些样本在树上的 MRCA
+   * - 将该 unionGene 写入 MRCA（或其上方满足条件的节点）的 geneData.driver/nonDriver 中
+   * - 同时把涉及到的样本标签写入 annotNode.samples
+   */
   for (const [unionGene, samplesArr] of Object.entries(geneToSamples)) {
     const paths = samplesArr
       .map(s => samplePaths[s])
@@ -163,7 +197,7 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     }
     if (!annotNode) continue;
 
-    // 初始化 mutations 对象
+    // 初始化基因标注容器
     if (!annotNode.geneData) {
       annotNode.geneData = { driver: [], nonDriver: [] };
     }
@@ -174,7 +208,7 @@ self.onmessage = ({ data: { newick, geneData } }) => {
       bucket.push(unionGene);
     }
 
-    // 收集并去重样本标签
+    // 收集并去重样本标签（用于节点 tooltip / 标注）
     annotNode.samples = annotNode.samples || [];
     samplesArr.forEach(s => {
       const fmt = formatLabel(s);
@@ -184,7 +218,7 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     });
   }
 
-  // 6. 构建 clinic 信息
+  // 6) 构建患者临床信息（取 geneData 第一条作为患者级字段来源）
   const first = geneData[0] || {};
   const patientItem = {
     ...first,
@@ -207,7 +241,7 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     };
   });
 
-  // 7. 构建 sampleGeneData 输出（不区分 driver，仅去重）
+  // 7) 构建 sampleGeneData：每个样本的 driver/nonDriver unionGene 列表（去重）
   const sampleGeneData = Object.fromEntries(
     Object.entries(sampleToGenes).map(([sample, arr]) => {
     // 提取所有基因
@@ -225,6 +259,6 @@ self.onmessage = ({ data: { newick, geneData } }) => {
     }),
   );
 
-  // 8. 返回结果
+  // 8) 返回结果给主线程
   self.postMessage({ treeList: tree, clinic, sampleGeneData });
 };

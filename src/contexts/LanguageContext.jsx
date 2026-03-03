@@ -1,3 +1,9 @@
+/**
+ * 作者: 张梦洁
+ * UI设计: 张梦洁
+ * 创建时间: 2025年4月10号
+ * 最后修改时间: 2026年3月3号
+ */
 "use client";
 import React, { createContext, useEffect, useContext, useState, useCallback } from "react";
 import i18n from "@/utils/i18n";

@@ -257,7 +257,7 @@ const Home = () => {
         <img src={"/images/help-05.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Timing analysis
+        Timing Analysis
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         Driver mutations identified in a patient may arise at different stages
@@ -279,7 +279,7 @@ const Home = () => {
         The transcriptome layer
       </Typography.Title>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Transcriptomic heterogeneity
+        Transcriptomic Heterogeneity
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         One striking feature of HCC is its exceptionally high degree of
@@ -303,7 +303,7 @@ const Home = () => {
         <img src={"/images/help-07.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Differential expression analysis
+        Differential Expression Analysis
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         Leveraging a large collection of HCC cohorts with transcriptomic data,
@@ -330,7 +330,7 @@ const Home = () => {
         The microenvironment layer
       </Typography.Title>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Microenvironment spatial heterogeneity
+        Microenvironment Spatial Heterogeneity
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         Similar to the transcriptomic heterogeneity module, this module
@@ -349,7 +349,7 @@ const Home = () => {
         <img src={"/images/help-09.png"}></img>
       </div>
       <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Microenvironment deconvolution
+        Microenvironment Deconvolution
       </Typography.Title>
       <Typography.Paragraph style={{ fontSize: "20px" }}>
         The tumor microenvironment (TME) exhibits substantial heterogeneity in

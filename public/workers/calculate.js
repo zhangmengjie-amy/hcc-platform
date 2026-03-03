@@ -1,5 +1,13 @@
+/**
+ * Web Worker 计算模块（calculate.js）
+ *
+ * 主要职责：
+ * 1. 基于突变数据和临床信息进行过滤、整合和排序
+ * 2. 生成前端可直接使用的可视化数据结构（driver landscape 等）
+ * 3. 在 Worker 线程中完成密集计算，避免阻塞主线程
+ */
 
-
+// 突变类型对应的默认配色，在运行过程中会按照出现频次重新排序
 let mutationTypeColorConfig = {
   Missense_Mutation: "rgb(114, 158, 206)",
   Stop_Codon: "rgb(255, 158, 74)",
@@ -10,6 +18,7 @@ let mutationTypeColorConfig = {
   Multi_Hit: "rgb(255, 0, 255)",
 };
 
+// 临床特征对应的配色，用于临床热图 / 标签渲染
 const clinicColorConfig = {
   stage: {
     "IA": "rgb(255, 245, 240)",
@@ -54,6 +63,7 @@ const clinicColorConfig = {
   },
 };
 
+// Web Worker 入口，根据不同 key 分发到不同的计算流程
 self.onmessage = async ({ data }) => {
   if (data.key === "driverLandscape") {
     const { data: { originalMutations, sampleType, conditions: { geneList: geneList, mutationTypeList: mutationTypeList, ...clinicList } } } = data;
@@ -89,10 +99,12 @@ self.onmessage = async ({ data }) => {
   }
 };
 
+// 将样本 ID 统一截断为「患者级」ID（取前两个片段）
 const formatSampleList = (finialMutations) => {
   return Array.from(new Set(finialMutations.map((item) => item.sampleId?.split("_")?.slice(0, 2).join("_"))));
 };
 
+// 将原始临床信息格式化为前端易用的结构，并附带颜色信息
 const formatClinicList = (finialMutations) => {
   return finialMutations.map((item) => {
 
@@ -122,6 +134,7 @@ const formatClinicList = (finialMutations) => {
   });
 };
 
+// 根据各突变类型在样本中的出现次数，对突变类型配色进行重新排序
 const sortMutationTypeColorConfig = (samples) => {
   const mutationCounts = Object.keys(mutationTypeColorConfig).map(type => {
     const allSampleWitCurrentType = samples.flatMap(item =>
@@ -144,6 +157,7 @@ const sortMutationTypeColorConfig = (samples) => {
 };
 
 
+// 先按患者聚合样本，再在每个患者内部按照基因突变模式排序样本
 const sortSampleByPatients = (samples, geneList) => {
   const groupedSamples = samples.reduce((acc, current) => {
     const patientId = current.sampleId.split("_").slice(0, 2).join("_");
@@ -167,6 +181,7 @@ const sortSampleByPatients = (samples, geneList) => {
   return result;
 };
 
+// 根据给定的 sampleId 顺序，对原始样本数组进行过滤 + 排序
 function sortSamplesBySampleIds(originalData, sampleIds) {
   const sampleIdSet = new Set(sampleIds);
 
@@ -175,6 +190,10 @@ function sortSamplesBySampleIds(originalData, sampleIds) {
     .sort((a, b) => sampleIds.indexOf(a.sampleId) - sampleIds.indexOf(b.sampleId)); // 排序
 }
 
+/**
+ * 将 MAF 风格的突变数据展开为 oncoprint 友好的矩阵结构
+ * 这里主要复用排序逻辑，只返回按基因模式排序后的样本 ID 列表
+ */
 function maf2oncoprintdf(mafData, geneList = null, options = {}) {
   const {
     ordergene = true,
@@ -249,6 +268,12 @@ function maf2oncoprintdf(mafData, geneList = null, options = {}) {
 }
 
 
+/**
+ * 将同一患者的多个样本在基因维度上合并：
+ * - 多个样本只要某个基因出现突变，就在患者级记录一次
+ * - 多突变类型会被归并为 Multi_Hit
+ * 然后再次在患者与样本两个层面按 oncoprint 规则排序
+ */
 function mergePatients(samples, geneList) {
   const patientsMap = samples.reduce((map, sample) => {
     const patientId = sample.sampleId.split("_").slice(0, 2).join("_");
@@ -313,7 +338,7 @@ function mergePatients(samples, geneList) {
   });
 }
 
-// 主处理函数
+// 基于「基因优先级 + 突变类型」对样本进行重新排序
 const sortMutations = (samples, geneList) => {
   const sampleOrder = new Set();
   const rerangedSamples = [];
@@ -330,7 +355,7 @@ const sortMutations = (samples, geneList) => {
       sample.mutations && sample.mutations.some(m => m.gene === gene.gene),
     );
 
-    // 按照突变类型进行分组
+    // 按照突变类型进行分组（同一基因下，不同突变类型单独成组）
     const mutationTypeGroups = {};
     samplesWithMutation.forEach(sample => {
       sample.mutations.forEach(mutation => {
@@ -357,10 +382,12 @@ const sortMutations = (samples, geneList) => {
   return rerangedSamples;
 };
 
+// 提取样本 ID 列表，作为横轴 / 分组用类别
 const getSampleCategories = (finialClinicList) => {
   return finialClinicList.map((item) => item.sampleId);
 };
 
+// 根据每个基因在所有样本中出现的比例，重新排序基因列表并附加统计信息
 const sortGeneListByPercentage = (finialMutations, geneList) => {
   return geneList?.map((geneItem) => {
     const totalMutationsInSamples = finialMutations.filter((sample) => {
@@ -377,6 +404,7 @@ const sortGeneListByPercentage = (finialMutations, geneList) => {
   }).sort((a, b) => a.totalTimes - b.totalTimes);
 };
 
+// 只保留在指定基因列表中至少发生一次突变的样本
 const filterSampleByGene = (originalSamples, geneList) => {
   return originalSamples.filter((item) => {
     return item.mutations?.some((mutation) => geneList.some((gene) => gene.gene == mutation.gene));
@@ -384,7 +412,7 @@ const filterSampleByGene = (originalSamples, geneList) => {
 };
 
 
-// 通过临床信息条件过滤样本
+// 通过临床条件 + 基因过滤样本，并对部分字段做标准化转换
 const filterSampleByConditions = (originalSamples, clinicList, geneList) => {
   return originalSamples.map((item) => {
     return {
@@ -417,6 +445,11 @@ const filterSampleByConditions = (originalSamples, clinicList, geneList) => {
 
 };
 
+/**
+ * 计算「样本 × 基因」二维矩阵的突变分布：
+ * - 为每个有突变的 (sample, gene) 组合生成一个点
+ * - 点中包含临床信息、突变类型统计等，用于 tooltip 和图层渲染
+ */
 function calculateSampleGenesMutations(samples, geneList, clinicList) {
   const series = [];
   const maxMutationTypeNumber = 3;
@@ -465,6 +498,7 @@ function calculateSampleGenesMutations(samples, geneList, clinicList) {
   };
 }
 
+// 统计每个样本在不同突变类型上的总次数（用于样本堆叠柱状图）
 function generateSamplesMutations(samples, geneList) {
   if (!geneList?.length) return [];
   const sampleMutations = Object.keys(mutationTypeColorConfig).map((type, index) => ({
@@ -489,6 +523,7 @@ function generateSamplesMutations(samples, geneList) {
   return sampleMutations;
 }
 
+// 统计每个基因在不同突变类型上的样本计数（用于基因堆叠柱状图）
 function generateGenesMutations(samples, geneList) {
   if (!geneList?.length || !samples?.length) return [];
   return Object.entries(mutationTypeColorConfig).map(([type, color]) => ({

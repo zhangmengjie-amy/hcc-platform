@@ -1,4 +1,10 @@
-// components/LoginContent.jsx
+/**
+ * 作者: 张梦洁
+ * UI设计: 张梦洁
+ * 创建时间: 2025年4月10号
+ * 最后修改时间: 2026年3月3号
+ */
+
 "use client";
 import React, { useState, useEffect } from "react";
 import {

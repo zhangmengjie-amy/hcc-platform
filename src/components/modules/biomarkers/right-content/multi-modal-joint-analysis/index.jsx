@@ -1,4 +1,9 @@
-"use client";
+/**
+ * 作者: 张梦洁
+ * UI设计: 张梦洁
+ * 创建时间: 2025年4月10号
+ * 最后修改时间: 2026年3月3号
+ */
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Flex, Row, Col, Empty, Spin, Dropdown, Space, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
