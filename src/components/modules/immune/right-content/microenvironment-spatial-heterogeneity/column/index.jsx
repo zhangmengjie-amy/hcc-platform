@@ -62,7 +62,7 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
               PURE_MIXED: isPure ? "Pure" : "Mixed",
               sampleId: item.sampleId,
               stage: patient.stage,
-              subtype: item.subtype,
+              subtype: item.immuneSubtype,
             },
             itemStyle: {
               color: MIXED_PURE[isPure ? "Pure" : "Mixed"],
@@ -77,7 +77,7 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
               PURE_MIXED: isPure ? "Pure" : "Mixed",
               sampleId: item.sampleId,
               stage: patient.stage,
-              subtype: item.subtype,
+              subtype: item.immuneSubtype,
             },
             itemStyle: {
               color: STAGE_COLOR[patient.stage],
@@ -93,7 +93,7 @@ const ColumnChart = ({ data, patientId, handleItemClick }) => {
             PURE_MIXED: isPure ? "Pure" : "Mixed",
             sampleId: item.sampleId,
             stage: patient.stage,
-            subtype: item.subtype,
+            subtype: item.immuneSubtype,
           },
           itemStyle: {
             color: SUBTYPE_COLOR[item.immuneSubtype],

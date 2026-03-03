@@ -443,7 +443,7 @@ const MultiModalJointAnalysisContent = ({
   useEffect(() => {
     buildDtHeatMap(currentDtPatientId, dataType);
     buildDtTreeData(currentDtPatientId, dataType);
-  }, [currentDtPatientId, filterdPatientList, dataType, biomarkerScoreData]);
+  }, [currentDtPatientId, filterdPatientList, dataType, biomarkerScoreData, biomarkerScoreData]);
 
   useEffect(() => {
     buildDtLiverSamples(currentDtPatientId, dataType, selectedDtSubtype);
@@ -452,13 +452,12 @@ const MultiModalJointAnalysisContent = ({
     filterdPatientList,
     dataType,
     selectedDtSubtype,
-    biomarkerScoreData,
   ]);
 
   useEffect(() => {
     buildPlanetHeatMap(currentPlanetPatientId, dataType);
     buildPlanetTreeData(currentPlanetPatientId, dataType);
-  }, [currentPlanetPatientId, filterdPatientList, dataType]);
+  }, [currentPlanetPatientId, filterdPatientList, dataType, biomarkerScoreData]);
 
   useEffect(() => {
     buildPlanetLiverSamples(
@@ -471,7 +470,6 @@ const MultiModalJointAnalysisContent = ({
     filterdPatientList,
     dataType,
     selectedPlanetSubtype,
-    biomarkerScoreData,
   ]);
 
   function formatLabel(str) {

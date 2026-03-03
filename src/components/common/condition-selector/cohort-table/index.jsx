@@ -99,7 +99,11 @@ const CohortSelection = forwardRef(
         {
           title: t("common:cohort"),
           dataIndex: "number",
-          render: (text) => text,
+          render: (text, column) => (
+            <Tooltip title={column?.shorten} placement="topRight">
+              {text}
+            </Tooltip>
+          ),
         },
         {
           title: t("common:level"),
