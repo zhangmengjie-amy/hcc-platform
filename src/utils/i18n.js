@@ -1,3 +1,10 @@
+/**
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
+ */
+
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";

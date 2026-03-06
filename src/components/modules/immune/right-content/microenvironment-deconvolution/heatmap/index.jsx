@@ -1,3 +1,10 @@
+/**
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
+ */
+
 import React, { useMemo, useCallback, useRef } from "react";
 import ReactECharts from "echarts-for-react";
 import { Card, Button, Dropdown, Menu, Typography } from "antd";

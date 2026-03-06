@@ -1,10 +1,10 @@
 /**
- * 作者: 张梦洁
- * UI设计: 张梦洁
- * 创建时间: 2025年4月10号
- * 最后修改时间: 2026年3月3号
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
  */
-// components/RegisterContent.jsx
+
 "use client";
 import React, { useState, useEffect } from "react";
 import {

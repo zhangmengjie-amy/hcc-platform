@@ -1,3 +1,10 @@
+/**
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
+ */
+
 const baseColors = [
   { r: 94, g: 79, b: 162 },    // #5E4FA2
   { r: 170, g: 55, b: 236 },    // #AA37EC

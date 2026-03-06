@@ -1,3 +1,10 @@
+/**
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
+ */
+
 export const mutationTypeColorConfig = {
   Missense_Mutation: "rgb(114, 158, 206)",
   Stop_Codon: "rgb(255, 158, 74)",

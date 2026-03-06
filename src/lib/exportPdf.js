@@ -1,4 +1,11 @@
 /**
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
+ */
+
+/**
  * 调用Puppeteer生成PDF并下载
  * @param {string} url - 要导出的完整页面URL
  * @param {string} [filename='export.pdf'] - 下载文件名

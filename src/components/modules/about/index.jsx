@@ -1,3 +1,10 @@
+
+/**
+ * Author: 张梦洁
+ * UI: 张梦洁
+ * Created Time: 2025/04/10
+ * Last Modified: 2026/03/03
+ */
 "use client";
 import React, {
   useRef,
@@ -39,12 +46,6 @@ const About = () => {
               deciphering the evolutionary trajectories of tumors to identify
               prognostic "evolutionary signatures," thereby bridging the gap
               between basic evolutionary theory and clinical precision medicine.
-              For more information, please visit:
-            </p>
-            <p>
-              <a href="https://zhailab.cn/" target="https://zhailab.cn/">
-                https://zhailab.cn/
-              </a>
             </p>
           </Flex>
         </Col>
