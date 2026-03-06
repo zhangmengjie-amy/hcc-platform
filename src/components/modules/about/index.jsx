@@ -1,10 +1,3 @@
-
-/**
- * Author: 张梦洁
- * UI: 张梦洁
- * Created Time: 2025/04/10
- * Last Modified: 2026/03/03
- */
 "use client";
 import React, {
   useRef,
@@ -46,6 +39,12 @@ const About = () => {
               deciphering the evolutionary trajectories of tumors to identify
               prognostic "evolutionary signatures," thereby bridging the gap
               between basic evolutionary theory and clinical precision medicine.
+              For more information, please visit:
+            </p>
+            <p>
+              <a href="https://zhailab.cn/" target="https://zhailab.cn/">
+                https://zhailab.cn/
+              </a>
             </p>
           </Flex>
         </Col>
@@ -66,15 +65,7 @@ const About = () => {
               more than 10 provinces. The common theme of these works aims at
               building a comprehensive data ecosystem that promotes the
               automation of biodiversity monitoring and serves national
-              strategic demands. For more information, please visit:
-            </p>
-            <p>
-              <a
-                href="http://www.especies.cn/"
-                target="http://www.especies.cn/"
-              >
-                http://www.especies.cn/
-              </a>
+              strategic demands. For more information.
             </p>
           </Flex>
         </Col>
