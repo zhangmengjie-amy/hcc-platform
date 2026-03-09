@@ -28,18 +28,7 @@ const About = () => {
               Zhai Lab
             </Typography.Title>
             <p>
-              The Zhai Lab, located at the Institute of Zoology, Chinese Academy
-              of Sciences, is broadly interested in the research of molecular
-              evolution, population genetics, and somatic cell evolution, with a
-              particular focus on the genomic and transcriptomic dynamics of
-              cancer. Some of our recent works are on the spatial phylogeography
-              of hepatocellular carcinoma (HCC), the "PLANET" prospective cohort
-              study, and the modeling of intra-tumor heterogeneity (ITH) across
-              multi-omics layers. The common theme of these works aims at
-              deciphering the evolutionary trajectories of tumors to identify
-              prognostic "evolutionary signatures," thereby bridging the gap
-              between basic evolutionary theory and clinical precision medicine.
-              For more information, please visit:
+              The Zhai Lab at the Institute of Zoology, Chinese Academy of Sciences, applies evolutionary and genomic approaches to study the evolution of somatic cells, particularly in cancer. The lab focuses on intra-tumor heterogeneity (ITH), a central hallmark of cancer, and aims to characterize its spatial and temporal patterns within tumors. By integrating evolutionary theory with modern omics technologies, the group investigates how forces such as mutation and selection shape tumor heterogeneity and evolution. Ultimately, the lab seeks to translate evolutionary principles into clinical insights to improve patient stratification and treatment, bridging fundamental evolutionary biology and precision medicine. For more information, please visit:
             </p>
             <p>
               <a href="https://zhailab.cn/" target="https://zhailab.cn/">
@@ -54,18 +43,7 @@ const About = () => {
               Scientific Data Center
             </Typography.Title>
             <p>
-              The Zoological Scientific Data Center, a joint initiative led by
-              the Institute of Zoology at the Chinese Academy of Sciences, is
-              broadly interested in the integration of zoological scientific
-              data, the application of artificial intelligence, and the
-              advancement of data-driven research paradigms. Some of our recent
-              works focus on constructing authoritative data resources—including
-              the Catalogue of Life China and biological maps—and developing
-              intelligent wildlife monitoring systems currently deployed across
-              more than 10 provinces. The common theme of these works aims at
-              building a comprehensive data ecosystem that promotes the
-              automation of biodiversity monitoring and serves national
-              strategic demands. For more information.
+              The Zoological Scientific Data Center, a joint initiative led by the Institute of Zoology at the Chinese Academy of Sciences, is broadly interested in the integration of zoological scientific data, the application of artificial intelligence, and the advancement of data-driven research paradigms. Some of our recent works focus on constructing authoritative data resources—including the Catalogue of Life China and biological maps—and developing intelligent wildlife monitoring systems currently deployed across more than 10 provinces. The common theme of these works aims at building a comprehensive data ecosystem that promotes the automation of biodiversity monitoring and serves national strategic demands.
             </p>
           </Flex>
         </Col>

@@ -12,6 +12,44 @@ import ReduxProvider from "@/contexts/ReduxProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ConfigProvider } from "antd";
+
+// 👇 添加 metadata 配置
+export const metadata = {
+  title: "LIGOR",
+  description: "肝癌空间组学资源库（LIGOR） 是一个综合性数据库，旨在基于从空间定位的肿瘤区域收集的多组学数据，刻画肝细胞癌的空间肿瘤内异质性。该平台支持跨队列多组学信息的探索，描绘分子变化的空间与时间模式，助力发现具有临床相关性的生物标志物。",
+  authors: [{ name: "张梦洁" }],
+  creator: "张梦洁",
+  keywords: [
+    "LIGOR",
+    "Mengjie Zhang",
+    "张梦洁",
+    "肝癌", "肝细胞癌", "hepatocellular carcinoma", "liver cancer",
+    "空间组学", "spatial omics",
+    "肿瘤异质性", "多组学数据库",
+    "空间异质性",
+    "Driver Landscape",
+    "Timing Analysis",
+    "Differential Expression Analysis",
+    "Transcriptomic Heterogeneity",
+    "Microenvironment Deconvolution",
+    "Microenvironment Spatial Heterogeneity",
+    "Survival Analysis",
+    "Multi-modal Joint Analysis",
+  ],
+  openGraph: {
+    title: "LIGOR",
+    description: "肝癌空间组学资源库 | Liver Cancer Geospatial Omics Resource",
+    siteName: "LIGOR",
+  },
+  other: {
+    "author:zh": "张梦洁",
+    "creator:zh": "张梦洁",
+    "author:en": "Mengjie Zhang",
+    "creator:en": "Mengjie Zhang",
+    "description:zh": "肝癌空间组学资源库 - 通过整合空间与时间维度的多组学信息，构建一个综合性平台，以加速肝细胞癌精准医疗的进程。",
+    "description:en": "Liver Cancer Geospatial Omics Resource - Integrating geospatial and temporal multi-omic information to provide a comprehensive platform, accelerating precision medicine in hepatocellular carcinoma.",
+  },
+};
 export default function RootLayout({ children }) {
   return (
     <html lang="en" translate="no">

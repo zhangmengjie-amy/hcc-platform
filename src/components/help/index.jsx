@@ -1,4 +1,3 @@
-
 /**
  * Author: 张梦洁
  * UI: 张梦洁
@@ -44,17 +43,45 @@ const Help = () => {
     { key: "introduction", title: "Introduction Page", level: 2 },
     { key: "genomeLayer", title: "The genome layer", level: 2 },
     { key: "driverLandscape", title: "Driver Landscape", level: 3 },
-    { key: "phylogeneticRelationship", title: "Phylogenetic Relationship", level: 3 },
+    {
+      key: "phylogeneticRelationship",
+      title: "Phylogenetic Relationship",
+      level: 3,
+    },
     { key: "timingAnalysis", title: "Timing Analysis", level: 3 },
     { key: "transcriptomeLayer", title: "The transcriptome layer", level: 2 },
-    { key: "transcriptomicHeterogeneity", title: "Transcriptomic Heterogeneity", level: 3 },
-    { key: "differentialExpressionAnalysis", title: "Differential Expression Analysis", level: 3 },
-    { key: "microenvironmentLayer", title: "The microenvironment layer", level: 2 },
-    { key: "microenvironmentSpatialHeterogeneity", title: "Microenvironment Spatial Heterogeneity", level: 3 },
-    { key: "microenvironmentDeconvolution", title: "Microenvironment Deconvolution", level: 3 },
+    {
+      key: "transcriptomicHeterogeneity",
+      title: "Transcriptomic Heterogeneity",
+      level: 3,
+    },
+    {
+      key: "differentialExpressionAnalysis",
+      title: "Differential Expression Analysis",
+      level: 3,
+    },
+    {
+      key: "microenvironmentLayer",
+      title: "The microenvironment layer",
+      level: 2,
+    },
+    {
+      key: "microenvironmentSpatialHeterogeneity",
+      title: "Microenvironment Spatial Heterogeneity",
+      level: 3,
+    },
+    {
+      key: "microenvironmentDeconvolution",
+      title: "Microenvironment Deconvolution",
+      level: 3,
+    },
     { key: "biomarkerLayer", title: "The biomarker layer", level: 2 },
     { key: "survivalAnalysis", title: "Survival Analysis", level: 3 },
-    { key: "multiModalJointAnalysis", title: "Multi-modal Joint Analysis", level: 3 },
+    {
+      key: "multiModalJointAnalysis",
+      title: "Multi-modal Joint Analysis",
+      level: 3,
+    },
     { key: "references", title: "References", level: 2 },
   ];
 
@@ -63,16 +90,13 @@ const Help = () => {
       {/* 左侧导航 - 固定定位 */}
       <div className={styles.sideNav}>
         <div className={styles.navContent}>
-          <Anchor
-            affix={false}
-            offsetTop={65} 
-          >
+          <Anchor affix={false} offsetTop={65}>
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={`#${item.key}`}
                 title={
-                  <span 
+                  <span
                     title={item.title}
                     className={`${styles.navLink} ${styles[`level${item.level}`]}`}
                   >
@@ -88,7 +112,11 @@ const Help = () => {
       {/* 右侧内容 */}
       <div className={styles.mainContent}>
         {/* User Manual */}
-        <div ref={sectionRefs.userManual} id="userManual" className={styles.section}>
+        <div
+          ref={sectionRefs.userManual}
+          id="userManual"
+          className={styles.section}
+        >
           <Title
             style={{
               fontSize: "48px",
@@ -100,47 +128,54 @@ const Help = () => {
             User Manual
           </Title>
           <Paragraph style={{ fontSize: "20px" }}>
-            Welcome to the LIGOR database! This page will help to guide you through
-            the website and help you through the analytical steps.
+            Welcome to the LIGOR database! This page will help to guide you
+            through the website and help you through the analytical steps.
           </Paragraph>
         </div>
 
         {/* Introduction Page */}
-        <div ref={sectionRefs.introduction} id="introduction" className={styles.section}>
-          <Title style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}>
+        <div
+          ref={sectionRefs.introduction}
+          id="introduction"
+          className={styles.section}
+        >
+          <Title
+            style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
+          >
             Introduction Page
           </Title>
           <Paragraph style={{ fontSize: "20px" }}>
-            At the introduction page, you are provided with two different options to
-            explore the database...
+            At the introduction page, you are provided with two different
+            options to explore the database...
           </Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-01.png"} alt="help-01" />
           </div>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             The other, more direct option is to click on the individual research
-            modules displayed under the banner area. For example, there are eight
-            research modules, including “Driver Landscape,” “Timing Analysis,”
-            “Differential Expression Analysis,” “Transcriptomic Heterogeneity,”
-            “Microenvironmental Deconvolution,” “Microenvironmental Spatial
-            Heterogeneity,” “Survival Analysis,” and “Multi-modal Joint Analysis.”
-            These modules are color-coded according to four layers of omic
-            information, ranging from genome and transcriptome to immune features
-            and biomarkers. By clicking the “Explore” button within each module,
-            users can directly access the corresponding module.
+            modules displayed under the banner area. For example, there are
+            eight research modules, including “Driver Landscape,” “Timing
+            Analysis,” “Differential Expression Analysis,” “Transcriptomic
+            Heterogeneity,” “Microenvironmental Deconvolution,”
+            “Microenvironmental Spatial Heterogeneity,” “Survival Analysis,” and
+            “Multi-modal Joint Analysis.” These modules are color-coded
+            according to four layers of omic information, ranging from genome
+            and transcriptome to immune features and biomarkers. By clicking the
+            “Explore” button within each module, users can directly access the
+            corresponding module.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-02.png"} alt="help-02" />
           </div>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             Below the research module region, at the bottom of the introduction
-            page, you can find statistics of the data hosted at LIGOR, as well as a
-            summary of the core features of the website.
+            page, you can find statistics of the data hosted at LIGOR, as well
+            as a summary of the core features of the website.
           </Typography.Paragraph>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             At the very bottom of the page, you can find a link to the GitHub
-            repository associated with the website, along with an email address for
-            contacting the developers.
+            repository associated with the website, along with an email address
+            for contacting the developers.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-03.png"} alt="help-03" />
@@ -148,7 +183,11 @@ const Help = () => {
         </div>
 
         {/* The genome layer */}
-        <div ref={sectionRefs.genomeLayer} id="genomeLayer" className={styles.section}>
+        <div
+          ref={sectionRefs.genomeLayer}
+          id="genomeLayer"
+          className={styles.section}
+        >
           <Typography.Title
             style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
           >
@@ -156,33 +195,38 @@ const Help = () => {
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             In the genome layer, we designed three modules including driver
-            landscape, phylogenetic relationship as well as the timing analysis. We
-            will walk you through all the modules in this section.
+            landscape, phylogenetic relationship as well as the timing analysis.
+            We will walk you through all the modules in this section.
           </Typography.Paragraph>
         </div>
 
         {/* Driver Landscape */}
-        <div ref={sectionRefs.driverLandscape} id="driverLandscape" className={styles.section}>
+        <div
+          ref={sectionRefs.driverLandscape}
+          id="driverLandscape"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Driver Landscape
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            To explore the driver landscape of the HCC cohorts (i.e., the PLANET or
-            DT cohort), the Driver Landscape module allows users to generate an
-            oncoprint plot across all patients for a set of driver genes specified
-            by the user. An oncoprint plot is an efficient way to display the
-            mutation status of driver genes across samples and patients. On this
-            page, users can select specific cohorts (e.g., the PLANET cohort, the DT
-            cohort, or both) and choose driver genes based on the criteria shown on
-            the left panel. By default, a list of 62 driver genes(Kaya et al., 2022)
-            is pre-selected. However, users may select any gene of interest. At the
-            bottom left of the page, users can further sub-select the patient cohort
-            by filtering clinical variables such as patient age. On the right side
-            of the page, the oncoprint plot displays the driver landscape of the
-            selected patients. As multiple samples were collected from each patient,
-            users can either sort samples individually (default setting) or group
-            samples by patient (i.e., multiple samples from the same patient are
-            plotted together).
+            To explore the driver landscape of the HCC cohorts (i.e., the PLANET
+            or DT cohort), the Driver Landscape module allows users to generate
+            an oncoprint plot across all patients for a set of driver genes
+            specified by the user. An oncoprint plot is an efficient way to
+            display the mutation status of driver genes across samples and
+            patients. On this page, users can select specific cohorts (e.g., the
+            PLANET cohort, the DT cohort, or both) and choose driver genes based
+            on the criteria shown on the left panel. By default, a list of 62
+            driver genes(Kaya et al., 2022) is pre-selected. However, users may
+            select any gene of interest. At the bottom left of the page, users
+            can further sub-select the patient cohort by filtering clinical
+            variables such as patient age. On the right side of the page, the
+            oncoprint plot displays the driver landscape of the selected
+            patients. As multiple samples were collected from each patient,
+            users can either sort samples individually (default setting) or
+            group samples by patient (i.e., multiple samples from the same
+            patient are plotted together).
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-04.png"} alt="help-04" />
@@ -190,7 +234,11 @@ const Help = () => {
         </div>
 
         {/* Phylogenetic Relationship */}
-        <div ref={sectionRefs.phylogeneticRelationship} id="phylogeneticRelationship" className={styles.section}>
+        <div
+          ref={sectionRefs.phylogeneticRelationship}
+          id="phylogeneticRelationship"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Phylogenetic Relationship
           </Typography.Title>
@@ -198,12 +246,12 @@ const Help = () => {
             Phylogenetic tree is an efficient way displaying the genetic
             relationship of different sectors. In this page, you will be able to
             sub-select patients based on the criterion shown on the left. The
-            rainbow displays the overall distribution of intra-tumor heterogeneity
-            (ITH) across all tumors. By sub-selecting the patient cohort (left) or
-            click on the individual bars from the rainbow, we can navigate through
-            the cohort or zoom in individual patient. If you want to look at
-            individual phylogeny in detail, please click on the detail button on the
-            top right.
+            rainbow displays the overall distribution of intra-tumor
+            heterogeneity (ITH) across all tumors. By sub-selecting the patient
+            cohort (left) or click on the individual bars from the rainbow, we
+            can navigate through the cohort or zoom in individual patient. If
+            you want to look at individual phylogeny in detail, please click on
+            the detail button on the top right.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-05.png"} alt="help-05" />
@@ -211,20 +259,24 @@ const Help = () => {
         </div>
 
         {/* Timing Analysis */}
-        <div ref={sectionRefs.timingAnalysis} id="timingAnalysis" className={styles.section}>
+        <div
+          ref={sectionRefs.timingAnalysis}
+          id="timingAnalysis"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Timing Analysis
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Driver mutations identified in a patient may arise at different stages
-            of the tumor’s evolutionary history. Early driver events are typically
-            present in all samples and are therefore mapped to the trunk of the
-            phylogenetic tree. Mutations are assigned to branches of the phylogeny
-            based on the principle of parsimony, enabling the inference of their
-            relative timing. Users can click on the tree and hover over individual
-            branches to view the corresponding protein-coding gene mutations. Users
-            can browse across all patients to examine and compare the evolutionary
-            timing of driver events.
+            Driver mutations identified in a patient may arise at different
+            stages of the tumor’s evolutionary history. Early driver events are
+            typically present in all samples and are therefore mapped to the
+            trunk of the phylogenetic tree. Mutations are assigned to branches
+            of the phylogeny based on the principle of parsimony, enabling the
+            inference of their relative timing. Users can click on the tree and
+            hover over individual branches to view the corresponding
+            protein-coding gene mutations. Users can browse across all patients
+            to examine and compare the evolutionary timing of driver events.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-06.png"} alt="help-06" />
@@ -232,7 +284,11 @@ const Help = () => {
         </div>
 
         {/* The transcriptome layer */}
-        <div ref={sectionRefs.transcriptomeLayer} id="transcriptomeLayer" className={styles.section}>
+        <div
+          ref={sectionRefs.transcriptomeLayer}
+          id="transcriptomeLayer"
+          className={styles.section}
+        >
           <Typography.Title
             style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
           >
@@ -241,27 +297,32 @@ const Help = () => {
         </div>
 
         {/* Transcriptomic Heterogeneity */}
-        <div ref={sectionRefs.transcriptomicHeterogeneity} id="transcriptomicHeterogeneity" className={styles.section}>
+        <div
+          ref={sectionRefs.transcriptomicHeterogeneity}
+          id="transcriptomicHeterogeneity"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Transcriptomic Heterogeneity
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             One striking feature of HCC is its exceptionally high degree of
             transcriptomic heterogeneity. This module displays transcriptomic
-            subtypes both within and between patients. For example, when selecting
-            the PLANET cohort, a circos plot presents each patient as a stacked bar,
-            with the outer tick indicating the selected patients. The phylogenetic
-            tree shown on the right includes five tip labels representing the
-            transcriptomic subtypes of the samples. The final subtype corresponds to
-            the transcriptomic classification reported in Chen et al (Chen et al.,
-            2024). The bottom-right panel illustrates the spatial locations of the
-            sampled sectors. Users can navigate through different patients by
-            clicking on different patients from the circos plot. If the DT cohort is
-            selected, patient samples are displayed as vertical stacked bars rather
-            than a circos plot. The final subtype corresponds to the transcriptomic
-            classification described in Liu et al (Liu et al., 2024). Similar to the
-            genome layer, users can filter patients based on the clinical
-            information using the panel located at the bottom left.
+            subtypes both within and between patients. For example, when
+            selecting the PLANET cohort, a circos plot presents each patient as
+            a stacked bar, with the outer tick indicating the selected patients.
+            The phylogenetic tree shown on the right includes five tip labels
+            representing the transcriptomic subtypes of the samples. The final
+            subtype corresponds to the transcriptomic classification reported in
+            Chen et al (Chen et al., 2024). The bottom-right panel illustrates
+            the spatial locations of the sampled sectors. Users can navigate
+            through different patients by clicking on different patients from
+            the circos plot. If the DT cohort is selected, patient samples are
+            displayed as vertical stacked bars rather than a circos plot. The
+            final subtype corresponds to the transcriptomic classification
+            described in Liu et al (Liu et al., 2024). Similar to the genome
+            layer, users can filter patients based on the clinical information
+            using the panel located at the bottom left.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-07.png"} alt="help-07" />
@@ -269,24 +330,29 @@ const Help = () => {
         </div>
 
         {/* Differential Expression Analysis */}
-        <div ref={sectionRefs.differentialExpressionAnalysis} id="differentialExpressionAnalysis" className={styles.section}>
+        <div
+          ref={sectionRefs.differentialExpressionAnalysis}
+          id="differentialExpressionAnalysis"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Differential Expression Analysis
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Leveraging a large collection of HCC cohorts with transcriptomic data,
-            this module provides a powerful gateway for performing differential
-            expression analysis across patients. First, users can filter and select
-            any number of cohorts from the 45 available datasets. Subsequently, in
-            the bottom-left panel, users can choose a grouping criterion—such as
-            tumor stage, sample type (normal vs. tumor), or viral status—to divide
-            the dataset into two groups (i.e., “First Group” and “Second Group”).
-            This enables users to perform differentially expressed gene (DEG)
-            analysis, along with the corresponding pathway enrichment analysis for
-            each comparison. In addition, users may select from a list of curated
-            gene sets or upload a user-defined gene set. The module will then
-            automatically stratify samples into two groups based on the expression
-            level of the selected gene set, allowing the same downstream DEG and
+            Leveraging a large collection of HCC cohorts with transcriptomic
+            data, this module provides a powerful gateway for performing
+            differential expression analysis across patients. First, users can
+            filter and select any number of cohorts from the 45 available
+            datasets. Subsequently, in the bottom-left panel, users can choose a
+            grouping criterion—such as tumor stage, sample type (normal vs.
+            tumor), or viral status—to divide the dataset into two groups (i.e.,
+            “First Group” and “Second Group”). This enables users to perform
+            differentially expressed gene (DEG) analysis, along with the
+            corresponding pathway enrichment analysis for each comparison. In
+            addition, users may select from a list of curated gene sets or
+            upload a user-defined gene set. The module will then automatically
+            stratify samples into two groups based on the expression level of
+            the selected gene set, allowing the same downstream DEG and
             enrichment analyses to be conducted.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
@@ -295,7 +361,11 @@ const Help = () => {
         </div>
 
         {/* The microenvironment layer */}
-        <div ref={sectionRefs.microenvironmentLayer} id="microenvironmentLayer" className={styles.section}>
+        <div
+          ref={sectionRefs.microenvironmentLayer}
+          id="microenvironmentLayer"
+          className={styles.section}
+        >
           <Typography.Title
             style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
           >
@@ -304,22 +374,27 @@ const Help = () => {
         </div>
 
         {/* Microenvironment Spatial Heterogeneity */}
-        <div ref={sectionRefs.microenvironmentSpatialHeterogeneity} id="microenvironmentSpatialHeterogeneity" className={styles.section}>
+        <div
+          ref={sectionRefs.microenvironmentSpatialHeterogeneity}
+          id="microenvironmentSpatialHeterogeneity"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Microenvironment Spatial Heterogeneity
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             Similar to the transcriptomic heterogeneity module, this module
-            illustrates microenvironmental spatial heterogeneity in multi-regional
-            cohorts. For example, when the PLANET cohort is selected, the
-            microenvironmental subtypes of all samples are displayed for all
-            patients in a circos plot format. The phylogenetic tree and sampling
-            locations of the selected patient (indicated by a tick on the outer
-            ring) are shown on the right and bottom panels, respectively. The
-            microenvironmental subtypes are based on the classifier developed by the
-            TCGA consortium(Thorsson et al., 2018). Users can choose different
-            patients by clicking on the circos plot. Similar to the transcriptomic
-            heterogeneity module, the DT cohort can be shown similarly.
+            illustrates microenvironmental spatial heterogeneity in
+            multi-regional cohorts. For example, when the PLANET cohort is
+            selected, the microenvironmental subtypes of all samples are
+            displayed for all patients in a circos plot format. The phylogenetic
+            tree and sampling locations of the selected patient (indicated by a
+            tick on the outer ring) are shown on the right and bottom panels,
+            respectively. The microenvironmental subtypes are based on the
+            classifier developed by the TCGA consortium(Thorsson et al., 2018).
+            Users can choose different patients by clicking on the circos plot.
+            Similar to the transcriptomic heterogeneity module, the DT cohort
+            can be shown similarly.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-09.png"} alt="help-09" />
@@ -327,21 +402,25 @@ const Help = () => {
         </div>
 
         {/* Microenvironment Deconvolution */}
-        <div ref={sectionRefs.microenvironmentDeconvolution} id="microenvironmentDeconvolution" className={styles.section}>
+        <div
+          ref={sectionRefs.microenvironmentDeconvolution}
+          id="microenvironmentDeconvolution"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Microenvironment Deconvolution
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            The tumor microenvironment (TME) exhibits substantial heterogeneity in
-            immune and stromal cell composition. By integrating seven widely used
-            deconvolution methods—CIBERSORT, TIMER, xCell, MCPcounter, ESTIMATE,
-            EPIC, and quanTIseq—this module allows users to select their cohort and
-            method of interest. Based on the selected deconvolution output, patients
-            are stratified into TME subtypes. For each subtype, marker genes and the
-            activity levels of cancer hallmark pathways are provided. In addition,
-            users can download the raw deconvolution results for customized
-            downstream analyses and further subgrouping according to their specific
-            research needs.
+            The tumor microenvironment (TME) exhibits substantial heterogeneity
+            in immune and stromal cell composition. By integrating seven widely
+            used deconvolution methods—CIBERSORT, TIMER, xCell, MCPcounter,
+            ESTIMATE, EPIC, and quanTIseq—this module allows users to select
+            their cohort and method of interest. Based on the selected
+            deconvolution output, patients are stratified into TME subtypes. For
+            each subtype, marker genes and the activity levels of cancer
+            hallmark pathways are provided. In addition, users can download the
+            raw deconvolution results for customized downstream analyses and
+            further subgrouping according to their specific research needs.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-010.png"} alt="help-010" />
@@ -349,7 +428,11 @@ const Help = () => {
         </div>
 
         {/* The biomarker layer */}
-        <div ref={sectionRefs.biomarkerLayer} id="biomarkerLayer" className={styles.section}>
+        <div
+          ref={sectionRefs.biomarkerLayer}
+          id="biomarkerLayer"
+          className={styles.section}
+        >
           <Typography.Title
             style={{ fontSize: "30px", color: "#476EAE", fontWeight: "bold" }}
           >
@@ -358,23 +441,28 @@ const Help = () => {
         </div>
 
         {/* Survival Analysis */}
-        <div ref={sectionRefs.survivalAnalysis} id="survivalAnalysis" className={styles.section}>
+        <div
+          ref={sectionRefs.survivalAnalysis}
+          id="survivalAnalysis"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Survival Analysis
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
             The survival analysis module enables users to evaluate the
-            stratification ability of a given biomarker, whether it is a single gene
-            or a gene signature (get set). Users can first filter (top left) and
-            select (left panel) the cohort of interest. For biomarkers, users may
-            choose from a set of pre-curated HCC-related markers, including
-            single-gene biomarkers (e.g., AFP) and multi-gene signatures (e.g., the
-            Gajewski 13-gene inflammatory signature). The module compares the
-            expression levels of the selected biomarker across different clinical
-            stages. A corresponding Kaplan–Meier (KM) survival plot is generated for
-            the chosen biomarker within the selected cohort. When multiple cohorts
-            are selected, users can navigate between results using the m enu at the
-            top right to view each cohort individually.
+            stratification ability of a given biomarker, whether it is a single
+            gene or a gene signature (get set). Users can first filter (top
+            left) and select (left panel) the cohort of interest. For
+            biomarkers, users may choose from a set of pre-curated HCC-related
+            markers, including single-gene biomarkers (e.g., AFP) and multi-gene
+            signatures (e.g., the Gajewski 13-gene inflammatory signature). The
+            module compares the expression levels of the selected biomarker
+            across different clinical stages. A corresponding Kaplan–Meier (KM)
+            survival plot is generated for the chosen biomarker within the
+            selected cohort. When multiple cohorts are selected, users can
+            navigate between results using the m enu at the top right to view
+            each cohort individually.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-011.png"} alt="help-011" />
@@ -389,17 +477,21 @@ const Help = () => {
         </div>
 
         {/* Multi-modal Joint Analysis */}
-        <div ref={sectionRefs.multiModalJointAnalysis} id="multiModalJointAnalysis" className={styles.section}>
+        <div
+          ref={sectionRefs.multiModalJointAnalysis}
+          id="multiModalJointAnalysis"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             Multi-modal Joint Analysis
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Leveraging multi-modal data, LIGOR provides an integrated platform that
-            jointly visualizes the spatial locations and genetic relationships of
-            tumor sectors alongside their transcriptomic and immune subtypes, as
-            well as biomarker expression levels. This enables the comprehensive
-            display and cross-modal integration of multi-omic features across
-            patient cohorts.
+            Leveraging multi-modal data, LIGOR provides an integrated platform
+            that jointly visualizes the spatial locations and genetic
+            relationships of tumor sectors alongside their transcriptomic and
+            immune subtypes, as well as biomarker expression levels. This
+            enables the comprehensive display and cross-modal integration of
+            multi-omic features across patient cohorts.
           </Typography.Paragraph>
           <div className={styles.imgContainer}>
             <img src={"/images/help-013.png"} alt="help-013" />
@@ -407,21 +499,53 @@ const Help = () => {
         </div>
 
         {/* References */}
-        <div ref={sectionRefs.references} id="references" className={styles.section}>
+        <div
+          ref={sectionRefs.references}
+          id="references"
+          className={styles.section}
+        >
           <Typography.Title style={{ fontSize: "24px", fontWeight: "bold" }}>
             References
           </Typography.Title>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Chen J, Kaya N A, Zhang Y, Kendarsari R I, Sekar K, Chong S L, Seshachalam V P, Ling W H, Phua C Z J, & Lai H. A multimodal atlas of hepatocellular carcinoma reveals convergent evolutionary paths and ‘bad apple’effect on clinical trajectory[J]. Journal of Hepatology, 2024, 81: 667-678.
+            Chen J, Kaya NA, Zhang Y, Kendarsari RI, Sekar K, Lee Chong S,
+            Seshachalam VP, Ling WH, Jin Phua CZ, Lai H, Yang H, Lu B, Lim JQ,
+            Ma S, Chew SC, Chua KP, Santiago Alvarez JJ, Wu L, Ooi L, Yaw-Fui
+            Chung A, Cheow PC, Kam JH, Wei-Chieh Kow A, Ganpathi IS, Bunchaliew
+            C, Thammasiri J, Koh PS, Bee-Lan Ong D, Lim J, de Villa VH, Dela
+            Cruz RD, Loh TJ, Wan WK, Leow WQ, Yang Y, Liu J, Skanderup AJ, Pang
+            YH, Ting Soon GS, Madhavan K, Kiat-Hon Lim T, Bonney G, Goh BKP,
+            Chew V, Dan YY, Toh HC, Sik-Yin Foo R, Tam WL, Zhai W, Kah-Hoe Chow
+            P. A multimodal atlas of hepatocellular carcinoma reveals convergent
+            evolutionary paths and 'bad apple' effect on clinical trajectory[J].
+            J Hepatol, 2024, 81: 667-678.
           </Typography.Paragraph>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Kaya N A, Chen J, Lai H, Yang H, Ma L, Liu X, Alvarez J S, Liu J, Hillmer A M, & Tai D. Genome instability is associated with ethnic differences between Asians and Europeans in hepatocellular carcinoma[J]. Theranostics, 2022, 12: 4703.
+            Kaya NA, Chen J, Lai H, Yang H, Ma L, Liu X, Alvarez JS, Liu J,
+            Hillmer AM, Tai D, Sheng JYP, Hu Z, Chan YS, Chow PKH, Mu Y,
+            Wuestefeld T, Zhai W. Genome instability is associated with ethnic
+            differences between Asians and Europeans in hepatocellular
+            carcinoma[J]. Theranostics, 2022, 12: 4703-4717.
           </Typography.Paragraph>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Liu X, Zhang K, Kaya N A, Jia Z, Wu D, Chen T, Liu Z, Zhu S, Hillmer A M, & Wuestefeld T. Tumor phylogeography reveals block-shaped spatial heterogeneity and the mode of evolution in Hepatocellular Carcinoma[J]. Nature Communications, 2024, 15: 3169.
+            Liu X, Zhang K, Kaya NA, Jia Z, Wu D, Chen T, Liu Z, Zhu S, Hillmer
+            AM, Wuestefeld T, Liu J, Chan YS, Hu Z, Ma L, Jiang L, Zhai W. Tumor
+            phylogeography reveals block-shaped spatial heterogeneity and the
+            mode of evolution in Hepatocellular Carcinoma[J]. Nat Commun, 2024,
+            15: 3169.
           </Typography.Paragraph>
           <Typography.Paragraph style={{ fontSize: "20px" }}>
-            Thorsson V, Gibbs D L, Brown S D, Wolf D, Bortone D S, Yang T-H O, Porta-Pardo E, Gao G F, Plaisier C L, & Eddy J A. The immune landscape of cancer[J]. Immunity, 2018, 48: 812-830. e814.
+            Thorsson V, Gibbs DL, Brown SD, Wolf D, Bortone DS, Ou Yang TH,
+            Porta-Pardo E, Gao GF, Plaisier CL, Eddy JA, Ziv E, Culhane AC,
+            Paull EO, Sivakumar IKA, Gentles AJ, Malhotra R, Farshidfar F,
+            Colaprico A, Parker JS, Mose LE, Vo NS, Liu J, Liu Y, Rader J,
+            Dhankani V, Reynolds SM, Bowlby R, Califano A, Cherniack AD,
+            Anastassiou D, Bedognetti D, Mokrab Y, Newman AM, Rao A, Chen K,
+            Krasnitz A, Hu H, Malta TM, Noushmehr H, Pedamallu CS, Bullman S,
+            Ojesina AI, Lamb A, Zhou W, Shen H, Choueiri TK, Weinstein JN,
+            Guinney J, Saltz J, Holt RA, Rabkin CS, Lazar AJ, Serody JS, Demicco
+            EG, Disis ML, Vincent BG, Shmulevich I. The Immune Landscape of
+            Cancer[J]. Immunity, 2018, 48: 812-830.e814.
           </Typography.Paragraph>
         </div>
       </div>
